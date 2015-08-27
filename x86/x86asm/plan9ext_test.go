@@ -20,9 +20,8 @@ func testPlan9Arch(t *testing.T, arch int, generate func(func([]byte))) {
 	if testing.Short() {
 		t.Skip("skipping libmach test in short mode")
 	}
-
 	if _, err := os.Stat(plan9Path); err != nil {
-		t.Fatal(err)
+		t.Skip(err)
 	}
 
 	testExtDis(t, "plan9", arch, plan9, generate, allowedMismatchPlan9)

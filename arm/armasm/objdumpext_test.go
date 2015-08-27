@@ -26,10 +26,10 @@ func testObjdumpARM(t *testing.T, generate func(func([]byte))) {
 }
 
 func testObjdumpArch(t *testing.T, generate func(func([]byte)), arch Mode) {
+	if testing.Short() {
+		t.Skip("skipping objdump test in short mode")
+	}
 	if _, err := os.Stat(objdumpPath); err != nil {
-		if !testing.Short() {
-			t.Fatal(err)
-		}
 		t.Skip(err)
 	}
 

@@ -32,9 +32,8 @@ func testObjdumpArch(t *testing.T, generate func(func([]byte)), arch int) {
 	if testing.Short() {
 		t.Skip("skipping objdump test in short mode")
 	}
-
 	if _, err := os.Stat(objdumpPath); err != nil {
-		t.Fatal(err)
+		t.Skip(err)
 	}
 
 	testExtDis(t, "gnu", arch, objdump, generate, allowedMismatchObjdump)

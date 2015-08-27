@@ -57,8 +57,8 @@ func TestDecode(t *testing.T) {
 				out = GNUSyntax(inst)
 			case "intel":
 				out = IntelSyntax(inst)
-			case "plan9":
-				out = plan9Syntax(inst, 0, nil)
+			case "plan9": // [sic]
+				out = GoSyntax(inst, 0, nil)
 			default:
 				t.Errorf("unknown syntax %q", syntax)
 				continue

@@ -9,14 +9,14 @@ import (
 	"strings"
 )
 
-// plan9Syntax returns the Go assembler syntax for the instruction.
+// GoSyntax returns the Go assembler syntax for the instruction.
 // The syntax was originally defined by Plan 9.
 // The pc is the program counter of the instruction, used for expanding
 // PC-relative addresses into absolute ones.
 // The symname function queries the symbol table for the program
 // being disassembled. Given a target address it returns the name and base
 // address of the symbol containing the target, if any; otherwise it returns "", 0.
-func plan9Syntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) string {
+func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) string {
 	if symname == nil {
 		symname = func(uint64) (string, uint64) { return "", 0 }
 	}

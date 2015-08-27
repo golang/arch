@@ -177,9 +177,8 @@ func testExtDis(
 	t.Logf("%d test cases, %d expected mismatches, %d failures; %.0f cases/second", totalTests, totalSkips, totalErrors, float64(totalTests)/time.Since(start).Seconds())
 
 	if err := <-errc; err != nil {
-		t.Fatal("external disassembler: %v", err)
+		t.Fatalf("external disassembler: %v", err)
 	}
-
 }
 
 const start = 0x8000 // start address of text
@@ -225,7 +224,7 @@ var pops = []byte{
 	0x5f, 0x5f, 0x5f, 0x5f, 0x5f, 0x5f, 0x5f, 0x5f,
 }
 
-// pad pads the code sequenc with pops.
+// pad pads the code sequence with pops.
 func pad(enc []byte) []byte {
 	return append(enc[:len(enc):len(enc)], pops...)
 }
@@ -252,8 +251,8 @@ func disasm(syntax string, mode int, src []byte) (inst Inst, text string) {
 			text = GNUSyntax(inst)
 		case "intel":
 			text = IntelSyntax(inst)
-		case "plan9":
-			text = plan9Syntax(inst, 0, nil)
+		case "plan9": // [sic]
+			text = GoSyntax(inst, 0, nil)
 		default:
 			text = "error: unknown syntax " + syntax
 		}

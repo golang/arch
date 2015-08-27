@@ -16,11 +16,10 @@ const xedPath = "/Users/rsc/bin/xed"
 
 func testXedArch(t *testing.T, arch int, generate func(func([]byte))) {
 	if testing.Short() {
-		t.Skip("skipping libmach test in short mode")
+		t.Skip("skipping xed test in short mode")
 	}
-
 	if _, err := os.Stat(xedPath); err != nil {
-		t.Fatal(err)
+		t.Skip(err)
 	}
 
 	testExtDis(t, "intel", arch, xed, generate, allowedMismatchXed)

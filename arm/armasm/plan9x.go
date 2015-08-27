@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-// plan9Syntax returns the Go assembler syntax for the instruction.
+// GoSyntax returns the Go assembler syntax for the instruction.
 // The syntax was originally defined by Plan 9.
 // The pc is the program counter of the instruction, used for expanding
 // PC-relative addresses into absolute ones.
@@ -21,7 +21,7 @@ import (
 // address of the symbol containing the target, if any; otherwise it returns "", 0.
 // The reader r should read from the text segment using text addresses
 // as offsets; it is used to display pc-relative loads as constant loads.
-func plan9Syntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text io.ReaderAt) string {
+func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text io.ReaderAt) string {
 	if symname == nil {
 		symname = func(uint64) (string, uint64) { return "", 0 }
 	}
