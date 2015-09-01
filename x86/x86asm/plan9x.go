@@ -31,7 +31,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) strin
 
 	var last Prefix
 	for _, p := range inst.Prefix {
-		if p == 0 || p.IsREX() {
+		if p == 0 || p.IsREX() || p.IsVEX() {
 			break
 		}
 		last = p

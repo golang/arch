@@ -261,9 +261,38 @@ func add(root *Prog, text, opcode, valid32, valid64, cpuid, tags string) {
 		return
 	}
 
+	p := root
+	walk := func(action, item string) {
+		p = p.walk(action, item, text, opcode)
+	}
+
 	// Ignore VEX instructions for now.
 	if strings.HasPrefix(opcode, "VEX") {
-		return
+		if !strings.HasPrefix(text, "VMOVNTDQ") &&
+			!strings.HasPrefix(text, "VMOVDQA") &&
+			!strings.HasPrefix(text, "VMOVDQU") &&
+			!strings.HasPrefix(text, "VZEROUPPER") {
+			return
+		}
+		if !strings.HasPrefix(opcode, "VEX.256") && !strings.HasPrefix(text, "VZEROUPPER") {
+			return
+		}
+		if !strings.Contains(tags, "VEXC4") {
+			add(root, text, opcode, valid32, valid64, cpuid, tags+",VEXC4")
+		}
+		encoding := strings.Fields(opcode)
+		walk("decode", encoding[1])
+		walk("is64", "any")
+		if strings.Contains(tags, "VEXC4") {
+			walk("prefix", "C4")
+		} else {
+			walk("prefix", "C5")
+		}
+		for _, pref := range strings.Split(encoding[0], ".") {
+			if isVexEncodablePrefix[pref] {
+				walk("prefix", pref)
+			}
+		}
 	}
 
 	var rex, prefix string
@@ -292,11 +321,6 @@ func add(root *Prog, text, opcode, valid32, valid64, cpuid, tags string) {
 	if len(encoding) > 0 && isPrefix[encoding[0]] {
 		log.Printf("%s %s: too many prefixes", text, opcode)
 		return
-	}
-
-	p := root
-	walk := func(action, item string) {
-		p = p.walk(action, item, text, opcode)
 	}
 
 	var haveModRM, havePlus bool
@@ -366,8 +390,14 @@ func add(root *Prog, text, opcode, valid32, valid64, cpuid, tags string) {
 
 	walk("op", strings.Fields(text)[0])
 
-	for _, field := range encoding {
-		walk("read", field)
+	if len(encoding) > 0 && strings.HasPrefix(encoding[0], "VEX") {
+		for _, field := range encoding[2:] {
+			walk("read", field)
+		}
+	} else {
+		for _, field := range encoding {
+			walk("read", field)
+		}
 	}
 
 	var usedRM string
@@ -504,6 +534,15 @@ var usesRM = set(`
 	r/m16
 	r/m32
 	r/m64
+`)
+
+var isVexEncodablePrefix = set(`
+	0F
+	0F38
+	0F3A
+	66
+	F3
+	F2
 `)
 
 // isHex reports whether the argument is a two digit hex number

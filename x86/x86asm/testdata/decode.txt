@@ -6729,3 +6729,12 @@ ff30|11223344556677885f5f5f5f5f5f	32	plan9	PUSHL 0(AX)
 ff30|11223344556677885f5f5f5f5f5f	64	gnu	pushq (%rax)
 ff30|11223344556677885f5f5f5f5f5f	64	intel	push qword ptr [rax]
 ff30|11223344556677885f5f5f5f5f5f	64	plan9	PUSHL 0(AX)
+c5fe6f06|44556677885f5f5f5f5f5f5f	32	intel	vmovdqu ymm0, ymmword ptr [esi]
+c5fe6f06|44556677885f5f5f5f5f5f5f	32	plan9	VMOVDQU 0(SI), X0
+c5fe6f06|44556677885f5f5f5f5f5f5f	32	gnu	vmovdqu (%esi),%ymm0
+c4227d2a0c36|6677885f5f5f5f5f5f5f	64	intel	vmovntdqa ymm9, ymmword ptr [rsi+r14*1]
+c4227d2a0c36|6677885f5f5f5f5f5f5f	64	plan9	VMOVNTDQA 0(SI)(R14*1), X9
+c4227d2a0c36|6677885f5f5f5f5f5f5f	64	gnu	vmovntdqa (%rsi,%r14,1),%ymm9
+c57d7ff7|44556677885f5f5f5f5f5f5f	64	intel	vmovdqa ymm7, ymm14
+c57d7ff7|44556677885f5f5f5f5f5f5f	64	plan9	VMOVDQA X14, X7
+c57d7ff7|44556677885f5f5f5f5f5f5f	64	gnu	vmovdqa %ymm14,%ymm7
