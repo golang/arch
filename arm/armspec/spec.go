@@ -2,6 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// +build !386 go1.8
+// ... see golang.org/issue/12840
+
 // Armspec reads the ``ARM Architecture Reference Manual''
 // to collect instruction encoding details and writes those details to standard output
 // in JSON format.
