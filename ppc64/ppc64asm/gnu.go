@@ -68,7 +68,7 @@ func gnuArg(inst *Inst, argIndex int, arg Arg) string {
 	case PCRel:
 		return fmt.Sprintf(".%+#x", int(arg))
 	case Label:
-		return fmt.Sprintf("%#x", int(arg))
+		return fmt.Sprintf("%#x", uint32(arg))
 	case Offset:
 		reg := inst.Args[argIndex+1].(Reg)
 		removeArg(inst, argIndex+1)

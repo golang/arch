@@ -246,7 +246,7 @@ func disasm(syntax string, src []byte) (inst Inst, text string) {
 		case "gnu":
 			text = GNUSyntax(inst)
 		//case "plan9":
-		//	text = plan9Syntax(inst, 0, nil)
+		//	text = GoSyntax(inst, 0, nil)
 		default:
 			text = "error: unknown syntax " + syntax
 		}

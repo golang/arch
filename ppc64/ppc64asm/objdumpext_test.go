@@ -22,10 +22,10 @@ import (
 const objdumpPath = "/usr/local/bin/powerpc64-unknown-linux-gnu-objdump"
 
 func testObjdump(t *testing.T, generate func(func([]byte))) {
+	if testing.Short() {
+		t.Skip("skipping objdump test in short mode")
+	}
 	if _, err := os.Stat(objdumpPath); err != nil {
-		if !testing.Short() {
-			t.Fatal(err)
-		}
 		t.Skip(err)
 	}
 

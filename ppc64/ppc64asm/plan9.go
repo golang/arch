@@ -9,14 +9,13 @@ import (
 	"strings"
 )
 
-// plan9Syntax returns the Go assembler syntax for the instruction.
-// The syntax was originally defined by Plan 9.
+// GoSyntax returns the Go assembler syntax for the instruction.
 // The pc is the program counter of the first instruction, used for expanding
 // PC-relative addresses into absolute ones.
 // The symname function queries the symbol table for the program
 // being disassembled. It returns the name and base address of the symbol
 // containing the target, if any; otherwise it returns "", 0.
-func plan9Syntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) string {
+func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) string {
 	if symname == nil {
 		symname = func(uint64) (string, uint64) { return "", 0 }
 	}
@@ -67,6 +66,7 @@ func plan9Syntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) st
 		} else if int(inst.Args[0].(Imm))&0x1c == 4 && revCondMap[args[1]] != "" { // jump on cond bit not set
 			return fmt.Sprintf("B%s %s", revCondMap[args[1]], args[2])
 		}
+		return op + " " + strings.Join(args, ", ")
 	case BCCTR:
 		if int(inst.Args[0].(Imm))&20 == 20 { // unconditional
 			return "BR (CTR)"
@@ -80,7 +80,6 @@ func plan9Syntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) st
 	case BCA, BCL, BCLA, BCLRL, BCTAR, BCTARL:
 		return op + " " + strings.Join(args, ", ")
 	}
-	panic("unreachable")
 }
 
 // plan9Arg formats arg (which is the argIndex's arg in inst) according to Plan 9 rules.
