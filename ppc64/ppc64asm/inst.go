@@ -200,7 +200,7 @@ func (r Reg) String() string {
 	case V0 <= r && r <= V63:
 		return fmt.Sprintf("v%d", int(r-V0))
 	default:
-		return fmt.Sprint("Reg(%d)", int(r))
+		return fmt.Sprintf("Reg(%d)", int(r))
 	}
 }
 
