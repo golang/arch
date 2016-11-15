@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// +build go1.6,amd64 go1.8
+
 // Power64spec reads the ``Power ISA V2.07'' Manual
 // to collect instruction encoding details and writes those details to standard output
 // in CSV format.
