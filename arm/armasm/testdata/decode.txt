@@ -304,3 +304,4 @@ ff818c71|	1	gnu	strdvc r8, [ip, pc]
 |6b5721d3	1	gnu	error: unknown instruction
 |76452001	1	gnu	error: unknown instruction
 |97acd647	1	gnu	error: unknown instruction
+ed003be9|	1	plan9	LDMDB [R0,R2-R3,R5-R7], R11!

@@ -185,6 +185,8 @@ func plan9Arg(inst *Inst, pc uint64, symname func(uint64) (string, uint64), arg 
 				} else {
 					fmt.Fprintf(&buf, "R%d-R%d", start, end)
 				}
+				start = -2
+				end = -2
 			}
 		}
 		for i := 0; i < 16; i++ {
@@ -195,6 +197,8 @@ func plan9Arg(inst *Inst, pc uint64, symname func(uint64) (string, uint64), arg 
 				}
 				start = i
 				end = i
+			} else {
+				flush()
 			}
 		}
 		flush()
