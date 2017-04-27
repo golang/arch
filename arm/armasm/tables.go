@@ -1585,6 +1585,22 @@ const (
 	SBFX_LE
 	SBFX
 	SBFX_ZZ
+	SDIV_EQ
+	SDIV_NE
+	SDIV_CS
+	SDIV_CC
+	SDIV_MI
+	SDIV_PL
+	SDIV_VS
+	SDIV_VC
+	SDIV_HI
+	SDIV_LS
+	SDIV_GE
+	SDIV_LT
+	SDIV_GT
+	SDIV_LE
+	SDIV
+	SDIV_ZZ
 	SEL_EQ
 	SEL_NE
 	SEL_CS
@@ -2929,6 +2945,22 @@ const (
 	UBFX_LE
 	UBFX
 	UBFX_ZZ
+	UDIV_EQ
+	UDIV_NE
+	UDIV_CS
+	UDIV_CC
+	UDIV_MI
+	UDIV_PL
+	UDIV_VS
+	UDIV_VC
+	UDIV_HI
+	UDIV_LS
+	UDIV_GE
+	UDIV_LT
+	UDIV_GT
+	UDIV_LE
+	UDIV
+	UDIV_ZZ
 	UHADD16_EQ
 	UHADD16_NE
 	UHADD16_CS
@@ -6107,6 +6139,22 @@ var opstr = [...]string{
 	SBFX_LE:           "SBFX.LE",
 	SBFX:              "SBFX",
 	SBFX_ZZ:           "SBFX.ZZ",
+	SDIV_EQ:           "SDIV.EQ",
+	SDIV_NE:           "SDIV.NE",
+	SDIV_CS:           "SDIV.CS",
+	SDIV_CC:           "SDIV.CC",
+	SDIV_MI:           "SDIV.MI",
+	SDIV_PL:           "SDIV.PL",
+	SDIV_VS:           "SDIV.VS",
+	SDIV_VC:           "SDIV.VC",
+	SDIV_HI:           "SDIV.HI",
+	SDIV_LS:           "SDIV.LS",
+	SDIV_GE:           "SDIV.GE",
+	SDIV_LT:           "SDIV.LT",
+	SDIV_GT:           "SDIV.GT",
+	SDIV_LE:           "SDIV.LE",
+	SDIV:              "SDIV",
+	SDIV_ZZ:           "SDIV.ZZ",
 	SEL_EQ:            "SEL.EQ",
 	SEL_NE:            "SEL.NE",
 	SEL_CS:            "SEL.CS",
@@ -7436,6 +7484,22 @@ var opstr = [...]string{
 	UBFX_LE:           "UBFX.LE",
 	UBFX:              "UBFX",
 	UBFX_ZZ:           "UBFX.ZZ",
+	UDIV_EQ:           "UDIV.EQ",
+	UDIV_NE:           "UDIV.NE",
+	UDIV_CS:           "UDIV.CS",
+	UDIV_CC:           "UDIV.CC",
+	UDIV_MI:           "UDIV.MI",
+	UDIV_PL:           "UDIV.PL",
+	UDIV_VS:           "UDIV.VS",
+	UDIV_VC:           "UDIV.VC",
+	UDIV_HI:           "UDIV.HI",
+	UDIV_LS:           "UDIV.LS",
+	UDIV_GE:           "UDIV.GE",
+	UDIV_LT:           "UDIV.LT",
+	UDIV_GT:           "UDIV.GT",
+	UDIV_LE:           "UDIV.LE",
+	UDIV:              "UDIV",
+	UDIV_ZZ:           "UDIV.ZZ",
 	UHADD16_EQ:        "UHADD16.EQ",
 	UHADD16_NE:        "UHADD16.NE",
 	UHADD16_CS:        "UHADD16.CS",
@@ -9267,6 +9331,8 @@ var instFormats = [...]instFormat{
 	{0x0fe00090, 0x00c00010, 4, SBC_EQ, 0x14011c04, instArgs{arg_R_12, arg_R_16, arg_R_shift_R}},                  // SBC{S}<c> <Rd>,<Rn>,<Rm>,<type> <Rs> cond:4|0|0|0|0|1|1|0|S|Rn:4|Rd:4|Rs:4|0|type:2|1|Rm:4
 	{0x0fe00010, 0x00c00000, 2, SBC_EQ, 0x14011c04, instArgs{arg_R_12, arg_R_16, arg_R_shift_imm}},                // SBC{S}<c> <Rd>,<Rn>,<Rm>{,<shift>} cond:4|0|0|0|0|1|1|0|S|Rn:4|Rd:4|imm5:5|type:2|0|Rm:4
 	{0x0fe00070, 0x07a00050, 4, SBFX_EQ, 0x1c04, instArgs{arg_R_12, arg_R_0, arg_imm5, arg_widthm1}},              // SBFX<c> <Rd>,<Rn>,#<lsb>,#<widthm1> cond:4|0|1|1|1|1|0|1|widthm1:5|Rd:4|lsb:5|1|0|1|Rn:4
+	{0x0ff0f0f0, 0x0710f010, 4, SDIV_EQ, 0x1c04, instArgs{arg_R_16, arg_R_0, arg_R_8}},                            // SDIV<c> <Rd>,<Rn>,<Rm> cond:4|0|1|1|1|0|0|0|1|Rd:4|(1)|(1)|(1)|(1)|Rm:4|0|0|0|1|Rn:4
+	{0x0ff000f0, 0x0710f010, 3, SDIV_EQ, 0x1c04, instArgs{arg_R_16, arg_R_0, arg_R_8}},                            // SDIV<c> <Rd>,<Rn>,<Rm> cond:4|0|1|1|1|0|0|0|1|Rd:4|(1)|(1)|(1)|(1)|Rm:4|0|0|0|1|Rn:4
 	{0x0ff00ff0, 0x06800fb0, 4, SEL_EQ, 0x1c04, instArgs{arg_R_12, arg_R_16, arg_R_0}},                            // SEL<c> <Rd>,<Rn>,<Rm> cond:4|0|1|1|0|1|0|0|0|Rn:4|Rd:4|(1)|(1)|(1)|(1)|1|0|1|1|Rm:4
 	{0x0ff000f0, 0x06800fb0, 3, SEL_EQ, 0x1c04, instArgs{arg_R_12, arg_R_16, arg_R_0}},                            // SEL<c> <Rd>,<Rn>,<Rm> cond:4|0|1|1|0|1|0|0|0|Rn:4|Rd:4|(1)|(1)|(1)|(1)|1|0|1|1|Rm:4
 	{0xfffffdff, 0xf1010000, 4, SETEND, 0x0, instArgs{arg_endian}},                                                // SETEND <endian_specifier> 1|1|1|1|0|0|0|1|0|0|0|0|0|0|0|1|0|0|0|0|0|0|E|(0)|(0)|(0)|(0)|(0)|(0)|(0)|(0)|(0)
@@ -9365,6 +9431,8 @@ var instFormats = [...]instFormat{
 	{0x0ff00ff0, 0x06500f30, 4, UASX_EQ, 0x1c04, instArgs{arg_R_12, arg_R_16, arg_R_0}},                           // UASX<c> <Rd>,<Rn>,<Rm> cond:4|0|1|1|0|0|1|0|1|Rn:4|Rd:4|(1)|(1)|(1)|(1)|0|0|1|1|Rm:4
 	{0x0ff000f0, 0x06500f30, 3, UASX_EQ, 0x1c04, instArgs{arg_R_12, arg_R_16, arg_R_0}},                           // UASX<c> <Rd>,<Rn>,<Rm> cond:4|0|1|1|0|0|1|0|1|Rn:4|Rd:4|(1)|(1)|(1)|(1)|0|0|1|1|Rm:4
 	{0x0fe00070, 0x07e00050, 4, UBFX_EQ, 0x1c04, instArgs{arg_R_12, arg_R_0, arg_imm5, arg_widthm1}},              // UBFX<c> <Rd>,<Rn>,#<lsb>,#<widthm1> cond:4|0|1|1|1|1|1|1|widthm1:5|Rd:4|lsb:5|1|0|1|Rn:4
+	{0x0ff0f0f0, 0x0730f010, 4, UDIV_EQ, 0x1c04, instArgs{arg_R_16, arg_R_0, arg_R_8}},                            // UDIV<c> <Rd>,<Rn>,<Rm> cond:4|0|1|1|1|0|0|1|1|Rd:4|(1)|(1)|(1)|(1)|Rm:4|0|0|0|1|Rn:4
+	{0x0ff000f0, 0x0730f010, 3, UDIV_EQ, 0x1c04, instArgs{arg_R_16, arg_R_0, arg_R_8}},                            // UDIV<c> <Rd>,<Rn>,<Rm> cond:4|0|1|1|1|0|0|1|1|Rd:4|(1)|(1)|(1)|(1)|Rm:4|0|0|0|1|Rn:4
 	{0x0ff00ff0, 0x06700f10, 4, UHADD16_EQ, 0x1c04, instArgs{arg_R_12, arg_R_16, arg_R_0}},                        // UHADD16<c> <Rd>,<Rn>,<Rm> cond:4|0|1|1|0|0|1|1|1|Rn:4|Rd:4|(1)|(1)|(1)|(1)|0|0|0|1|Rm:4
 	{0x0ff000f0, 0x06700f10, 3, UHADD16_EQ, 0x1c04, instArgs{arg_R_12, arg_R_16, arg_R_0}},                        // UHADD16<c> <Rd>,<Rn>,<Rm> cond:4|0|1|1|0|0|1|1|1|Rn:4|Rd:4|(1)|(1)|(1)|(1)|0|0|0|1|Rm:4
 	{0x0ff00ff0, 0x06700f90, 4, UHADD8_EQ, 0x1c04, instArgs{arg_R_12, arg_R_16, arg_R_0}},                         // UHADD8<c> <Rd>,<Rn>,<Rm> cond:4|0|1|1|0|0|1|1|1|Rn:4|Rd:4|(1)|(1)|(1)|(1)|1|0|0|1|Rm:4
