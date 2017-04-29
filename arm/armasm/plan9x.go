@@ -113,6 +113,11 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 	for i, j := 0, len(args)-1; i < j; i, j = i+1, j-1 {
 		args[i], args[j] = args[j], args[i]
 	}
+	// For MLA-like instructions, the addend is the third operand.
+	switch inst.Op &^ 15 {
+	case SMLAWT_EQ, SMLAWB_EQ, MLA_EQ, MLS_EQ, SMMLA_EQ, SMMLS_EQ, SMLABB_EQ:
+		args = []string{args[1], args[2], args[0], args[3]}
+	}
 
 	switch inst.Op &^ 15 {
 	case MOV_EQ:
