@@ -11,7 +11,7 @@ import (
 
 // GNUSyntax returns the GNU assembler syntax for the instruction, as defined by GNU binutils.
 // This general form is often called ``AT&T syntax'' as a reference to AT&T System V Unix.
-func GNUSyntax(inst Inst) string {
+func GNUSyntax(inst Inst, pc uint64) string {
 	// Rewrite instruction to mimic GNU peculiarities.
 	// Note that inst has been passed by value and contains
 	// no pointers, so any changes we make here are local
@@ -403,7 +403,7 @@ SuffixLoop:
 		if a == Imm(1) && (inst.Opcode>>24)&^1 == 0xD0 {
 			continue
 		}
-		args = append(args, gnuArg(&inst, a, &usedPrefixes))
+		args = append(args, gnuArg(&inst, pc, a, &usedPrefixes))
 	}
 
 	// The default is to print the arguments in reverse Intel order.
@@ -513,7 +513,7 @@ SuffixLoop:
 // gnuArg returns the GNU syntax for the argument x from the instruction inst.
 // If *usedPrefixes is false and x is a Mem, then the formatting
 // includes any segment prefixes and sets *usedPrefixes to true.
-func gnuArg(inst *Inst, x Arg, usedPrefixes *bool) string {
+func gnuArg(inst *Inst, pc uint64, x Arg, usedPrefixes *bool) string {
 	if x == nil {
 		return "<nil>"
 	}
@@ -644,7 +644,12 @@ func gnuArg(inst *Inst, x Arg, usedPrefixes *bool) string {
 		}
 		return fmt.Sprintf("%s%s(%s,%s,%d)", seg, disp, base, index, x.Scale)
 	case Rel:
-		return fmt.Sprintf(".%+#x", int32(x))
+		if pc == 0 {
+			return fmt.Sprintf(".%+#x", int64(x))
+		} else {
+			addr := pc + uint64(inst.Len) + uint64(x)
+			return fmt.Sprintf("%#x", addr)
+		}
 	case Imm:
 		if inst.Mode == 32 {
 			return fmt.Sprintf("$%#x", uint32(x))
