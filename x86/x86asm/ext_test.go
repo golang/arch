@@ -248,9 +248,9 @@ func disasm(syntax string, mode int, src []byte) (inst Inst, text string) {
 	} else {
 		switch syntax {
 		case "gnu":
-			text = GNUSyntax(inst, 0)
+			text = GNUSyntax(inst, 0, nil)
 		case "intel":
-			text = IntelSyntax(inst, 0)
+			text = IntelSyntax(inst, 0, nil)
 		case "plan9": // [sic]
 			text = GoSyntax(inst, 0, nil)
 		default:

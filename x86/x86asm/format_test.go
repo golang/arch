@@ -38,8 +38,8 @@ func TestFormatting(t *testing.T) {
 			"mov 0x779e9(%rip),%rax"},
 		{0x450664, "e8173afdff",
 			"CALL runtime.printint(SB)",
-			"call 0x424080",
-			"callq 0x424080"},
+			"call runtime.printint",
+			"callq runtime.printint"},
 		{0x45069b, "488d0575d90100",
 			"LEAQ 0x1d975(IP), AX",
 			"lea rax, ptr [rip+0x1d975]",
@@ -56,10 +56,10 @@ func TestFormatting(t *testing.T) {
 		if out := GoSyntax(inst, testCase.PC, testFormattingSymname); out != testCase.goSyntax {
 			t.Errorf("GoSyntax: %q", out)
 		}
-		if out := IntelSyntax(inst, testCase.PC); out != testCase.intelSyntax {
+		if out := IntelSyntax(inst, testCase.PC, testFormattingSymname); out != testCase.intelSyntax {
 			t.Errorf("IntelSyntax: %q expected: %q", out, testCase.intelSyntax)
 		}
-		if out := GNUSyntax(inst, testCase.PC); out != testCase.gnuSyntax {
+		if out := GNUSyntax(inst, testCase.PC, testFormattingSymname); out != testCase.gnuSyntax {
 			t.Errorf("GNUSyntax: %q expected: %q", out, testCase.gnuSyntax)
 		}
 	}

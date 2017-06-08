@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+type SymLookup func(uint64) (string, uint64)
+
 // GoSyntax returns the Go assembler syntax for the instruction.
 // The syntax was originally defined by Plan 9.
 // The pc is the program counter of the instruction, used for expanding
@@ -16,7 +18,7 @@ import (
 // The symname function queries the symbol table for the program
 // being disassembled. Given a target address it returns the name and base
 // address of the symbol containing the target, if any; otherwise it returns "", 0.
-func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) string {
+func GoSyntax(inst Inst, pc uint64, symname SymLookup) string {
 	if symname == nil {
 		symname = func(uint64) (string, uint64) { return "", 0 }
 	}
