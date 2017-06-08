@@ -13,6 +13,8 @@ func testFormattingSymname(addr uint64) (string, uint64) {
 	switch addr {
 	case 0x424080:
 		return "runtime.printint", 0x424080
+	case 0x4c8068:
+		return "main.A", 0x4c8068
 	}
 	return "", 0
 }
@@ -33,9 +35,9 @@ func TestFormatting(t *testing.T) {
 			"mov rax, qword ptr [rsp+0x8]",
 			"mov 0x8(%rsp),%rax"},
 		{0x450678, "488b05e9790700",
-			"MOVQ 0x779e9(IP), AX",
-			"mov rax, qword ptr [rip+0x779e9]",
-			"mov 0x779e9(%rip),%rax"},
+			"MOVQ main.A(SB), AX",
+			"mov rax, qword ptr [main.A]",
+			"mov main.A,%rax"},
 		{0x450664, "e8173afdff",
 			"CALL runtime.printint(SB)",
 			"call runtime.printint",

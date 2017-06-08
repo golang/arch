@@ -428,6 +428,13 @@ func intelArg(inst *Inst, pc uint64, symname SymLookup, arg Arg) string {
 		}
 
 		prefix += "ptr "
+		if s, disp := memArgToSymbol(a, pc, inst.Len, symname); s != "" {
+			suffix := ""
+			if disp != 0 {
+				suffix = fmt.Sprintf("%+d", disp)
+			}
+			return prefix + fmt.Sprintf("[%s%s]", s, suffix)
+		}
 		if a.Segment != 0 {
 			prefix += strings.ToLower(a.Segment.String()) + ":"
 		}

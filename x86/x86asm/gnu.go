@@ -539,6 +539,13 @@ func gnuArg(inst *Inst, pc uint64, symname SymLookup, x Arg, usedPrefixes *bool)
 		}
 		return gccRegName[x]
 	case Mem:
+		if s, disp := memArgToSymbol(x, pc, inst.Len, symname); s != "" {
+			suffix := ""
+			if disp != 0 {
+				suffix = fmt.Sprintf("%+d", disp)
+			}
+			return fmt.Sprintf("%s%s", s, suffix)
+		}
 		seg := ""
 		var haveCS, haveDS, haveES, haveFS, haveGS, haveSS bool
 		switch x.Segment {

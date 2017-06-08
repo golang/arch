@@ -121,14 +121,12 @@ func plan9Arg(inst *Inst, pc uint64, symname func(uint64) (string, uint64), arg 
 		}
 		return fmt.Sprintf("$%#x", uint64(a))
 	case Mem:
-		if a.Segment == 0 && a.Disp != 0 && a.Base == 0 && (a.Index == 0 || a.Scale == 0) {
-			if s, base := symname(uint64(a.Disp)); s != "" {
-				suffix := ""
-				if uint64(a.Disp) != base {
-					suffix = fmt.Sprintf("%+d", uint64(a.Disp)-base)
-				}
-				return fmt.Sprintf("%s%s(SB)", s, suffix)
+		if s, disp := memArgToSymbol(a, pc, inst.Len, symname); s != "" {
+			suffix := ""
+			if disp != 0 {
+				suffix = fmt.Sprintf("%+d", disp)
 			}
+			return fmt.Sprintf("%s%s(SB)", s, suffix)
 		}
 		s := ""
 		if a.Segment != 0 {
@@ -148,6 +146,25 @@ func plan9Arg(inst *Inst, pc uint64, symname func(uint64) (string, uint64), arg 
 		return s
 	}
 	return arg.String()
+}
+
+func memArgToSymbol(a Mem, pc uint64, instrLen int, symname SymLookup) (string, int64) {
+	if a.Segment != 0 || a.Disp == 0 || a.Index != 0 || a.Scale != 0 {
+		return "", 0
+	}
+
+	var disp uint64
+	switch a.Base {
+	case IP, EIP, RIP:
+		disp = uint64(a.Disp + int64(pc) + int64(instrLen))
+	case 0:
+		disp = uint64(a.Disp)
+	default:
+		return "", 0
+	}
+
+	s, base := symname(disp)
+	return s, int64(disp) - int64(base)
 }
 
 var plan9Suffix = [maxOp + 1]bool{
