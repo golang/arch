@@ -306,4 +306,5 @@ ff818c71|	1	gnu	strdvc r8, [ip, pc]
 |97acd647	1	gnu	error: unknown instruction
 ed003be9|	1	plan9	LDMDB [R0,R2-R3,R5-R7], R11!
 923124e0|	1	plan9	MLA R1, R2, R3, R4
+923134e0|	1	plan9	MLA.S R1, R2, R3, R4
 923164e0|	1	plan9	MLS R1, R2, R3, R4

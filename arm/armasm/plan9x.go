@@ -115,7 +115,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 	}
 	// For MLA-like instructions, the addend is the third operand.
 	switch inst.Op &^ 15 {
-	case SMLAWT_EQ, SMLAWB_EQ, MLA_EQ, MLS_EQ, SMMLA_EQ, SMMLS_EQ, SMLABB_EQ:
+	case SMLAWT_EQ, SMLAWB_EQ, MLA_EQ, MLA_S_EQ, MLS_EQ, SMMLA_EQ, SMMLS_EQ, SMLABB_EQ:
 		args = []string{args[1], args[2], args[0], args[3]}
 	}
 
