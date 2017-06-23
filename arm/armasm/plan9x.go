@@ -37,7 +37,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 	op := inst.Op.String()
 
 	switch inst.Op &^ 15 {
-	case LDR_EQ, LDRB_EQ, LDRH_EQ:
+	case LDR_EQ, LDRB_EQ, LDRH_EQ, LDRSB_EQ, LDRSH_EQ:
 		// Check for RET
 		reg, _ := inst.Args[0].(Reg)
 		mem, _ := inst.Args[1].(Mem)
@@ -50,13 +50,13 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 			addr := uint32(pc) + 8 + uint32(mem.Offset)
 			buf := make([]byte, 4)
 			switch inst.Op &^ 15 {
-			case LDRB_EQ:
+			case LDRB_EQ, LDRSB_EQ:
 				if _, err := text.ReadAt(buf[:1], int64(addr)); err != nil {
 					break
 				}
 				args[1] = fmt.Sprintf("$%#x", buf[0])
 
-			case LDRH_EQ:
+			case LDRH_EQ, LDRSH_EQ:
 				if _, err := text.ReadAt(buf[:2], int64(addr)); err != nil {
 					break
 				}
@@ -79,7 +79,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 	// Move addressing mode into opcode suffix.
 	suffix := ""
 	switch inst.Op &^ 15 {
-	case LDR_EQ, LDRB_EQ, LDRH_EQ, STR_EQ, STRB_EQ, STRH_EQ:
+	case LDR_EQ, LDRB_EQ, LDRSB_EQ, LDRH_EQ, LDRSH_EQ, STR_EQ, STRB_EQ, STRH_EQ:
 		mem, _ := inst.Args[1].(Mem)
 		switch mem.Mode {
 		case AddrOffset, AddrLDM:
@@ -98,7 +98,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 		if mem.Sign != 0 {
 			sign := ""
 			if mem.Sign < 0 {
-				sign = ""
+				suffix += ".U"
 			}
 			shift := ""
 			if mem.Count != 0 {
@@ -126,9 +126,13 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 	case LDR_EQ:
 		op = "MOVW" + op[3:] + suffix
 	case LDRB_EQ:
-		op = "MOVB" + op[4:] + suffix
+		op = "MOVBU" + op[4:] + suffix
+	case LDRSB_EQ:
+		op = "MOVBS" + op[5:] + suffix
 	case LDRH_EQ:
-		op = "MOVH" + op[4:] + suffix
+		op = "MOVHU" + op[4:] + suffix
+	case LDRSH_EQ:
+		op = "MOVHS" + op[5:] + suffix
 
 	case STR_EQ:
 		op = "MOVW" + op[3:] + suffix
@@ -159,7 +163,7 @@ func plan9Arg(inst *Inst, pc uint64, symname func(uint64) (string, uint64), arg 
 	case Endian:
 
 	case Imm:
-		return fmt.Sprintf("$%d", int(a))
+		return fmt.Sprintf("$%d", uint32(a))
 
 	case Mem:
 
