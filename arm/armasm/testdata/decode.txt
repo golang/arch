@@ -1228,3 +1228,27 @@ f7f020e3|	1	plan9	DBG $7
 58f07ff5|	1	plan9	DMB $8
 49f07ff5|	1	plan9	DSB $9
 62f07ff5|	1	plan9	ISB $2
+009a94ed|	1	plan9	MOVF (R4), F9
+009ad4ed|	1	plan9	MOVF (R4), S19
+009b940d|	1	plan9	MOVD.EQ (R4), F9
+003a9a1d|	1	plan9	MOVF.NE (R10), F3
+003ada1d|	1	plan9	MOVF.NE (R10), S7
+003b9aed|	1	plan9	MOVD (R10), F3
+089a93ed|	1	plan9	MOVF 0x20(R3), F9
+089ad3ed|	1	plan9	MOVF 0x20(R3), S19
+089b940d|	1	plan9	MOVD.EQ 0x20(R4), F9
+083a1a1d|	1	plan9	MOVF.NE -0x20(R10), F3
+083a5a1d|	1	plan9	MOVF.NE -0x20(R10), S7
+083b1aed|	1	plan9	MOVD -0x20(R10), F3
+009a84ed|	1	plan9	MOVF F9, (R4)
+009ac4ed|	1	plan9	MOVF S19, (R4)
+009b840d|	1	plan9	MOVD.EQ F9, (R4)
+003a8a1d|	1	plan9	MOVF.NE F3, (R10)
+003aca1d|	1	plan9	MOVF.NE S7, (R10)
+003b8aed|	1	plan9	MOVD F3, (R10)
+089a83ed|	1	plan9	MOVF F9, 0x20(R3)
+089ac3ed|	1	plan9	MOVF S19, 0x20(R3)
+089b840d|	1	plan9	MOVD.EQ F9, 0x20(R4)
+083a0a1d|	1	plan9	MOVF.NE F3, -0x20(R10)
+083a4a1d|	1	plan9	MOVF.NE S7, -0x20(R10)
+083b0aed|	1	plan9	MOVD F3, -0x20(R10)
