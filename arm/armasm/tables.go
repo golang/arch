@@ -945,6 +945,22 @@ const (
 	MRS_LE
 	MRS
 	MRS_ZZ
+	MSR_EQ
+	MSR_NE
+	MSR_CS
+	MSR_CC
+	MSR_MI
+	MSR_PL
+	MSR_VS
+	MSR_VC
+	MSR_HI
+	MSR_LS
+	MSR_GE
+	MSR_LT
+	MSR_GT
+	MSR_LE
+	MSR
+	MSR_ZZ
 	MUL_EQ
 	MUL_NE
 	MUL_CS
@@ -5512,6 +5528,22 @@ var opstr = [...]string{
 	MRS_LE:            "MRS.LE",
 	MRS:               "MRS",
 	MRS_ZZ:            "MRS.ZZ",
+	MSR_EQ:            "MSR.EQ",
+	MSR_NE:            "MSR.NE",
+	MSR_CS:            "MSR.CS",
+	MSR_CC:            "MSR.CC",
+	MSR_MI:            "MSR.MI",
+	MSR_PL:            "MSR.PL",
+	MSR_VS:            "MSR.VS",
+	MSR_VC:            "MSR.VC",
+	MSR_HI:            "MSR.HI",
+	MSR_LS:            "MSR.LS",
+	MSR_GE:            "MSR.GE",
+	MSR_LT:            "MSR.LT",
+	MSR_GT:            "MSR.GT",
+	MSR_LE:            "MSR.LE",
+	MSR:               "MSR",
+	MSR_ZZ:            "MSR.ZZ",
 	MUL_EQ:            "MUL.EQ",
 	MUL_NE:            "MUL.NE",
 	MUL_CS:            "MUL.CS",
@@ -9258,6 +9290,10 @@ var instFormats = [...]instFormat{
 	{0x0fef0ff0, 0x01a00000, 2, MOV_EQ, 0x14011c04, instArgs{arg_R_12, arg_R_0}},                                  // MOV{S}<c> <Rd>,<Rm> cond:4|0|0|0|1|1|0|1|S|0|0|0|0|Rd:4|0|0|0|0|0|0|0|0|Rm:4
 	{0x0fff0fff, 0x010f0000, 4, MRS_EQ, 0x1c04, instArgs{arg_R_12, arg_APSR}},                                     // MRS<c> <Rd>,APSR cond:4|0|0|0|1|0|0|0|0|(1)|(1)|(1)|(1)|Rd:4|(0)|(0)|(0)|(0)|0|0|0|0|(0)|(0)|(0)|(0)
 	{0x0ff000f0, 0x010f0000, 3, MRS_EQ, 0x1c04, instArgs{arg_R_12, arg_APSR}},                                     // MRS<c> <Rd>,APSR cond:4|0|0|0|1|0|0|0|0|(1)|(1)|(1)|(1)|Rd:4|(0)|(0)|(0)|(0)|0|0|0|0|(0)|(0)|(0)|(0)
+	{0x0ffffff0, 0x012cf000, 4, MSR_EQ, 0x1c04, instArgs{arg_APSR, arg_R_0}},                                      // MSR<c> APSR,<Rn> cond:4|0|0|0|1|0|0|1|0|1|1|0|0|(1)|(1)|(1)|(1)|(0)|(0)|(0)|(0)|0|0|0|0|Rn:4
+	{0x0fff00f0, 0x012cf000, 3, MSR_EQ, 0x1c04, instArgs{arg_APSR, arg_R_0}},                                      // MSR<c> APSR,<Rn> cond:4|0|0|0|1|0|0|1|0|1|1|0|0|(1)|(1)|(1)|(1)|(0)|(0)|(0)|(0)|0|0|0|0|Rn:4
+	{0x0ffff000, 0x032cf000, 4, MSR_EQ, 0x1c04, instArgs{arg_APSR, arg_const}},                                    // MSR<c> APSR,#<const> cond:4|0|0|1|1|0|0|1|0|1|1|0|0|(1)|(1)|(1)|(1)|imm12:12
+	{0x0fff0000, 0x032cf000, 3, MSR_EQ, 0x1c04, instArgs{arg_APSR, arg_const}},                                    // MSR<c> APSR,#<const> cond:4|0|0|1|1|0|0|1|0|1|1|0|0|(1)|(1)|(1)|(1)|imm12:12
 	{0x0fe0f0f0, 0x00000090, 4, MUL_EQ, 0x14011c04, instArgs{arg_R_16, arg_R_0, arg_R_8}},                         // MUL{S}<c> <Rd>,<Rn>,<Rm> cond:4|0|0|0|0|0|0|0|S|Rd:4|(0)|(0)|(0)|(0)|Rm:4|1|0|0|1|Rn:4
 	{0x0fe000f0, 0x00000090, 3, MUL_EQ, 0x14011c04, instArgs{arg_R_16, arg_R_0, arg_R_8}},                         // MUL{S}<c> <Rd>,<Rn>,<Rm> cond:4|0|0|0|0|0|0|0|S|Rd:4|(0)|(0)|(0)|(0)|Rm:4|1|0|0|1|Rn:4
 	{0x0fef0000, 0x03e00000, 2, MVN_EQ, 0x14011c04, instArgs{arg_R_12, arg_const}},                                // MVN{S}<c> <Rd>,#<const> cond:4|0|0|1|1|1|1|1|S|(0)|(0)|(0)|(0)|Rd:4|imm12:12
