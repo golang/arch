@@ -909,7 +909,12 @@ e23104e1|	1	plan9	SMLATT R1, R2, R3, R4
 723104e7|	1	plan9	SMLSD.X R1, R2, R3, R4
 9231e4e0|	1	plan9	SMLAL R1, R2, R4, R3
 9231f4e0|	1	plan9	SMLAL.S R1, R2, R4, R3
+123144e7|	1	plan9	SMLALD R1, R2, R4, R3
+323144e7|	1	plan9	SMLALD.X R1, R2, R4, R3
+523144e7|	1	plan9	SMLSLD R1, R2, R4, R3
+723144e7|	1	plan9	SMLSLD.X R1, R2, R4, R3
 9231a4e0|	1	plan9	UMLAL R1, R2, R4, R3
+923144e0|	1	plan9	UMAAL R1, R2, R4, R3
 9231b4e0|	1	plan9	UMLAL.S R1, R2, R4, R3
 930204e0|	1	plan9	MUL R2, R3, R4
 920404e0|	1	plan9	MUL R4, R2, R4
@@ -925,17 +930,58 @@ e23104e1|	1	plan9	SMLATT R1, R2, R3, R4
 9231d4e0|	1	plan9	SMULL.S R1, R2, R4, R3
 12f153e7|	1	plan9	SMMUL R1, R2, R3
 820163e1|	1	plan9	SMULBB R1, R2, R3
+a20163e1|	1	plan9	SMULTB R1, R2, R3
+c20163e1|	1	plan9	SMULBT R1, R2, R3
+e20163e1|	1	plan9	SMULTT R1, R2, R3
 a20123e1|	1	plan9	SMULWB R1, R2, R3
 e20123e1|	1	plan9	SMULWT R1, R2, R3
+12f103e7|	1	plan9	SMUAD R1, R2, R3
+32f103e7|	1	plan9	SMUAD.X R1, R2, R3
+52f103e7|	1	plan9	SMUSD R1, R2, R3
+72f103e7|	1	plan9	SMUSD.X R1, R2, R3
 312fbfe6|	1	plan9	REV R1, R2
 b12fbfe6|	1	plan9	REV16 R1, R2
 b12fffe6|	1	plan9	REVSH R1, R2
 312fffe6|	1	plan9	RBIT R1, R2
 112f6fe1|	1	plan9	CLZ R1, R2
-f0ffd6f5|	1	plan9	PLD [R6, #4080]
-f0ff59f5|	1	plan9	PLD [R9, #-4080]
-939007e1|	1	plan9	SWP [R7], R3, R9
-948042e1|	1	plan9	SWP.B [R2], R4, R8
+f0ffd6f5|	1	gnu	pld [r6, #4080]
+f0ff59f5|	1	gnu	pld [r9, #-4080]
+f0ff96f5|	1	gnu	pldw [r6, #4080]
+f0ff19f5|	1	gnu	pldw [r9, #-4080]
+f0ffdff5|	1	gnu	pld [pc, #4080]
+f0ff5ff5|	1	gnu	pld [pc, #-4080]
+00f0d2f7|	1	gnu	pld [r2, r0]
+00f052f7|	1	gnu	pld [r2, -r0]
+00f092f7|	1	gnu	pldw [r2, r0]
+00f012f7|	1	gnu	pldw [r2, -r0]
+80f0d2f7|	1	gnu	pld [r2, r0, lsl #1]
+80f052f7|	1	gnu	pld [r2, -r0, lsl #1]
+a0f0d2f7|	1	gnu	pld [r2, r0, lsr #1]
+a0f052f7|	1	gnu	pld [r2, -r0, lsr #1]
+c0f0d2f7|	1	gnu	pld [r2, r0, asr #1]
+c0f052f7|	1	gnu	pld [r2, -r0, asr #1]
+e0f0d2f7|	1	gnu	pld [r2, r0, ror #1]
+e0f052f7|	1	gnu	pld [r2, -r0, ror #1]
+80f092f7|	1	gnu	pldw [r2, r0, lsl #1]
+80f012f7|	1	gnu	pldw [r2, -r0, lsl #1]
+a0f092f7|	1	gnu	pldw [r2, r0, lsr #1]
+a0f012f7|	1	gnu	pldw [r2, -r0, lsr #1]
+c0f092f7|	1	gnu	pldw [r2, r0, asr #1]
+c0f012f7|	1	gnu	pldw [r2, -r0, asr #1]
+e0f092f7|	1	gnu	pldw [r2, r0, ror #1]
+e0f012f7|	1	gnu	pldw [r2, -r0, ror #1]
+f0ffd2f4|	1	gnu	pli [r2, #4080]
+f0ff52f4|	1	gnu	pli [r2, #-4080]
+82f0d3f6|	1	gnu	pli [r3, r2, lsl #1]
+82f053f6|	1	gnu	pli [r3, -r2, lsl #1]
+a2f0d3f6|	1	gnu	pli [r3, r2, lsr #1]
+a2f053f6|	1	gnu	pli [r3, -r2, lsr #1]
+c2f0d3f6|	1	gnu	pli [r3, r2, asr #1]
+c2f053f6|	1	gnu	pli [r3, -r2, asr #1]
+e2f0d3f6|	1	gnu	pli [r3, r2, ror #1]
+e2f053f6|	1	gnu	pli [r3, -r2, ror #1]
+939007e1|	1	gnu	swp r9, r3, [r7]
+948042e1|	1	gnu	swpb r8, r4, [r2]
 000000ef|	1	plan9	SVC $0
 ffff00ef|	1	plan9	SVC $65535
 ff10e0e3|	1	plan9	MVN $255, R1
@@ -994,6 +1040,8 @@ ff14f0e3|	1	plan9	MVN.S $4278190080, R1
 0920a0e1|	1	plan9	MOVW R9, R2
 ff90a0e3|	1	plan9	MOVW $255, R9
 ff94a0e3|	1	plan9	MOVW $4278190080, R9
+aaaa0a13|	1	plan9	MOVW.NE $43690, R10
+aaaa4a03|	1	plan9	MOVT.EQ $43690, R10
 5110e0e3|	1	plan9	MVN $81, R1
 001082e5|	1	plan9	MOVW R1, (R2)
 001082e4|	1	plan9	MOVW.P R1, (R2)
@@ -1192,24 +1240,28 @@ c01ab1ee|	1	plan9	VSQRT.F32 S0, S2
 e01ab1ee|	1	plan9	VSQRT.F32 S1, S2
 c01af1ee|	1	plan9	VSQRT.F32 S0, S3
 c45bb1ee|	1	plan9	VSQRT.F64 D4, D5
-c01ab7ee|	1	plan9	VCVT.F64.F32 S0, D1
-c45bb7ee|	1	plan9	VCVT.F32.F64 D4, S10
-9f9f98e1|	1	plan9	LDREX [R8], R9
-9fcfbbe1|	1	plan9	LDREXD [R11], R13, R12
-935f84e1|	1	plan9	STREX [R4], R3, R5
-98afa9e1|	1	plan9	STREXD [R9], R9, R8, R10
-104b08ee|	1	plan9	VMOV.32 R4, D8[0]
-108b14ee|	1	plan9	VMOV.32 D4[0], R8
-445ab0ee|	1	plan9	VMOV.F32 S8, S10
-467bb0ee|	1	plan9	VMOV.F64 D6, D7
-c68abdee|	1	plan9	VCVT.S32.F32 S12, S16
-c68abcee|	1	plan9	VCVT.U32.F32 S12, S16
-c68bbdee|	1	plan9	VCVT.S32.F64 D6, S16
-c68bbcee|	1	plan9	VCVT.U32.F64 D6, S16
-c68ab8ee|	1	plan9	VCVT.F32.S32 S12, S16
-468ab8ee|	1	plan9	VCVT.F32.U32 S12, S16
-c68bb8ee|	1	plan9	VCVT.F64.S32 S12, D8
-468bb8ee|	1	plan9	VCVT.F64.U32 S12, D8
+c01ab7ee|	1	gnu	vcvt.f64.f32 d1, s0
+c45bb7ee|	1	gnu	vcvt.f32.f64 s10, d4
+9f9f98e1|	1	gnu	ldrex r9, [r8]
+9f9fd8e1|	1	gnu	ldrexb r9, [r8]
+9f9ff8e1|	1	gnu	ldrexh r9, [r8]
+9fcfbbe1|	1	gnu	ldrexd ip, [fp]
+935f84e1|	1	gnu	strex r5, r3, [r4]
+935fc4e1|	1	gnu	strexb r5, r3, [r4]
+935fe4e1|	1	gnu	strexh r5, r3, [r4]
+98afa9e1|	1	gnu	strexd sl, r8, [r9]
+104b08ee|	1	gnu	vmov.32 d8[0], r4
+108b14ee|	1	gnu	vmov.32 r8, d4[0]
+445ab0ee|	1	gnu	vmov.f32 s10, s8
+467bb0ee|	1	gnu	vmov.f64 d7, d6
+c68abdee|	1	gnu	vcvt.s32.f32 s16, s12
+c68abcee|	1	gnu	vcvt.u32.f32 s16, s12
+c68bbdee|	1	gnu	vcvt.s32.f64 s16, d6
+c68bbcee|	1	gnu	vcvt.u32.f64 s16, d6
+c68ab8ee|	1	gnu	vcvt.f32.s32 s16, s12
+468ab8ee|	1	gnu	vcvt.f32.u32 s16, s12
+c68bb8ee|	1	gnu	vcvt.f64.s32 d8, s12
+468bb8ee|	1	gnu	vcvt.f64.u32 d8, s12
 000000ea|	1	plan9	B 0x8
 feffffea|	1	plan9	B 0x0
 fcffffea|	1	plan9	B 0xfffffff8
@@ -1228,10 +1280,10 @@ fcfffffa|	1	plan9	BLX 0xfffffff8
 13ff2fe1|	1	plan9	BX R3
 23ff2fe1|	1	plan9	BXJ R3
 1ff07ff5|	1	plan9	CLREX
-f7f020e3|	1	plan9	DBG $7
-58f07ff5|	1	plan9	DMB $8
-49f07ff5|	1	plan9	DSB $9
-62f07ff5|	1	plan9	ISB $2
+f7f020e3|	1	gnu	dbg #7
+58f07ff5|	1	gnu	dmb #8
+49f07ff5|	1	gnu	dsb #9
+62f07ff5|	1	gnu	isb #2
 009a94ed|	1	plan9	MOVF (R4), F9
 009ad4ed|	1	plan9	MOVF (R4), S19
 009b940d|	1	plan9	MOVD.EQ (R4), F9
@@ -1256,3 +1308,249 @@ f7f020e3|	1	plan9	DBG $7
 083a0a1d|	1	plan9	MOVF.NE F3, -0x20(R10)
 083a4a1d|	1	plan9	MOVF.NE S7, -0x20(R10)
 083b0aed|	1	plan9	MOVD F3, -0x20(R10)
+d060c8e1|	1	gnu	ldrd r6, [r8]
+d06048e1|	1	gnu	ldrd r6, [r8]
+d060e8e1|	1	gnu	ldrd r6, [r8, #0]!
+d06068e1|	1	gnu	ldrd r6, [r8, #0]!
+d060c8e0|	1	gnu	ldrd r6, [r8], #0
+d06048e0|	1	gnu	ldrd r6, [r8], #0
+d062c8e1|	1	gnu	ldrd r6, [r8, #32]
+d06248e1|	1	gnu	ldrd r6, [r8, #-32]
+d062e8e1|	1	gnu	ldrd r6, [r8, #32]!
+d06268e1|	1	gnu	ldrd r6, [r8, #-32]!
+d062c8e0|	1	gnu	ldrd r6, [r8], #32
+d06248e0|	1	gnu	ldrd r6, [r8], #-32
+d24089e1|	1	gnu	ldrd r4, [r9, r2]
+d240a9e1|	1	gnu	ldrd r4, [r9, r2]!
+d24009e1|	1	gnu	ldrd r4, [r9, -r2]
+d24029e1|	1	gnu	ldrd r4, [r9, -r2]!
+f060c8e1|	1	gnu	strd r6, [r8]
+f06048e1|	1	gnu	strd r6, [r8]
+f060e8e1|	1	gnu	strd r6, [r8, #0]!
+f06068e1|	1	gnu	strd r6, [r8, #0]!
+f060c8e0|	1	gnu	strd r6, [r8], #0
+f06048e0|	1	gnu	strd r6, [r8], #0
+f062c8e1|	1	gnu	strd r6, [r8, #32]
+f06248e1|	1	gnu	strd r6, [r8, #-32]
+f062e8e1|	1	gnu	strd r6, [r8, #32]!
+f06268e1|	1	gnu	strd r6, [r8, #-32]!
+f062c8e0|	1	gnu	strd r6, [r8], #32
+f06248e0|	1	gnu	strd r6, [r8], #-32
+f24089e1|	1	gnu	strd r4, [r9, r2]
+f240a9e1|	1	gnu	strd r4, [r9, r2]!
+f24009e1|	1	gnu	strd r4, [r9, -r2]
+f24029e1|	1	gnu	strd r4, [r9, -r2]!
+0010b2e4|	1	gnu	ldrt r1, [r2], #0
+2010b2e4|	1	gnu	ldrt r1, [r2], #32
+201032e4|	1	gnu	ldrt r1, [r2], #-32
+0040bde4|	1	gnu	ldrt r4, [sp], #0
+2040bde4|	1	gnu	ldrt r4, [sp], #32
+20403de4|	1	gnu	ldrt r4, [sp], #-32
+2314b2e6|	1	gnu	ldrt r1, [r2], r3, lsr #8
+0314b2e6|	1	gnu	ldrt r1, [r2], r3, lsl #8
+4314b2e6|	1	gnu	ldrt r1, [r2], r3, asr #8
+6314b2e6|	1	gnu	ldrt r1, [r2], r3, ror #8
+231432e6|	1	gnu	ldrt r1, [r2], -r3, lsr #8
+031432e6|	1	gnu	ldrt r1, [r2], -r3, lsl #8
+431432e6|	1	gnu	ldrt r1, [r2], -r3, asr #8
+631432e6|	1	gnu	ldrt r1, [r2], -r3, ror #8
+0010a2e4|	1	gnu	strt r1, [r2], #0
+2010a2e4|	1	gnu	strt r1, [r2], #32
+201022e4|	1	gnu	strt r1, [r2], #-32
+0040ade4|	1	gnu	strt r4, [sp], #0
+2040ade4|	1	gnu	strt r4, [sp], #32
+20402de4|	1	gnu	strt r4, [sp], #-32
+2314a2e6|	1	gnu	strt r1, [r2], r3, lsr #8
+0314a2e6|	1	gnu	strt r1, [r2], r3, lsl #8
+4314a2e6|	1	gnu	strt r1, [r2], r3, asr #8
+6314a2e6|	1	gnu	strt r1, [r2], r3, ror #8
+231422e6|	1	gnu	strt r1, [r2], -r3, lsr #8
+031422e6|	1	gnu	strt r1, [r2], -r3, lsl #8
+431422e6|	1	gnu	strt r1, [r2], -r3, asr #8
+631422e6|	1	gnu	strt r1, [r2], -r3, ror #8
+0010f2e4|	1	gnu	ldrbt r1, [r2], #0
+2010f2e4|	1	gnu	ldrbt r1, [r2], #32
+201072e4|	1	gnu	ldrbt r1, [r2], #-32
+0040fde4|	1	gnu	ldrbt r4, [sp], #0
+2040fde4|	1	gnu	ldrbt r4, [sp], #32
+20407de4|	1	gnu	ldrbt r4, [sp], #-32
+2314f2e6|	1	gnu	ldrbt r1, [r2], r3, lsr #8
+0314f2e6|	1	gnu	ldrbt r1, [r2], r3, lsl #8
+4314f2e6|	1	gnu	ldrbt r1, [r2], r3, asr #8
+6314f2e6|	1	gnu	ldrbt r1, [r2], r3, ror #8
+231472e6|	1	gnu	ldrbt r1, [r2], -r3, lsr #8
+031472e6|	1	gnu	ldrbt r1, [r2], -r3, lsl #8
+431472e6|	1	gnu	ldrbt r1, [r2], -r3, asr #8
+631472e6|	1	gnu	ldrbt r1, [r2], -r3, ror #8
+0010e2e4|	1	gnu	strbt r1, [r2], #0
+2010e2e4|	1	gnu	strbt r1, [r2], #32
+201062e4|	1	gnu	strbt r1, [r2], #-32
+0040ede4|	1	gnu	strbt r4, [sp], #0
+2040ede4|	1	gnu	strbt r4, [sp], #32
+20406de4|	1	gnu	strbt r4, [sp], #-32
+2314e2e6|	1	gnu	strbt r1, [r2], r3, lsr #8
+0314e2e6|	1	gnu	strbt r1, [r2], r3, lsl #8
+4314e2e6|	1	gnu	strbt r1, [r2], r3, asr #8
+6314e2e6|	1	gnu	strbt r1, [r2], r3, ror #8
+231462e6|	1	gnu	strbt r1, [r2], -r3, lsr #8
+031462e6|	1	gnu	strbt r1, [r2], -r3, lsl #8
+431462e6|	1	gnu	strbt r1, [r2], -r3, asr #8
+631462e6|	1	gnu	strbt r1, [r2], -r3, ror #8
+d010f2e0|	1	gnu	ldrsbt r1, [r2], #0
+d012f2e0|	1	gnu	ldrsbt r1, [r2], #32
+d01272e0|	1	gnu	ldrsbt r1, [r2], #-32
+d040fde0|	1	gnu	ldrsbt r4, [sp], #0
+d042fde0|	1	gnu	ldrsbt r4, [sp], #32
+d0427de0|	1	gnu	ldrsbt r4, [sp], #-32
+d310b2e0|	1	gnu	ldrsbt r1, [r2], r3
+d640bde0|	1	gnu	ldrsbt r4, [sp], r6
+d31032e0|	1	gnu	ldrsbt r1, [r2], -r3
+d6403de0|	1	gnu	ldrsbt r4, [sp], -r6
+b010f2e0|	1	gnu	ldrht r1, [r2], #0
+b012f2e0|	1	gnu	ldrht r1, [r2], #32
+b01272e0|	1	gnu	ldrht r1, [r2], #-32
+b040fde0|	1	gnu	ldrht r4, [sp], #0
+b042fde0|	1	gnu	ldrht r4, [sp], #32
+b0427de0|	1	gnu	ldrht r4, [sp], #-32
+b310b2e0|	1	gnu	ldrht r1, [r2], r3
+b640bde0|	1	gnu	ldrht r4, [sp], r6
+b31032e0|	1	gnu	ldrht r1, [r2], -r3
+b6403de0|	1	gnu	ldrht r4, [sp], -r6
+f010f2e0|	1	gnu	ldrsht r1, [r2], #0
+f012f2e0|	1	gnu	ldrsht r1, [r2], #32
+f01272e0|	1	gnu	ldrsht r1, [r2], #-32
+f040fde0|	1	gnu	ldrsht r4, [sp], #0
+f042fde0|	1	gnu	ldrsht r4, [sp], #32
+f0427de0|	1	gnu	ldrsht r4, [sp], #-32
+f310b2e0|	1	gnu	ldrsht r1, [r2], r3
+f640bde0|	1	gnu	ldrsht r4, [sp], r6
+f31032e0|	1	gnu	ldrsht r1, [r2], -r3
+f6403de0|	1	gnu	ldrsht r4, [sp], -r6
+b010f2e0|	1	gnu	ldrht r1, [r2], #0
+b012f2e0|	1	gnu	ldrht r1, [r2], #32
+b01272e0|	1	gnu	ldrht r1, [r2], #-32
+b040fde0|	1	gnu	ldrht r4, [sp], #0
+b042fde0|	1	gnu	ldrht r4, [sp], #32
+b0427de0|	1	gnu	ldrht r4, [sp], #-32
+b310b2e0|	1	gnu	ldrht r1, [r2], r3
+b640bde0|	1	gnu	ldrht r4, [sp], r6
+b31032e0|	1	gnu	ldrht r1, [r2], -r3
+b6403de0|	1	gnu	ldrht r4, [sp], -r6
+b010e2e0|	1	gnu	strht r1, [r2], #0
+b012e2e0|	1	gnu	strht r1, [r2], #32
+b01262e0|	1	gnu	strht r1, [r2], #-32
+b040ede0|	1	gnu	strht r4, [sp], #0
+b042ede0|	1	gnu	strht r4, [sp], #32
+b0426de0|	1	gnu	strht r4, [sp], #-32
+b310a2e0|	1	gnu	strht r1, [r2], r3
+b640ade0|	1	gnu	strht r4, [sp], r6
+b31022e0|	1	gnu	strht r1, [r2], -r3
+b6402de0|	1	gnu	strht r4, [sp], -r6
+00f020e3|	1	gnu	nop
+445ab0ee|	1	gnu	vmov.f32 s10, s8
+645af0ee|	1	gnu	vmov.f32 s11, s9
+467bb0ee|	1	gnu	vmov.f64 d7, d6
+104b08ee|	1	gnu	vmov.32 d8[0], r4
+104b28ee|	1	gnu	vmov.32 d8[1], r4
+108b14ee|	1	gnu	vmov.32 r8, d4[0]
+108b34ee|	1	gnu	vmov.32 r8, d4[1]
+c68abdee|	1	gnu	vcvt.s32.f32 s16, s12
+e68afdee|	1	gnu	vcvt.s32.f32 s17, s13
+c68abcee|	1	gnu	vcvt.u32.f32 s16, s12
+e68afcee|	1	gnu	vcvt.u32.f32 s17, s13
+c68bbdee|	1	gnu	vcvt.s32.f64 s16, d6
+c68bfdee|	1	gnu	vcvt.s32.f64 s17, d6
+c68bbcee|	1	gnu	vcvt.u32.f64 s16, d6
+c68bfcee|	1	gnu	vcvt.u32.f64 s17, d6
+c68ab8ee|	1	gnu	vcvt.f32.s32 s16, s12
+e68af8ee|	1	gnu	vcvt.f32.s32 s17, s13
+468ab8ee|	1	gnu	vcvt.f32.u32 s16, s12
+668af8ee|	1	gnu	vcvt.f32.u32 s17, s13
+c68bb8ee|	1	gnu	vcvt.f64.s32 d8, s12
+e68bb8ee|	1	gnu	vcvt.f64.s32 d8, s13
+468bb8ee|	1	gnu	vcvt.f64.u32 d8, s12
+668bb8ee|	1	gnu	vcvt.f64.u32 d8, s13
+c01ab7ee|	1	gnu	vcvt.f64.f32 d1, s0
+e01ab7ee|	1	gnu	vcvt.f64.f32 d1, s1
+c45bb7ee|	1	gnu	vcvt.f32.f64 s10, d4
+c65bf7ee|	1	gnu	vcvt.f32.f64 s11, d6
+102083e6|	1	gnu	pkhbt r2, r3, r0
+102283e6|	1	gnu	pkhbt r2, r3, r0, lsl #4
+502083e6|	1	gnu	pkhtb r2, r3, r0, asr #32
+d02083e6|	1	gnu	pkhtb r2, r3, r0, asr #1
+502283e6|	1	gnu	pkhtb r2, r3, r0, asr #4
+faaf2de9|	1	gnu	push {r1, r3, r4, r5, r6, r7, r8, r9, sl, fp, sp, pc}
+04202de5|	1	gnu	push {r2}
+faafbde8|	1	gnu	pop {r1, r3, r4, r5, r6, r7, r8, r9, sl, fp, sp, pc}
+04209de4|	1	gnu	pop {r2}
+556003e1|	1	gnu	qadd r6, r5, r3
+156f28e6|	1	gnu	qadd16 r6, r8, r5
+956f28e6|	1	gnu	qadd8 r6, r8, r5
+550044e1|	1	gnu	qdadd r0, r5, r4
+550066e1|	1	gnu	qdsub r0, r5, r6
+156f68e6|	1	gnu	uqadd16 r6, r8, r5
+956f68e6|	1	gnu	uqadd8 r6, r8, r5
+356f28e6|	1	gnu	qasx r6, r8, r5
+556f28e6|	1	gnu	qsax r6, r8, r5
+356f64e6|	1	gnu	uqasx r6, r4, r5
+553f64e6|	1	gnu	uqsax r3, r4, r5
+556022e1|	1	gnu	qsub r6, r5, r2
+774f21e6|	1	gnu	qsub16 r4, r1, r7
+f74f21e6|	1	gnu	qsub8 r4, r1, r7
+774f61e6|	1	gnu	uqsub16 r4, r1, r7
+f74f61e6|	1	gnu	uqsub8 r4, r1, r7
+6670a0e1|	1	gnu	rrx r7, r6
+6670b0e1|	1	gnu	rrxs r7, r6
+112f13e6|	1	gnu	sadd16 r2, r3, r1
+992f13e6|	1	gnu	sadd8 r2, r3, r9
+112f33e6|	1	gnu	shadd16 r2, r3, r1
+992f33e6|	1	gnu	shadd8 r2, r3, r9
+712f13e6|	1	gnu	ssub16 r2, r3, r1
+f92f13e6|	1	gnu	ssub8 r2, r3, r9
+712f33e6|	1	gnu	shsub16 r2, r3, r1
+f92f33e6|	1	gnu	shsub8 r2, r3, r9
+112f53e6|	1	gnu	uadd16 r2, r3, r1
+992f53e6|	1	gnu	uadd8 r2, r3, r9
+112f73e6|	1	gnu	uhadd16 r2, r3, r1
+992f73e6|	1	gnu	uhadd8 r2, r3, r9
+712f53e6|	1	gnu	usub16 r2, r3, r1
+f92f53e6|	1	gnu	usub8 r2, r3, r9
+712f73e6|	1	gnu	uhsub16 r2, r3, r1
+f92f73e6|	1	gnu	uhsub8 r2, r3, r9
+332f14e6|	1	gnu	sasx r2, r4, r3
+532f14e6|	1	gnu	ssax r2, r4, r3
+332f54e6|	1	gnu	uasx r2, r4, r3
+532f54e6|	1	gnu	usax r2, r4, r3
+332f34e6|	1	gnu	shasx r2, r4, r3
+532f34e6|	1	gnu	shsax r2, r4, r3
+332f74e6|	1	gnu	uhasx r2, r4, r3
+532f74e6|	1	gnu	uhsax r2, r4, r3
+dc51afe7|	1	gnu	sbfx r5, ip, #3, #16
+dc51efe7|	1	gnu	ubfx r5, ip, #3, #16
+b12f88e6|	1	gnu	sel r2, r8, r1
+000201f1|	1	gnu	setend be
+000001f1|	1	gnu	setend le
+04f020e3|	1	gnu	sev
+1155aae6|	1	gnu	ssat r5, #11, r1, lsl #10
+5155aae6|	1	gnu	ssat r5, #11, r1, asr #10
+335faae6|	1	gnu	ssat16 r5, #11, r3
+1155eae6|	1	gnu	usat r5, #10, r1, lsl #10
+5155eae6|	1	gnu	usat r5, #10, r1, asr #10
+335feae6|	1	gnu	usat16 r5, #10, r3
+7788a9e6|	1	gnu	sxtab r8, r9, r7, ror #16
+778889e6|	1	gnu	sxtab16 r8, r9, r7, ror #16
+7788b9e6|	1	gnu	sxtah r8, r9, r7, ror #16
+7784afe6|	1	gnu	sxtb r8, r7, ror #8
+778c8fe6|	1	gnu	sxtb16 r8, r7, ror #24
+7780bfe6|	1	gnu	sxth r8, r7
+7788e9e6|	1	gnu	uxtab r8, r9, r7, ror #16
+7788c9e6|	1	gnu	uxtab16 r8, r9, r7, ror #16
+7788f9e6|	1	gnu	uxtah r8, r9, r7, ror #16
+7784efe6|	1	gnu	uxtb r8, r7, ror #8
+778ccfe6|	1	gnu	uxtb16 r8, r7, ror #24
+7780ffe6|	1	gnu	uxth r8, r7
+11f288e7|	1	gnu	usad8 r8, r1, r2
+112388e7|	1	gnu	usada8 r8, r1, r3, r2
+02f020e3|	1	gnu	wfe
+03f020e3|	1	gnu	wfi
+01f020e3|	1	gnu	yield
