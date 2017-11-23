@@ -540,7 +540,7 @@ func printDecoder(p *Prog) {
 		m[name] = true
 		fmt.Fprintf(&buf, "\t%s\n", name)
 	}
-	fmt.Fprintln(&buf, ")\n\n")
+	fmt.Fprint(&buf, ")\n\n\n")
 
 	// Emit slice mapping opcode number to name string.
 	m = map[string]bool{}
@@ -553,7 +553,7 @@ func printDecoder(p *Prog) {
 		m[name] = true
 		fmt.Fprintf(&buf, "\t%s: %q,\n", opName(inst.Op), inst.Op)
 	}
-	fmt.Fprintln(&buf, "}\n\n")
+	fmt.Fprint(&buf, "}\n\n\n")
 
 	// print out argFields
 	fmt.Fprintf(&buf, "var (\n")
@@ -572,7 +572,7 @@ func printDecoder(p *Prog) {
 			fmt.Fprintf(&buf, "}}\n")
 		}
 	}
-	fmt.Fprintln(&buf, ")\n\n")
+	fmt.Fprint(&buf, ")\n\n\n")
 
 	// Emit decoding table.
 	fmt.Fprintf(&buf, "var instFormats = [...]instFormat{\n")
@@ -584,7 +584,7 @@ func printDecoder(p *Prog) {
 		}
 		fmt.Fprintf(&buf, "}},\n")
 	}
-	fmt.Fprintln(&buf, "}\n")
+	fmt.Fprint(&buf, "}\n\n")
 
 	out, err := gofmt.Source(buf.Bytes())
 	if err != nil {

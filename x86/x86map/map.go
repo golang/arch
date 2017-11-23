@@ -248,7 +248,7 @@ func add(root *Prog, text, opcode, valid32, valid64, cpuid, tags string) {
 				ops = append(ops, tag)
 			} else {
 				if strings.Contains(tag, "operand") {
-					log.Fatal("unknown tag %q", tag)
+					log.Fatalf("unknown tag %q", tag)
 				}
 				f[w] = tag
 				w++
