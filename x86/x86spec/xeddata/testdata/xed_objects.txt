@@ -1,0 +1,289 @@
+------ empty input
+====
+[]
+
+------ only newlines
+
+
+
+====
+[]
+
+------ only comments and newlines
+# {
+# ICLASS : ADD
+# }
+====
+[]
+
+------ join lines
+{
+ICLASS : i\
+ cla\
+  ss1
+VERSION : 1.\
+0
+FLAGS:\
+\
+\
+NOP
+
+REAL_OPCODE    : \Y
+CPL            : \3
+PATTERN: A B
+OPERANDS:
+}
+====
+[{
+  "Iclass": "i cla  ss1",
+  "Version": "1.0",
+  "Flags": "NOP",
+  "RealOpcode": "\\Y",
+  "CPL": "\\3",
+  "Pattern": "A B"
+}]
+
+------ 1 variant; no iform
+{
+ICLASS:iclass1 # comment
+DISASM : disasm1
+
+PATTERN :pat1 pat1
+OPERANDS :  ops1  ops1
+}
+# comment
+
+{ # comment
+# comment
+ICLASS  : iclass2
+OPERANDS:ops2
+PATTERN:pat2 # comment
+}
+====
+[{
+  "Iclass": "iclass1",
+  "Disasm": "disasm1",
+  "Pattern": "pat1 pat1",
+  "Operands": "ops1  ops1"
+}, {
+  "Iclass": "iclass2",
+  "Operands": "ops2",
+  "Pattern": "pat2"
+}]
+
+------ 2 variants; no iform
+{
+PATTERN    : pat1_1
+COMMENT    : comment1
+OPERANDS   : ops1_1
+OPERANDS   : ops1_2
+PATTERN    : pat1_2
+}
+{
+PATTERN    : pat2_1
+PATTERN    : pat2_2
+OPERANDS   : ops2_1
+OPERANDS   : ops2_2
+}
+====
+[{
+  "Comment": "comment1",
+  "Pattern": "pat1_1",
+  "Operands": "ops1_1"
+}, {
+  "Comment": "comment1",
+  "Pattern": "pat1_2",
+  "Operands": "ops1_2"
+}, {
+  "Pattern": "pat2_1",
+  "Operands": "ops2_1"
+}, {
+  "Pattern": "pat2_2",
+  "Operands": "ops2_2"
+}]
+
+------ 3 variants
+{
+
+PATTERN  : pat1_1
+OPERANDS : ops1_1
+IFORM    : iform1_1
+
+PATTERN  : pat1_2# comment
+OPERANDS : ops1_2# comment
+IFORM    : iform1_2# comment
+
+# comment
+PATTERN  : pat1_3
+OPERANDS : ops1_3
+IFORM    : iform1_3
+
+}
+
+{
+PATTERN  : pat2_1
+OPERANDS : ops2_1
+IFORM    : iform2_1
+PATTERN  : pat2_2
+OPERANDS : ops2_2
+PATTERN  : pat2_3
+OPERANDS : ops2_3
+}
+====
+[{
+  "Iform": "iform1_1",
+  "Pattern": "pat1_1",
+  "Operands": "ops1_1"
+}, {
+  "Iform": "iform1_2",
+  "Pattern": "pat1_2",
+  "Operands": "ops1_2"
+}, {
+  "Iform": "iform1_3",
+  "Pattern": "pat1_3",
+  "Operands": "ops1_3"
+}, {
+  "Iform": "iform2_1",
+  "Pattern": "pat2_1",
+  "Operands": "ops2_1"
+}, {
+  "Pattern": "pat2_2",
+  "Operands": "ops2_2"
+}, {
+  "Pattern": "pat2_3",
+  "Operands": "ops2_3"
+}]
+
+------ stable and unstable instructions (REAL_OPCODE)
+{
+ICLASS: STABLE
+REAL_OPCODE: Y
+PATTERN : x y z
+OPERANDS :
+}
+{
+ICLASS: UNSTABLE
+REAL_OPCODE:   N
+PATTERN : x y z
+OPERANDS :
+}
+====
+[{
+  "Iclass": "STABLE",
+  "RealOpcode": "Y",
+  "Pattern": "x y z",
+  "Operands": ""
+}, {
+  "Iclass": "UNSTABLE",
+  "RealOpcode": "N",
+  "Pattern": "x y z",
+  "Operands": ""
+}]
+
+------ AVXAES objects
+# Emitting VAESENCLAST
+{
+ICLASS    : VAESENCLAST
+EXCEPTIONS: avx-type-4
+CPL       : 3
+CATEGORY  : AES
+EXTENSION : AVXAES
+PATTERN : VV1 0xDD V66 V0F38 MOD[0b11] MOD=3  REG[rrr] RM[nnn] VL128
+OPERANDS  : REG0=XMM_R():w:dq REG1=XMM_N():r:dq  REG2=XMM_B():r:dq
+PATTERN : VV1 0xDD  V66 V0F38 MOD[mm] MOD!=3 REG[rrr] RM[nnn] MODRM() VL128
+OPERANDS  : REG0=XMM_R():w:dq REG1=XMM_N():r:dq  MEM0:r:dq
+}
+# Emitting VAESDEC
+{
+ICLASS    : VAESDEC
+EXCEPTIONS: avx-type-4
+CPL       : 3
+CATEGORY  : AES
+EXTENSION : AVXAES
+PATTERN : VV1 0xDE V66 V0F38 MOD[0b11] MOD=3  REG[rrr] RM[nnn] VL128
+OPERANDS  : REG0=XMM_R():w:dq REG1=XMM_N():r:dq  REG2=XMM_B():r:dq
+PATTERN : VV1 0xDE V66 V0F38 MOD[mm] MOD!=3 REG[rrr] RM[nnn] MODRM() VL128
+OPERANDS  : REG0=XMM_R():w:dq REG1=XMM_N():r:dq  MEM0:r:dq
+}
+====
+[{
+  "Iclass": "VAESENCLAST",
+  "Exceptions": "avx-type-4",
+  "CPL": "3",
+  "Category": "AES",
+  "Extension": "AVXAES",
+  "Pattern": "VV1 0xDD V66 V0F38 MOD[0b11] MOD=3  REG[rrr] RM[nnn] VL128",
+  "Operands": "REG0=XMM_R():w:dq REG1=XMM_N():r:dq  REG2=XMM_B():r:dq"
+}, {
+  "Iclass": "VAESENCLAST",
+  "Exceptions": "avx-type-4",
+  "CPL": "3",
+  "Category": "AES",
+  "Extension": "AVXAES",
+  "Pattern": "VV1 0xDD  V66 V0F38 MOD[mm] MOD!=3 REG[rrr] RM[nnn] MODRM() VL128",
+  "Operands": "REG0=XMM_R():w:dq REG1=XMM_N():r:dq  MEM0:r:dq"
+}, {
+  "Iclass": "VAESDEC",
+  "Exceptions": "avx-type-4",
+  "CPL": "3",
+  "Category": "AES",
+  "Extension": "AVXAES",
+  "Pattern": "VV1 0xDE V66 V0F38 MOD[0b11] MOD=3  REG[rrr] RM[nnn] VL128",
+  "Operands": "REG0=XMM_R():w:dq REG1=XMM_N():r:dq  REG2=XMM_B():r:dq"
+}, {
+  "Iclass": "VAESDEC",
+  "Exceptions": "avx-type-4",
+  "CPL": "3",
+  "Category": "AES",
+  "Extension": "AVXAES",
+  "Pattern": "VV1 0xDE V66 V0F38 MOD[mm] MOD!=3 REG[rrr] RM[nnn] MODRM() VL128",
+  "Operands": "REG0=XMM_R():w:dq REG1=XMM_N():r:dq  MEM0:r:dq"
+}]
+
+------ Two-word disasm
+{
+ICLASS    : JMP_FAR
+DISASM_INTEL: jmp far
+DISASM_ATTSV: ljmp
+CPL       : 3
+CATEGORY  : UNCOND_BR
+ATTRIBUTES : FAR_XFER NOTSX
+EXTENSION : BASE
+ISA_SET   : I86
+PATTERN   : 0xEA not64 BRDISPz() UIMM16()
+OPERANDS  : PTR:r:p IMM0:r:w REG0=XED_REG_EIP:w:SUPP
+}
+====
+[{
+  "Iclass": "JMP_FAR",
+  "DisasmIntel": "jmp far",
+  "DisasmATTSV": "ljmp",
+  "CPL": "3",
+  "Attributes": "FAR_XFER NOTSX",
+  "Extension": "BASE",
+  "ISASet": "I86",
+  "Pattern": "0xEA not64 BRDISPz() UIMM16()",
+  "Operands": "PTR:r:p IMM0:r:w REG0=XED_REG_EIP:w:SUPP"
+}]
+
+------ INVALID key token
+{
+FOO : 111
+}
+====
+unknown key token: FOO
+
+------ INVALID unterminated object
+{
+====
+no matching '}' found
+
+------ INVALID pat+ops
+{
+ICLASS: foobar
+PATTERN : 1
+PATTERN : 2
+OPERANDS : 3
+}
+====
+foobar: OPERANDS and PATTERN lines mismatch

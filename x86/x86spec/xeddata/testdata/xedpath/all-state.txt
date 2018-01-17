@@ -1,0 +1,17 @@
+# Copyright 2018 The Go Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
+_M_VV_TRUE VEXVALID=1
+_M_VV_FALSE VEXVALID=0
+
+_M_VEX_P_66 VEX_PREFIX=1
+_M_VEX_P_F2 VEX_PREFIX=2
+_M_VEX_P_F3 VEX_PREFIX=3
+
+_M_VLEN_128 VL=0
+_M_VLEN_256 VL=1
+
+_M_MAP_0F    MAP=1
+_M_MAP_0F38  MAP=2
+_M_MAP_0F3A  MAP=3
