@@ -189,7 +189,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 	case TBNZ, TBZ:
 		args[0], args[1], args[2] = args[2], args[0], args[1]
 
-	case MADD, MSUB, SMADDL, SMSUBL, UMADDL, UMSUBL:
+	case MADD, MSUB, SMADDL, SMSUBL, UMADDL, UMSUBL, FMADD, FMSUB, FNMADD, FNMSUB:
 		if r, ok := inst.Args[0].(Reg); ok {
 			rno := uint16(r)
 			if rno <= uint16(WZR) {
