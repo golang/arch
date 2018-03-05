@@ -20,6 +20,7 @@ import (
 	"math/rand"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -566,9 +567,10 @@ func hexCases(t *testing.T, encoded string) func(func([]byte)) {
 
 // testdataCases generates the test cases recorded in testdata/cases.txt.
 // It only uses the inputs; it ignores the answers recorded in that file.
-func testdataCases(t *testing.T) func(func([]byte)) {
+func testdataCases(t *testing.T, syntax string) func(func([]byte)) {
 	var codes [][]byte
-	data, err := ioutil.ReadFile("testdata/cases.txt")
+	input := filepath.Join("testdata", syntax+"cases.txt")
+	data, err := ioutil.ReadFile(input)
 	if err != nil {
 		t.Fatal(err)
 	}
