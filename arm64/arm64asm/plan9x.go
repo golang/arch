@@ -53,7 +53,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 	// Move addressing mode into opcode suffix.
 	suffix := ""
 	switch inst.Op {
-	case LDR, LDRB, LDRH, LDRSB, LDRSH, LDRSW, STR, STRB, STRH, STUR, STURB, STURH, LD1:
+	case LDR, LDRB, LDRH, LDRSB, LDRSH, LDRSW, STR, STRB, STRH, STUR, STURB, STURH, LD1, ST1:
 		switch mem := inst.Args[1].(type) {
 		case MemImmediate:
 			switch mem.Mode {
@@ -114,6 +114,8 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 			rno = int(a)
 		case RegisterWithArrangementAndIndex:
 			op = "VMOV"
+		case RegisterWithArrangement:
+			op = "VMOV"
 		}
 		if rno >= 0 && rno <= int(WZR) {
 			op = "MOVW"
@@ -133,6 +135,12 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 		}
 		if rno <= uint16(WZR) {
 			op = "MOVWU" + suffix
+		} else if rno >= uint16(S0) && rno <= uint16(S31) {
+			op = "FMOVS" + suffix
+			args[0] = fmt.Sprintf("F%d", rno&31)
+		} else if rno >= uint16(D0) && rno <= uint16(D31) {
+			op = "FMOVD" + suffix
+			args[0] = fmt.Sprintf("F%d", rno&31)
 		} else {
 			op = "MOVD" + suffix
 		}
@@ -173,6 +181,12 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 		}
 		if rno <= uint16(WZR) {
 			op = "MOVW" + suffix
+		} else if rno >= uint16(S0) && rno <= uint16(S31) {
+			op = "FMOVS" + suffix
+			args[0] = fmt.Sprintf("F%d", rno&31)
+		} else if rno >= uint16(D0) && rno <= uint16(D31) {
+			op = "FMOVD" + suffix
+			args[0] = fmt.Sprintf("F%d", rno&31)
 		} else {
 			op = "MOVD" + suffix
 		}
@@ -365,6 +379,16 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 	case MSR:
 		args[0] = inst.Args[0].String()
 
+	case ST1:
+		op = fmt.Sprintf("V%s", op) + suffix
+		args[0], args[1] = args[1], args[0]
+
+	case LD1:
+		op = fmt.Sprintf("V%s", op) + suffix
+
+	case UMOV:
+		op = "VMOV"
+
 	default:
 		index := sort.SearchStrings(noSuffixOpSet, op)
 		if !(index < len(noSuffixOpSet) && noSuffixOpSet[index] == op) {
@@ -378,6 +402,9 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 				op = fmt.Sprintf("V%s", op)
 			}
 
+			if rno >= int(B0) && rno <= int(Q31) && !strings.HasPrefix(op, "F") {
+				op = fmt.Sprintf("V%s", op)
+			}
 			if rno >= 0 && rno <= int(WZR) {
 				// Add "w" to opcode suffix.
 				op += "W"
@@ -429,6 +456,7 @@ LDTRH
 LDXRB
 LDXRH
 SHA1C
+SHA1H
 SHA1M
 SHA1P
 SHA1SU0
@@ -651,7 +679,7 @@ func plan9Arg(inst *Inst, pc uint64, symname func(uint64) (string, uint64), arg 
 		result := a.r.String()
 		arrange := a.a.String()
 		result += arrange
-		if a.cnt > 0 {
+		if a.cnt > 1 {
 			result = "[" + result
 			for i := 1; i < int(a.cnt); i++ {
 				cur := V0 + Reg((uint16(a.r)-uint16(V0)+uint16(i))&31)
