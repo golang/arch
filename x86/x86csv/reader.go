@@ -63,7 +63,7 @@ func (r *Reader) Read() (*Inst, error) {
 		Tags:      cols[7],
 		Action:    cols[8],
 		Multisize: cols[9],
-		Size:      cols[10],
+		DataSize:  cols[10],
 	}
 	return inst, nil
 }

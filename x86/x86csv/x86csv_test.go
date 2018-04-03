@@ -51,7 +51,7 @@ func TestReader(t *testing.T) {
 			Tags:      "pseudo64",
 			Action:    "rw,r",
 			Multisize: "Y",
-			Size:      "8",
+			DataSize:  "8",
 		},
 	}
 

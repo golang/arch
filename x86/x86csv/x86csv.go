@@ -53,8 +53,8 @@ type Inst struct {
 	// operand size, like most arithmetic instructions ("" or "Y").
 	Multisize string
 
-	// Size of the data operation in bits ("8" for MOVB, "16" for MOVW, and so on)
-	Size string
+	// DataSize is the size of the data operation in bits ("8" for MOVB, "16" for MOVW, and so on).
+	DataSize string
 }
 
 // IntelOpcode returns the opcode in the Intel syntax.
@@ -74,6 +74,19 @@ func (inst *Inst) GoArgs() []string { return instArgs(inst.Go) }
 
 // GNUArgs returns the arguments in GNU binutils (mostly AT&T) syntax.
 func (inst *Inst) GNUArgs() []string { return instArgs(inst.GNU) }
+
+// HasTag reports whether inst tag list contains the specified tag.
+func (inst *Inst) HasTag(tag string) bool {
+	i := strings.Index(inst.Tags, tag)
+	if i == -1 {
+		return false
+	}
+	leftOK := i == 0 ||
+		(inst.Tags[i-1] == ',')
+	rigthOK := i+len(tag) == len(inst.Tags) ||
+		(inst.Tags[i+len(tag)] == ',')
+	return leftOK && rigthOK
+}
 
 // instOpcode returns the opcode from an instruction syntax.
 func instOpcode(syntax string) string {
