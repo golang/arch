@@ -523,25 +523,6 @@ var instBlacklist = map[string]bool{
 	"STOS m64":            true,
 	"STOS m8":             true,
 	"XLAT m8":             true,
-
-	// Neither xed nor objdump decode VSIB plausibly.
-	// Too early to add these.
-	"VGATHERDPD xmm1, vm32x, xmm2": true,
-	"VGATHERDPD ymm1, vm32x, ymm2": true,
-	"VGATHERDPS xmm1, vm32x, xmm2": true,
-	"VGATHERDPS ymm1, vm32y, ymm2": true,
-	"VGATHERQPD xmm1, vm64x, xmm2": true,
-	"VGATHERQPD ymm1, vm64y, ymm2": true,
-	"VGATHERQPS xmm1, vm64x, xmm2": true,
-	"VGATHERQPS xmm1, vm64y, xmm2": true,
-	"VPGATHERDD xmm1, vm32x, xmm2": true,
-	"VPGATHERDD ymm1, vm32y, ymm2": true,
-	"VPGATHERDQ xmm1, vm32x, xmm2": true,
-	"VPGATHERDQ ymm1, vm32x, ymm2": true,
-	"VPGATHERQD xmm1, vm64x, xmm2": true,
-	"VPGATHERQD xmm1, vm64y, xmm2": true,
-	"VPGATHERQQ xmm1, vm64x, xmm2": true,
-	"VPGATHERQQ ymm1, vm64y, ymm2": true,
 }
 
 // condPrefs lists preferences for condition code suffixes.
