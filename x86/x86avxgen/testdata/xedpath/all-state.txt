@@ -1,0 +1,341 @@
+
+
+###FILE: ./datafiles/xed-state-bits.txt
+
+#BEGIN_LEGAL
+#
+#Copyright (c) 2016 Intel Corporation
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+#END_LEGAL
+###########################################################################
+## file: xed-state-bits.txt
+###########################################################################
+
+# These are just shorthand for some conditions or captures.
+# Simple macro replacement
+#all_modes             ALL_MODES=1
+not64                  MODE!=2
+mode64                 MODE=2
+mode32                 MODE=1
+mode16                 MODE=0
+
+# effective addressing mode
+eanot16               EASZ!=1
+eamode16              EASZ=1
+eamode32              EASZ=2
+eamode64              EASZ=3
+
+# stack addressing mode
+smode16               SMODE=0
+smode32               SMODE=1
+smode64               SMODE=2
+
+eosz8                 EOSZ=0
+eosz16                EOSZ=1
+not_eosz16            EOSZ!=1
+eosz32                EOSZ=2
+eosz64                EOSZ=3
+eosznot64             EOSZ!=3
+
+
+# for OD expansion in graph partitioning FIXME
+mod0                MOD=0
+mod1                MOD=1
+mod2                MOD=2
+mod3                MOD=3
+
+rex_reqd                REX=1
+no_rex                  REX=0
+reset_rex              REX=0 REXW=0 REXB=0 REXR=0 REXX=0
+
+rexb_prefix             REXB=1
+rexx_prefix             REXX=1
+rexr_prefix             REXR=1
+
+# 2013-09-25 FIXME: we were inconsistent. some things use W0/W1, some
+# use the more verbose form. We should converge on W0/W1.
+#
+rexw_prefix            REXW=1 SKIP_OSZ=1
+norexw_prefix          REXW=0 SKIP_OSZ=1
+W1                     REXW=1 SKIP_OSZ=1
+W0                     REXW=0 SKIP_OSZ=1
+
+norexb_prefix             REXB=0
+norexx_prefix             REXX=0
+norexr_prefix             REXR=0
+############################################################3333
+f2_prefix              REP=2  # REPNZ, REPNE
+f3_prefix              REP=3  # REPZ,  REPE
+repne                  REP=2
+repe                   REP=3
+norep                  REP=0
+66_prefix              OSZ=1
+nof3_prefix            REP!=3
+no66_prefix            OSZ=0
+not_refining           REP=0 # dummy setting for state values 2007-08-06 FIXME
+refining_f2            REP=2
+refining_f3            REP=3
+not_refining_f3        REP!=3 # for pause vs xchg
+no_refining_prefix     REP=0 OSZ=0  # critical:REP must  be first for decoding partitioning
+osz_refining_prefix    REP=0 OSZ=1
+f2_refining_prefix     REP=2
+f3_refining_prefix     REP=3
+
+no67_prefix             ASZ=0
+67_prefix               ASZ=1
+
+lock_prefix             LOCK=1
+nolock_prefix           LOCK=0
+
+default_ds              DEFAULT_SEG=0
+default_ss              DEFAULT_SEG=1
+default_es              DEFAULT_SEG=2 # for string ops
+no_seg_prefix           SEG_OVD=0
+some_seg_prefix         SEG_OVD!=0
+cs_prefix               SEG_OVD=1
+ds_prefix               SEG_OVD=2
+es_prefix               SEG_OVD=3
+fs_prefix               SEG_OVD=4
+gs_prefix               SEG_OVD=5
+ss_prefix               SEG_OVD=6
+
+# default (or not) to 64b width in 64b mode
+nrmw                   DF64=0
+df64                   DF64=1
+
+# default choice for encoder when there are multiple choices for a
+# nonterminal. The ISA is not uniquely determined for encoding so we
+# must express preferences for certain forms!
+enc                    ENCODER_PREFERRED=1
+
+# for the legacy prefix encoder, tell it to keep trying rules and not
+# return after successfully finding one that applies
+no_return              NO_RETURN=1
+
+# indicate an encoding or decoding error occurred
+error                  ERROR=XED_ERROR_GENERAL_ERROR
+
+# dummy constraint which always satisfies
+true                   DUMMY=0
+
+
+###FILE: ./datafiles/amdxop/xop-state-bits.txt
+
+#BEGIN_LEGAL
+#
+#Copyright (c) 2016 Intel Corporation
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+#END_LEGAL
+
+XMAP8  MAP=8
+XMAP9  MAP=9
+XMAPA  MAP=10
+
+XOPV   VEXVALID=3
+
+
+###FILE: ./datafiles/avx/avx-state-bits.txt
+
+#BEGIN_LEGAL
+#
+#Copyright (c) 2016 Intel Corporation
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+#END_LEGAL
+VL128  VL=0
+VL256  VL=1
+
+VV1    VEXVALID=1
+VV0    VEXVALID=0
+
+VMAP0  MAP=0
+V0F    MAP=1
+V0F38  MAP=2
+V0F3A  MAP=3
+
+VNP    VEX_PREFIX=0
+V66    VEX_PREFIX=1
+VF2    VEX_PREFIX=2
+VF3    VEX_PREFIX=3
+
+# No VEX-SPECIFIED-REGISTER
+NOVSR  VEXDEST3=0b1 VEXDEST210=0b111
+
+EMX_BROADCAST_1TO4_32  BCAST=10   #     128
+EMX_BROADCAST_1TO4_64  BCAST=13   #     256
+EMX_BROADCAST_1TO8_32  BCAST=3    #     256
+EMX_BROADCAST_2TO4_64  BCAST=20   #     256
+
+
+
+###FILE: ./datafiles/avxhsw/hsw-state-bits.txt
+
+#BEGIN_LEGAL
+#
+#Copyright (c) 2016 Intel Corporation
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+#END_LEGAL
+
+
+EMX_BROADCAST_1TO2_64  BCAST=11   #         128
+EMX_BROADCAST_1TO8_16   BCAST=14  #         128
+EMX_BROADCAST_1TO16_16  BCAST=15  #     256
+EMX_BROADCAST_1TO16_8   BCAST=17  #         128
+EMX_BROADCAST_1TO32_8   BCAST=18  #     256
+
+
+
+
+###FILE: /home/quasilyte/CODE/intel/xed/datafiles/knc/uisa-state-bits.txt
+
+#BEGIN_LEGAL
+#
+#Copyright (c) 2016 Intel Corporation
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+#END_LEGAL
+
+VL512 VL=2
+VLBAD VL=3 # unused VL setting to cause things not to decode.
+
+# KNC EVEX is KVV
+#
+KVV   VEXVALID=4
+
+# No VEX-SPECIFIED-REGISTER
+NOEVSR  VEXDEST3=0b1 VEXDEST210=0b111 VEXDEST4=0b0
+
+# No VEX-SPECIFIED-REGISTER for GATHERS/SCATTERS -- index reg 5th bit is VEXTDEST4
+NO_SPARSE_EVSR  VEXDEST3=0b1 VEXDEST210=0b111
+
+# These conflict w/another chip ... so if you ever build a combo
+#  model you'll have to remove these somehow.
+#
+EMX_BROADCAST_1TO16_32 BCAST=1      # 512
+EMX_BROADCAST_4TO16_32 BCAST=2      # 512
+EMX_BROADCAST_1TO8_64  BCAST=5      # 512
+EMX_BROADCAST_4TO8_64  BCAST=6      # 512
+
+
+
+###FILE: ./datafiles/avx512f/avx512-state-bits.txt
+
+#BEGIN_LEGAL
+#
+#Copyright (c) 2016 Intel Corporation
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+#END_LEGAL
+EVV VEXVALID=2
+
+EMX_BROADCAST_1TO16_32 BCAST=1      # 512
+EMX_BROADCAST_4TO16_32 BCAST=2      # 512
+EMX_BROADCAST_1TO8_64  BCAST=5      # 512
+EMX_BROADCAST_4TO8_64  BCAST=6      # 512
+EMX_BROADCAST_2TO16_32 BCAST=7      # 512
+EMX_BROADCAST_2TO8_64  BCAST=8      # 512
+EMX_BROADCAST_8TO16_32 BCAST=9      # 512
+EMX_BROADCAST_1TO32_16  BCAST=16  # 512
+EMX_BROADCAST_1TO64_8   BCAST=19  # 512
+# these do not show up on earlier processors
+EMX_BROADCAST_4TO8_32  BCAST=4      #     256
+EMX_BROADCAST_2TO4_32  BCAST=12   #         128
+EMX_BROADCAST_2TO8_32  BCAST=21   #     256
+EMX_BROADCAST_1TO2_32  BCAST=22   #     128
+
+
+###FILE: ./datafiles/avx512-skx/skx-state-bits.txt
+
+#BEGIN_LEGAL
+#
+#Copyright (c) 2016 Intel Corporation
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+#END_LEGAL
+
+EMX_BROADCAST_1TO2_8   BCAST=23
+EMX_BROADCAST_1TO4_8   BCAST=24
+EMX_BROADCAST_1TO8_8   BCAST=25
+
+EMX_BROADCAST_1TO2_16   BCAST=26
+EMX_BROADCAST_1TO4_16   BCAST=27

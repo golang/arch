@@ -9,7 +9,7 @@ import (
 	"log"
 	"strings"
 
-	"golang.org/x/arch/x86/x86spec/xeddata"
+	"golang.org/x/arch/x86/xeddata"
 )
 
 // The "testdata/xedpath" directory contains XED metadata files
@@ -70,7 +70,7 @@ OPERANDS: REG0=GPRv_R():cw REG1=GPRv_B():r
 	// 	[1] REG0=GPRv_R():cw REG1=GPRv_B():r
 }
 
-// This example shows how to use ExpandStates and it's effects.
+// This example shows how to use ExpandStates and its effects.
 func ExampleExpandStates() {
 	const xedPath = "testdata/xedpath"
 
@@ -150,7 +150,7 @@ OPERANDS: MEM0:r:width_v REG0=AX:rw:SUPP REG1=DX:w:SUPP
 
 	inst := objects[0].Insts[0] // Single instruction is enough for this example
 	for i, rawOperand := range strings.Fields(inst.Operands) {
-		operand, err := xeddata.NewOperand(db, strings.Split(rawOperand, ":"))
+		operand, err := xeddata.NewOperand(db, rawOperand)
 		if err != nil {
 			log.Fatalf("parse operand #%d: %+v", i, err)
 		}

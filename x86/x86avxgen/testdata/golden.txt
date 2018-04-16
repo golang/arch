@@ -1,0 +1,160 @@
+var _yvmovsd = []ytab{
+	{zcase: Zvex_r_v_rm, zoffset: 2, args: argList{Yxr, Yxr, Yxr}},
+	{zcase: Zvex_r_v_rm, zoffset: 2, args: argList{Yxr, Ym}},
+	{zcase: Zvex_rm_v_r, zoffset: 2, args: argList{Ym, Yxr}},
+	{zcase: Zvex_rm_v_r, zoffset: 2, args: argList{Yxr, Yxr, Yxr}},
+	{zcase: Zevex_r_v_rm, zoffset: 0, args: argList{YxrEvex, YxrEvex, YxrEvex}},
+	{zcase: Zevex_r_v_k_rm, zoffset: 3, args: argList{YxrEvex, YxrEvex, Yknot0, YxrEvex}},
+	{zcase: Zevex_r_v_rm, zoffset: 0, args: argList{YxrEvex, Ym}},
+	{zcase: Zevex_r_k_rm, zoffset: 3, args: argList{YxrEvex, Yknot0, Ym}},
+	{zcase: Zevex_rm_v_r, zoffset: 0, args: argList{Ym, YxrEvex}},
+	{zcase: Zevex_rm_k_r, zoffset: 3, args: argList{Ym, Yknot0, YxrEvex}},
+	{zcase: Zevex_rm_v_r, zoffset: 0, args: argList{YxrEvex, YxrEvex, YxrEvex}},
+	{zcase: Zevex_rm_v_k_r, zoffset: 3, args: argList{YxrEvex, YxrEvex, Yknot0, YxrEvex}},
+}
+----
+	{as: AVMOVSD, ytab: _yvmovsd, prefix: Pavx, op: opBytes{
+		avxEscape | vex128 | vexF2 | vex0F | vexW0, 0x11,
+		avxEscape | vex128 | vexF2 | vex0F | vexW0, 0x11,
+		avxEscape | vex128 | vexF2 | vex0F | vexW0, 0x10,
+		avxEscape | vex128 | vexF2 | vex0F | vexW0, 0x10,
+		avxEscape | evex128 | evexF2 | evex0F | evexW1, evexZeroingEnabled, 0x11,
+		avxEscape | evex128 | evexF2 | evex0F | evexW1, evexN8, 0x11,
+		avxEscape | evex128 | evexF2 | evex0F | evexW1, evexN8 | evexZeroingEnabled, 0x10,
+		avxEscape | evex128 | evexF2 | evex0F | evexW1, evexZeroingEnabled, 0x10,
+	}}
+
+======
+var _yvaddpd = []ytab{
+	{zcase: Zvex_rm_v_r, zoffset: 2, args: argList{Yxm, Yxr, Yxr}},
+	{zcase: Zvex_rm_v_r, zoffset: 2, args: argList{Yym, Yyr, Yyr}},
+	{zcase: Zevex_rm_v_r, zoffset: 0, args: argList{Yzm, Yzr, Yzr}},
+	{zcase: Zevex_rm_v_k_r, zoffset: 3, args: argList{Yzm, Yzr, Yknot0, Yzr}},
+	{zcase: Zevex_rm_v_r, zoffset: 0, args: argList{YxmEvex, YxrEvex, YxrEvex}},
+	{zcase: Zevex_rm_v_k_r, zoffset: 3, args: argList{YxmEvex, YxrEvex, Yknot0, YxrEvex}},
+	{zcase: Zevex_rm_v_r, zoffset: 0, args: argList{YymEvex, YyrEvex, YyrEvex}},
+	{zcase: Zevex_rm_v_k_r, zoffset: 3, args: argList{YymEvex, YyrEvex, Yknot0, YyrEvex}},
+}
+----
+	{as: AVADDPD, ytab: _yvaddpd, prefix: Pavx, op: opBytes{
+		avxEscape | vex128 | vex66 | vex0F | vexW0, 0x58,
+		avxEscape | vex256 | vex66 | vex0F | vexW0, 0x58,
+		avxEscape | evex512 | evex66 | evex0F | evexW1, evexN64 | evexBcstN8 | evexRoundingEnabled | evexZeroingEnabled, 0x58,
+		avxEscape | evex128 | evex66 | evex0F | evexW1, evexN16 | evexBcstN8 | evexZeroingEnabled, 0x58,
+		avxEscape | evex256 | evex66 | evex0F | evexW1, evexN32 | evexBcstN8 | evexZeroingEnabled, 0x58,
+	}}
+
+======
+var _yvcmppd = []ytab{
+	{zcase: Zvex_i_rm_v_r, zoffset: 2, args: argList{Yu8, Yxm, Yxr, Yxr}},
+	{zcase: Zvex_i_rm_v_r, zoffset: 2, args: argList{Yu8, Yym, Yyr, Yyr}},
+	{zcase: Zevex_i_rm_v_r, zoffset: 0, args: argList{Yu8, Yzm, Yzr, Yk}},
+	{zcase: Zevex_i_rm_v_k_r, zoffset: 3, args: argList{Yu8, Yzm, Yzr, Yknot0, Yk}},
+	{zcase: Zevex_i_rm_v_r, zoffset: 0, args: argList{Yu8, YxmEvex, YxrEvex, Yk}},
+	{zcase: Zevex_i_rm_v_k_r, zoffset: 3, args: argList{Yu8, YxmEvex, YxrEvex, Yknot0, Yk}},
+	{zcase: Zevex_i_rm_v_r, zoffset: 0, args: argList{Yu8, YymEvex, YyrEvex, Yk}},
+	{zcase: Zevex_i_rm_v_k_r, zoffset: 3, args: argList{Yu8, YymEvex, YyrEvex, Yknot0, Yk}},
+}
+----
+	{as: AVCMPPD, ytab: _yvcmppd, prefix: Pavx, op: opBytes{
+		avxEscape | vex128 | vex66 | vex0F | vexW0, 0xC2,
+		avxEscape | vex256 | vex66 | vex0F | vexW0, 0xC2,
+		avxEscape | evex512 | evex66 | evex0F | evexW1, evexN64 | evexBcstN8 | evexSaeEnabled, 0xC2,
+		avxEscape | evex128 | evex66 | evex0F | evexW1, evexN16 | evexBcstN8, 0xC2,
+		avxEscape | evex256 | evex66 | evex0F | evexW1, evexN32 | evexBcstN8, 0xC2,
+	}}
+
+======
+var _yvmovapd = []ytab{
+	{zcase: Zvex_r_v_rm, zoffset: 2, args: argList{Yxr, Yxm}},
+	{zcase: Zvex_r_v_rm, zoffset: 2, args: argList{Yyr, Yym}},
+	{zcase: Zvex_rm_v_r, zoffset: 2, args: argList{Yxm, Yxr}},
+	{zcase: Zvex_rm_v_r, zoffset: 2, args: argList{Yym, Yyr}},
+	{zcase: Zevex_r_v_rm, zoffset: 0, args: argList{YxrEvex, YxmEvex}},
+	{zcase: Zevex_r_k_rm, zoffset: 3, args: argList{YxrEvex, Yknot0, YxmEvex}},
+	{zcase: Zevex_r_v_rm, zoffset: 0, args: argList{YyrEvex, YymEvex}},
+	{zcase: Zevex_r_k_rm, zoffset: 3, args: argList{YyrEvex, Yknot0, YymEvex}},
+	{zcase: Zevex_r_v_rm, zoffset: 0, args: argList{Yzr, Yzm}},
+	{zcase: Zevex_r_k_rm, zoffset: 3, args: argList{Yzr, Yknot0, Yzm}},
+	{zcase: Zevex_rm_v_r, zoffset: 0, args: argList{YxmEvex, YxrEvex}},
+	{zcase: Zevex_rm_k_r, zoffset: 3, args: argList{YxmEvex, Yknot0, YxrEvex}},
+	{zcase: Zevex_rm_v_r, zoffset: 0, args: argList{YymEvex, YyrEvex}},
+	{zcase: Zevex_rm_k_r, zoffset: 3, args: argList{YymEvex, Yknot0, YyrEvex}},
+	{zcase: Zevex_rm_v_r, zoffset: 0, args: argList{Yzm, Yzr}},
+	{zcase: Zevex_rm_k_r, zoffset: 3, args: argList{Yzm, Yknot0, Yzr}},
+}
+----
+	{as: AVMOVAPD, ytab: _yvmovapd, prefix: Pavx, op: opBytes{
+		avxEscape | vex128 | vex66 | vex0F | vexW0, 0x29,
+		avxEscape | vex256 | vex66 | vex0F | vexW0, 0x29,
+		avxEscape | vex128 | vex66 | vex0F | vexW0, 0x28,
+		avxEscape | vex256 | vex66 | vex0F | vexW0, 0x28,
+		avxEscape | evex128 | evex66 | evex0F | evexW1, evexN16 | evexZeroingEnabled, 0x29,
+		avxEscape | evex256 | evex66 | evex0F | evexW1, evexN32 | evexZeroingEnabled, 0x29,
+		avxEscape | evex512 | evex66 | evex0F | evexW1, evexN64 | evexZeroingEnabled, 0x29,
+		avxEscape | evex128 | evex66 | evex0F | evexW1, evexN16 | evexZeroingEnabled, 0x28,
+		avxEscape | evex256 | evex66 | evex0F | evexW1, evexN32 | evexZeroingEnabled, 0x28,
+		avxEscape | evex512 | evex66 | evex0F | evexW1, evexN64 | evexZeroingEnabled, 0x28,
+	}}
+
+======
+var _yvpslld = []ytab{
+	{zcase: Zvex_i_rm_vo, zoffset: 3, args: argList{Yu8, Yxr, Yxr}},
+	{zcase: Zvex_i_rm_vo, zoffset: 3, args: argList{Yu8, Yyr, Yyr}},
+	{zcase: Zvex_rm_v_r, zoffset: 2, args: argList{Yxm, Yxr, Yxr}},
+	{zcase: Zvex_rm_v_r, zoffset: 2, args: argList{Yxm, Yyr, Yyr}},
+	{zcase: Zevex_i_rm_vo, zoffset: 0, args: argList{Yu8, YxmEvex, YxrEvex}},
+	{zcase: Zevex_i_rm_k_vo, zoffset: 4, args: argList{Yu8, YxmEvex, Yknot0, YxrEvex}},
+	{zcase: Zevex_i_rm_vo, zoffset: 0, args: argList{Yu8, YymEvex, YyrEvex}},
+	{zcase: Zevex_i_rm_k_vo, zoffset: 4, args: argList{Yu8, YymEvex, Yknot0, YyrEvex}},
+	{zcase: Zevex_i_rm_vo, zoffset: 0, args: argList{Yu8, Yzm, Yzr}},
+	{zcase: Zevex_i_rm_k_vo, zoffset: 4, args: argList{Yu8, Yzm, Yknot0, Yzr}},
+	{zcase: Zevex_rm_v_r, zoffset: 0, args: argList{YxmEvex, YxrEvex, YxrEvex}},
+	{zcase: Zevex_rm_v_k_r, zoffset: 3, args: argList{YxmEvex, YxrEvex, Yknot0, YxrEvex}},
+	{zcase: Zevex_rm_v_r, zoffset: 0, args: argList{YxmEvex, YyrEvex, YyrEvex}},
+	{zcase: Zevex_rm_v_k_r, zoffset: 3, args: argList{YxmEvex, YyrEvex, Yknot0, YyrEvex}},
+	{zcase: Zevex_rm_v_r, zoffset: 0, args: argList{YxmEvex, Yzr, Yzr}},
+	{zcase: Zevex_rm_v_k_r, zoffset: 3, args: argList{YxmEvex, Yzr, Yknot0, Yzr}},
+}
+----
+	{as: AVPSLLW, ytab: _yvpslld, prefix: Pavx, op: opBytes{
+		avxEscape | vex128 | vex66 | vex0F | vexW0, 0x71, 06,
+		avxEscape | vex256 | vex66 | vex0F | vexW0, 0x71, 06,
+		avxEscape | vex128 | vex66 | vex0F | vexW0, 0xF1,
+		avxEscape | vex256 | vex66 | vex0F | vexW0, 0xF1,
+		avxEscape | evex128 | evex66 | evex0F | evexW0, evexN16 | evexZeroingEnabled, 0x71, 06,
+		avxEscape | evex256 | evex66 | evex0F | evexW0, evexN32 | evexZeroingEnabled, 0x71, 06,
+		avxEscape | evex512 | evex66 | evex0F | evexW0, evexN64 | evexZeroingEnabled, 0x71, 06,
+		avxEscape | evex128 | evex66 | evex0F | evexW0, evexN16 | evexZeroingEnabled, 0xF1,
+		avxEscape | evex256 | evex66 | evex0F | evexW0, evexN16 | evexZeroingEnabled, 0xF1,
+		avxEscape | evex512 | evex66 | evex0F | evexW0, evexN16 | evexZeroingEnabled, 0xF1,
+	}}
+
+======
+var _yvzeroall = []ytab{
+	{zcase: Zvex, zoffset: 2, args: argList{}},
+}
+----
+	{as: AVZEROALL, ytab: _yvzeroall, prefix: Pavx, op: opBytes{
+		avxEscape | vex256 | vex0F | vexW0, 0x77,
+	}}
+
+======
+var _yvzeroall = []ytab{
+	{zcase: Zvex, zoffset: 2, args: argList{}},
+}
+----
+	{as: AVZEROUPPER, ytab: _yvzeroall, prefix: Pavx, op: opBytes{
+		avxEscape | vex128 | vex0F | vexW0, 0x77,
+	}}
+
+======
+var _yvcomisd = []ytab{
+	{zcase: Zvex_rm_v_r, zoffset: 2, args: argList{Yxm, Yxr}},
+	{zcase: Zevex_rm_v_r, zoffset: 3, args: argList{YxmEvex, YxrEvex}},
+}
+----
+	{as: AVUCOMISD, ytab: _yvcomisd, prefix: Pavx, op: opBytes{
+		avxEscape | vex128 | vex66 | vex0F | vexW0, 0x2E,
+		avxEscape | evex128 | evex66 | evex0F | evexW1, evexN8 | evexSaeEnabled, 0x2E,
+	}}

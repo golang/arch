@@ -86,28 +86,27 @@ var xedVisibilities = map[string]OperandVisibility{
 	"ECOND": VisEcond,
 }
 
-// NewOperand packs operand fields into Operand.
-// Fields are colon (":") separated parts of the OPERANDS column.
-//
-// At least two fixed-position fields are expected:
-//   [0] - name
-//   [1] - r/w action
+// NewOperand decodes operand string.
 //
 // See "$XED/pysrc/opnds.py" to learn about fields format
 // and valid combinations.
 //
 // Requires database with xtypes and widths info.
-func NewOperand(db *Database, fields []string) (Operand, error) {
+func NewOperand(db *Database, s string) (*Operand, error) {
+	if db.widths == nil {
+		return nil, errors.New("Database.widths is nil")
+	}
+
+	fields := strings.Split(s, ":")
+	switch len(fields) {
+	case 0:
+		return nil, errors.New("empty operand fields string")
+	case 1:
+		return &Operand{Name: fields[0]}, nil
+	}
 	var op Operand
 
-	if db.widths == nil {
-		return op, errors.New("Database.widths is nil")
-	}
-	if len(fields) < 2 {
-		return op, errors.New("fields should have at least 2 elements")
-	}
-
-	// First two fields are fixed and mandatory.
+	// First two fields are fixed.
 	op.Name = fields[0]
 	op.Action = fields[1]
 
@@ -127,7 +126,7 @@ func NewOperand(db *Database, fields []string) (Operand, error) {
 		}
 	}
 
-	return op, nil
+	return &op, nil
 }
 
 // NonterminalName returns true if op.Name consist

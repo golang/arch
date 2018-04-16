@@ -340,11 +340,11 @@ func TestNewOperand(t *testing.T) {
 
 	db := newTestDatabase(t)
 	for _, test := range tests {
-		op, err := NewOperand(db, strings.Split(test.input, ":"))
+		op, err := NewOperand(db, test.input)
 		if err != nil {
 			t.Fatal(err)
 		}
-		if !reflect.DeepEqual(op, test.op) {
+		if !reflect.DeepEqual(*op, test.op) {
 			t.Errorf("parse(`%s`): output mismatch\nhave: %#v\nwant: %#v",
 				test.input, op, test.op,
 			)

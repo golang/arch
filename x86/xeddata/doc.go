@@ -33,7 +33,7 @@
 // See example_test.go for complete examples.
 //
 // It is required to build Intel XED before attempting to use
-// it's datafiles, as this package expects "all" versions that
+// its datafiles, as this package expects "all" versions that
 // are a concatenated final versions of datafiles.
 // If "$XED/obj/dgen/" does not contain relevant files,
 // then either this documentation is stale or your XED is not built.
@@ -42,7 +42,7 @@
 //
 // Intel XED https://github.com/intelxed/xed provides all documentation
 // that can be required to understand datafiles.
-// The "$XED/misc/engineering-notes.txt" is particullary useful.
+// The "$XED/misc/engineering-notes.txt" is particularly useful.
 // For convenience, the most important notes are spread across package comments.
 //
 // Tested with XED 088c48a2efa447872945168272bcd7005a7ddd91.

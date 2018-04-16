@@ -6,6 +6,7 @@ package xeddata
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -112,6 +113,14 @@ type xtype struct {
 // Load methods can be used to read lookup files one-by-one.
 func NewDatabase(xedPath string) (*Database, error) {
 	var db Database
+
+	stat, err := os.Stat(xedPath)
+	if err != nil {
+		return nil, err
+	}
+	if !stat.IsDir() {
+		return nil, errors.New("xedPath is not directory")
+	}
 
 	states, err := os.Open(filepath.Join(xedPath, "all-state.txt"))
 	if err == nil {

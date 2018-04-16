@@ -1,318 +1,361 @@
-// Copyright 2017 The Go Authors. All rights reserved.
+// Copyright 2018 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// X86avxgen generates Go code for obj/x86 that adds AVX instructions support.
-//
-// Currently supports only AVX1 and AVX2 instructions.
-// When x86.csv will contain AVX512 instructions and
-// asm6.go is patched to support them,
-// this program can be extended to generate the remainder.
-//
-// The output consists of multiple files:
-// - cmd/internal/obj/x86/aenum.go
-//	Add enum entries for new instructions.
-// - cmd/internal/obj/x86/anames.go
-//	Add new instruction names.
-// - cmd/internal/obj/x86/vex_optabs.go
-//	Add new instruction optabs.
-// - cmd/asm/internal/asm/testdata/amd64enc.s
-//	Uncomment tests for added instructions.
-//
-// Usage:
-//	x86avxgen -goroot=$DEV_GOROOT [-csv=x86.csv] [-output=x86avxgen-output]
-// $DEV_GOROOT is a path to Go repository working tree root.
-//
-// To get precise usage information, call this program without arguments.
 package main
 
 import (
-	"bufio"
-	"bytes"
-	"errors"
 	"flag"
 	"fmt"
-	"go/format"
-	"io"
-	"io/ioutil"
 	"log"
 	"os"
-	"os/exec"
-	"regexp"
+	"sort"
 	"strings"
 
-	"golang.org/x/arch/x86/x86csv"
+	"golang.org/x/arch/x86/xeddata"
 )
+
+// instGroup holds a list of instructions with same opcode.
+type instGroup struct {
+	opcode string
+	list   []*instruction
+}
+
+// context is x86avxgen program execution state.
+type context struct {
+	db *xeddata.Database
+
+	groups []*instGroup
+
+	optabs    map[string]*optab
+	ytabLists map[string]*ytabList
+
+	// Command line arguments:
+
+	xedPath string
+}
 
 func main() {
-	goroot := flag.String(
-		"goroot", "",
-		"Go sources root path")
-	csv := flag.String(
-		"csv", specFile,
-		"Absolute path to x86spec CSV file")
-	output := flag.String(
-		"output", "x86avxgen-output",
-		"Where to put output files")
-	autopatchEnabled := flag.Bool(
-		"autopatch", false,
-		"Try automatic patching (writes to goroot, unsafe if it is not under VCS)")
-	diagEnabled := flag.Bool(
-		"diag", false,
-		"Print debug information")
+	log.SetPrefix("x86avxgen: ")
+	log.SetFlags(log.Lshortfile)
+
+	var ctx context
+
+	runSteps(&ctx,
+		parseFlags,
+		openDatabase,
+		buildTables,
+		printTables)
+}
+
+func buildTables(ctx *context) {
+	// Order of steps is significant.
+	runSteps(ctx,
+		decodeGroups,
+		mergeRegMem,
+		addGoSuffixes,
+		mergeWIG,
+		assignZforms,
+		sortGroups,
+		generateOptabs)
+}
+
+func runSteps(ctx *context, steps ...func(*context)) {
+	for _, f := range steps {
+		f(ctx)
+	}
+}
+
+func parseFlags(ctx *context) {
+	flag.StringVar(&ctx.xedPath, "xedPath", "./xedpath",
+		"XED datafiles location")
+
 	flag.Parse()
-	if len(os.Args) == 1 {
-		fmt.Printf("%s: x86 AVX ytab generator", progName)
-		flag.Usage()
-		os.Exit(1)
-	}
-	if *goroot == "" {
-		log.Fatal("goroot arg is mandatory")
-	}
-	if _, err := os.Stat(*csv); os.IsNotExist(err) {
-		log.Fatalf("spec file %s not found", *csv)
-	}
-
-	r, err := specRowReader(*csv)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if err := os.MkdirAll(*output, 0755); err != nil {
-		log.Fatal(err)
-	}
-
-	opcodes, err := doGenerateVexOptabs(r, mustOpenFile(*output+"/"+filenameVexOptabs))
-	if err != nil {
-		log.Fatal(err)
-	}
-	if err := doGenerateAenum(*goroot, *output, opcodes); err != nil {
-		log.Fatal(err)
-	}
-	if err := doGenerateAnames(*output); err != nil {
-		log.Fatal(err)
-	}
-	if err := doGenerateTests(*goroot, *output, opcodes); err != nil {
-		log.Fatal(err)
-	}
-
-	if *autopatchEnabled {
-		if err := doAutopatch(*goroot, *output); err != nil {
-			log.Fatal(err)
-		}
-	}
-
-	if *diagEnabled {
-		diag.Print()
-	}
 }
 
-func mustOpenFile(path string) *os.File {
-	f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+func openDatabase(ctx *context) {
+	db, err := xeddata.NewDatabase(ctx.xedPath)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("open database: %v", err)
 	}
-	return f
+	ctx.db = db
 }
 
-// filterVEX removes all non-VEX instructions from insts.
-// Returns updates slice.
-func filterVEX(insts []*x86csv.Inst) []*x86csv.Inst {
-	vexInsts := insts[:0]
-	for _, inst := range insts {
-		// Checking CPUID for AVX is not good enough
-		// in this case, because some instructions
-		// have VEX prefix, but no AVX CPUID flag.
-		if strings.HasPrefix(inst.Encoding, "VEX.") {
-			vexInsts = append(vexInsts, inst)
-		}
-	}
-	return vexInsts
-}
-
-func doGenerateVexOptabs(r *x86csv.Reader, w io.Writer) (opcodes []string, err error) {
-	insts, err := r.ReadAll()
-	if err != nil {
-		return nil, err
-	}
-	insts = filterVEX(insts)
-
-	var buf bytes.Buffer
-
-	visitOptab := func(o optab) {
-		diag.optabsGenerated++
-
-		opcodes = append(opcodes, o.as)
-
-		tmpl := "\t{A%s, %s, Pvex, [23]uint8{%s}},\n"
-		fmt.Fprintf(&buf, tmpl, o.as, o.ytabID, strings.Join(o.op, ","))
+// mergeRegMem merges reg-only with mem-only instructions.
+// For example: {MOVQ reg, mem} + {MOVQ reg, reg} = {MOVQ reg, reg/mem}.
+func mergeRegMem(ctx *context) {
+	mergeKey := func(inst *instruction) string {
+		return strings.Join([]string{
+			fmt.Sprint(len(inst.args)),
+			inst.enc.opbyte,
+			inst.enc.opdigit,
+			inst.enc.vex.P,
+			inst.enc.vex.L,
+			inst.enc.vex.M,
+			inst.enc.vex.W,
+		}, " ")
 	}
 
-	doGroups(insts, func(op string, insts []*x86csv.Inst) {
-		diag.optabsTotal++
-
-		if ot, ok := precomputedOptabs[op]; ok {
-			log.Printf("notice: using precomputed %s optab", op)
-			visitOptab(ot)
-			return
-		}
-
-		key := ytabKey(op, insts)
-		ytabID := ytabMap[key]
-		if ytabID == "" {
-			diag.ytabMisses[key]++
-			log.Printf("warning: skip %s: no ytabID for '%s' key", op, key)
-			return
-		}
-		var encParts []string
-		for _, inst := range insts {
-			enc := parseEncoding(inst.Encoding)
-
-			encParts = append(encParts, vexExpr(enc.vex))
-			encParts = append(encParts, "0x"+enc.opbyte)
-			if enc.opdigit != "" {
-				encParts = append(encParts, "0"+enc.opdigit)
+	for _, g := range ctx.groups {
+		regOnly := make(map[string]*instruction)
+		memOnly := make(map[string]*instruction)
+		list := g.list[:0]
+		for _, inst := range g.list {
+			switch {
+			case inst.pset.Is("RegOnly"):
+				regOnly[mergeKey(inst)] = inst
+			case inst.pset.Is("MemOnly"):
+				memOnly[mergeKey(inst)] = inst
+			default:
+				if len(inst.args) == 0 {
+					list = append(list, inst)
+					continue
+				}
+				log.Fatalf("%s: unexpected MOD value", inst)
 			}
 		}
-		visitOptab(optab{
-			as:     op,
-			ytabID: ytabID,
-			op:     encParts,
-		})
+
+		for k, m := range memOnly {
+			r := regOnly[k]
+			if r != nil {
+				index := m.ArgIndexByZkind("reg/mem")
+				arg := m.args[index]
+				switch ytype := r.args[index].ytype; ytype {
+				case "Yrl":
+					arg.ytype = "Yml"
+				case "Yxr":
+					arg.ytype = "Yxm"
+				case "YxrEvex":
+					arg.ytype = "YxmEvex"
+				case "Yyr":
+					arg.ytype = "Yym"
+				case "YyrEvex":
+					arg.ytype = "YymEvex"
+				case "Yzr":
+					arg.ytype = "Yzm"
+				case "Yk":
+					arg.ytype = "Ykm"
+				default:
+					log.Fatalf("%s: unexpected register type: %s", r, ytype)
+				}
+				// Merge EVEX flags into m.
+				m.enc.evex.SAE = m.enc.evex.SAE || r.enc.evex.SAE
+				m.enc.evex.Rounding = m.enc.evex.Rounding || r.enc.evex.Rounding
+				m.enc.evex.Zeroing = m.enc.evex.Zeroing || r.enc.evex.Zeroing
+				delete(regOnly, k)
+			}
+			list = append(list, m)
+		}
+		for _, r := range regOnly {
+			list = append(list, r)
+		}
+
+		g.list = list
+	}
+}
+
+// mergeWIG merges [E]VEX.W0 + [E]VEX.W1 into [E]VEX.WIG.
+func mergeWIG(ctx *context) {
+	mergeKey := func(inst *instruction) string {
+		return strings.Join([]string{
+			fmt.Sprint(len(inst.args)),
+			inst.enc.opbyte,
+			inst.enc.opdigit,
+			inst.enc.vex.P,
+			inst.enc.vex.L,
+			inst.enc.vex.M,
+		}, " ")
+	}
+
+	for _, g := range ctx.groups {
+		w0map := make(map[string]*instruction)
+		w1map := make(map[string]*instruction)
+		list := g.list[:0]
+		for _, inst := range g.list {
+			switch w := inst.enc.vex.W; w {
+			case "evexW0", "vexW0":
+				w0map[mergeKey(inst)] = inst
+			case "evexW1", "vexW1":
+				w1map[mergeKey(inst)] = inst
+			default:
+				log.Fatalf("%s: unexpected vex.W: %s", inst, w)
+			}
+		}
+
+		for k, w0 := range w0map {
+			w1 := w1map[k]
+			if w1 != nil {
+				w0.enc.vex.W = strings.Replace(w0.enc.vex.W, "W0", "WIG", 1)
+				delete(w1map, k)
+			}
+			list = append(list, w0)
+		}
+		for _, w1 := range w1map {
+			list = append(list, w1)
+		}
+
+		g.list = list
+	}
+}
+
+// assignZforms initializes zform field of every instruction in ctx.
+func assignZforms(ctx *context) {
+	for _, g := range ctx.groups {
+		for _, inst := range g.list {
+			var parts []string
+			if inst.pset.Is("EVEX") {
+				parts = append(parts, "evex")
+			}
+			for _, arg := range inst.args {
+				parts = append(parts, arg.zkind)
+			}
+			if inst.enc.opdigit != "" {
+				parts = append(parts, "opdigit")
+			}
+			inst.zform = strings.Join(parts, " ")
+		}
+	}
+}
+
+// sortGroups sorts each instruction group by opcode as well as instructions
+// inside groups by special rules (see below).
+//
+// The order of instructions inside group determine ytab
+// elements order inside ytabList.
+//
+// We want these rules to be satisfied:
+//	- EVEX-encoded entries go after VEX-encoded entries.
+//	  This way, VEX forms are selected over EVEX variants.
+//	- EVEX forms with SAE/RC must go before forms without them.
+//	  This helps to avoid problems with reg-reg instructions
+//	  that encode either of them in ModRM.R/M which causes
+//	  ambiguity in ytabList (more than 1 ytab can match args).
+//	  If first matching ytab has SAE/RC, problem will not occur.
+//	- Memory argument position affects order.
+//	  Required to be in sync with XED encoder when there
+//	  are multiple choices of how to encode instruction.
+func sortGroups(ctx *context) {
+	sort.SliceStable(ctx.groups, func(i, j int) bool {
+		return ctx.groups[i].opcode < ctx.groups[j].opcode
 	})
 
-	tmpl := `// Code generated by %s. DO NOT EDIT.
-
-package x86
-
-var vexOptab = []Optab{
-%s
-}
-`
-	code := []byte(fmt.Sprintf(tmpl, progName, buf.String()))
-
-	prettyCode, err := format.Source(code)
-	if err != nil {
-		return nil, err
+	for _, g := range ctx.groups {
+		sortInstList(g.list)
 	}
-
-	_, err = w.Write(prettyCode)
-
-	return opcodes, err
 }
 
-func doGenerateAenum(goroot, output string, newNames []string) error {
-	w, err := os.Create(output + "/" + filenameAenum)
-	if err != nil {
-		return err
+func sortInstList(insts []*instruction) {
+	// Use strings for sorting to get reliable transitive "less".
+	order := make(map[*instruction]string)
+	for _, inst := range insts {
+		encTag := 'a'
+		if inst.pset.Is("EVEX") {
+			encTag = 'b'
+		}
+		memTag := 'a'
+		if index := inst.ArgIndexByZkind("reg/mem"); index != -1 {
+			memTag = 'z' - rune(index)
+		}
+		rcsaeTag := 'a'
+		if !(inst.enc.evex.SAE || inst.enc.evex.Rounding) {
+			rcsaeTag = 'b'
+		}
+		order[inst] = fmt.Sprintf("%c%c%c %s",
+			encTag, memTag, rcsaeTag, inst.YtypeListString())
 	}
-	defer w.Close()
-	r, err := os.Open(goroot + "/" + pathAenum)
-	if err != nil {
-		return err
-	}
-	defer r.Close()
 
-	return generateAenum(r, w, newNames)
+	sort.SliceStable(insts, func(i, j int) bool {
+		return order[insts[i]] < order[insts[j]]
+	})
 }
 
-func doGenerateAnames(output string) error {
-	// Runs "go generate" over previously generated aenum file.
-	path := output + "/" + filenameAenum
-	cmd := exec.Command("go", "generate", path)
-	var buf bytes.Buffer
-	cmd.Stderr = &buf
-	err := cmd.Run()
-	if err != nil {
-		return errors.New(err.Error() + ": " + buf.String())
+// addGoSuffixes splits some groups into several groups by introducing a suffix.
+// For example, ANDN group becomes ANDNL and ANDNQ (ANDN becomes empty itself).
+// Empty groups are removed.
+func addGoSuffixes(ctx *context) {
+	var opcodeSuffixMatchers map[string][]string
+	{
+		opXY := []string{"VL=0", "X", "VL=1", "Y"}
+		opXYZ := []string{"VL=0", "X", "VL=1", "Y", "VL=2", "Z"}
+		opQ := []string{"REXW=1", "Q"}
+		opLQ := []string{"REXW=0", "L", "REXW=1", "Q"}
+
+		opcodeSuffixMatchers = map[string][]string{
+			"VCVTPD2DQ":   opXY,
+			"VCVTPD2PS":   opXY,
+			"VCVTTPD2DQ":  opXY,
+			"VCVTQQ2PS":   opXY,
+			"VCVTUQQ2PS":  opXY,
+			"VCVTPD2UDQ":  opXY,
+			"VCVTTPD2UDQ": opXY,
+
+			"VFPCLASSPD": opXYZ,
+			"VFPCLASSPS": opXYZ,
+
+			"VCVTSD2SI":  opQ,
+			"VCVTTSD2SI": opQ,
+			"VCVTTSS2SI": opQ,
+			"VCVTSS2SI":  opQ,
+
+			"VCVTSD2USI":  opLQ,
+			"VCVTSS2USI":  opLQ,
+			"VCVTTSD2USI": opLQ,
+			"VCVTTSS2USI": opLQ,
+			"VCVTUSI2SD":  opLQ,
+			"VCVTUSI2SS":  opLQ,
+			"VCVTSI2SD":   opLQ,
+			"VCVTSI2SS":   opLQ,
+			"ANDN":        opLQ,
+			"BEXTR":       opLQ,
+			"BLSI":        opLQ,
+			"BLSMSK":      opLQ,
+			"BLSR":        opLQ,
+			"BZHI":        opLQ,
+			"MULX":        opLQ,
+			"PDEP":        opLQ,
+			"PEXT":        opLQ,
+			"RORX":        opLQ,
+			"SARX":        opLQ,
+			"SHLX":        opLQ,
+			"SHRX":        opLQ,
+		}
 	}
-	return nil
-}
 
-// testLineReplacer is used in uncommentedTestLine function.
-var testLineReplacer = strings.NewReplacer(
-	"//TODO: ", "",
+	newGroups := make(map[string][]*instruction)
+	for _, g := range ctx.groups {
+		kv := opcodeSuffixMatchers[g.opcode]
+		if kv == nil {
+			continue
+		}
 
-	// Fix register references.
-	"XMM", "X",
-	"YMM", "Y",
-)
-
-func uncommentedTestLine(line string) string {
-	// Sync with x86/x86test/print.go.
-	const x86testFmt = "\t%-39s // %s"
-
-	line = testLineReplacer.Replace(line)
-	i := strings.Index(line, " // ")
-	return fmt.Sprintf(x86testFmt, line[len("\t"):i], line[i+len(" // "):])
-}
-
-// stringsSet returns a map mapping each x in xs to true.
-func stringsSet(xs []string) map[string]bool {
-	set := make(map[string]bool, len(xs))
-	for _, x := range xs {
-		set[x] = true
-	}
-	return set
-}
-
-func doGenerateTests(goroot, output string, newNames []string) error {
-	testsFile, err := os.Open(goroot + "/" + pathTests)
-	if err != nil {
-		return err
-	}
-	defer testsFile.Close()
-
-	var rxCommentedTestCase = regexp.MustCompile(`//TODO: ([A-Z][A-Z0-9]+)`)
-
-	newNamesSet := stringsSet(newNames)
-
-	var buf bytes.Buffer
-	scanner := bufio.NewScanner(testsFile)
-	for scanner.Scan() {
-		line := scanner.Text()
-		m := rxCommentedTestCase.FindStringSubmatch(line)
-		if m != nil {
-			name := string(m[1])
-			if newNamesSet[name] {
-				line = uncommentedTestLine(line)
+		list := g.list[:0]
+		for _, inst := range g.list {
+			newOp := inst.opcode + inst.pset.Match(kv...)
+			if newOp != inst.opcode {
+				inst.opcode = newOp
+				newGroups[newOp] = append(newGroups[newOp], inst)
+			} else {
+				list = append(list, inst)
 			}
 		}
-		buf.WriteString(line)
-		buf.WriteByte('\n')
+		g.list = list
 	}
-
-	return ioutil.WriteFile(output+"/"+filenameTests, buf.Bytes(), 0644)
-}
-
-func doAutopatch(goroot, output string) error {
-	from := [...]string{
-		output + "/" + filenameVexOptabs,
-		output + "/" + filenameAenum,
-		output + "/" + filenameAnames,
-		output + "/" + filenameTests,
-	}
-	to := [...]string{
-		goroot + "/" + pathVexOptabs,
-		goroot + "/" + pathAenum,
-		goroot + "/" + pathAnames,
-		goroot + "/" + pathTests,
-	}
-
-	// No recovery if rename will fail.
-	// There is a warning in "autopatch" description.
-	for i := range from {
-		if err := os.Rename(from[i], to[i]); err != nil {
-			return err
+	groups := ctx.groups[:0] // Filled with non-empty groups
+	// Some groups may become empty due to opcode split.
+	for _, g := range ctx.groups {
+		if len(g.list) != 0 {
+			groups = append(groups, g)
 		}
 	}
-
-	return nil
+	for op, insts := range newGroups {
+		groups = append(groups, &instGroup{
+			opcode: op,
+			list:   insts,
+		})
+	}
+	ctx.groups = groups
 }
 
-func specRowReader(path string) (*x86csv.Reader, error) {
-	f, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	return x86csv.NewReader(bufio.NewReader(f)), nil
+func printTables(ctx *context) {
+	writeTables(os.Stdout, ctx)
 }
