@@ -52,10 +52,10 @@ var stdout *bufio.Writer
 
 func main() {
 	log.SetFlags(0)
-	log.SetPrefix("armspec: ")
+	log.SetPrefix("ppc64spec: ")
 
 	if len(os.Args) != 2 {
-		fmt.Fprintf(os.Stderr, "usage: armspec file.pdf\n")
+		fmt.Fprintf(os.Stderr, "usage: ppc64spec file.pdf\n")
 		os.Exit(2)
 	}
 
