@@ -67,7 +67,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	print(p)
 }
 
@@ -214,6 +213,7 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 	// And note the MSB is bit 0, not bit 31.
 	// Example: "31@0|RS@6|RA@11|///@16|26@21|Rc@31|"
 	var args Args
+	var err error
 	fields := strings.Split(encoding, "|")
 	for i, f := range fields {
 		name, off := "", -1
@@ -229,7 +229,16 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 				fmt.Fprintf(os.Stderr, "%s: wrong %d-th encoding field: %q\n", text, i, f)
 				continue
 			}
-			off, _ = strconv.Atoi(f[j+1:])
+			k := strings.Index(f[j+1:], " ")
+			if k >= 0 {
+				if strings.HasSuffix(f[j+1:], " 31") {
+					f = f[:len(f)-3]
+				}
+			}
+			off, err = strconv.Atoi(f[j+1:])
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "err for: %s has: %s for %s\n", f[:j], err, f[j+1:])
+			}
 			name = f[:j]
 		}
 		if len(args) > 0 {
@@ -355,7 +364,7 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 				} else {
 					opr = "BD"
 				}
-			case "UI", "BO", "BH", "TH", "LEV", "NB", "L", "TO", "FXM", "U", "W", "FLM", "UIM", "SHB", "SHW", "ST", "SIX", "PS", "DCM", "DGM", "RMC", "R", "SP", "S", "DM", "CT", "EH", "E", "MO", "WC", "A", "IH", "OC", "DUI", "DUIS":
+			case "UI", "BO", "BH", "TH", "LEV", "NB", "L", "TO", "FXM", "FC", "U", "W", "FLM", "UIM", "IMM8", "RIC", "PRS", "SHB", "SHW", "ST", "SIX", "PS", "DCM", "DCMX", "DGM", "RMC", "R", "SP", "S", "DM", "CT", "EH", "E", "MO", "WC", "A", "IH", "OC", "DUI", "DUIS", "CY":
 				typ = asm.TypeImmUnsigned
 				if i := args.Find(opr); i < 0 {
 					opr = "D"
@@ -397,7 +406,7 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 					opr = "SI"
 					break
 				}
-			case "RA", "RB", "RS", "RSp", "RT", "RTp":
+			case "RA", "RB", "RC", "RS", "RSp", "RT", "RTp":
 				typ = asm.TypeReg
 			case "BT", "BA", "BB", "BC", "BI":
 				typ = asm.TypeCondRegBit
@@ -414,8 +423,6 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 			case "SPR", "DCRN", "BHRBE", "TBR", "SR", "TMR", "PMRN": // Note: if you add to this list and the register field needs special handling, add it to switch statement below
 				typ = asm.TypeSpReg
 				switch opr {
-				case "BHRBE":
-					opr = "bhrbe" // no special handling
 				case "DCRN":
 					opr = "DCR"
 				}
@@ -501,7 +508,7 @@ func printText(p *Prog) {
 
 // opName translate an opcode to a valid Go identifier all-cap op name.
 func opName(op string) string {
-	return strings.ToUpper(strings.Replace(op, ".", "_", 1))
+	return strings.ToUpper(strings.Replace(op, ".", "CC", 1))
 }
 
 // argFieldName constructs a name for the argField
