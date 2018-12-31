@@ -69,3 +69,17 @@ func TestDecode(t *testing.T) {
 		}
 	}
 }
+
+func TestDecodeDoesNotCrash(t *testing.T) {
+	cases := [...][]byte{
+		[]byte{},
+		[]byte{0xc5},
+		[]byte{0xc4},
+	}
+	for _, test := range cases {
+		_, err := Decode([]byte(test), 64) // the only goal is that this line does not panic
+		if err == nil {
+			t.Errorf("expected error on invalid instruction %x", test)
+		}
+	}
+}
