@@ -9,7 +9,6 @@ package x86asm
 import (
 	"encoding/binary"
 	"errors"
-	"flag"
 	"fmt"
 	"runtime"
 )
@@ -219,7 +218,6 @@ var (
 
 // decoderCover records coverage information for which parts
 // of the byte code have been executed.
-var useDecoderCover = flag.Bool("x86asm_use_decoder_cover", false, "Whether or not to record coverage information for testing.")
 var decoderCover []bool
 
 // Decode decodes the leading bytes in src as a single instruction.
@@ -463,9 +461,6 @@ ReadPrefixes:
 	// opshift gives the shift to use when saving the next
 	// opcode byte into inst.Opcode.
 	opshift = 24
-	if *useDecoderCover && len(decoderCover) == 0 {
-		decoderCover = make([]bool, len(decoder))
-	}
 
 	// Decode loop, executing decoder program.
 	var oldPC, prevPC int
@@ -477,7 +472,7 @@ Decode:
 			println("run", pc)
 		}
 		x := decoder[pc]
-		if *useDecoderCover {
+		if decoderCover != nil {
 			decoderCover[pc] = true
 		}
 		pc++
