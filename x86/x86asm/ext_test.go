@@ -100,6 +100,11 @@ func testExtDis(
 	generate func(f func([]byte)),
 	allowedMismatch func(text string, size int, inst *Inst, dec ExtInst) bool,
 ) {
+	decoderCover = make([]bool, len(decoder))
+	defer func() {
+		decoderCover = nil
+	}()
+
 	start := time.Now()
 	ext := &ExtDis{
 		Dec:  make(chan ExtInst),

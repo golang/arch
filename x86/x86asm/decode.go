@@ -218,7 +218,6 @@ var (
 
 // decoderCover records coverage information for which parts
 // of the byte code have been executed.
-// TODO(rsc): This is for testing. Only use this if a flag is given.
 var decoderCover []bool
 
 // Decode decodes the leading bytes in src as a single instruction.
@@ -462,9 +461,6 @@ ReadPrefixes:
 	// opshift gives the shift to use when saving the next
 	// opcode byte into inst.Opcode.
 	opshift = 24
-	if decoderCover == nil {
-		decoderCover = make([]bool, len(decoder))
-	}
 
 	// Decode loop, executing decoder program.
 	var oldPC, prevPC int
@@ -476,7 +472,9 @@ Decode:
 			println("run", pc)
 		}
 		x := decoder[pc]
-		decoderCover[pc] = true
+		if decoderCover != nil {
+			decoderCover[pc] = true
+		}
 		pc++
 
 		// Read and decode ModR/M if needed by opcode.
