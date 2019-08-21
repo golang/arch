@@ -82,13 +82,34 @@ type Enc struct {
 }
 
 type SystemReg struct {
-	RegName   string
-	EncBinary uint32
+	RegName        string
+	EncBinary      uint32
+	RegAccessFlags string
 }
 
 func check(e error) {
 	if e != nil {
 		log.Fatal(e)
+	}
+}
+
+type accessFlag uint8
+
+const (
+	SR_READ accessFlag = 1 << iota
+	SR_WRITE
+)
+
+func (a accessFlag) String() string {
+	switch a {
+	case SR_READ:
+		return "SR_READ"
+	case SR_WRITE:
+		return "SR_WRITE"
+	case SR_READ | SR_WRITE:
+		return "SR_READ | SR_WRITE"
+	default:
+		return ""
 	}
 }
 
@@ -149,6 +170,19 @@ func main() {
 			continue
 		}
 
+		m := sysreg.AccessMechanisms.AccessMechanism
+		accessF := accessFlag(0)
+		for j := range m {
+			accessor := m[j].Accessor
+			if strings.Contains(accessor, "MRS") {
+				accessF |= SR_READ
+			}
+			if strings.Contains(accessor, "MSR") {
+				accessF |= SR_WRITE
+			}
+		}
+		aFlags := accessF.String()
+
 		max := 0
 		var enc [5]uint64
 		if len(m0.Encoding.Enc) != 5 {
@@ -162,11 +196,11 @@ func main() {
 			check(err)
 			for n := 0; n <= max; n++ {
 				name := strings.Replace(sysregName, "<n>", strconv.Itoa(n), -1)
-				systemregs = append(systemregs, SystemReg{name, 0})
+				systemregs = append(systemregs, SystemReg{name, 0, aFlags})
 				regNum++
 			}
 		} else {
-			systemregs = append(systemregs, SystemReg{sysregName, 0})
+			systemregs = append(systemregs, SystemReg{sysregName, 0, aFlags})
 			regNum++
 		}
 		for i := 0; i <= max; i++ {
@@ -237,15 +271,33 @@ func main() {
 		fmt.Fprintf(w, "\tREG_%s\n", systemregs[i].RegName)
 	}
 	fmt.Fprintln(w, "\tSYSREG_END\n)")
-	fmt.Fprintln(w, "\nvar SystemReg = []struct {\n\tName string\n\tReg int16\n\tEnc uint32\n}{")
+	fmt.Fprintln(w, `
+const (
+	SR_READ = 1 << iota
+	SR_WRITE
+)
+
+var SystemReg = []struct {
+	Name string
+	Reg int16
+	Enc uint32
+	// AccessFlags is the readable and writeable property of system register.
+	AccessFlags uint8
+}{`)
 	for i := 0; i < regNum; i++ {
-		fmt.Fprintf(w, "\t{\"%s\", REG_%s, 0x%x},\n", systemregs[i].RegName, systemregs[i].RegName, systemregs[i].EncBinary)
+		fmt.Fprintf(w, "\t{\"%s\", REG_%s, 0x%x, %s},\n", systemregs[i].RegName, systemregs[i].RegName, systemregs[i].EncBinary, systemregs[i].RegAccessFlags)
 	}
 	fmt.Fprintln(w, "}")
-	fmt.Fprintln(w, "\nfunc SysRegEnc(r int16) (string, uint32) {")
-	fmt.Fprintln(w, "\t// The automatic generator guarantees that the order")
-	fmt.Fprintln(w, "\t// of Reg in SystemReg struct is consistent with the")
-	fmt.Fprintln(w, "\t// order of system register declarations")
-	fmt.Fprintln(w, "\tif r <= SYSREG_BEGIN || r >= SYSREG_END {\n\t\treturn \"\", 0\n\t}\n\tv := SystemReg[r-SYSREG_BEGIN-1]\n\treturn v.Name, v.Enc\n}")
+	fmt.Fprintln(w, `
+func SysRegEnc(r int16) (string, uint32, uint8) {
+	// The automatic generator guarantees that the order
+	// of Reg in SystemReg struct is consistent with the
+	// order of system register declarations
+	if r <= SYSREG_BEGIN || r >= SYSREG_END {
+		return "", 0, 0
+	}
+	v := SystemReg[r-SYSREG_BEGIN-1]
+	return v.Name, v.Enc, v.AccessFlags
+}`)
 	w.Flush()
 }
