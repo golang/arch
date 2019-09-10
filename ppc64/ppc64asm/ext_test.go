@@ -245,7 +245,7 @@ func disasm(syntax string, src []byte) (inst Inst, text string) {
 		//case "arm":
 		//	text = ARMSyntax(inst)
 		case "gnu":
-			text = GNUSyntax(inst)
+			text = GNUSyntax(inst, 0)
 		//case "plan9":
 		//	text = GoSyntax(inst, 0, nil)
 		default:

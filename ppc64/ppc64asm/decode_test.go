@@ -49,7 +49,7 @@ func TestDecode(t *testing.T) {
 		} else {
 			switch syntax {
 			case "gnu":
-				out = GNUSyntax(inst)
+				out = GNUSyntax(inst, 0)
 			case "plan9":
 				out = GoSyntax(inst, 0, nil)
 			default:
