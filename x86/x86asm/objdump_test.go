@@ -197,7 +197,6 @@ var unsupported = strings.Fields(`
 	clgi
 	femms
 	fldln
-	fldz
 	getsec
 	invlpga
 	kmov
