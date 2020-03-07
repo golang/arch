@@ -2,10 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// +build go1.6
-// +build !386 go1.8
-// ... see golang.org/issue/12840
-
 // Reading of PDF tokens and objects from a raw byte stream.
 
 package pdf
