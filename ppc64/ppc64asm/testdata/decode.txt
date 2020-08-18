@@ -420,11 +420,13 @@ fc011000|	plan9	FCMPU F1,F2
 f4230011|	plan9	LXV 16(R3),VS1
 7c23221a|	plan9	LXVL R3,R4,VS1
 7c23225a|	plan9	LXVLL R3,R4,VS1
+7c241a18|	plan9	LXVX (R3)(R4),VS1
 7c241c98|	plan9	LXSDX (R3)(R4),VS1
 7c241f98|	plan9	STXVD2X VS1,(R3)(R4)
 f4230015|	plan9	STXV VS1,16(R3)
 7c23231a|	plan9	STXVL VS1,R3,R4
 7c23235a|	plan9	STXVLL VS1,R3,R4
+7c241b18|	plan9	STXVX VS1,(R3)(R4)
 7c241d98|	plan9	STXSDX VS1,(R3)(R4)
 7c241898|	plan9	LXSIWAX (R3)(R4),VS1
 7c241918|	plan9	STXSIWX VS1,(R3)(R4)
@@ -802,6 +804,8 @@ f4230011|	gnu	lxv vs1,16(r3)
 7c23221a|	gnu	lxvl vs1,r3,r4
 7c23225a|	gnu	lxvll vs1,r3,r4
 7c241c98|	gnu	lxsdx vs1,r4,r3
+7c241a18|	gnu	lxvx vs1,r4,r3
+7c241b18|	gnu	stxvx vs1,r4,r3
 7c241f98|	gnu	stxvd2x vs1,r4,r3
 f4230015|	gnu	stxv vs1,16(r3)
 7c23231a|	gnu	stxvl vs1,r3,r4
