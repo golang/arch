@@ -63,9 +63,7 @@ func testDecode(t *testing.T, syntax string) {
 		// TODO: system instruction.
 		var Todo = strings.Fields(`
 			sys
-			dc
 			at
-			tlbi
 			ic
 			hvc
 			smc
