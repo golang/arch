@@ -184,7 +184,7 @@ b4830002|	plan9	MOVHU R4,2(R3)
 7c6400f4|	plan9	POPCNTB R3,R4
 7c6402f4|	plan9	POPCNTW R3,R4
 7c6403f4|	plan9	POPCNTD R3,R4
-7c23270d|	plan9	PASTECC R3,R4
+7c23270d|	plan9	PASTECC R3,R4,$1
 7c23260c|	plan9	COPY R3,R4
 7ca01868|	plan9	LBAR (R3),R5
 7ca018e8|	plan9	LHAR (R3),R5
@@ -196,7 +196,6 @@ b4830002|	plan9	MOVHU R4,2(R3)
 7c0004ac|	plan9	HWSYNC
 4c00012c|	plan9	ISYNC
 7c2004ac|	plan9	LWSYNC
-7c041bac|	plan9	DCBI (R3)(R4)
 7c04186c|	plan9	DCBST (R3)(R4)
 7c041fec|	plan9	DCBZ (R3)(R4)
 7c041a2c|	plan9	DCBT (R3)(R4)
@@ -585,7 +584,6 @@ b4830002|	gnu	sthu r4,2(r3)
 4c00012c|	gnu	isync
 7c0004ac|	gnu	hwsync
 7c2004ac|	gnu	lwsync
-7c041bac|	gnu	dcbi r4,r3
 7c04186c|	gnu	dcbst r4,r3
 7c041fec|	gnu	dcbz r4,r3
 7c041a2c|	gnu	dcbt r4,r3,0
@@ -846,3 +844,13 @@ f0400fe0|	gnu	xvcvsxddp vs2,vs1
 7c6802a6|	gnu	mflr r3
 7c6902a6|	gnu	mfctr r3
 4c8c0000|	gnu	mcrf cr1,cr3
+7c2101a7|	gnu	mtvsrwa vs33,r1
+7c2101e7|	gnu	mtvsrwz vs33,r1
+7ce10067|	gnu	mfvsrd r1,vs39
+7ce100e7|	gnu	mfvsrwz r1,vs39
+7c210167|	gnu	mtvsrd vs33,r1
+7c8112de|	gnu	isel r4,r1,r2,4*cr2+so
+7c2104ac|	gnu	sync 1,1
+7c2110ac|	gnu	dcbf r1,r2,1
+7c20003c|	gnu	wait 1,0
+4c000924|	gnu	rfebb 1

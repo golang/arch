@@ -43,6 +43,10 @@ func allowedMismatchObjdump(text string, size int, inst *Inst, dec ExtInst) bool
 		return true
 	case MTVSRWA, MTVSRWZ, MFVSRWZ, MFVSRD, MTVSRD: // We don't support extended mnemonics using VRs or FPRs
 		return true
+	case ISEL: // We decode the BI similar to conditional branch insn, objdump doesn't.
+		return true
+	case SYNC, WAIT, RFEBB: // ISA 3.1 adds more bits and extended mnemonics for these book ii instructions.
+		return true
 	}
 
 	if len(dec.enc) >= 4 {

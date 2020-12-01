@@ -14,15 +14,16 @@
 package main
 
 import (
-	"bufio"
 	"bytes"
 	"encoding/csv"
 	"flag"
 	"fmt"
 	gofmt "go/format"
 	"log"
+	"math/bits"
 	"os"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 	"text/template"
@@ -30,7 +31,7 @@ import (
 	asm "golang.org/x/arch/ppc64/ppc64asm"
 )
 
-var format = flag.String("fmt", "text", "output format: text, decoder")
+var format = flag.String("fmt", "text", "output format: text, decoder, asm")
 var debug = flag.Bool("debug", false, "enable debugging output")
 
 var inputFile string
@@ -60,13 +61,15 @@ func main() {
 		print = printText
 	case "decoder":
 		print = printDecoder
+	case "asm":
+		print = printASM
 	}
 
 	p, err := readCSV(flag.Arg(0))
-	log.Printf("Parsed %d instruction forms.", len(p.Insts))
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Parsed %d instruction forms.", len(p.Insts))
 	print(p)
 }
 
@@ -79,23 +82,9 @@ func readCSV(file string) (*Prog, error) {
 	if err != nil {
 		return nil, err
 	}
-	b := bufio.NewReader(f)
-	for {
-		c, err := b.ReadByte()
-		if err != nil {
-			break
-		}
-		if c == '\n' {
-			continue
-		}
-		if c == '#' {
-			b.ReadBytes('\n')
-			continue
-		}
-		b.UnreadByte()
-		break
-	}
-	table, err := csv.NewReader(b).ReadAll()
+	csvReader := csv.NewReader(f)
+	csvReader.Comment = '#'
+	table, err := csvReader.ReadAll()
 	if err != nil {
 		return nil, fmt.Errorf("parsing %s: %v", file, err)
 	}
@@ -108,6 +97,10 @@ func readCSV(file string) (*Prog, error) {
 
 	p := &Prog{}
 	for _, row := range table {
+		// TODO: add support for prefixed instructions. Ignore for now.
+		if row[2][0] == ',' {
+			continue
+		}
 		add(p, row[0], row[1], row[2], row[3])
 	}
 	return p, nil
@@ -200,14 +193,25 @@ func (a Arg) isDontCare() bool {
 	return a.Name[0] == '/' && a.Name == strings.Repeat("/", len(a.Name))
 }
 
+type instArray []Inst
+
+func (i instArray) Len() int {
+	return len(i)
+}
+
+func (i instArray) Swap(j, k int) {
+	i[j], i[k] = i[k], i[j]
+}
+
+// Sort by decreasing number of mask bits to ensure extended mnemonics
+// are always found first when scanning the table.
+func (i instArray) Less(j, k int) bool {
+	return bits.OnesCount32(i[j].Mask) > bits.OnesCount32(i[k].Mask)
+}
+
 // add adds the entry from the CSV described by text, mnemonics, encoding, and tags
 // to the program p.
 func add(p *Prog, text, mnemonics, encoding, tags string) {
-	if strings.HasPrefix(mnemonics, "e_") || strings.HasPrefix(mnemonics, "se_") {
-		// TODO(minux): VLE instructions are ignored.
-		return
-	}
-
 	// Parse encoding, building size and offset of each field.
 	// The first field in the encoding is the smallest offset.
 	// And note the MSB is bit 0, not bit 31.
@@ -313,6 +317,7 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 	// split mnemonics into individual instructions
 	// example: "b target_addr (AA=0 LK=0)|ba target_addr (AA=1 LK=0)|bl target_addr (AA=0 LK=1)|bla target_addr (AA=1 LK=1)"
 	insts := strings.Split(categoryRe.ReplaceAllString(mnemonics, ""), "|")
+	foundInst := []Inst{}
 	for _, inst := range insts {
 		value, mask := value, mask
 		args := args.Clone()
@@ -351,6 +356,7 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 			typ := asm.TypeUnknown
 			var shift uint8
 			opr2 := ""
+			opr3 := ""
 			switch opr {
 			case "target_addr":
 				shift = 2
@@ -364,11 +370,17 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 				} else {
 					opr = "BD"
 				}
-			case "UI", "BO", "BH", "TH", "LEV", "NB", "L", "TO", "FXM", "FC", "U", "W", "FLM", "UIM", "IMM8", "RIC", "PRS", "SHB", "SHW", "ST", "SIX", "PS", "DCM", "DCMX", "DGM", "RMC", "R", "SP", "S", "DM", "CT", "EH", "E", "MO", "WC", "A", "IH", "OC", "DUI", "DUIS", "CY":
+			case "UI", "BO", "BH", "TH", "LEV", "NB", "L", "TO", "FXM", "FC", "U", "W", "FLM", "UIM", "IMM8", "RIC", "PRS", "SHB", "SHW", "ST", "SIX", "PS", "DCM", "DGM", "RMC", "R", "SP", "S", "DM", "CT", "EH", "E", "MO", "WC", "A", "IH", "OC", "DUI", "DUIS", "CY", "SC", "PL", "MP", "N", "IMM", "DRM", "RM":
 				typ = asm.TypeImmUnsigned
 				if i := args.Find(opr); i < 0 {
 					opr = "D"
 				}
+			case "bm":
+				opr = "b0"
+				opr2 = "b1"
+				opr3 = "b2"
+				typ = asm.TypeImmUnsigned
+
 			case "SH":
 				typ = asm.TypeImmUnsigned
 				if args.Find("sh2") >= 0 { // sh2 || sh
@@ -385,6 +397,16 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 				if i := args.Find(opr); i < 0 {
 					opr = "D"
 				}
+			case "DCMX":
+				typ = asm.TypeImmUnsigned
+				// Some instructions encode this consecutively.
+				if i := args.Find(opr); i >= 0 {
+					break
+				}
+				typ = asm.TypeImmUnsigned
+				opr = "dc"
+				opr2 = "dm"
+				opr3 = "dx"
 			case "DS":
 				typ = asm.TypeOffset
 				shift = 2
@@ -405,6 +427,13 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 					typ = asm.TypeImmSigned
 					opr = "SI"
 					break
+				}
+				if i := args.Find("d0"); i >= 0 {
+					typ = asm.TypeImmSigned
+					// DX-form
+					opr = "d0"
+					opr2 = "d1"
+					opr3 = "d2"
 				}
 			case "RA", "RB", "RC", "RS", "RSp", "RT", "RTp":
 				typ = asm.TypeReg
@@ -428,6 +457,22 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 				typ = asm.TypeVecSReg
 				opr2 = opr[1:]
 				opr = opr[1:] + "X"
+			case "XTp", "XSp": // 5-bit, split field
+				//XTp encodes 5 bits, VSR is XT*32 + TP<<1
+				typ = asm.TypeVecSpReg
+				opr2 = opr[1:2] + "p"
+				opr = opr[1:2] + "X"
+
+			case "XAp":
+				// XAp in MMA encodes a regular VSR, but is only valid
+				// if it is even, and does not overlap the accumulator.
+				typ = asm.TypeVecSReg
+				opr2 = opr[1:2] + "p"
+				opr = opr[1:2] + "X"
+
+			case "AT", "AS":
+				typ = asm.TypeMMAReg
+
 			case "VRA", "VRB", "VRC", "VRS", "VRT":
 				typ = asm.TypeVecReg
 			case "SPR", "DCRN", "BHRBE", "TBR", "SR", "TMR", "PMRN": // Note: if you add to this list and the register field needs special handling, add it to switch statement below
@@ -445,8 +490,16 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 			}
 			field.Type = typ
 			field.Shift = shift
-			var f1, f2 asm.BitField
+			var f1, f2, f3 asm.BitField
 			switch {
+			case opr3 != "":
+				b0 := args.Find(opr)
+				b1 := args.Find(opr2)
+				b2 := args.Find(opr3)
+				f1.Offs, f1.Bits = uint8(args[b0].Offs), uint8(args[b0].Bits)
+				f2.Offs, f2.Bits = uint8(args[b1].Offs), uint8(args[b1].Bits)
+				f3.Offs, f3.Bits = uint8(args[b2].Offs), uint8(args[b2].Bits)
+
 			case opr2 != "":
 				ext := args.Find(opr)
 				if ext < 0 {
@@ -486,14 +539,22 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 			if f2.Bits > 0 {
 				field.BitFields.Append(f2)
 			}
+			if f3.Bits > 0 {
+				field.BitFields.Append(f3)
+			}
 			inst.Fields = append(inst.Fields, field)
 		}
 		if *debug {
 			fmt.Printf("%v\n", inst)
 		}
-
-		p.Insts = append(p.Insts, inst)
+		foundInst = append(foundInst, inst)
 	}
+
+	// Sort mnemonics by bitcount.  This ensures more specific mnemonics are picked
+	// up before generic ones (e.g li vs addi, or cmpld/cmplw vs cmpl)
+	sort.Sort(instArray(foundInst))
+
+	p.Insts = append(p.Insts, foundInst...)
 }
 
 // condRegexp is a regular expression that matches condition in mnemonics (e.g. "AA=1")
@@ -514,6 +575,18 @@ var operandRe = regexp.MustCompile(`([[:alpha:]][[:alnum:]_]*\.?)`)
 // printText implements the -fmt=text mode, which is not implemented (yet?).
 func printText(p *Prog) {
 	log.Fatal("-fmt=text not implemented")
+}
+
+// printASM implements the -fmt=asm mode.  This prints out a gnu assembler file
+// which can be used to used to generate test output to verify the golang
+// disassembler's gnu output matches gnu binutils. This is used as an input to
+// ppc64util to generate the decode_generated.txt test case.
+func printASM(p *Prog) {
+	fmt.Printf("#include \"hack.h\"\n")
+	fmt.Printf(".text\n")
+	for _, inst := range p.Insts {
+		fmt.Printf("\t%s\n", inst.Encoding)
+	}
 }
 
 // opName translate an opcode to a valid Go identifier all-cap op name.

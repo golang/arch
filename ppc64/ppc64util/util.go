@@ -2,7 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build ignore
 // +build ignore
+
 // Generate interesting test cases from ppc64 objdump via
 // go run util.go
 //
@@ -20,6 +22,7 @@ import (
 	"os"
 	"os/exec"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -79,11 +82,13 @@ func emitBranches(out io.Writer) {
 	}
 }
 
-// Emit a test file using the generator called name.txt
+// Emit a test file using the generator called name.txt.  This requires
+// a GCC toolchain which supports -mcpu=power10.
 func genOutput(name, tcPfx string, generator func(io.Writer)) {
 	// Generate object code from gcc
-	cmd := exec.Command(tcPfx+"gcc", "-c", "-mbig", "-mcpu=power9", "-x", "assembler-with-cpp", "-o", name+".o", "-")
+	cmd := exec.Command(tcPfx+"gcc", "-c", "-mbig", "-mcpu=power10", "-x", "assembler-with-cpp", "-o", name+".o", "-")
 	input, _ := cmd.StdinPipe()
+	cmd.Stderr = os.Stderr
 	go func() {
 		defer input.Close()
 		generator(input.(io.Writer))
@@ -107,20 +112,39 @@ func genOutput(name, tcPfx string, generator func(io.Writer)) {
 		return
 	}
 
+	pfx := ""
+	dec := ""
 	for scanner.Scan() {
 		ln := spacere.Split(scanner.Text(), -1)
 		if len(ln) >= 7 {
 			opc := strings.Join(ln[2:6], "")
-			dec := strings.Join(ln[6:], " ")
-			fmt.Fprintf(outf, "%s|\tgnu\t%s\n", opc, dec)
+			if len(pfx) == 0 {
+				dec = strings.Join(ln[6:], " ")
+			}
+			if v, _ := strconv.ParseInt(ln[2], 16, 16); v&0xFC == 0x04 {
+				pfx = opc
+				continue
+			}
+			fmt.Fprintf(outf, "%s%s|\tgnu\t%s\n", pfx, opc, dec)
+			pfx = ""
 		}
 
 	}
 	cmd.Wait()
 }
 
+// Generate representative instructions for all[1] instructions in pp64.csv.
+//
+// [1] See hack.h for a few minor, exceptional workarounds.
+func emitGenerated(out io.Writer) {
+	cmd := exec.Command("go", "run", "../ppc64map/map.go", "-fmt=asm", "../pp64.csv")
+	cmdout, _ := cmd.Output()
+	out.Write(cmdout)
+}
+
 // Produce generated test outputs.  This should be run every so often with
 // new versions of objdump to ensure we stay up to date.
 func main() {
 	genOutput("decode_branch", "powerpc64le-linux-gnu-", emitBranches)
+	genOutput("decode_generated", "powerpc64le-linux-gnu-", emitGenerated)
 }

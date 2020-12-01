@@ -34,6 +34,8 @@ func GNUSyntax(inst Inst, pc uint64) string {
 	startArg := 0
 	sep := " "
 	opName := inst.Op.String()
+	argList := inst.Args[:]
+
 	switch opName {
 	case "bc", "bcl", "bca", "bcla", "bclr", "bclrl", "bcctr", "bcctrl", "bctar", "bctarl":
 		sfx := inst.Op.String()[2:]
@@ -223,23 +225,68 @@ func GNUSyntax(inst Inst, pc uint64) string {
 			buf.WriteString("spr")
 		}
 
-	case "sync":
-		switch arg := inst.Args[0].(type) {
-		case Imm:
-			switch arg {
-			case 0:
-				buf.WriteString("hwsync")
-			case 1:
-				buf.WriteString("lwsync")
-			case 2:
-				buf.WriteString("ptesync")
-			}
+	case "mtfsfi", "mtfsfi.":
+		buf.WriteString(opName)
+		l := inst.Args[2].(Imm)
+		if l == 0 {
+			// L == 0 is an extended mnemonic for the same.
+			asm := fmt.Sprintf(" %s,%s",
+				gnuArg(&inst, 0, inst.Args[0], PC),
+				gnuArg(&inst, 1, inst.Args[1], PC))
+			buf.WriteString(asm)
+			startArg = 3
 		}
-		startArg = 2
+
+	case "paste.":
+		buf.WriteString(opName)
+		l := inst.Args[2].(Imm)
+		if l == 1 {
+			// L == 1 is an extended mnemonic for the same.
+			asm := fmt.Sprintf(" %s,%s",
+				gnuArg(&inst, 0, inst.Args[0], PC),
+				gnuArg(&inst, 1, inst.Args[1], PC))
+			buf.WriteString(asm)
+			startArg = 3
+		}
+
+	case "mtfsf", "mtfsf.":
+		buf.WriteString(opName)
+		l := inst.Args[3].(Imm)
+		if l == 0 {
+			// L == 0 is an extended mnemonic for the same.
+			asm := fmt.Sprintf(" %s,%s,%s",
+				gnuArg(&inst, 0, inst.Args[0], PC),
+				gnuArg(&inst, 1, inst.Args[1], PC),
+				gnuArg(&inst, 2, inst.Args[2], PC))
+			buf.WriteString(asm)
+			startArg = 4
+		}
+
+	case "sync":
+		lsc := inst.Args[0].(Imm)<<4 | inst.Args[1].(Imm)
+		switch lsc {
+		case 0x00:
+			buf.WriteString("hwsync")
+			startArg = 2
+		case 0x10:
+			buf.WriteString("lwsync")
+			startArg = 2
+		default:
+			buf.WriteString(opName)
+		}
+
+	case "lbarx", "lharx", "lwarx", "ldarx":
+		// If EH == 0, omit printing EH.
+		eh := inst.Args[3].(Imm)
+		if eh == 0 {
+			argList = inst.Args[:3]
+		}
+		buf.WriteString(inst.Op.String())
+
 	default:
 		buf.WriteString(inst.Op.String())
 	}
-	for i, arg := range inst.Args[:] {
+	for i, arg := range argList {
 		if arg == nil {
 			break
 		}

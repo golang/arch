@@ -192,12 +192,16 @@ const (
 	MODUW
 	CMPWI
 	CMPDI
+	CMPI
 	CMPW
 	CMPD
+	CMP
 	CMPLWI
 	CMPLDI
+	CMPLI
 	CMPLW
 	CMPLD
+	CMPL
 	TWI
 	TW
 	TDI
@@ -281,7 +285,6 @@ const (
 	MFSPR
 	MTCRF
 	MFCR
-	MTSLE
 	MFVSRD
 	MFVSRWZ
 	MTVSRD
@@ -289,9 +292,6 @@ const (
 	MTVSRWZ
 	MTOCRF
 	MFOCRF
-	MCRXR
-	MTDCRUX
-	MFDCRUX
 	LFS
 	LFSU
 	LFSX
@@ -890,343 +890,8 @@ const (
 	XXBRD
 	XXBRW
 	XXBRH
-	BRINC
-	EVABS
-	EVADDIW
-	EVADDSMIAAW
-	EVADDSSIAAW
-	EVADDUMIAAW
-	EVADDUSIAAW
-	EVADDW
-	EVAND
-	EVCMPEQ
-	EVANDC
-	EVCMPGTS
-	EVCMPGTU
-	EVCMPLTU
-	EVCMPLTS
-	EVCNTLSW
-	EVCNTLZW
-	EVDIVWS
-	EVDIVWU
-	EVEQV
-	EVEXTSB
-	EVEXTSH
-	EVLDD
-	EVLDH
-	EVLDDX
-	EVLDHX
-	EVLDW
-	EVLHHESPLAT
-	EVLDWX
-	EVLHHESPLATX
-	EVLHHOSSPLAT
-	EVLHHOUSPLAT
-	EVLHHOSSPLATX
-	EVLHHOUSPLATX
-	EVLWHE
-	EVLWHOS
-	EVLWHEX
-	EVLWHOSX
-	EVLWHOU
-	EVLWHSPLAT
-	EVLWHOUX
-	EVLWHSPLATX
-	EVLWWSPLAT
-	EVMERGEHI
-	EVLWWSPLATX
-	EVMERGELO
-	EVMERGEHILO
-	EVMHEGSMFAA
-	EVMERGELOHI
-	EVMHEGSMFAN
-	EVMHEGSMIAA
-	EVMHEGUMIAA
-	EVMHEGSMIAN
-	EVMHEGUMIAN
-	EVMHESMF
-	EVMHESMFAAW
-	EVMHESMFA
-	EVMHESMFANW
-	EVMHESMI
-	EVMHESMIAAW
-	EVMHESMIA
-	EVMHESMIANW
-	EVMHESSF
-	EVMHESSFA
-	EVMHESSFAAW
-	EVMHESSFANW
-	EVMHESSIAAW
-	EVMHESSIANW
-	EVMHEUMI
-	EVMHEUMIAAW
-	EVMHEUMIA
-	EVMHEUMIANW
-	EVMHEUSIAAW
-	EVMHEUSIANW
-	EVMHOGSMFAA
-	EVMHOGSMIAA
-	EVMHOGSMFAN
-	EVMHOGSMIAN
-	EVMHOGUMIAA
-	EVMHOSMF
-	EVMHOGUMIAN
-	EVMHOSMFA
-	EVMHOSMFAAW
-	EVMHOSMI
-	EVMHOSMFANW
-	EVMHOSMIA
-	EVMHOSMIAAW
-	EVMHOSMIANW
-	EVMHOSSF
-	EVMHOSSFA
-	EVMHOSSFAAW
-	EVMHOSSFANW
-	EVMHOSSIAAW
-	EVMHOUMI
-	EVMHOSSIANW
-	EVMHOUMIA
-	EVMHOUMIAAW
-	EVMHOUSIAAW
-	EVMHOUMIANW
-	EVMHOUSIANW
-	EVMRA
-	EVMWHSMF
-	EVMWHSMI
-	EVMWHSMFA
-	EVMWHSMIA
-	EVMWHSSF
-	EVMWHUMI
-	EVMWHSSFA
-	EVMWHUMIA
-	EVMWLSMIAAW
-	EVMWLSSIAAW
-	EVMWLSMIANW
-	EVMWLSSIANW
-	EVMWLUMI
-	EVMWLUMIAAW
-	EVMWLUMIA
-	EVMWLUMIANW
-	EVMWLUSIAAW
-	EVMWSMF
-	EVMWLUSIANW
-	EVMWSMFA
-	EVMWSMFAA
-	EVMWSMI
-	EVMWSMIAA
-	EVMWSMFAN
-	EVMWSMIA
-	EVMWSMIAN
-	EVMWSSF
-	EVMWSSFA
-	EVMWSSFAA
-	EVMWUMI
-	EVMWSSFAN
-	EVMWUMIA
-	EVMWUMIAA
-	EVNAND
-	EVMWUMIAN
-	EVNEG
-	EVNOR
-	EVORC
-	EVOR
-	EVRLW
-	EVRLWI
-	EVSEL
-	EVRNDW
-	EVSLW
-	EVSPLATFI
-	EVSRWIS
-	EVSLWI
-	EVSPLATI
-	EVSRWIU
-	EVSRWS
-	EVSTDD
-	EVSRWU
-	EVSTDDX
-	EVSTDH
-	EVSTDW
-	EVSTDHX
-	EVSTDWX
-	EVSTWHE
-	EVSTWHO
-	EVSTWWE
-	EVSTWHEX
-	EVSTWHOX
-	EVSTWWEX
-	EVSTWWO
-	EVSUBFSMIAAW
-	EVSTWWOX
-	EVSUBFSSIAAW
-	EVSUBFUMIAAW
-	EVSUBFUSIAAW
-	EVSUBFW
-	EVSUBIFW
-	EVXOR
-	EVFSABS
-	EVFSNABS
-	EVFSNEG
-	EVFSADD
-	EVFSMUL
-	EVFSSUB
-	EVFSDIV
-	EVFSCMPGT
-	EVFSCMPLT
-	EVFSCMPEQ
-	EVFSTSTGT
-	EVFSTSTLT
-	EVFSTSTEQ
-	EVFSCFSI
-	EVFSCFSF
-	EVFSCFUI
-	EVFSCFUF
-	EVFSCTSI
-	EVFSCTUI
-	EVFSCTSIZ
-	EVFSCTUIZ
-	EVFSCTSF
-	EVFSCTUF
-	EFSABS
-	EFSNEG
-	EFSNABS
-	EFSADD
-	EFSMUL
-	EFSSUB
-	EFSDIV
-	EFSCMPGT
-	EFSCMPLT
-	EFSCMPEQ
-	EFSTSTGT
-	EFSTSTLT
-	EFSTSTEQ
-	EFSCFSI
-	EFSCFSF
-	EFSCTSI
-	EFSCFUI
-	EFSCFUF
-	EFSCTUI
-	EFSCTSIZ
-	EFSCTSF
-	EFSCTUIZ
-	EFSCTUF
-	EFDABS
-	EFDNEG
-	EFDNABS
-	EFDADD
-	EFDMUL
-	EFDSUB
-	EFDDIV
-	EFDCMPGT
-	EFDCMPEQ
-	EFDCMPLT
-	EFDTSTGT
-	EFDTSTLT
-	EFDCFSI
-	EFDTSTEQ
-	EFDCFUI
-	EFDCFSID
-	EFDCFSF
-	EFDCFUF
-	EFDCFUID
-	EFDCTSI
-	EFDCTUI
-	EFDCTSIDZ
-	EFDCTUIDZ
-	EFDCTSIZ
-	EFDCTSF
-	EFDCTUF
-	EFDCTUIZ
-	EFDCFS
-	EFSCFD
-	DLMZB
-	DLMZBCC
-	MACCHW
-	MACCHWCC
-	MACCHWO
-	MACCHWOCC
-	MACCHWS
-	MACCHWSCC
-	MACCHWSO
-	MACCHWSOCC
-	MACCHWU
-	MACCHWUCC
-	MACCHWUO
-	MACCHWUOCC
-	MACCHWSU
-	MACCHWSUCC
-	MACCHWSUO
-	MACCHWSUOCC
-	MACHHW
-	MACHHWCC
-	MACHHWO
-	MACHHWOCC
-	MACHHWS
-	MACHHWSCC
-	MACHHWSO
-	MACHHWSOCC
-	MACHHWU
-	MACHHWUCC
-	MACHHWUO
-	MACHHWUOCC
-	MACHHWSU
-	MACHHWSUCC
-	MACHHWSUO
-	MACHHWSUOCC
-	MACLHW
-	MACLHWCC
-	MACLHWO
-	MACLHWOCC
-	MACLHWS
-	MACLHWSCC
-	MACLHWSO
-	MACLHWSOCC
-	MACLHWU
-	MACLHWUCC
-	MACLHWUO
-	MACLHWUOCC
-	MULCHW
-	MULCHWCC
-	MACLHWSU
-	MACLHWSUCC
-	MACLHWSUO
-	MACLHWSUOCC
-	MULCHWU
-	MULCHWUCC
-	MULHHW
-	MULHHWCC
-	MULLHW
-	MULLHWCC
-	MULHHWU
-	MULHHWUCC
-	MULLHWU
-	MULLHWUCC
-	NMACCHW
-	NMACCHWCC
-	NMACCHWO
-	NMACCHWOCC
-	NMACCHWS
-	NMACCHWSCC
-	NMACCHWSO
-	NMACCHWSOCC
-	NMACHHW
-	NMACHHWCC
-	NMACHHWO
-	NMACHHWOCC
-	NMACHHWS
-	NMACHHWSCC
-	NMACHHWSO
-	NMACHHWSOCC
-	NMACLHW
-	NMACLHWCC
-	NMACLHWO
-	NMACLHWOCC
-	NMACLHWS
-	NMACLHWSCC
-	NMACLHWSO
-	NMACLHWSOCC
 	ICBI
 	ICBT
-	DCBA
 	DCBT
 	DCBTST
 	DCBZ
@@ -1245,38 +910,11 @@ const (
 	STQCXCC
 	SYNC
 	EIEIO
-	MBAR
 	WAIT
-	TBEGINCC
-	TENDCC
-	TABORTCC
-	TABORTWCCC
-	TABORTWCICC
-	TABORTDCCC
-	TABORTDCICC
-	TSRCC
-	TCHECK
 	MFTB
 	RFEBB
-	LBDX
-	LHDX
-	LWDX
-	LDDX
-	LFDDX
-	STBDX
-	STHDX
-	STWDX
-	STDDX
-	STFDDX
-	DSN
-	ECIWX
-	ECOWX
 	RFID
 	HRFID
-	DOZE
-	NAP
-	SLEEP
-	RVWINKLE
 	LBZCIX
 	LWZCIX
 	LHZCIX
@@ -1285,8 +923,6 @@ const (
 	STWCIX
 	STHCIX
 	STDCIX
-	TRECLAIMCC
-	TRECHKPTCC
 	MTMSR
 	MTMSRD
 	MFMSR
@@ -1296,74 +932,13 @@ const (
 	SLBMFEV
 	SLBMFEE
 	SLBFEECC
-	MTSR
-	MTSRIN
-	MFSR
-	MFSRIN
 	TLBIE
 	TLBIEL
-	TLBIA
 	TLBSYNC
 	MSGSND
 	MSGCLR
 	MSGSNDP
 	MSGCLRP
-	MTTMR
-	RFI
-	RFCI
-	RFDI
-	RFMCI
-	RFGI
-	EHPRIV
-	MTDCR
-	MTDCRX
-	MFDCR
-	MFDCRX
-	WRTEE
-	WRTEEI
-	LBEPX
-	LHEPX
-	LWEPX
-	LDEPX
-	STBEPX
-	STHEPX
-	STWEPX
-	STDEPX
-	DCBSTEP
-	DCBTEP
-	DCBFEP
-	DCBTSTEP
-	ICBIEP
-	DCBZEP
-	LFDEPX
-	STFDEPX
-	EVLDDEPX
-	EVSTDDEPX
-	LVEPX
-	LVEPXL
-	STVEPX
-	STVEPXL
-	DCBI
-	DCBLQCC
-	ICBLQCC
-	DCBTLS
-	DCBTSTLS
-	ICBTLS
-	ICBLC
-	DCBLC
-	TLBIVAX
-	TLBILX
-	TLBSX
-	TLBSRXCC
-	TLBRE
-	TLBWE
-	DNH
-	DCI
-	ICI
-	DCREAD
-	ICREAD
-	MFPMR
-	MTPMR
 	ADDEX
 	DARN
 	MADDHD
@@ -1379,1465 +954,1845 @@ const (
 	MCRXRX
 	COPY
 	PASTECC
+	BRD
+	BRH
+	BRW
+	CFUGED
+	CNTLZDM
+	CNTTZDM
+	DCFFIXQQ
+	DCTFIXQQ
+	LXVKQ
+	LXVP
+	LXVPX
+	LXVRBX
+	LXVRDX
+	LXVRHX
+	LXVRWX
+	MTVSRBM
+	MTVSRBMI
+	MTVSRDM
+	MTVSRHM
+	MTVSRQM
+	MTVSRWM
+	PDEPD
+	PEXTD
+	SETBC
+	SETBCR
+	SETNBC
+	SETNBCR
+	STXVP
+	STXVPX
+	STXVRBX
+	STXVRDX
+	STXVRHX
+	STXVRWX
+	VCFUGED
+	VCLRLB
+	VCLRRB
+	VCLZDM
+	VCMPEQUQ
+	VCMPEQUQCC
+	VCMPGTSQ
+	VCMPGTSQCC
+	VCMPGTUQ
+	VCMPGTUQCC
+	VCMPSQ
+	VCMPUQ
+	VCNTMBB
+	VCNTMBD
+	VCNTMBH
+	VCNTMBW
+	VCTZDM
+	VDIVESD
+	VDIVESQ
+	VDIVESW
+	VDIVEUD
+	VDIVEUQ
+	VDIVEUW
+	VDIVSD
+	VDIVSQ
+	VDIVSW
+	VDIVUD
+	VDIVUQ
+	VDIVUW
+	VEXPANDBM
+	VEXPANDDM
+	VEXPANDHM
+	VEXPANDQM
+	VEXPANDWM
+	VEXTDDVLX
+	VEXTDDVRX
+	VEXTDUBVLX
+	VEXTDUBVRX
+	VEXTDUHVLX
+	VEXTDUHVRX
+	VEXTDUWVLX
+	VEXTDUWVRX
+	VEXTRACTBM
+	VEXTRACTDM
+	VEXTRACTHM
+	VEXTRACTQM
+	VEXTRACTWM
+	VEXTSD2Q
+	VGNB
+	VINSBLX
+	VINSBRX
+	VINSBVLX
+	VINSBVRX
+	VINSD
+	VINSDLX
+	VINSDRX
+	VINSHLX
+	VINSHRX
+	VINSHVLX
+	VINSHVRX
+	VINSW
+	VINSWLX
+	VINSWRX
+	VINSWVLX
+	VINSWVRX
+	VMODSD
+	VMODSQ
+	VMODSW
+	VMODUD
+	VMODUQ
+	VMODUW
+	VMSUMCUD
+	VMULESD
+	VMULEUD
+	VMULHSD
+	VMULHSW
+	VMULHUD
+	VMULHUW
+	VMULLD
+	VMULOSD
+	VMULOUD
+	VPDEPD
+	VPEXTD
+	VRLQ
+	VRLQMI
+	VRLQNM
+	VSLDBI
+	VSLQ
+	VSRAQ
+	VSRDBI
+	VSRQ
+	VSTRIBL
+	VSTRIBLCC
+	VSTRIBR
+	VSTRIBRCC
+	VSTRIHL
+	VSTRIHLCC
+	VSTRIHR
+	VSTRIHRCC
+	XSCMPEQQP
+	XSCMPGEQP
+	XSCMPGTQP
+	XSCVQPSQZ
+	XSCVQPUQZ
+	XSCVSQQP
+	XSCVUQQP
+	XSMAXCQP
+	XSMINCQP
+	XVBF16GER2
+	XVBF16GER2NN
+	XVBF16GER2NP
+	XVBF16GER2PN
+	XVBF16GER2PP
+	XVCVBF16SPN
+	XVCVSPBF16
+	XVF16GER2
+	XVF16GER2NN
+	XVF16GER2NP
+	XVF16GER2PN
+	XVF16GER2PP
+	XVF32GER
+	XVF32GERNN
+	XVF32GERNP
+	XVF32GERPN
+	XVF32GERPP
+	XVF64GER
+	XVF64GERNN
+	XVF64GERNP
+	XVF64GERPN
+	XVF64GERPP
+	XVI16GER2
+	XVI16GER2PP
+	XVI16GER2S
+	XVI16GER2SPP
+	XVI4GER8
+	XVI4GER8PP
+	XVI8GER4
+	XVI8GER4PP
+	XVI8GER4SPP
+	XVTLSBB
+	XXGENPCVBM
+	XXGENPCVDM
+	XXGENPCVHM
+	XXGENPCVWM
+	XXMFACC
+	XXMTACC
+	XXSETACCZ
+	MSGCLRU
+	MSGSNDU
+	URFID
+	MFFSCDRN
+	MFFSCDRNI
+	MFFSCE
+	MFFSCRN
+	MFFSCRNI
+	MFFSL
+	SLBIAG
+	ADDPCIS
+	BCDCFNCC
+	BCDCFSQCC
+	BCDCFZCC
+	BCDCPSGNCC
+	BCDCTNCC
+	BCDCTSQCC
+	BCDCTZCC
+	BCDSCC
+	BCDSETSGNCC
+	BCDSRCC
+	BCDTRUNCCC
+	BCDUSCC
+	BCDUTRUNCCC
+	CNTTZD
+	CNTTZDCC
+	CNTTZW
+	CNTTZWCC
+	CPABORT
+	DTSTSFI
+	DTSTSFIQ
+	LDAT
+	LWAT
+	LXSD
+	LXSIBZX
+	LXSIHZX
+	LXSSP
+	LXVWSX
+	MSGSYNC
+	SETB
+	SLBIEG
+	SLBSYNC
+	STDAT
+	STOP
+	STWAT
+	STXSD
+	STXSIBX
+	STXSIHX
+	STXSSP
+	VABSDUB
+	VABSDUH
+	VABSDUW
+	VCLZLSBB
+	VCTZB
+	VCTZD
+	VCTZH
+	VCTZLSBB
+	VCTZW
+	VEXTRACTD
+	VEXTRACTUB
+	VEXTRACTUH
+	VEXTRACTUW
+	VEXTSB2D
+	VEXTSB2W
+	VEXTSH2D
+	VEXTSH2W
+	VEXTSW2D
+	VEXTUBLX
+	VEXTUBRX
+	VEXTUHLX
+	VEXTUHRX
+	VEXTUWLX
+	VEXTUWRX
+	VINSERTB
+	VINSERTD
+	VINSERTH
+	VINSERTW
+	VMUL10CUQ
+	VMUL10ECUQ
+	VMUL10EUQ
+	VMUL10UQ
+	VNEGD
+	VNEGW
+	VPRTYBD
+	VPRTYBQ
+	VPRTYBW
+	VRLDMI
+	VRLDNM
+	VRLWMI
+	VRLWNM
+	VSLV
+	VSRV
+	XSABSQP
+	XSADDQP
+	XSADDQPO
+	XSCMPEQDP
+	XSCMPEXPDP
+	XSCMPEXPQP
+	XSCMPGEDP
+	XSCMPGTDP
+	XSCMPOQP
+	XSCMPUQP
+	XSCPSGNQP
+	XSCVDPHP
+	XSCVDPQP
+	XSCVHPDP
+	XSCVQPDP
+	XSCVQPDPO
+	XSCVQPSDZ
+	XSCVQPSWZ
+	XSCVQPUDZ
+	XSCVQPUWZ
+	XSCVSDQP
+	XSCVUDQP
+	XSDIVQP
+	XSDIVQPO
+	XSIEXPDP
+	XSIEXPQP
+	XSMADDQP
+	XSMADDQPO
+	XSMAXCDP
+	XSMAXJDP
+	XSMINCDP
+	XSMINJDP
+	XSMSUBQP
+	XSMSUBQPO
+	XSMULQP
+	XSMULQPO
+	XSNABSQP
+	XSNEGQP
+	XSNMADDQP
+	XSNMADDQPO
+	XSNMSUBQP
+	XSNMSUBQPO
+	XSRQPI
+	XSRQPIX
+	XSRQPXP
+	XSSQRTQP
+	XSSQRTQPO
+	XSSUBQP
+	XSSUBQPO
+	XSTSTDCDP
+	XSTSTDCQP
+	XSTSTDCSP
+	XSXEXPDP
+	XSXEXPQP
+	XSXSIGDP
+	XSXSIGQP
+	XVCVHPSP
+	XVCVSPHP
+	XVIEXPDP
+	XVIEXPSP
+	XVTSTDCDP
+	XVTSTDCSP
+	XVXEXPDP
+	XVXEXPSP
+	XVXSIGDP
+	XVXSIGSP
+	XXBRQ
+	XXEXTRACTUW
+	XXINSERTW
+	XXPERMR
+	XXSPLTIB
+	XSMADDMSP
+	XSMSUBMSP
+	XSNMADDMSP
+	XSNMSUBMSP
+	XSMADDMDP
+	XSMSUBMDP
+	XSNMADDMDP
+	XSNMSUBMDP
+	XVMADDMDP
+	XVMADDMSP
+	XVMSUBMDP
+	XVMSUBMSP
+	XVNMADDMDP
+	XVNMADDMSP
+	XVNMSUBMDP
+	XVNMSUBMSP
+	DADDQ
+	DADDQCC
+	DCMPOQ
+	DCMPUQ
+	DCTFIXQ
+	DCTFIXQCC
+	DDEDPDQ
+	DDEDPDQCC
+	DDIVQ
+	DDIVQCC
+	DENBCDQ
+	DENBCDQCC
+	DIEXQCC
+	DIEXQ
+	DMULQ
+	DMULQCC
+	DQUAIQ
+	DQUAIQCC
+	DQUAQ
+	DQUAQCC
+	DRINTNQ
+	DRINTNQCC
+	DRINTXQ
+	DRINTXQCC
+	DRRNDQ
+	DRRNDQCC
+	DSCLIQ
+	DSCLIQCC
+	DSCRIQ
+	DSCRIQCC
+	DSUBQ
+	DSUBQCC
+	DTSTDCQ
+	DTSTDGQ
+	DTSTEXQ
+	DTSTSFQ
+	DXEXQ
+	DXEXQCC
+	RFSCV
+	SCV
 )
 
 var opstr = [...]string{
-	CNTLZW:        "cntlzw",
-	CNTLZWCC:      "cntlzw.",
-	B:             "b",
-	BA:            "ba",
-	BL:            "bl",
-	BLA:           "bla",
-	BC:            "bc",
-	BCA:           "bca",
-	BCL:           "bcl",
-	BCLA:          "bcla",
-	BCLR:          "bclr",
-	BCLRL:         "bclrl",
-	BCCTR:         "bcctr",
-	BCCTRL:        "bcctrl",
-	BCTAR:         "bctar",
-	BCTARL:        "bctarl",
-	CRAND:         "crand",
-	CROR:          "cror",
-	CRNAND:        "crnand",
-	CRXOR:         "crxor",
-	CRNOR:         "crnor",
-	CRANDC:        "crandc",
-	MCRF:          "mcrf",
-	CREQV:         "creqv",
-	CRORC:         "crorc",
-	SC:            "sc",
-	CLRBHRB:       "clrbhrb",
-	MFBHRBE:       "mfbhrbe",
-	LBZ:           "lbz",
-	LBZU:          "lbzu",
-	LBZX:          "lbzx",
-	LBZUX:         "lbzux",
-	LHZ:           "lhz",
-	LHZU:          "lhzu",
-	LHZX:          "lhzx",
-	LHZUX:         "lhzux",
-	LHA:           "lha",
-	LHAU:          "lhau",
-	LHAX:          "lhax",
-	LHAUX:         "lhaux",
-	LWZ:           "lwz",
-	LWZU:          "lwzu",
-	LWZX:          "lwzx",
-	LWZUX:         "lwzux",
-	LWA:           "lwa",
-	LWAX:          "lwax",
-	LWAUX:         "lwaux",
-	LD:            "ld",
-	LDU:           "ldu",
-	LDX:           "ldx",
-	LDUX:          "ldux",
-	STB:           "stb",
-	STBU:          "stbu",
-	STBX:          "stbx",
-	STBUX:         "stbux",
-	STH:           "sth",
-	STHU:          "sthu",
-	STHX:          "sthx",
-	STHUX:         "sthux",
-	STW:           "stw",
-	STWU:          "stwu",
-	STWX:          "stwx",
-	STWUX:         "stwux",
-	STD:           "std",
-	STDU:          "stdu",
-	STDX:          "stdx",
-	STDUX:         "stdux",
-	LQ:            "lq",
-	STQ:           "stq",
-	LHBRX:         "lhbrx",
-	LWBRX:         "lwbrx",
-	STHBRX:        "sthbrx",
-	STWBRX:        "stwbrx",
-	LDBRX:         "ldbrx",
-	STDBRX:        "stdbrx",
-	LMW:           "lmw",
-	STMW:          "stmw",
-	LSWI:          "lswi",
-	LSWX:          "lswx",
-	STSWI:         "stswi",
-	STSWX:         "stswx",
-	LI:            "li",
-	ADDI:          "addi",
-	LIS:           "lis",
-	ADDIS:         "addis",
-	ADD:           "add",
-	ADDCC:         "add.",
-	ADDO:          "addo",
-	ADDOCC:        "addo.",
-	ADDIC:         "addic",
-	SUBF:          "subf",
-	SUBFCC:        "subf.",
-	SUBFO:         "subfo",
-	SUBFOCC:       "subfo.",
-	ADDICCC:       "addic.",
-	SUBFIC:        "subfic",
-	ADDC:          "addc",
-	ADDCCC:        "addc.",
-	ADDCO:         "addco",
-	ADDCOCC:       "addco.",
-	SUBFC:         "subfc",
-	SUBFCCC:       "subfc.",
-	SUBFCO:        "subfco",
-	SUBFCOCC:      "subfco.",
-	ADDE:          "adde",
-	ADDECC:        "adde.",
-	ADDEO:         "addeo",
-	ADDEOCC:       "addeo.",
-	ADDME:         "addme",
-	ADDMECC:       "addme.",
-	ADDMEO:        "addmeo",
-	ADDMEOCC:      "addmeo.",
-	SUBFE:         "subfe",
-	SUBFECC:       "subfe.",
-	SUBFEO:        "subfeo",
-	SUBFEOCC:      "subfeo.",
-	SUBFME:        "subfme",
-	SUBFMECC:      "subfme.",
-	SUBFMEO:       "subfmeo",
-	SUBFMEOCC:     "subfmeo.",
-	ADDZE:         "addze",
-	ADDZECC:       "addze.",
-	ADDZEO:        "addzeo",
-	ADDZEOCC:      "addzeo.",
-	SUBFZE:        "subfze",
-	SUBFZECC:      "subfze.",
-	SUBFZEO:       "subfzeo",
-	SUBFZEOCC:     "subfzeo.",
-	NEG:           "neg",
-	NEGCC:         "neg.",
-	NEGO:          "nego",
-	NEGOCC:        "nego.",
-	MULLI:         "mulli",
-	MULLW:         "mullw",
-	MULLWCC:       "mullw.",
-	MULLWO:        "mullwo",
-	MULLWOCC:      "mullwo.",
-	MULHW:         "mulhw",
-	MULHWCC:       "mulhw.",
-	MULHWU:        "mulhwu",
-	MULHWUCC:      "mulhwu.",
-	DIVW:          "divw",
-	DIVWCC:        "divw.",
-	DIVWO:         "divwo",
-	DIVWOCC:       "divwo.",
-	DIVWU:         "divwu",
-	DIVWUCC:       "divwu.",
-	DIVWUO:        "divwuo",
-	DIVWUOCC:      "divwuo.",
-	DIVWE:         "divwe",
-	DIVWECC:       "divwe.",
-	DIVWEO:        "divweo",
-	DIVWEOCC:      "divweo.",
-	DIVWEU:        "divweu",
-	DIVWEUCC:      "divweu.",
-	DIVWEUO:       "divweuo",
-	DIVWEUOCC:     "divweuo.",
-	MULLD:         "mulld",
-	MULLDCC:       "mulld.",
-	MULLDO:        "mulldo",
-	MULLDOCC:      "mulldo.",
-	MULHDU:        "mulhdu",
-	MULHDUCC:      "mulhdu.",
-	MULHD:         "mulhd",
-	MULHDCC:       "mulhd.",
-	DIVD:          "divd",
-	DIVDCC:        "divd.",
-	DIVDO:         "divdo",
-	DIVDOCC:       "divdo.",
-	DIVDU:         "divdu",
-	DIVDUCC:       "divdu.",
-	DIVDUO:        "divduo",
-	DIVDUOCC:      "divduo.",
-	DIVDE:         "divde",
-	DIVDECC:       "divde.",
-	DIVDEO:        "divdeo",
-	DIVDEOCC:      "divdeo.",
-	DIVDEU:        "divdeu",
-	DIVDEUCC:      "divdeu.",
-	DIVDEUO:       "divdeuo",
-	DIVDEUOCC:     "divdeuo.",
-	MODSD:         "modsd",
-	MODUD:         "modud",
-	MODSW:         "modsw",
-	MODUW:         "moduw",
-	CMPWI:         "cmpwi",
-	CMPDI:         "cmpdi",
-	CMPW:          "cmpw",
-	CMPD:          "cmpd",
-	CMPLWI:        "cmplwi",
-	CMPLDI:        "cmpldi",
-	CMPLW:         "cmplw",
-	CMPLD:         "cmpld",
-	TWI:           "twi",
-	TW:            "tw",
-	TDI:           "tdi",
-	ISEL:          "isel",
-	TD:            "td",
-	ANDICC:        "andi.",
-	ANDISCC:       "andis.",
-	ORI:           "ori",
-	ORIS:          "oris",
-	XORI:          "xori",
-	XORIS:         "xoris",
-	AND:           "and",
-	ANDCC:         "and.",
-	XOR:           "xor",
-	XORCC:         "xor.",
-	NAND:          "nand",
-	NANDCC:        "nand.",
-	OR:            "or",
-	ORCC:          "or.",
-	NOR:           "nor",
-	NORCC:         "nor.",
-	ANDC:          "andc",
-	ANDCCC:        "andc.",
-	EXTSB:         "extsb",
-	EXTSBCC:       "extsb.",
-	EQV:           "eqv",
-	EQVCC:         "eqv.",
-	ORC:           "orc",
-	ORCCC:         "orc.",
-	EXTSH:         "extsh",
-	EXTSHCC:       "extsh.",
-	CMPB:          "cmpb",
-	POPCNTB:       "popcntb",
-	POPCNTW:       "popcntw",
-	PRTYD:         "prtyd",
-	PRTYW:         "prtyw",
-	EXTSW:         "extsw",
-	EXTSWCC:       "extsw.",
-	CNTLZD:        "cntlzd",
-	CNTLZDCC:      "cntlzd.",
-	POPCNTD:       "popcntd",
-	BPERMD:        "bpermd",
-	RLWINM:        "rlwinm",
-	RLWINMCC:      "rlwinm.",
-	RLWNM:         "rlwnm",
-	RLWNMCC:       "rlwnm.",
-	RLWIMI:        "rlwimi",
-	RLWIMICC:      "rlwimi.",
-	RLDICL:        "rldicl",
-	RLDICLCC:      "rldicl.",
-	RLDICR:        "rldicr",
-	RLDICRCC:      "rldicr.",
-	RLDIC:         "rldic",
-	RLDICCC:       "rldic.",
-	RLDCL:         "rldcl",
-	RLDCLCC:       "rldcl.",
-	RLDCR:         "rldcr",
-	RLDCRCC:       "rldcr.",
-	RLDIMI:        "rldimi",
-	RLDIMICC:      "rldimi.",
-	SLW:           "slw",
-	SLWCC:         "slw.",
-	SRW:           "srw",
-	SRWCC:         "srw.",
-	SRAWI:         "srawi",
-	SRAWICC:       "srawi.",
-	SRAW:          "sraw",
-	SRAWCC:        "sraw.",
-	SLD:           "sld",
-	SLDCC:         "sld.",
-	SRD:           "srd",
-	SRDCC:         "srd.",
-	SRADI:         "sradi",
-	SRADICC:       "sradi.",
-	SRAD:          "srad",
-	SRADCC:        "srad.",
-	CDTBCD:        "cdtbcd",
-	CBCDTD:        "cbcdtd",
-	ADDG6S:        "addg6s",
-	MTSPR:         "mtspr",
-	MFSPR:         "mfspr",
-	MTCRF:         "mtcrf",
-	MFCR:          "mfcr",
-	MTSLE:         "mtsle",
-	MFVSRD:        "mfvsrd",
-	MFVSRWZ:       "mfvsrwz",
-	MTVSRD:        "mtvsrd",
-	MTVSRWA:       "mtvsrwa",
-	MTVSRWZ:       "mtvsrwz",
-	MTOCRF:        "mtocrf",
-	MFOCRF:        "mfocrf",
-	MCRXR:         "mcrxr",
-	MTDCRUX:       "mtdcrux",
-	MFDCRUX:       "mfdcrux",
-	LFS:           "lfs",
-	LFSU:          "lfsu",
-	LFSX:          "lfsx",
-	LFSUX:         "lfsux",
-	LFD:           "lfd",
-	LFDU:          "lfdu",
-	LFDX:          "lfdx",
-	LFDUX:         "lfdux",
-	LFIWAX:        "lfiwax",
-	LFIWZX:        "lfiwzx",
-	STFS:          "stfs",
-	STFSU:         "stfsu",
-	STFSX:         "stfsx",
-	STFSUX:        "stfsux",
-	STFD:          "stfd",
-	STFDU:         "stfdu",
-	STFDX:         "stfdx",
-	STFDUX:        "stfdux",
-	STFIWX:        "stfiwx",
-	LFDP:          "lfdp",
-	LFDPX:         "lfdpx",
-	STFDP:         "stfdp",
-	STFDPX:        "stfdpx",
-	FMR:           "fmr",
-	FMRCC:         "fmr.",
-	FABS:          "fabs",
-	FABSCC:        "fabs.",
-	FNABS:         "fnabs",
-	FNABSCC:       "fnabs.",
-	FNEG:          "fneg",
-	FNEGCC:        "fneg.",
-	FCPSGN:        "fcpsgn",
-	FCPSGNCC:      "fcpsgn.",
-	FMRGEW:        "fmrgew",
-	FMRGOW:        "fmrgow",
-	FADD:          "fadd",
-	FADDCC:        "fadd.",
-	FADDS:         "fadds",
-	FADDSCC:       "fadds.",
-	FSUB:          "fsub",
-	FSUBCC:        "fsub.",
-	FSUBS:         "fsubs",
-	FSUBSCC:       "fsubs.",
-	FMUL:          "fmul",
-	FMULCC:        "fmul.",
-	FMULS:         "fmuls",
-	FMULSCC:       "fmuls.",
-	FDIV:          "fdiv",
-	FDIVCC:        "fdiv.",
-	FDIVS:         "fdivs",
-	FDIVSCC:       "fdivs.",
-	FSQRT:         "fsqrt",
-	FSQRTCC:       "fsqrt.",
-	FSQRTS:        "fsqrts",
-	FSQRTSCC:      "fsqrts.",
-	FRE:           "fre",
-	FRECC:         "fre.",
-	FRES:          "fres",
-	FRESCC:        "fres.",
-	FRSQRTE:       "frsqrte",
-	FRSQRTECC:     "frsqrte.",
-	FRSQRTES:      "frsqrtes",
-	FRSQRTESCC:    "frsqrtes.",
-	FTDIV:         "ftdiv",
-	FTSQRT:        "ftsqrt",
-	FMADD:         "fmadd",
-	FMADDCC:       "fmadd.",
-	FMADDS:        "fmadds",
-	FMADDSCC:      "fmadds.",
-	FMSUB:         "fmsub",
-	FMSUBCC:       "fmsub.",
-	FMSUBS:        "fmsubs",
-	FMSUBSCC:      "fmsubs.",
-	FNMADD:        "fnmadd",
-	FNMADDCC:      "fnmadd.",
-	FNMADDS:       "fnmadds",
-	FNMADDSCC:     "fnmadds.",
-	FNMSUB:        "fnmsub",
-	FNMSUBCC:      "fnmsub.",
-	FNMSUBS:       "fnmsubs",
-	FNMSUBSCC:     "fnmsubs.",
-	FRSP:          "frsp",
-	FRSPCC:        "frsp.",
-	FCTID:         "fctid",
-	FCTIDCC:       "fctid.",
-	FCTIDZ:        "fctidz",
-	FCTIDZCC:      "fctidz.",
-	FCTIDU:        "fctidu",
-	FCTIDUCC:      "fctidu.",
-	FCTIDUZ:       "fctiduz",
-	FCTIDUZCC:     "fctiduz.",
-	FCTIW:         "fctiw",
-	FCTIWCC:       "fctiw.",
-	FCTIWZ:        "fctiwz",
-	FCTIWZCC:      "fctiwz.",
-	FCTIWU:        "fctiwu",
-	FCTIWUCC:      "fctiwu.",
-	FCTIWUZ:       "fctiwuz",
-	FCTIWUZCC:     "fctiwuz.",
-	FCFID:         "fcfid",
-	FCFIDCC:       "fcfid.",
-	FCFIDU:        "fcfidu",
-	FCFIDUCC:      "fcfidu.",
-	FCFIDS:        "fcfids",
-	FCFIDSCC:      "fcfids.",
-	FCFIDUS:       "fcfidus",
-	FCFIDUSCC:     "fcfidus.",
-	FRIN:          "frin",
-	FRINCC:        "frin.",
-	FRIZ:          "friz",
-	FRIZCC:        "friz.",
-	FRIP:          "frip",
-	FRIPCC:        "frip.",
-	FRIM:          "frim",
-	FRIMCC:        "frim.",
-	FCMPU:         "fcmpu",
-	FCMPO:         "fcmpo",
-	FSEL:          "fsel",
-	FSELCC:        "fsel.",
-	MFFS:          "mffs",
-	MFFSCC:        "mffs.",
-	MCRFS:         "mcrfs",
-	MTFSFI:        "mtfsfi",
-	MTFSFICC:      "mtfsfi.",
-	MTFSF:         "mtfsf",
-	MTFSFCC:       "mtfsf.",
-	MTFSB0:        "mtfsb0",
-	MTFSB0CC:      "mtfsb0.",
-	MTFSB1:        "mtfsb1",
-	MTFSB1CC:      "mtfsb1.",
-	LVEBX:         "lvebx",
-	LVEHX:         "lvehx",
-	LVEWX:         "lvewx",
-	LVX:           "lvx",
-	LVXL:          "lvxl",
-	STVEBX:        "stvebx",
-	STVEHX:        "stvehx",
-	STVEWX:        "stvewx",
-	STVX:          "stvx",
-	STVXL:         "stvxl",
-	LVSL:          "lvsl",
-	LVSR:          "lvsr",
-	VPKPX:         "vpkpx",
-	VPKSDSS:       "vpksdss",
-	VPKSDUS:       "vpksdus",
-	VPKSHSS:       "vpkshss",
-	VPKSHUS:       "vpkshus",
-	VPKSWSS:       "vpkswss",
-	VPKSWUS:       "vpkswus",
-	VPKUDUM:       "vpkudum",
-	VPKUDUS:       "vpkudus",
-	VPKUHUM:       "vpkuhum",
-	VPKUHUS:       "vpkuhus",
-	VPKUWUM:       "vpkuwum",
-	VPKUWUS:       "vpkuwus",
-	VUPKHPX:       "vupkhpx",
-	VUPKLPX:       "vupklpx",
-	VUPKHSB:       "vupkhsb",
-	VUPKHSH:       "vupkhsh",
-	VUPKHSW:       "vupkhsw",
-	VUPKLSB:       "vupklsb",
-	VUPKLSH:       "vupklsh",
-	VUPKLSW:       "vupklsw",
-	VMRGHB:        "vmrghb",
-	VMRGHH:        "vmrghh",
-	VMRGLB:        "vmrglb",
-	VMRGLH:        "vmrglh",
-	VMRGHW:        "vmrghw",
-	VMRGLW:        "vmrglw",
-	VMRGEW:        "vmrgew",
-	VMRGOW:        "vmrgow",
-	VSPLTB:        "vspltb",
-	VSPLTH:        "vsplth",
-	VSPLTW:        "vspltw",
-	VSPLTISB:      "vspltisb",
-	VSPLTISH:      "vspltish",
-	VSPLTISW:      "vspltisw",
-	VPERM:         "vperm",
-	VPERMR:        "vpermr",
-	VSEL:          "vsel",
-	VSL:           "vsl",
-	VSLDOI:        "vsldoi",
-	VSLO:          "vslo",
-	VSR:           "vsr",
-	VSRO:          "vsro",
-	VADDCUW:       "vaddcuw",
-	VADDSBS:       "vaddsbs",
-	VADDSHS:       "vaddshs",
-	VADDSWS:       "vaddsws",
-	VADDUBM:       "vaddubm",
-	VADDUDM:       "vaddudm",
-	VADDUHM:       "vadduhm",
-	VADDUWM:       "vadduwm",
-	VADDUBS:       "vaddubs",
-	VADDUHS:       "vadduhs",
-	VADDUWS:       "vadduws",
-	VADDUQM:       "vadduqm",
-	VADDEUQM:      "vaddeuqm",
-	VADDCUQ:       "vaddcuq",
-	VADDECUQ:      "vaddecuq",
-	VSUBCUW:       "vsubcuw",
-	VSUBSBS:       "vsubsbs",
-	VSUBSHS:       "vsubshs",
-	VSUBSWS:       "vsubsws",
-	VSUBUBM:       "vsububm",
-	VSUBUDM:       "vsubudm",
-	VSUBUHM:       "vsubuhm",
-	VSUBUWM:       "vsubuwm",
-	VSUBUBS:       "vsububs",
-	VSUBUHS:       "vsubuhs",
-	VSUBUWS:       "vsubuws",
-	VSUBUQM:       "vsubuqm",
-	VSUBEUQM:      "vsubeuqm",
-	VSUBCUQ:       "vsubcuq",
-	VSUBECUQ:      "vsubecuq",
-	VMULESB:       "vmulesb",
-	VMULEUB:       "vmuleub",
-	VMULOSB:       "vmulosb",
-	VMULOUB:       "vmuloub",
-	VMULESH:       "vmulesh",
-	VMULEUH:       "vmuleuh",
-	VMULOSH:       "vmulosh",
-	VMULOUH:       "vmulouh",
-	VMULESW:       "vmulesw",
-	VMULEUW:       "vmuleuw",
-	VMULOSW:       "vmulosw",
-	VMULOUW:       "vmulouw",
-	VMULUWM:       "vmuluwm",
-	VMHADDSHS:     "vmhaddshs",
-	VMHRADDSHS:    "vmhraddshs",
-	VMLADDUHM:     "vmladduhm",
-	VMSUMUBM:      "vmsumubm",
-	VMSUMMBM:      "vmsummbm",
-	VMSUMSHM:      "vmsumshm",
-	VMSUMSHS:      "vmsumshs",
-	VMSUMUHM:      "vmsumuhm",
-	VMSUMUHS:      "vmsumuhs",
-	VMSUMUDM:      "vmsumudm",
-	VSUMSWS:       "vsumsws",
-	VSUM2SWS:      "vsum2sws",
-	VSUM4SBS:      "vsum4sbs",
-	VSUM4SHS:      "vsum4shs",
-	VSUM4UBS:      "vsum4ubs",
-	VAVGSB:        "vavgsb",
-	VAVGSH:        "vavgsh",
-	VAVGSW:        "vavgsw",
-	VAVGUB:        "vavgub",
-	VAVGUW:        "vavguw",
-	VAVGUH:        "vavguh",
-	VMAXSB:        "vmaxsb",
-	VMAXSD:        "vmaxsd",
-	VMAXUB:        "vmaxub",
-	VMAXUD:        "vmaxud",
-	VMAXSH:        "vmaxsh",
-	VMAXSW:        "vmaxsw",
-	VMAXUH:        "vmaxuh",
-	VMAXUW:        "vmaxuw",
-	VMINSB:        "vminsb",
-	VMINSD:        "vminsd",
-	VMINUB:        "vminub",
-	VMINUD:        "vminud",
-	VMINSH:        "vminsh",
-	VMINSW:        "vminsw",
-	VMINUH:        "vminuh",
-	VMINUW:        "vminuw",
-	VCMPEQUB:      "vcmpequb",
-	VCMPEQUBCC:    "vcmpequb.",
-	VCMPEQUH:      "vcmpequh",
-	VCMPEQUHCC:    "vcmpequh.",
-	VCMPEQUW:      "vcmpequw",
-	VCMPEQUWCC:    "vcmpequw.",
-	VCMPEQUD:      "vcmpequd",
-	VCMPEQUDCC:    "vcmpequd.",
-	VCMPNEB:       "vcmpneb",
-	VCMPNEBCC:     "vcmpneb.",
-	VCMPNEZB:      "vcmpnezb",
-	VCMPNEZBCC:    "vcmpnezb.",
-	VCMPNEH:       "vcmpneh",
-	VCMPNEHCC:     "vcmpneh.",
-	VCMPNEZH:      "vcmpnezh",
-	VCMPNEZHCC:    "vcmpnezh.",
-	VCMPNEW:       "vcmpnew",
-	VCMPNEWCC:     "vcmpnew.",
-	VCMPNEZW:      "vcmpnezw",
-	VCMPNEZWCC:    "vcmpnezw.",
-	VCMPGTSB:      "vcmpgtsb",
-	VCMPGTSBCC:    "vcmpgtsb.",
-	VCMPGTSD:      "vcmpgtsd",
-	VCMPGTSDCC:    "vcmpgtsd.",
-	VCMPGTSH:      "vcmpgtsh",
-	VCMPGTSHCC:    "vcmpgtsh.",
-	VCMPGTSW:      "vcmpgtsw",
-	VCMPGTSWCC:    "vcmpgtsw.",
-	VCMPGTUB:      "vcmpgtub",
-	VCMPGTUBCC:    "vcmpgtub.",
-	VCMPGTUD:      "vcmpgtud",
-	VCMPGTUDCC:    "vcmpgtud.",
-	VCMPGTUH:      "vcmpgtuh",
-	VCMPGTUHCC:    "vcmpgtuh.",
-	VCMPGTUW:      "vcmpgtuw",
-	VCMPGTUWCC:    "vcmpgtuw.",
-	VAND:          "vand",
-	VANDC:         "vandc",
-	VEQV:          "veqv",
-	VNAND:         "vnand",
-	VORC:          "vorc",
-	VNOR:          "vnor",
-	VOR:           "vor",
-	VXOR:          "vxor",
-	VRLB:          "vrlb",
-	VRLH:          "vrlh",
-	VRLW:          "vrlw",
-	VRLD:          "vrld",
-	VSLB:          "vslb",
-	VSLH:          "vslh",
-	VSLW:          "vslw",
-	VSLD:          "vsld",
-	VSRB:          "vsrb",
-	VSRH:          "vsrh",
-	VSRW:          "vsrw",
-	VSRD:          "vsrd",
-	VSRAB:         "vsrab",
-	VSRAH:         "vsrah",
-	VSRAW:         "vsraw",
-	VSRAD:         "vsrad",
-	VADDFP:        "vaddfp",
-	VSUBFP:        "vsubfp",
-	VMADDFP:       "vmaddfp",
-	VNMSUBFP:      "vnmsubfp",
-	VMAXFP:        "vmaxfp",
-	VMINFP:        "vminfp",
-	VCTSXS:        "vctsxs",
-	VCTUXS:        "vctuxs",
-	VCFSX:         "vcfsx",
-	VCFUX:         "vcfux",
-	VRFIM:         "vrfim",
-	VRFIN:         "vrfin",
-	VRFIP:         "vrfip",
-	VRFIZ:         "vrfiz",
-	VCMPBFP:       "vcmpbfp",
-	VCMPBFPCC:     "vcmpbfp.",
-	VCMPEQFP:      "vcmpeqfp",
-	VCMPEQFPCC:    "vcmpeqfp.",
-	VCMPGEFP:      "vcmpgefp",
-	VCMPGEFPCC:    "vcmpgefp.",
-	VCMPGTFP:      "vcmpgtfp",
-	VCMPGTFPCC:    "vcmpgtfp.",
-	VEXPTEFP:      "vexptefp",
-	VLOGEFP:       "vlogefp",
-	VREFP:         "vrefp",
-	VRSQRTEFP:     "vrsqrtefp",
-	VCIPHER:       "vcipher",
-	VCIPHERLAST:   "vcipherlast",
-	VNCIPHER:      "vncipher",
-	VNCIPHERLAST:  "vncipherlast",
-	VSBOX:         "vsbox",
-	VSHASIGMAD:    "vshasigmad",
-	VSHASIGMAW:    "vshasigmaw",
-	VPMSUMB:       "vpmsumb",
-	VPMSUMD:       "vpmsumd",
-	VPMSUMH:       "vpmsumh",
-	VPMSUMW:       "vpmsumw",
-	VPERMXOR:      "vpermxor",
-	VGBBD:         "vgbbd",
-	VCLZB:         "vclzb",
-	VCLZH:         "vclzh",
-	VCLZW:         "vclzw",
-	VCLZD:         "vclzd",
-	VPOPCNTB:      "vpopcntb",
-	VPOPCNTD:      "vpopcntd",
-	VPOPCNTH:      "vpopcnth",
-	VPOPCNTW:      "vpopcntw",
-	VBPERMQ:       "vbpermq",
-	VBPERMD:       "vbpermd",
-	BCDADDCC:      "bcdadd.",
-	BCDSUBCC:      "bcdsub.",
-	MTVSCR:        "mtvscr",
-	MFVSCR:        "mfvscr",
-	DADD:          "dadd",
-	DADDCC:        "dadd.",
-	DSUB:          "dsub",
-	DSUBCC:        "dsub.",
-	DMUL:          "dmul",
-	DMULCC:        "dmul.",
-	DDIV:          "ddiv",
-	DDIVCC:        "ddiv.",
-	DCMPU:         "dcmpu",
-	DCMPO:         "dcmpo",
-	DTSTDC:        "dtstdc",
-	DTSTDG:        "dtstdg",
-	DTSTEX:        "dtstex",
-	DTSTSF:        "dtstsf",
-	DQUAI:         "dquai",
-	DQUAICC:       "dquai.",
-	DQUA:          "dqua",
-	DQUACC:        "dqua.",
-	DRRND:         "drrnd",
-	DRRNDCC:       "drrnd.",
-	DRINTX:        "drintx",
-	DRINTXCC:      "drintx.",
-	DRINTN:        "drintn",
-	DRINTNCC:      "drintn.",
-	DCTDP:         "dctdp",
-	DCTDPCC:       "dctdp.",
-	DCTQPQ:        "dctqpq",
-	DCTQPQCC:      "dctqpq.",
-	DRSP:          "drsp",
-	DRSPCC:        "drsp.",
-	DRDPQ:         "drdpq",
-	DRDPQCC:       "drdpq.",
-	DCFFIX:        "dcffix",
-	DCFFIXCC:      "dcffix.",
-	DCFFIXQ:       "dcffixq",
-	DCFFIXQCC:     "dcffixq.",
-	DCTFIX:        "dctfix",
-	DCTFIXCC:      "dctfix.",
-	DDEDPD:        "ddedpd",
-	DDEDPDCC:      "ddedpd.",
-	DENBCD:        "denbcd",
-	DENBCDCC:      "denbcd.",
-	DXEX:          "dxex",
-	DXEXCC:        "dxex.",
-	DIEX:          "diex",
-	DIEXCC:        "diex.",
-	DSCLI:         "dscli",
-	DSCLICC:       "dscli.",
-	DSCRI:         "dscri",
-	DSCRICC:       "dscri.",
-	LXSDX:         "lxsdx",
-	LXSIWAX:       "lxsiwax",
-	LXSIWZX:       "lxsiwzx",
-	LXSSPX:        "lxsspx",
-	LXVD2X:        "lxvd2x",
-	LXVDSX:        "lxvdsx",
-	LXVW4X:        "lxvw4x",
-	LXVH8X:        "lxvh8x",
-	LXVB16X:       "lxvb16x",
-	LXV:           "lxv",
-	LXVL:          "lxvl",
-	LXVLL:         "lxvll",
-	LXVX:          "lxvx",
-	STXSDX:        "stxsdx",
-	STXSIWX:       "stxsiwx",
-	STXSSPX:       "stxsspx",
-	STXVD2X:       "stxvd2x",
-	STXVW4X:       "stxvw4x",
-	STXVH8X:       "stxvh8x",
-	STXVB16X:      "stxvb16x",
-	STXV:          "stxv",
-	STXVL:         "stxvl",
-	STXVLL:        "stxvll",
-	STXVX:         "stxvx",
-	XSABSDP:       "xsabsdp",
-	XSADDDP:       "xsadddp",
-	XSADDSP:       "xsaddsp",
-	XSCMPODP:      "xscmpodp",
-	XSCMPUDP:      "xscmpudp",
-	XSCPSGNDP:     "xscpsgndp",
-	XSCVDPSP:      "xscvdpsp",
-	XSCVDPSPN:     "xscvdpspn",
-	XSCVDPSXDS:    "xscvdpsxds",
-	XSCVDPSXWS:    "xscvdpsxws",
-	XSCVDPUXDS:    "xscvdpuxds",
-	XSCVDPUXWS:    "xscvdpuxws",
-	XSCVSPDP:      "xscvspdp",
-	XSCVSPDPN:     "xscvspdpn",
-	XSCVSXDDP:     "xscvsxddp",
-	XSCVSXDSP:     "xscvsxdsp",
-	XSCVUXDDP:     "xscvuxddp",
-	XSCVUXDSP:     "xscvuxdsp",
-	XSDIVDP:       "xsdivdp",
-	XSDIVSP:       "xsdivsp",
-	XSMADDADP:     "xsmaddadp",
-	XSMADDASP:     "xsmaddasp",
-	XSMAXDP:       "xsmaxdp",
-	XSMINDP:       "xsmindp",
-	XSMSUBADP:     "xsmsubadp",
-	XSMSUBASP:     "xsmsubasp",
-	XSMULDP:       "xsmuldp",
-	XSMULSP:       "xsmulsp",
-	XSNABSDP:      "xsnabsdp",
-	XSNEGDP:       "xsnegdp",
-	XSNMADDADP:    "xsnmaddadp",
-	XSNMADDASP:    "xsnmaddasp",
-	XSNMSUBADP:    "xsnmsubadp",
-	XSNMSUBASP:    "xsnmsubasp",
-	XSRDPI:        "xsrdpi",
-	XSRDPIC:       "xsrdpic",
-	XSRDPIM:       "xsrdpim",
-	XSRDPIP:       "xsrdpip",
-	XSRDPIZ:       "xsrdpiz",
-	XSREDP:        "xsredp",
-	XSRESP:        "xsresp",
-	XSRSP:         "xsrsp",
-	XSRSQRTEDP:    "xsrsqrtedp",
-	XSRSQRTESP:    "xsrsqrtesp",
-	XSSQRTDP:      "xssqrtdp",
-	XSSQRTSP:      "xssqrtsp",
-	XSSUBDP:       "xssubdp",
-	XSSUBSP:       "xssubsp",
-	XSTDIVDP:      "xstdivdp",
-	XSTSQRTDP:     "xstsqrtdp",
-	XVABSDP:       "xvabsdp",
-	XVABSSP:       "xvabssp",
-	XVADDDP:       "xvadddp",
-	XVADDSP:       "xvaddsp",
-	XVCMPEQDP:     "xvcmpeqdp",
-	XVCMPEQDPCC:   "xvcmpeqdp.",
-	XVCMPEQSP:     "xvcmpeqsp",
-	XVCMPEQSPCC:   "xvcmpeqsp.",
-	XVCMPGEDP:     "xvcmpgedp",
-	XVCMPGEDPCC:   "xvcmpgedp.",
-	XVCMPGESP:     "xvcmpgesp",
-	XVCMPGESPCC:   "xvcmpgesp.",
-	XVCMPGTDP:     "xvcmpgtdp",
-	XVCMPGTDPCC:   "xvcmpgtdp.",
-	XVCMPGTSP:     "xvcmpgtsp",
-	XVCMPGTSPCC:   "xvcmpgtsp.",
-	XVCPSGNDP:     "xvcpsgndp",
-	XVCPSGNSP:     "xvcpsgnsp",
-	XVCVDPSP:      "xvcvdpsp",
-	XVCVDPSXDS:    "xvcvdpsxds",
-	XVCVDPSXWS:    "xvcvdpsxws",
-	XVCVDPUXDS:    "xvcvdpuxds",
-	XVCVDPUXWS:    "xvcvdpuxws",
-	XVCVSPDP:      "xvcvspdp",
-	XVCVSPSXDS:    "xvcvspsxds",
-	XVCVSPSXWS:    "xvcvspsxws",
-	XVCVSPUXDS:    "xvcvspuxds",
-	XVCVSPUXWS:    "xvcvspuxws",
-	XVCVSXDDP:     "xvcvsxddp",
-	XVCVSXDSP:     "xvcvsxdsp",
-	XVCVSXWDP:     "xvcvsxwdp",
-	XVCVSXWSP:     "xvcvsxwsp",
-	XVCVUXDDP:     "xvcvuxddp",
-	XVCVUXDSP:     "xvcvuxdsp",
-	XVCVUXWDP:     "xvcvuxwdp",
-	XVCVUXWSP:     "xvcvuxwsp",
-	XVDIVDP:       "xvdivdp",
-	XVDIVSP:       "xvdivsp",
-	XVMADDADP:     "xvmaddadp",
-	XVMADDASP:     "xvmaddasp",
-	XVMAXDP:       "xvmaxdp",
-	XVMAXSP:       "xvmaxsp",
-	XVMINDP:       "xvmindp",
-	XVMINSP:       "xvminsp",
-	XVMSUBADP:     "xvmsubadp",
-	XVMSUBASP:     "xvmsubasp",
-	XVMULDP:       "xvmuldp",
-	XVMULSP:       "xvmulsp",
-	XVNABSDP:      "xvnabsdp",
-	XVNABSSP:      "xvnabssp",
-	XVNEGDP:       "xvnegdp",
-	XVNEGSP:       "xvnegsp",
-	XVNMADDADP:    "xvnmaddadp",
-	XVNMADDASP:    "xvnmaddasp",
-	XVNMSUBADP:    "xvnmsubadp",
-	XVNMSUBASP:    "xvnmsubasp",
-	XVRDPI:        "xvrdpi",
-	XVRDPIC:       "xvrdpic",
-	XVRDPIM:       "xvrdpim",
-	XVRDPIP:       "xvrdpip",
-	XVRDPIZ:       "xvrdpiz",
-	XVREDP:        "xvredp",
-	XVRESP:        "xvresp",
-	XVRSPI:        "xvrspi",
-	XVRSPIC:       "xvrspic",
-	XVRSPIM:       "xvrspim",
-	XVRSPIP:       "xvrspip",
-	XVRSPIZ:       "xvrspiz",
-	XVRSQRTEDP:    "xvrsqrtedp",
-	XVRSQRTESP:    "xvrsqrtesp",
-	XVSQRTDP:      "xvsqrtdp",
-	XVSQRTSP:      "xvsqrtsp",
-	XVSUBDP:       "xvsubdp",
-	XVSUBSP:       "xvsubsp",
-	XVTDIVDP:      "xvtdivdp",
-	XVTDIVSP:      "xvtdivsp",
-	XVTSQRTDP:     "xvtsqrtdp",
-	XVTSQRTSP:     "xvtsqrtsp",
-	XXLAND:        "xxland",
-	XXLANDC:       "xxlandc",
-	XXLEQV:        "xxleqv",
-	XXLNAND:       "xxlnand",
-	XXLORC:        "xxlorc",
-	XXLNOR:        "xxlnor",
-	XXLOR:         "xxlor",
-	XXLXOR:        "xxlxor",
-	XXMRGHW:       "xxmrghw",
-	XXMRGLW:       "xxmrglw",
-	XXPERMDI:      "xxpermdi",
-	XXPERM:        "xxperm",
-	XXSEL:         "xxsel",
-	XXSLDWI:       "xxsldwi",
-	XXSPLTW:       "xxspltw",
-	XXBRD:         "xxbrd",
-	XXBRW:         "xxbrw",
-	XXBRH:         "xxbrh",
-	BRINC:         "brinc",
-	EVABS:         "evabs",
-	EVADDIW:       "evaddiw",
-	EVADDSMIAAW:   "evaddsmiaaw",
-	EVADDSSIAAW:   "evaddssiaaw",
-	EVADDUMIAAW:   "evaddumiaaw",
-	EVADDUSIAAW:   "evaddusiaaw",
-	EVADDW:        "evaddw",
-	EVAND:         "evand",
-	EVCMPEQ:       "evcmpeq",
-	EVANDC:        "evandc",
-	EVCMPGTS:      "evcmpgts",
-	EVCMPGTU:      "evcmpgtu",
-	EVCMPLTU:      "evcmpltu",
-	EVCMPLTS:      "evcmplts",
-	EVCNTLSW:      "evcntlsw",
-	EVCNTLZW:      "evcntlzw",
-	EVDIVWS:       "evdivws",
-	EVDIVWU:       "evdivwu",
-	EVEQV:         "eveqv",
-	EVEXTSB:       "evextsb",
-	EVEXTSH:       "evextsh",
-	EVLDD:         "evldd",
-	EVLDH:         "evldh",
-	EVLDDX:        "evlddx",
-	EVLDHX:        "evldhx",
-	EVLDW:         "evldw",
-	EVLHHESPLAT:   "evlhhesplat",
-	EVLDWX:        "evldwx",
-	EVLHHESPLATX:  "evlhhesplatx",
-	EVLHHOSSPLAT:  "evlhhossplat",
-	EVLHHOUSPLAT:  "evlhhousplat",
-	EVLHHOSSPLATX: "evlhhossplatx",
-	EVLHHOUSPLATX: "evlhhousplatx",
-	EVLWHE:        "evlwhe",
-	EVLWHOS:       "evlwhos",
-	EVLWHEX:       "evlwhex",
-	EVLWHOSX:      "evlwhosx",
-	EVLWHOU:       "evlwhou",
-	EVLWHSPLAT:    "evlwhsplat",
-	EVLWHOUX:      "evlwhoux",
-	EVLWHSPLATX:   "evlwhsplatx",
-	EVLWWSPLAT:    "evlwwsplat",
-	EVMERGEHI:     "evmergehi",
-	EVLWWSPLATX:   "evlwwsplatx",
-	EVMERGELO:     "evmergelo",
-	EVMERGEHILO:   "evmergehilo",
-	EVMHEGSMFAA:   "evmhegsmfaa",
-	EVMERGELOHI:   "evmergelohi",
-	EVMHEGSMFAN:   "evmhegsmfan",
-	EVMHEGSMIAA:   "evmhegsmiaa",
-	EVMHEGUMIAA:   "evmhegumiaa",
-	EVMHEGSMIAN:   "evmhegsmian",
-	EVMHEGUMIAN:   "evmhegumian",
-	EVMHESMF:      "evmhesmf",
-	EVMHESMFAAW:   "evmhesmfaaw",
-	EVMHESMFA:     "evmhesmfa",
-	EVMHESMFANW:   "evmhesmfanw",
-	EVMHESMI:      "evmhesmi",
-	EVMHESMIAAW:   "evmhesmiaaw",
-	EVMHESMIA:     "evmhesmia",
-	EVMHESMIANW:   "evmhesmianw",
-	EVMHESSF:      "evmhessf",
-	EVMHESSFA:     "evmhessfa",
-	EVMHESSFAAW:   "evmhessfaaw",
-	EVMHESSFANW:   "evmhessfanw",
-	EVMHESSIAAW:   "evmhessiaaw",
-	EVMHESSIANW:   "evmhessianw",
-	EVMHEUMI:      "evmheumi",
-	EVMHEUMIAAW:   "evmheumiaaw",
-	EVMHEUMIA:     "evmheumia",
-	EVMHEUMIANW:   "evmheumianw",
-	EVMHEUSIAAW:   "evmheusiaaw",
-	EVMHEUSIANW:   "evmheusianw",
-	EVMHOGSMFAA:   "evmhogsmfaa",
-	EVMHOGSMIAA:   "evmhogsmiaa",
-	EVMHOGSMFAN:   "evmhogsmfan",
-	EVMHOGSMIAN:   "evmhogsmian",
-	EVMHOGUMIAA:   "evmhogumiaa",
-	EVMHOSMF:      "evmhosmf",
-	EVMHOGUMIAN:   "evmhogumian",
-	EVMHOSMFA:     "evmhosmfa",
-	EVMHOSMFAAW:   "evmhosmfaaw",
-	EVMHOSMI:      "evmhosmi",
-	EVMHOSMFANW:   "evmhosmfanw",
-	EVMHOSMIA:     "evmhosmia",
-	EVMHOSMIAAW:   "evmhosmiaaw",
-	EVMHOSMIANW:   "evmhosmianw",
-	EVMHOSSF:      "evmhossf",
-	EVMHOSSFA:     "evmhossfa",
-	EVMHOSSFAAW:   "evmhossfaaw",
-	EVMHOSSFANW:   "evmhossfanw",
-	EVMHOSSIAAW:   "evmhossiaaw",
-	EVMHOUMI:      "evmhoumi",
-	EVMHOSSIANW:   "evmhossianw",
-	EVMHOUMIA:     "evmhoumia",
-	EVMHOUMIAAW:   "evmhoumiaaw",
-	EVMHOUSIAAW:   "evmhousiaaw",
-	EVMHOUMIANW:   "evmhoumianw",
-	EVMHOUSIANW:   "evmhousianw",
-	EVMRA:         "evmra",
-	EVMWHSMF:      "evmwhsmf",
-	EVMWHSMI:      "evmwhsmi",
-	EVMWHSMFA:     "evmwhsmfa",
-	EVMWHSMIA:     "evmwhsmia",
-	EVMWHSSF:      "evmwhssf",
-	EVMWHUMI:      "evmwhumi",
-	EVMWHSSFA:     "evmwhssfa",
-	EVMWHUMIA:     "evmwhumia",
-	EVMWLSMIAAW:   "evmwlsmiaaw",
-	EVMWLSSIAAW:   "evmwlssiaaw",
-	EVMWLSMIANW:   "evmwlsmianw",
-	EVMWLSSIANW:   "evmwlssianw",
-	EVMWLUMI:      "evmwlumi",
-	EVMWLUMIAAW:   "evmwlumiaaw",
-	EVMWLUMIA:     "evmwlumia",
-	EVMWLUMIANW:   "evmwlumianw",
-	EVMWLUSIAAW:   "evmwlusiaaw",
-	EVMWSMF:       "evmwsmf",
-	EVMWLUSIANW:   "evmwlusianw",
-	EVMWSMFA:      "evmwsmfa",
-	EVMWSMFAA:     "evmwsmfaa",
-	EVMWSMI:       "evmwsmi",
-	EVMWSMIAA:     "evmwsmiaa",
-	EVMWSMFAN:     "evmwsmfan",
-	EVMWSMIA:      "evmwsmia",
-	EVMWSMIAN:     "evmwsmian",
-	EVMWSSF:       "evmwssf",
-	EVMWSSFA:      "evmwssfa",
-	EVMWSSFAA:     "evmwssfaa",
-	EVMWUMI:       "evmwumi",
-	EVMWSSFAN:     "evmwssfan",
-	EVMWUMIA:      "evmwumia",
-	EVMWUMIAA:     "evmwumiaa",
-	EVNAND:        "evnand",
-	EVMWUMIAN:     "evmwumian",
-	EVNEG:         "evneg",
-	EVNOR:         "evnor",
-	EVORC:         "evorc",
-	EVOR:          "evor",
-	EVRLW:         "evrlw",
-	EVRLWI:        "evrlwi",
-	EVSEL:         "evsel",
-	EVRNDW:        "evrndw",
-	EVSLW:         "evslw",
-	EVSPLATFI:     "evsplatfi",
-	EVSRWIS:       "evsrwis",
-	EVSLWI:        "evslwi",
-	EVSPLATI:      "evsplati",
-	EVSRWIU:       "evsrwiu",
-	EVSRWS:        "evsrws",
-	EVSTDD:        "evstdd",
-	EVSRWU:        "evsrwu",
-	EVSTDDX:       "evstddx",
-	EVSTDH:        "evstdh",
-	EVSTDW:        "evstdw",
-	EVSTDHX:       "evstdhx",
-	EVSTDWX:       "evstdwx",
-	EVSTWHE:       "evstwhe",
-	EVSTWHO:       "evstwho",
-	EVSTWWE:       "evstwwe",
-	EVSTWHEX:      "evstwhex",
-	EVSTWHOX:      "evstwhox",
-	EVSTWWEX:      "evstwwex",
-	EVSTWWO:       "evstwwo",
-	EVSUBFSMIAAW:  "evsubfsmiaaw",
-	EVSTWWOX:      "evstwwox",
-	EVSUBFSSIAAW:  "evsubfssiaaw",
-	EVSUBFUMIAAW:  "evsubfumiaaw",
-	EVSUBFUSIAAW:  "evsubfusiaaw",
-	EVSUBFW:       "evsubfw",
-	EVSUBIFW:      "evsubifw",
-	EVXOR:         "evxor",
-	EVFSABS:       "evfsabs",
-	EVFSNABS:      "evfsnabs",
-	EVFSNEG:       "evfsneg",
-	EVFSADD:       "evfsadd",
-	EVFSMUL:       "evfsmul",
-	EVFSSUB:       "evfssub",
-	EVFSDIV:       "evfsdiv",
-	EVFSCMPGT:     "evfscmpgt",
-	EVFSCMPLT:     "evfscmplt",
-	EVFSCMPEQ:     "evfscmpeq",
-	EVFSTSTGT:     "evfststgt",
-	EVFSTSTLT:     "evfststlt",
-	EVFSTSTEQ:     "evfststeq",
-	EVFSCFSI:      "evfscfsi",
-	EVFSCFSF:      "evfscfsf",
-	EVFSCFUI:      "evfscfui",
-	EVFSCFUF:      "evfscfuf",
-	EVFSCTSI:      "evfsctsi",
-	EVFSCTUI:      "evfsctui",
-	EVFSCTSIZ:     "evfsctsiz",
-	EVFSCTUIZ:     "evfsctuiz",
-	EVFSCTSF:      "evfsctsf",
-	EVFSCTUF:      "evfsctuf",
-	EFSABS:        "efsabs",
-	EFSNEG:        "efsneg",
-	EFSNABS:       "efsnabs",
-	EFSADD:        "efsadd",
-	EFSMUL:        "efsmul",
-	EFSSUB:        "efssub",
-	EFSDIV:        "efsdiv",
-	EFSCMPGT:      "efscmpgt",
-	EFSCMPLT:      "efscmplt",
-	EFSCMPEQ:      "efscmpeq",
-	EFSTSTGT:      "efststgt",
-	EFSTSTLT:      "efststlt",
-	EFSTSTEQ:      "efststeq",
-	EFSCFSI:       "efscfsi",
-	EFSCFSF:       "efscfsf",
-	EFSCTSI:       "efsctsi",
-	EFSCFUI:       "efscfui",
-	EFSCFUF:       "efscfuf",
-	EFSCTUI:       "efsctui",
-	EFSCTSIZ:      "efsctsiz",
-	EFSCTSF:       "efsctsf",
-	EFSCTUIZ:      "efsctuiz",
-	EFSCTUF:       "efsctuf",
-	EFDABS:        "efdabs",
-	EFDNEG:        "efdneg",
-	EFDNABS:       "efdnabs",
-	EFDADD:        "efdadd",
-	EFDMUL:        "efdmul",
-	EFDSUB:        "efdsub",
-	EFDDIV:        "efddiv",
-	EFDCMPGT:      "efdcmpgt",
-	EFDCMPEQ:      "efdcmpeq",
-	EFDCMPLT:      "efdcmplt",
-	EFDTSTGT:      "efdtstgt",
-	EFDTSTLT:      "efdtstlt",
-	EFDCFSI:       "efdcfsi",
-	EFDTSTEQ:      "efdtsteq",
-	EFDCFUI:       "efdcfui",
-	EFDCFSID:      "efdcfsid",
-	EFDCFSF:       "efdcfsf",
-	EFDCFUF:       "efdcfuf",
-	EFDCFUID:      "efdcfuid",
-	EFDCTSI:       "efdctsi",
-	EFDCTUI:       "efdctui",
-	EFDCTSIDZ:     "efdctsidz",
-	EFDCTUIDZ:     "efdctuidz",
-	EFDCTSIZ:      "efdctsiz",
-	EFDCTSF:       "efdctsf",
-	EFDCTUF:       "efdctuf",
-	EFDCTUIZ:      "efdctuiz",
-	EFDCFS:        "efdcfs",
-	EFSCFD:        "efscfd",
-	DLMZB:         "dlmzb",
-	DLMZBCC:       "dlmzb.",
-	MACCHW:        "macchw",
-	MACCHWCC:      "macchw.",
-	MACCHWO:       "macchwo",
-	MACCHWOCC:     "macchwo.",
-	MACCHWS:       "macchws",
-	MACCHWSCC:     "macchws.",
-	MACCHWSO:      "macchwso",
-	MACCHWSOCC:    "macchwso.",
-	MACCHWU:       "macchwu",
-	MACCHWUCC:     "macchwu.",
-	MACCHWUO:      "macchwuo",
-	MACCHWUOCC:    "macchwuo.",
-	MACCHWSU:      "macchwsu",
-	MACCHWSUCC:    "macchwsu.",
-	MACCHWSUO:     "macchwsuo",
-	MACCHWSUOCC:   "macchwsuo.",
-	MACHHW:        "machhw",
-	MACHHWCC:      "machhw.",
-	MACHHWO:       "machhwo",
-	MACHHWOCC:     "machhwo.",
-	MACHHWS:       "machhws",
-	MACHHWSCC:     "machhws.",
-	MACHHWSO:      "machhwso",
-	MACHHWSOCC:    "machhwso.",
-	MACHHWU:       "machhwu",
-	MACHHWUCC:     "machhwu.",
-	MACHHWUO:      "machhwuo",
-	MACHHWUOCC:    "machhwuo.",
-	MACHHWSU:      "machhwsu",
-	MACHHWSUCC:    "machhwsu.",
-	MACHHWSUO:     "machhwsuo",
-	MACHHWSUOCC:   "machhwsuo.",
-	MACLHW:        "maclhw",
-	MACLHWCC:      "maclhw.",
-	MACLHWO:       "maclhwo",
-	MACLHWOCC:     "maclhwo.",
-	MACLHWS:       "maclhws",
-	MACLHWSCC:     "maclhws.",
-	MACLHWSO:      "maclhwso",
-	MACLHWSOCC:    "maclhwso.",
-	MACLHWU:       "maclhwu",
-	MACLHWUCC:     "maclhwu.",
-	MACLHWUO:      "maclhwuo",
-	MACLHWUOCC:    "maclhwuo.",
-	MULCHW:        "mulchw",
-	MULCHWCC:      "mulchw.",
-	MACLHWSU:      "maclhwsu",
-	MACLHWSUCC:    "maclhwsu.",
-	MACLHWSUO:     "maclhwsuo",
-	MACLHWSUOCC:   "maclhwsuo.",
-	MULCHWU:       "mulchwu",
-	MULCHWUCC:     "mulchwu.",
-	MULHHW:        "mulhhw",
-	MULHHWCC:      "mulhhw.",
-	MULLHW:        "mullhw",
-	MULLHWCC:      "mullhw.",
-	MULHHWU:       "mulhhwu",
-	MULHHWUCC:     "mulhhwu.",
-	MULLHWU:       "mullhwu",
-	MULLHWUCC:     "mullhwu.",
-	NMACCHW:       "nmacchw",
-	NMACCHWCC:     "nmacchw.",
-	NMACCHWO:      "nmacchwo",
-	NMACCHWOCC:    "nmacchwo.",
-	NMACCHWS:      "nmacchws",
-	NMACCHWSCC:    "nmacchws.",
-	NMACCHWSO:     "nmacchwso",
-	NMACCHWSOCC:   "nmacchwso.",
-	NMACHHW:       "nmachhw",
-	NMACHHWCC:     "nmachhw.",
-	NMACHHWO:      "nmachhwo",
-	NMACHHWOCC:    "nmachhwo.",
-	NMACHHWS:      "nmachhws",
-	NMACHHWSCC:    "nmachhws.",
-	NMACHHWSO:     "nmachhwso",
-	NMACHHWSOCC:   "nmachhwso.",
-	NMACLHW:       "nmaclhw",
-	NMACLHWCC:     "nmaclhw.",
-	NMACLHWO:      "nmaclhwo",
-	NMACLHWOCC:    "nmaclhwo.",
-	NMACLHWS:      "nmaclhws",
-	NMACLHWSCC:    "nmaclhws.",
-	NMACLHWSO:     "nmaclhwso",
-	NMACLHWSOCC:   "nmaclhwso.",
-	ICBI:          "icbi",
-	ICBT:          "icbt",
-	DCBA:          "dcba",
-	DCBT:          "dcbt",
-	DCBTST:        "dcbtst",
-	DCBZ:          "dcbz",
-	DCBST:         "dcbst",
-	DCBF:          "dcbf",
-	ISYNC:         "isync",
-	LBARX:         "lbarx",
-	LHARX:         "lharx",
-	LWARX:         "lwarx",
-	STBCXCC:       "stbcx.",
-	STHCXCC:       "sthcx.",
-	STWCXCC:       "stwcx.",
-	LDARX:         "ldarx",
-	STDCXCC:       "stdcx.",
-	LQARX:         "lqarx",
-	STQCXCC:       "stqcx.",
-	SYNC:          "sync",
-	EIEIO:         "eieio",
-	MBAR:          "mbar",
-	WAIT:          "wait",
-	TBEGINCC:      "tbegin.",
-	TENDCC:        "tend.",
-	TABORTCC:      "tabort.",
-	TABORTWCCC:    "tabortwc.",
-	TABORTWCICC:   "tabortwci.",
-	TABORTDCCC:    "tabortdc.",
-	TABORTDCICC:   "tabortdci.",
-	TSRCC:         "tsr.",
-	TCHECK:        "tcheck",
-	MFTB:          "mftb",
-	RFEBB:         "rfebb",
-	LBDX:          "lbdx",
-	LHDX:          "lhdx",
-	LWDX:          "lwdx",
-	LDDX:          "lddx",
-	LFDDX:         "lfddx",
-	STBDX:         "stbdx",
-	STHDX:         "sthdx",
-	STWDX:         "stwdx",
-	STDDX:         "stddx",
-	STFDDX:        "stfddx",
-	DSN:           "dsn",
-	ECIWX:         "eciwx",
-	ECOWX:         "ecowx",
-	RFID:          "rfid",
-	HRFID:         "hrfid",
-	DOZE:          "doze",
-	NAP:           "nap",
-	SLEEP:         "sleep",
-	RVWINKLE:      "rvwinkle",
-	LBZCIX:        "lbzcix",
-	LWZCIX:        "lwzcix",
-	LHZCIX:        "lhzcix",
-	LDCIX:         "ldcix",
-	STBCIX:        "stbcix",
-	STWCIX:        "stwcix",
-	STHCIX:        "sthcix",
-	STDCIX:        "stdcix",
-	TRECLAIMCC:    "treclaim.",
-	TRECHKPTCC:    "trechkpt.",
-	MTMSR:         "mtmsr",
-	MTMSRD:        "mtmsrd",
-	MFMSR:         "mfmsr",
-	SLBIE:         "slbie",
-	SLBIA:         "slbia",
-	SLBMTE:        "slbmte",
-	SLBMFEV:       "slbmfev",
-	SLBMFEE:       "slbmfee",
-	SLBFEECC:      "slbfee.",
-	MTSR:          "mtsr",
-	MTSRIN:        "mtsrin",
-	MFSR:          "mfsr",
-	MFSRIN:        "mfsrin",
-	TLBIE:         "tlbie",
-	TLBIEL:        "tlbiel",
-	TLBIA:         "tlbia",
-	TLBSYNC:       "tlbsync",
-	MSGSND:        "msgsnd",
-	MSGCLR:        "msgclr",
-	MSGSNDP:       "msgsndp",
-	MSGCLRP:       "msgclrp",
-	MTTMR:         "mttmr",
-	RFI:           "rfi",
-	RFCI:          "rfci",
-	RFDI:          "rfdi",
-	RFMCI:         "rfmci",
-	RFGI:          "rfgi",
-	EHPRIV:        "ehpriv",
-	MTDCR:         "mtdcr",
-	MTDCRX:        "mtdcrx",
-	MFDCR:         "mfdcr",
-	MFDCRX:        "mfdcrx",
-	WRTEE:         "wrtee",
-	WRTEEI:        "wrteei",
-	LBEPX:         "lbepx",
-	LHEPX:         "lhepx",
-	LWEPX:         "lwepx",
-	LDEPX:         "ldepx",
-	STBEPX:        "stbepx",
-	STHEPX:        "sthepx",
-	STWEPX:        "stwepx",
-	STDEPX:        "stdepx",
-	DCBSTEP:       "dcbstep",
-	DCBTEP:        "dcbtep",
-	DCBFEP:        "dcbfep",
-	DCBTSTEP:      "dcbtstep",
-	ICBIEP:        "icbiep",
-	DCBZEP:        "dcbzep",
-	LFDEPX:        "lfdepx",
-	STFDEPX:       "stfdepx",
-	EVLDDEPX:      "evlddepx",
-	EVSTDDEPX:     "evstddepx",
-	LVEPX:         "lvepx",
-	LVEPXL:        "lvepxl",
-	STVEPX:        "stvepx",
-	STVEPXL:       "stvepxl",
-	DCBI:          "dcbi",
-	DCBLQCC:       "dcblq.",
-	ICBLQCC:       "icblq.",
-	DCBTLS:        "dcbtls",
-	DCBTSTLS:      "dcbtstls",
-	ICBTLS:        "icbtls",
-	ICBLC:         "icblc",
-	DCBLC:         "dcblc",
-	TLBIVAX:       "tlbivax",
-	TLBILX:        "tlbilx",
-	TLBSX:         "tlbsx",
-	TLBSRXCC:      "tlbsrx.",
-	TLBRE:         "tlbre",
-	TLBWE:         "tlbwe",
-	DNH:           "dnh",
-	DCI:           "dci",
-	ICI:           "ici",
-	DCREAD:        "dcread",
-	ICREAD:        "icread",
-	MFPMR:         "mfpmr",
-	MTPMR:         "mtpmr",
-	ADDEX:         "addex",
-	DARN:          "darn",
-	MADDHD:        "maddhd",
-	MADDHDU:       "maddhdu",
-	MADDLD:        "maddld",
-	CMPRB:         "cmprb",
-	CMPEQB:        "cmpeqb",
-	EXTSWSLI:      "extswsli",
-	EXTSWSLICC:    "extswsli.",
-	MFVSRLD:       "mfvsrld",
-	MTVSRDD:       "mtvsrdd",
-	MTVSRWS:       "mtvsrws",
-	MCRXRX:        "mcrxrx",
-	COPY:          "copy",
-	PASTECC:       "paste.",
+	CNTLZW:       "cntlzw",
+	CNTLZWCC:     "cntlzw.",
+	B:            "b",
+	BA:           "ba",
+	BL:           "bl",
+	BLA:          "bla",
+	BC:           "bc",
+	BCA:          "bca",
+	BCL:          "bcl",
+	BCLA:         "bcla",
+	BCLR:         "bclr",
+	BCLRL:        "bclrl",
+	BCCTR:        "bcctr",
+	BCCTRL:       "bcctrl",
+	BCTAR:        "bctar",
+	BCTARL:       "bctarl",
+	CRAND:        "crand",
+	CROR:         "cror",
+	CRNAND:       "crnand",
+	CRXOR:        "crxor",
+	CRNOR:        "crnor",
+	CRANDC:       "crandc",
+	MCRF:         "mcrf",
+	CREQV:        "creqv",
+	CRORC:        "crorc",
+	SC:           "sc",
+	CLRBHRB:      "clrbhrb",
+	MFBHRBE:      "mfbhrbe",
+	LBZ:          "lbz",
+	LBZU:         "lbzu",
+	LBZX:         "lbzx",
+	LBZUX:        "lbzux",
+	LHZ:          "lhz",
+	LHZU:         "lhzu",
+	LHZX:         "lhzx",
+	LHZUX:        "lhzux",
+	LHA:          "lha",
+	LHAU:         "lhau",
+	LHAX:         "lhax",
+	LHAUX:        "lhaux",
+	LWZ:          "lwz",
+	LWZU:         "lwzu",
+	LWZX:         "lwzx",
+	LWZUX:        "lwzux",
+	LWA:          "lwa",
+	LWAX:         "lwax",
+	LWAUX:        "lwaux",
+	LD:           "ld",
+	LDU:          "ldu",
+	LDX:          "ldx",
+	LDUX:         "ldux",
+	STB:          "stb",
+	STBU:         "stbu",
+	STBX:         "stbx",
+	STBUX:        "stbux",
+	STH:          "sth",
+	STHU:         "sthu",
+	STHX:         "sthx",
+	STHUX:        "sthux",
+	STW:          "stw",
+	STWU:         "stwu",
+	STWX:         "stwx",
+	STWUX:        "stwux",
+	STD:          "std",
+	STDU:         "stdu",
+	STDX:         "stdx",
+	STDUX:        "stdux",
+	LQ:           "lq",
+	STQ:          "stq",
+	LHBRX:        "lhbrx",
+	LWBRX:        "lwbrx",
+	STHBRX:       "sthbrx",
+	STWBRX:       "stwbrx",
+	LDBRX:        "ldbrx",
+	STDBRX:       "stdbrx",
+	LMW:          "lmw",
+	STMW:         "stmw",
+	LSWI:         "lswi",
+	LSWX:         "lswx",
+	STSWI:        "stswi",
+	STSWX:        "stswx",
+	LI:           "li",
+	ADDI:         "addi",
+	LIS:          "lis",
+	ADDIS:        "addis",
+	ADD:          "add",
+	ADDCC:        "add.",
+	ADDO:         "addo",
+	ADDOCC:       "addo.",
+	ADDIC:        "addic",
+	SUBF:         "subf",
+	SUBFCC:       "subf.",
+	SUBFO:        "subfo",
+	SUBFOCC:      "subfo.",
+	ADDICCC:      "addic.",
+	SUBFIC:       "subfic",
+	ADDC:         "addc",
+	ADDCCC:       "addc.",
+	ADDCO:        "addco",
+	ADDCOCC:      "addco.",
+	SUBFC:        "subfc",
+	SUBFCCC:      "subfc.",
+	SUBFCO:       "subfco",
+	SUBFCOCC:     "subfco.",
+	ADDE:         "adde",
+	ADDECC:       "adde.",
+	ADDEO:        "addeo",
+	ADDEOCC:      "addeo.",
+	ADDME:        "addme",
+	ADDMECC:      "addme.",
+	ADDMEO:       "addmeo",
+	ADDMEOCC:     "addmeo.",
+	SUBFE:        "subfe",
+	SUBFECC:      "subfe.",
+	SUBFEO:       "subfeo",
+	SUBFEOCC:     "subfeo.",
+	SUBFME:       "subfme",
+	SUBFMECC:     "subfme.",
+	SUBFMEO:      "subfmeo",
+	SUBFMEOCC:    "subfmeo.",
+	ADDZE:        "addze",
+	ADDZECC:      "addze.",
+	ADDZEO:       "addzeo",
+	ADDZEOCC:     "addzeo.",
+	SUBFZE:       "subfze",
+	SUBFZECC:     "subfze.",
+	SUBFZEO:      "subfzeo",
+	SUBFZEOCC:    "subfzeo.",
+	NEG:          "neg",
+	NEGCC:        "neg.",
+	NEGO:         "nego",
+	NEGOCC:       "nego.",
+	MULLI:        "mulli",
+	MULLW:        "mullw",
+	MULLWCC:      "mullw.",
+	MULLWO:       "mullwo",
+	MULLWOCC:     "mullwo.",
+	MULHW:        "mulhw",
+	MULHWCC:      "mulhw.",
+	MULHWU:       "mulhwu",
+	MULHWUCC:     "mulhwu.",
+	DIVW:         "divw",
+	DIVWCC:       "divw.",
+	DIVWO:        "divwo",
+	DIVWOCC:      "divwo.",
+	DIVWU:        "divwu",
+	DIVWUCC:      "divwu.",
+	DIVWUO:       "divwuo",
+	DIVWUOCC:     "divwuo.",
+	DIVWE:        "divwe",
+	DIVWECC:      "divwe.",
+	DIVWEO:       "divweo",
+	DIVWEOCC:     "divweo.",
+	DIVWEU:       "divweu",
+	DIVWEUCC:     "divweu.",
+	DIVWEUO:      "divweuo",
+	DIVWEUOCC:    "divweuo.",
+	MULLD:        "mulld",
+	MULLDCC:      "mulld.",
+	MULLDO:       "mulldo",
+	MULLDOCC:     "mulldo.",
+	MULHDU:       "mulhdu",
+	MULHDUCC:     "mulhdu.",
+	MULHD:        "mulhd",
+	MULHDCC:      "mulhd.",
+	DIVD:         "divd",
+	DIVDCC:       "divd.",
+	DIVDO:        "divdo",
+	DIVDOCC:      "divdo.",
+	DIVDU:        "divdu",
+	DIVDUCC:      "divdu.",
+	DIVDUO:       "divduo",
+	DIVDUOCC:     "divduo.",
+	DIVDE:        "divde",
+	DIVDECC:      "divde.",
+	DIVDEO:       "divdeo",
+	DIVDEOCC:     "divdeo.",
+	DIVDEU:       "divdeu",
+	DIVDEUCC:     "divdeu.",
+	DIVDEUO:      "divdeuo",
+	DIVDEUOCC:    "divdeuo.",
+	MODSD:        "modsd",
+	MODUD:        "modud",
+	MODSW:        "modsw",
+	MODUW:        "moduw",
+	CMPWI:        "cmpwi",
+	CMPDI:        "cmpdi",
+	CMPI:         "cmpi",
+	CMPW:         "cmpw",
+	CMPD:         "cmpd",
+	CMP:          "cmp",
+	CMPLWI:       "cmplwi",
+	CMPLDI:       "cmpldi",
+	CMPLI:        "cmpli",
+	CMPLW:        "cmplw",
+	CMPLD:        "cmpld",
+	CMPL:         "cmpl",
+	TWI:          "twi",
+	TW:           "tw",
+	TDI:          "tdi",
+	ISEL:         "isel",
+	TD:           "td",
+	ANDICC:       "andi.",
+	ANDISCC:      "andis.",
+	ORI:          "ori",
+	ORIS:         "oris",
+	XORI:         "xori",
+	XORIS:        "xoris",
+	AND:          "and",
+	ANDCC:        "and.",
+	XOR:          "xor",
+	XORCC:        "xor.",
+	NAND:         "nand",
+	NANDCC:       "nand.",
+	OR:           "or",
+	ORCC:         "or.",
+	NOR:          "nor",
+	NORCC:        "nor.",
+	ANDC:         "andc",
+	ANDCCC:       "andc.",
+	EXTSB:        "extsb",
+	EXTSBCC:      "extsb.",
+	EQV:          "eqv",
+	EQVCC:        "eqv.",
+	ORC:          "orc",
+	ORCCC:        "orc.",
+	EXTSH:        "extsh",
+	EXTSHCC:      "extsh.",
+	CMPB:         "cmpb",
+	POPCNTB:      "popcntb",
+	POPCNTW:      "popcntw",
+	PRTYD:        "prtyd",
+	PRTYW:        "prtyw",
+	EXTSW:        "extsw",
+	EXTSWCC:      "extsw.",
+	CNTLZD:       "cntlzd",
+	CNTLZDCC:     "cntlzd.",
+	POPCNTD:      "popcntd",
+	BPERMD:       "bpermd",
+	RLWINM:       "rlwinm",
+	RLWINMCC:     "rlwinm.",
+	RLWNM:        "rlwnm",
+	RLWNMCC:      "rlwnm.",
+	RLWIMI:       "rlwimi",
+	RLWIMICC:     "rlwimi.",
+	RLDICL:       "rldicl",
+	RLDICLCC:     "rldicl.",
+	RLDICR:       "rldicr",
+	RLDICRCC:     "rldicr.",
+	RLDIC:        "rldic",
+	RLDICCC:      "rldic.",
+	RLDCL:        "rldcl",
+	RLDCLCC:      "rldcl.",
+	RLDCR:        "rldcr",
+	RLDCRCC:      "rldcr.",
+	RLDIMI:       "rldimi",
+	RLDIMICC:     "rldimi.",
+	SLW:          "slw",
+	SLWCC:        "slw.",
+	SRW:          "srw",
+	SRWCC:        "srw.",
+	SRAWI:        "srawi",
+	SRAWICC:      "srawi.",
+	SRAW:         "sraw",
+	SRAWCC:       "sraw.",
+	SLD:          "sld",
+	SLDCC:        "sld.",
+	SRD:          "srd",
+	SRDCC:        "srd.",
+	SRADI:        "sradi",
+	SRADICC:      "sradi.",
+	SRAD:         "srad",
+	SRADCC:       "srad.",
+	CDTBCD:       "cdtbcd",
+	CBCDTD:       "cbcdtd",
+	ADDG6S:       "addg6s",
+	MTSPR:        "mtspr",
+	MFSPR:        "mfspr",
+	MTCRF:        "mtcrf",
+	MFCR:         "mfcr",
+	MFVSRD:       "mfvsrd",
+	MFVSRWZ:      "mfvsrwz",
+	MTVSRD:       "mtvsrd",
+	MTVSRWA:      "mtvsrwa",
+	MTVSRWZ:      "mtvsrwz",
+	MTOCRF:       "mtocrf",
+	MFOCRF:       "mfocrf",
+	LFS:          "lfs",
+	LFSU:         "lfsu",
+	LFSX:         "lfsx",
+	LFSUX:        "lfsux",
+	LFD:          "lfd",
+	LFDU:         "lfdu",
+	LFDX:         "lfdx",
+	LFDUX:        "lfdux",
+	LFIWAX:       "lfiwax",
+	LFIWZX:       "lfiwzx",
+	STFS:         "stfs",
+	STFSU:        "stfsu",
+	STFSX:        "stfsx",
+	STFSUX:       "stfsux",
+	STFD:         "stfd",
+	STFDU:        "stfdu",
+	STFDX:        "stfdx",
+	STFDUX:       "stfdux",
+	STFIWX:       "stfiwx",
+	LFDP:         "lfdp",
+	LFDPX:        "lfdpx",
+	STFDP:        "stfdp",
+	STFDPX:       "stfdpx",
+	FMR:          "fmr",
+	FMRCC:        "fmr.",
+	FABS:         "fabs",
+	FABSCC:       "fabs.",
+	FNABS:        "fnabs",
+	FNABSCC:      "fnabs.",
+	FNEG:         "fneg",
+	FNEGCC:       "fneg.",
+	FCPSGN:       "fcpsgn",
+	FCPSGNCC:     "fcpsgn.",
+	FMRGEW:       "fmrgew",
+	FMRGOW:       "fmrgow",
+	FADD:         "fadd",
+	FADDCC:       "fadd.",
+	FADDS:        "fadds",
+	FADDSCC:      "fadds.",
+	FSUB:         "fsub",
+	FSUBCC:       "fsub.",
+	FSUBS:        "fsubs",
+	FSUBSCC:      "fsubs.",
+	FMUL:         "fmul",
+	FMULCC:       "fmul.",
+	FMULS:        "fmuls",
+	FMULSCC:      "fmuls.",
+	FDIV:         "fdiv",
+	FDIVCC:       "fdiv.",
+	FDIVS:        "fdivs",
+	FDIVSCC:      "fdivs.",
+	FSQRT:        "fsqrt",
+	FSQRTCC:      "fsqrt.",
+	FSQRTS:       "fsqrts",
+	FSQRTSCC:     "fsqrts.",
+	FRE:          "fre",
+	FRECC:        "fre.",
+	FRES:         "fres",
+	FRESCC:       "fres.",
+	FRSQRTE:      "frsqrte",
+	FRSQRTECC:    "frsqrte.",
+	FRSQRTES:     "frsqrtes",
+	FRSQRTESCC:   "frsqrtes.",
+	FTDIV:        "ftdiv",
+	FTSQRT:       "ftsqrt",
+	FMADD:        "fmadd",
+	FMADDCC:      "fmadd.",
+	FMADDS:       "fmadds",
+	FMADDSCC:     "fmadds.",
+	FMSUB:        "fmsub",
+	FMSUBCC:      "fmsub.",
+	FMSUBS:       "fmsubs",
+	FMSUBSCC:     "fmsubs.",
+	FNMADD:       "fnmadd",
+	FNMADDCC:     "fnmadd.",
+	FNMADDS:      "fnmadds",
+	FNMADDSCC:    "fnmadds.",
+	FNMSUB:       "fnmsub",
+	FNMSUBCC:     "fnmsub.",
+	FNMSUBS:      "fnmsubs",
+	FNMSUBSCC:    "fnmsubs.",
+	FRSP:         "frsp",
+	FRSPCC:       "frsp.",
+	FCTID:        "fctid",
+	FCTIDCC:      "fctid.",
+	FCTIDZ:       "fctidz",
+	FCTIDZCC:     "fctidz.",
+	FCTIDU:       "fctidu",
+	FCTIDUCC:     "fctidu.",
+	FCTIDUZ:      "fctiduz",
+	FCTIDUZCC:    "fctiduz.",
+	FCTIW:        "fctiw",
+	FCTIWCC:      "fctiw.",
+	FCTIWZ:       "fctiwz",
+	FCTIWZCC:     "fctiwz.",
+	FCTIWU:       "fctiwu",
+	FCTIWUCC:     "fctiwu.",
+	FCTIWUZ:      "fctiwuz",
+	FCTIWUZCC:    "fctiwuz.",
+	FCFID:        "fcfid",
+	FCFIDCC:      "fcfid.",
+	FCFIDU:       "fcfidu",
+	FCFIDUCC:     "fcfidu.",
+	FCFIDS:       "fcfids",
+	FCFIDSCC:     "fcfids.",
+	FCFIDUS:      "fcfidus",
+	FCFIDUSCC:    "fcfidus.",
+	FRIN:         "frin",
+	FRINCC:       "frin.",
+	FRIZ:         "friz",
+	FRIZCC:       "friz.",
+	FRIP:         "frip",
+	FRIPCC:       "frip.",
+	FRIM:         "frim",
+	FRIMCC:       "frim.",
+	FCMPU:        "fcmpu",
+	FCMPO:        "fcmpo",
+	FSEL:         "fsel",
+	FSELCC:       "fsel.",
+	MFFS:         "mffs",
+	MFFSCC:       "mffs.",
+	MCRFS:        "mcrfs",
+	MTFSFI:       "mtfsfi",
+	MTFSFICC:     "mtfsfi.",
+	MTFSF:        "mtfsf",
+	MTFSFCC:      "mtfsf.",
+	MTFSB0:       "mtfsb0",
+	MTFSB0CC:     "mtfsb0.",
+	MTFSB1:       "mtfsb1",
+	MTFSB1CC:     "mtfsb1.",
+	LVEBX:        "lvebx",
+	LVEHX:        "lvehx",
+	LVEWX:        "lvewx",
+	LVX:          "lvx",
+	LVXL:         "lvxl",
+	STVEBX:       "stvebx",
+	STVEHX:       "stvehx",
+	STVEWX:       "stvewx",
+	STVX:         "stvx",
+	STVXL:        "stvxl",
+	LVSL:         "lvsl",
+	LVSR:         "lvsr",
+	VPKPX:        "vpkpx",
+	VPKSDSS:      "vpksdss",
+	VPKSDUS:      "vpksdus",
+	VPKSHSS:      "vpkshss",
+	VPKSHUS:      "vpkshus",
+	VPKSWSS:      "vpkswss",
+	VPKSWUS:      "vpkswus",
+	VPKUDUM:      "vpkudum",
+	VPKUDUS:      "vpkudus",
+	VPKUHUM:      "vpkuhum",
+	VPKUHUS:      "vpkuhus",
+	VPKUWUM:      "vpkuwum",
+	VPKUWUS:      "vpkuwus",
+	VUPKHPX:      "vupkhpx",
+	VUPKLPX:      "vupklpx",
+	VUPKHSB:      "vupkhsb",
+	VUPKHSH:      "vupkhsh",
+	VUPKHSW:      "vupkhsw",
+	VUPKLSB:      "vupklsb",
+	VUPKLSH:      "vupklsh",
+	VUPKLSW:      "vupklsw",
+	VMRGHB:       "vmrghb",
+	VMRGHH:       "vmrghh",
+	VMRGLB:       "vmrglb",
+	VMRGLH:       "vmrglh",
+	VMRGHW:       "vmrghw",
+	VMRGLW:       "vmrglw",
+	VMRGEW:       "vmrgew",
+	VMRGOW:       "vmrgow",
+	VSPLTB:       "vspltb",
+	VSPLTH:       "vsplth",
+	VSPLTW:       "vspltw",
+	VSPLTISB:     "vspltisb",
+	VSPLTISH:     "vspltish",
+	VSPLTISW:     "vspltisw",
+	VPERM:        "vperm",
+	VPERMR:       "vpermr",
+	VSEL:         "vsel",
+	VSL:          "vsl",
+	VSLDOI:       "vsldoi",
+	VSLO:         "vslo",
+	VSR:          "vsr",
+	VSRO:         "vsro",
+	VADDCUW:      "vaddcuw",
+	VADDSBS:      "vaddsbs",
+	VADDSHS:      "vaddshs",
+	VADDSWS:      "vaddsws",
+	VADDUBM:      "vaddubm",
+	VADDUDM:      "vaddudm",
+	VADDUHM:      "vadduhm",
+	VADDUWM:      "vadduwm",
+	VADDUBS:      "vaddubs",
+	VADDUHS:      "vadduhs",
+	VADDUWS:      "vadduws",
+	VADDUQM:      "vadduqm",
+	VADDEUQM:     "vaddeuqm",
+	VADDCUQ:      "vaddcuq",
+	VADDECUQ:     "vaddecuq",
+	VSUBCUW:      "vsubcuw",
+	VSUBSBS:      "vsubsbs",
+	VSUBSHS:      "vsubshs",
+	VSUBSWS:      "vsubsws",
+	VSUBUBM:      "vsububm",
+	VSUBUDM:      "vsubudm",
+	VSUBUHM:      "vsubuhm",
+	VSUBUWM:      "vsubuwm",
+	VSUBUBS:      "vsububs",
+	VSUBUHS:      "vsubuhs",
+	VSUBUWS:      "vsubuws",
+	VSUBUQM:      "vsubuqm",
+	VSUBEUQM:     "vsubeuqm",
+	VSUBCUQ:      "vsubcuq",
+	VSUBECUQ:     "vsubecuq",
+	VMULESB:      "vmulesb",
+	VMULEUB:      "vmuleub",
+	VMULOSB:      "vmulosb",
+	VMULOUB:      "vmuloub",
+	VMULESH:      "vmulesh",
+	VMULEUH:      "vmuleuh",
+	VMULOSH:      "vmulosh",
+	VMULOUH:      "vmulouh",
+	VMULESW:      "vmulesw",
+	VMULEUW:      "vmuleuw",
+	VMULOSW:      "vmulosw",
+	VMULOUW:      "vmulouw",
+	VMULUWM:      "vmuluwm",
+	VMHADDSHS:    "vmhaddshs",
+	VMHRADDSHS:   "vmhraddshs",
+	VMLADDUHM:    "vmladduhm",
+	VMSUMUBM:     "vmsumubm",
+	VMSUMMBM:     "vmsummbm",
+	VMSUMSHM:     "vmsumshm",
+	VMSUMSHS:     "vmsumshs",
+	VMSUMUHM:     "vmsumuhm",
+	VMSUMUHS:     "vmsumuhs",
+	VMSUMUDM:     "vmsumudm",
+	VSUMSWS:      "vsumsws",
+	VSUM2SWS:     "vsum2sws",
+	VSUM4SBS:     "vsum4sbs",
+	VSUM4SHS:     "vsum4shs",
+	VSUM4UBS:     "vsum4ubs",
+	VAVGSB:       "vavgsb",
+	VAVGSH:       "vavgsh",
+	VAVGSW:       "vavgsw",
+	VAVGUB:       "vavgub",
+	VAVGUW:       "vavguw",
+	VAVGUH:       "vavguh",
+	VMAXSB:       "vmaxsb",
+	VMAXSD:       "vmaxsd",
+	VMAXUB:       "vmaxub",
+	VMAXUD:       "vmaxud",
+	VMAXSH:       "vmaxsh",
+	VMAXSW:       "vmaxsw",
+	VMAXUH:       "vmaxuh",
+	VMAXUW:       "vmaxuw",
+	VMINSB:       "vminsb",
+	VMINSD:       "vminsd",
+	VMINUB:       "vminub",
+	VMINUD:       "vminud",
+	VMINSH:       "vminsh",
+	VMINSW:       "vminsw",
+	VMINUH:       "vminuh",
+	VMINUW:       "vminuw",
+	VCMPEQUB:     "vcmpequb",
+	VCMPEQUBCC:   "vcmpequb.",
+	VCMPEQUH:     "vcmpequh",
+	VCMPEQUHCC:   "vcmpequh.",
+	VCMPEQUW:     "vcmpequw",
+	VCMPEQUWCC:   "vcmpequw.",
+	VCMPEQUD:     "vcmpequd",
+	VCMPEQUDCC:   "vcmpequd.",
+	VCMPNEB:      "vcmpneb",
+	VCMPNEBCC:    "vcmpneb.",
+	VCMPNEZB:     "vcmpnezb",
+	VCMPNEZBCC:   "vcmpnezb.",
+	VCMPNEH:      "vcmpneh",
+	VCMPNEHCC:    "vcmpneh.",
+	VCMPNEZH:     "vcmpnezh",
+	VCMPNEZHCC:   "vcmpnezh.",
+	VCMPNEW:      "vcmpnew",
+	VCMPNEWCC:    "vcmpnew.",
+	VCMPNEZW:     "vcmpnezw",
+	VCMPNEZWCC:   "vcmpnezw.",
+	VCMPGTSB:     "vcmpgtsb",
+	VCMPGTSBCC:   "vcmpgtsb.",
+	VCMPGTSD:     "vcmpgtsd",
+	VCMPGTSDCC:   "vcmpgtsd.",
+	VCMPGTSH:     "vcmpgtsh",
+	VCMPGTSHCC:   "vcmpgtsh.",
+	VCMPGTSW:     "vcmpgtsw",
+	VCMPGTSWCC:   "vcmpgtsw.",
+	VCMPGTUB:     "vcmpgtub",
+	VCMPGTUBCC:   "vcmpgtub.",
+	VCMPGTUD:     "vcmpgtud",
+	VCMPGTUDCC:   "vcmpgtud.",
+	VCMPGTUH:     "vcmpgtuh",
+	VCMPGTUHCC:   "vcmpgtuh.",
+	VCMPGTUW:     "vcmpgtuw",
+	VCMPGTUWCC:   "vcmpgtuw.",
+	VAND:         "vand",
+	VANDC:        "vandc",
+	VEQV:         "veqv",
+	VNAND:        "vnand",
+	VORC:         "vorc",
+	VNOR:         "vnor",
+	VOR:          "vor",
+	VXOR:         "vxor",
+	VRLB:         "vrlb",
+	VRLH:         "vrlh",
+	VRLW:         "vrlw",
+	VRLD:         "vrld",
+	VSLB:         "vslb",
+	VSLH:         "vslh",
+	VSLW:         "vslw",
+	VSLD:         "vsld",
+	VSRB:         "vsrb",
+	VSRH:         "vsrh",
+	VSRW:         "vsrw",
+	VSRD:         "vsrd",
+	VSRAB:        "vsrab",
+	VSRAH:        "vsrah",
+	VSRAW:        "vsraw",
+	VSRAD:        "vsrad",
+	VADDFP:       "vaddfp",
+	VSUBFP:       "vsubfp",
+	VMADDFP:      "vmaddfp",
+	VNMSUBFP:     "vnmsubfp",
+	VMAXFP:       "vmaxfp",
+	VMINFP:       "vminfp",
+	VCTSXS:       "vctsxs",
+	VCTUXS:       "vctuxs",
+	VCFSX:        "vcfsx",
+	VCFUX:        "vcfux",
+	VRFIM:        "vrfim",
+	VRFIN:        "vrfin",
+	VRFIP:        "vrfip",
+	VRFIZ:        "vrfiz",
+	VCMPBFP:      "vcmpbfp",
+	VCMPBFPCC:    "vcmpbfp.",
+	VCMPEQFP:     "vcmpeqfp",
+	VCMPEQFPCC:   "vcmpeqfp.",
+	VCMPGEFP:     "vcmpgefp",
+	VCMPGEFPCC:   "vcmpgefp.",
+	VCMPGTFP:     "vcmpgtfp",
+	VCMPGTFPCC:   "vcmpgtfp.",
+	VEXPTEFP:     "vexptefp",
+	VLOGEFP:      "vlogefp",
+	VREFP:        "vrefp",
+	VRSQRTEFP:    "vrsqrtefp",
+	VCIPHER:      "vcipher",
+	VCIPHERLAST:  "vcipherlast",
+	VNCIPHER:     "vncipher",
+	VNCIPHERLAST: "vncipherlast",
+	VSBOX:        "vsbox",
+	VSHASIGMAD:   "vshasigmad",
+	VSHASIGMAW:   "vshasigmaw",
+	VPMSUMB:      "vpmsumb",
+	VPMSUMD:      "vpmsumd",
+	VPMSUMH:      "vpmsumh",
+	VPMSUMW:      "vpmsumw",
+	VPERMXOR:     "vpermxor",
+	VGBBD:        "vgbbd",
+	VCLZB:        "vclzb",
+	VCLZH:        "vclzh",
+	VCLZW:        "vclzw",
+	VCLZD:        "vclzd",
+	VPOPCNTB:     "vpopcntb",
+	VPOPCNTD:     "vpopcntd",
+	VPOPCNTH:     "vpopcnth",
+	VPOPCNTW:     "vpopcntw",
+	VBPERMQ:      "vbpermq",
+	VBPERMD:      "vbpermd",
+	BCDADDCC:     "bcdadd.",
+	BCDSUBCC:     "bcdsub.",
+	MTVSCR:       "mtvscr",
+	MFVSCR:       "mfvscr",
+	DADD:         "dadd",
+	DADDCC:       "dadd.",
+	DSUB:         "dsub",
+	DSUBCC:       "dsub.",
+	DMUL:         "dmul",
+	DMULCC:       "dmul.",
+	DDIV:         "ddiv",
+	DDIVCC:       "ddiv.",
+	DCMPU:        "dcmpu",
+	DCMPO:        "dcmpo",
+	DTSTDC:       "dtstdc",
+	DTSTDG:       "dtstdg",
+	DTSTEX:       "dtstex",
+	DTSTSF:       "dtstsf",
+	DQUAI:        "dquai",
+	DQUAICC:      "dquai.",
+	DQUA:         "dqua",
+	DQUACC:       "dqua.",
+	DRRND:        "drrnd",
+	DRRNDCC:      "drrnd.",
+	DRINTX:       "drintx",
+	DRINTXCC:     "drintx.",
+	DRINTN:       "drintn",
+	DRINTNCC:     "drintn.",
+	DCTDP:        "dctdp",
+	DCTDPCC:      "dctdp.",
+	DCTQPQ:       "dctqpq",
+	DCTQPQCC:     "dctqpq.",
+	DRSP:         "drsp",
+	DRSPCC:       "drsp.",
+	DRDPQ:        "drdpq",
+	DRDPQCC:      "drdpq.",
+	DCFFIX:       "dcffix",
+	DCFFIXCC:     "dcffix.",
+	DCFFIXQ:      "dcffixq",
+	DCFFIXQCC:    "dcffixq.",
+	DCTFIX:       "dctfix",
+	DCTFIXCC:     "dctfix.",
+	DDEDPD:       "ddedpd",
+	DDEDPDCC:     "ddedpd.",
+	DENBCD:       "denbcd",
+	DENBCDCC:     "denbcd.",
+	DXEX:         "dxex",
+	DXEXCC:       "dxex.",
+	DIEX:         "diex",
+	DIEXCC:       "diex.",
+	DSCLI:        "dscli",
+	DSCLICC:      "dscli.",
+	DSCRI:        "dscri",
+	DSCRICC:      "dscri.",
+	LXSDX:        "lxsdx",
+	LXSIWAX:      "lxsiwax",
+	LXSIWZX:      "lxsiwzx",
+	LXSSPX:       "lxsspx",
+	LXVD2X:       "lxvd2x",
+	LXVDSX:       "lxvdsx",
+	LXVW4X:       "lxvw4x",
+	LXVH8X:       "lxvh8x",
+	LXVB16X:      "lxvb16x",
+	LXV:          "lxv",
+	LXVL:         "lxvl",
+	LXVLL:        "lxvll",
+	LXVX:         "lxvx",
+	STXSDX:       "stxsdx",
+	STXSIWX:      "stxsiwx",
+	STXSSPX:      "stxsspx",
+	STXVD2X:      "stxvd2x",
+	STXVW4X:      "stxvw4x",
+	STXVH8X:      "stxvh8x",
+	STXVB16X:     "stxvb16x",
+	STXV:         "stxv",
+	STXVL:        "stxvl",
+	STXVLL:       "stxvll",
+	STXVX:        "stxvx",
+	XSABSDP:      "xsabsdp",
+	XSADDDP:      "xsadddp",
+	XSADDSP:      "xsaddsp",
+	XSCMPODP:     "xscmpodp",
+	XSCMPUDP:     "xscmpudp",
+	XSCPSGNDP:    "xscpsgndp",
+	XSCVDPSP:     "xscvdpsp",
+	XSCVDPSPN:    "xscvdpspn",
+	XSCVDPSXDS:   "xscvdpsxds",
+	XSCVDPSXWS:   "xscvdpsxws",
+	XSCVDPUXDS:   "xscvdpuxds",
+	XSCVDPUXWS:   "xscvdpuxws",
+	XSCVSPDP:     "xscvspdp",
+	XSCVSPDPN:    "xscvspdpn",
+	XSCVSXDDP:    "xscvsxddp",
+	XSCVSXDSP:    "xscvsxdsp",
+	XSCVUXDDP:    "xscvuxddp",
+	XSCVUXDSP:    "xscvuxdsp",
+	XSDIVDP:      "xsdivdp",
+	XSDIVSP:      "xsdivsp",
+	XSMADDADP:    "xsmaddadp",
+	XSMADDASP:    "xsmaddasp",
+	XSMAXDP:      "xsmaxdp",
+	XSMINDP:      "xsmindp",
+	XSMSUBADP:    "xsmsubadp",
+	XSMSUBASP:    "xsmsubasp",
+	XSMULDP:      "xsmuldp",
+	XSMULSP:      "xsmulsp",
+	XSNABSDP:     "xsnabsdp",
+	XSNEGDP:      "xsnegdp",
+	XSNMADDADP:   "xsnmaddadp",
+	XSNMADDASP:   "xsnmaddasp",
+	XSNMSUBADP:   "xsnmsubadp",
+	XSNMSUBASP:   "xsnmsubasp",
+	XSRDPI:       "xsrdpi",
+	XSRDPIC:      "xsrdpic",
+	XSRDPIM:      "xsrdpim",
+	XSRDPIP:      "xsrdpip",
+	XSRDPIZ:      "xsrdpiz",
+	XSREDP:       "xsredp",
+	XSRESP:       "xsresp",
+	XSRSP:        "xsrsp",
+	XSRSQRTEDP:   "xsrsqrtedp",
+	XSRSQRTESP:   "xsrsqrtesp",
+	XSSQRTDP:     "xssqrtdp",
+	XSSQRTSP:     "xssqrtsp",
+	XSSUBDP:      "xssubdp",
+	XSSUBSP:      "xssubsp",
+	XSTDIVDP:     "xstdivdp",
+	XSTSQRTDP:    "xstsqrtdp",
+	XVABSDP:      "xvabsdp",
+	XVABSSP:      "xvabssp",
+	XVADDDP:      "xvadddp",
+	XVADDSP:      "xvaddsp",
+	XVCMPEQDP:    "xvcmpeqdp",
+	XVCMPEQDPCC:  "xvcmpeqdp.",
+	XVCMPEQSP:    "xvcmpeqsp",
+	XVCMPEQSPCC:  "xvcmpeqsp.",
+	XVCMPGEDP:    "xvcmpgedp",
+	XVCMPGEDPCC:  "xvcmpgedp.",
+	XVCMPGESP:    "xvcmpgesp",
+	XVCMPGESPCC:  "xvcmpgesp.",
+	XVCMPGTDP:    "xvcmpgtdp",
+	XVCMPGTDPCC:  "xvcmpgtdp.",
+	XVCMPGTSP:    "xvcmpgtsp",
+	XVCMPGTSPCC:  "xvcmpgtsp.",
+	XVCPSGNDP:    "xvcpsgndp",
+	XVCPSGNSP:    "xvcpsgnsp",
+	XVCVDPSP:     "xvcvdpsp",
+	XVCVDPSXDS:   "xvcvdpsxds",
+	XVCVDPSXWS:   "xvcvdpsxws",
+	XVCVDPUXDS:   "xvcvdpuxds",
+	XVCVDPUXWS:   "xvcvdpuxws",
+	XVCVSPDP:     "xvcvspdp",
+	XVCVSPSXDS:   "xvcvspsxds",
+	XVCVSPSXWS:   "xvcvspsxws",
+	XVCVSPUXDS:   "xvcvspuxds",
+	XVCVSPUXWS:   "xvcvspuxws",
+	XVCVSXDDP:    "xvcvsxddp",
+	XVCVSXDSP:    "xvcvsxdsp",
+	XVCVSXWDP:    "xvcvsxwdp",
+	XVCVSXWSP:    "xvcvsxwsp",
+	XVCVUXDDP:    "xvcvuxddp",
+	XVCVUXDSP:    "xvcvuxdsp",
+	XVCVUXWDP:    "xvcvuxwdp",
+	XVCVUXWSP:    "xvcvuxwsp",
+	XVDIVDP:      "xvdivdp",
+	XVDIVSP:      "xvdivsp",
+	XVMADDADP:    "xvmaddadp",
+	XVMADDASP:    "xvmaddasp",
+	XVMAXDP:      "xvmaxdp",
+	XVMAXSP:      "xvmaxsp",
+	XVMINDP:      "xvmindp",
+	XVMINSP:      "xvminsp",
+	XVMSUBADP:    "xvmsubadp",
+	XVMSUBASP:    "xvmsubasp",
+	XVMULDP:      "xvmuldp",
+	XVMULSP:      "xvmulsp",
+	XVNABSDP:     "xvnabsdp",
+	XVNABSSP:     "xvnabssp",
+	XVNEGDP:      "xvnegdp",
+	XVNEGSP:      "xvnegsp",
+	XVNMADDADP:   "xvnmaddadp",
+	XVNMADDASP:   "xvnmaddasp",
+	XVNMSUBADP:   "xvnmsubadp",
+	XVNMSUBASP:   "xvnmsubasp",
+	XVRDPI:       "xvrdpi",
+	XVRDPIC:      "xvrdpic",
+	XVRDPIM:      "xvrdpim",
+	XVRDPIP:      "xvrdpip",
+	XVRDPIZ:      "xvrdpiz",
+	XVREDP:       "xvredp",
+	XVRESP:       "xvresp",
+	XVRSPI:       "xvrspi",
+	XVRSPIC:      "xvrspic",
+	XVRSPIM:      "xvrspim",
+	XVRSPIP:      "xvrspip",
+	XVRSPIZ:      "xvrspiz",
+	XVRSQRTEDP:   "xvrsqrtedp",
+	XVRSQRTESP:   "xvrsqrtesp",
+	XVSQRTDP:     "xvsqrtdp",
+	XVSQRTSP:     "xvsqrtsp",
+	XVSUBDP:      "xvsubdp",
+	XVSUBSP:      "xvsubsp",
+	XVTDIVDP:     "xvtdivdp",
+	XVTDIVSP:     "xvtdivsp",
+	XVTSQRTDP:    "xvtsqrtdp",
+	XVTSQRTSP:    "xvtsqrtsp",
+	XXLAND:       "xxland",
+	XXLANDC:      "xxlandc",
+	XXLEQV:       "xxleqv",
+	XXLNAND:      "xxlnand",
+	XXLORC:       "xxlorc",
+	XXLNOR:       "xxlnor",
+	XXLOR:        "xxlor",
+	XXLXOR:       "xxlxor",
+	XXMRGHW:      "xxmrghw",
+	XXMRGLW:      "xxmrglw",
+	XXPERMDI:     "xxpermdi",
+	XXPERM:       "xxperm",
+	XXSEL:        "xxsel",
+	XXSLDWI:      "xxsldwi",
+	XXSPLTW:      "xxspltw",
+	XXBRD:        "xxbrd",
+	XXBRW:        "xxbrw",
+	XXBRH:        "xxbrh",
+	ICBI:         "icbi",
+	ICBT:         "icbt",
+	DCBT:         "dcbt",
+	DCBTST:       "dcbtst",
+	DCBZ:         "dcbz",
+	DCBST:        "dcbst",
+	DCBF:         "dcbf",
+	ISYNC:        "isync",
+	LBARX:        "lbarx",
+	LHARX:        "lharx",
+	LWARX:        "lwarx",
+	STBCXCC:      "stbcx.",
+	STHCXCC:      "sthcx.",
+	STWCXCC:      "stwcx.",
+	LDARX:        "ldarx",
+	STDCXCC:      "stdcx.",
+	LQARX:        "lqarx",
+	STQCXCC:      "stqcx.",
+	SYNC:         "sync",
+	EIEIO:        "eieio",
+	WAIT:         "wait",
+	MFTB:         "mftb",
+	RFEBB:        "rfebb",
+	RFID:         "rfid",
+	HRFID:        "hrfid",
+	LBZCIX:       "lbzcix",
+	LWZCIX:       "lwzcix",
+	LHZCIX:       "lhzcix",
+	LDCIX:        "ldcix",
+	STBCIX:       "stbcix",
+	STWCIX:       "stwcix",
+	STHCIX:       "sthcix",
+	STDCIX:       "stdcix",
+	MTMSR:        "mtmsr",
+	MTMSRD:       "mtmsrd",
+	MFMSR:        "mfmsr",
+	SLBIE:        "slbie",
+	SLBIA:        "slbia",
+	SLBMTE:       "slbmte",
+	SLBMFEV:      "slbmfev",
+	SLBMFEE:      "slbmfee",
+	SLBFEECC:     "slbfee.",
+	TLBIE:        "tlbie",
+	TLBIEL:       "tlbiel",
+	TLBSYNC:      "tlbsync",
+	MSGSND:       "msgsnd",
+	MSGCLR:       "msgclr",
+	MSGSNDP:      "msgsndp",
+	MSGCLRP:      "msgclrp",
+	ADDEX:        "addex",
+	DARN:         "darn",
+	MADDHD:       "maddhd",
+	MADDHDU:      "maddhdu",
+	MADDLD:       "maddld",
+	CMPRB:        "cmprb",
+	CMPEQB:       "cmpeqb",
+	EXTSWSLI:     "extswsli",
+	EXTSWSLICC:   "extswsli.",
+	MFVSRLD:      "mfvsrld",
+	MTVSRDD:      "mtvsrdd",
+	MTVSRWS:      "mtvsrws",
+	MCRXRX:       "mcrxrx",
+	COPY:         "copy",
+	PASTECC:      "paste.",
+	BRD:          "brd",
+	BRH:          "brh",
+	BRW:          "brw",
+	CFUGED:       "cfuged",
+	CNTLZDM:      "cntlzdm",
+	CNTTZDM:      "cnttzdm",
+	DCFFIXQQ:     "dcffixqq",
+	DCTFIXQQ:     "dctfixqq",
+	LXVKQ:        "lxvkq",
+	LXVP:         "lxvp",
+	LXVPX:        "lxvpx",
+	LXVRBX:       "lxvrbx",
+	LXVRDX:       "lxvrdx",
+	LXVRHX:       "lxvrhx",
+	LXVRWX:       "lxvrwx",
+	MTVSRBM:      "mtvsrbm",
+	MTVSRBMI:     "mtvsrbmi",
+	MTVSRDM:      "mtvsrdm",
+	MTVSRHM:      "mtvsrhm",
+	MTVSRQM:      "mtvsrqm",
+	MTVSRWM:      "mtvsrwm",
+	PDEPD:        "pdepd",
+	PEXTD:        "pextd",
+	SETBC:        "setbc",
+	SETBCR:       "setbcr",
+	SETNBC:       "setnbc",
+	SETNBCR:      "setnbcr",
+	STXVP:        "stxvp",
+	STXVPX:       "stxvpx",
+	STXVRBX:      "stxvrbx",
+	STXVRDX:      "stxvrdx",
+	STXVRHX:      "stxvrhx",
+	STXVRWX:      "stxvrwx",
+	VCFUGED:      "vcfuged",
+	VCLRLB:       "vclrlb",
+	VCLRRB:       "vclrrb",
+	VCLZDM:       "vclzdm",
+	VCMPEQUQ:     "vcmpequq",
+	VCMPEQUQCC:   "vcmpequq.",
+	VCMPGTSQ:     "vcmpgtsq",
+	VCMPGTSQCC:   "vcmpgtsq.",
+	VCMPGTUQ:     "vcmpgtuq",
+	VCMPGTUQCC:   "vcmpgtuq.",
+	VCMPSQ:       "vcmpsq",
+	VCMPUQ:       "vcmpuq",
+	VCNTMBB:      "vcntmbb",
+	VCNTMBD:      "vcntmbd",
+	VCNTMBH:      "vcntmbh",
+	VCNTMBW:      "vcntmbw",
+	VCTZDM:       "vctzdm",
+	VDIVESD:      "vdivesd",
+	VDIVESQ:      "vdivesq",
+	VDIVESW:      "vdivesw",
+	VDIVEUD:      "vdiveud",
+	VDIVEUQ:      "vdiveuq",
+	VDIVEUW:      "vdiveuw",
+	VDIVSD:       "vdivsd",
+	VDIVSQ:       "vdivsq",
+	VDIVSW:       "vdivsw",
+	VDIVUD:       "vdivud",
+	VDIVUQ:       "vdivuq",
+	VDIVUW:       "vdivuw",
+	VEXPANDBM:    "vexpandbm",
+	VEXPANDDM:    "vexpanddm",
+	VEXPANDHM:    "vexpandhm",
+	VEXPANDQM:    "vexpandqm",
+	VEXPANDWM:    "vexpandwm",
+	VEXTDDVLX:    "vextddvlx",
+	VEXTDDVRX:    "vextddvrx",
+	VEXTDUBVLX:   "vextdubvlx",
+	VEXTDUBVRX:   "vextdubvrx",
+	VEXTDUHVLX:   "vextduhvlx",
+	VEXTDUHVRX:   "vextduhvrx",
+	VEXTDUWVLX:   "vextduwvlx",
+	VEXTDUWVRX:   "vextduwvrx",
+	VEXTRACTBM:   "vextractbm",
+	VEXTRACTDM:   "vextractdm",
+	VEXTRACTHM:   "vextracthm",
+	VEXTRACTQM:   "vextractqm",
+	VEXTRACTWM:   "vextractwm",
+	VEXTSD2Q:     "vextsd2q",
+	VGNB:         "vgnb",
+	VINSBLX:      "vinsblx",
+	VINSBRX:      "vinsbrx",
+	VINSBVLX:     "vinsbvlx",
+	VINSBVRX:     "vinsbvrx",
+	VINSD:        "vinsd",
+	VINSDLX:      "vinsdlx",
+	VINSDRX:      "vinsdrx",
+	VINSHLX:      "vinshlx",
+	VINSHRX:      "vinshrx",
+	VINSHVLX:     "vinshvlx",
+	VINSHVRX:     "vinshvrx",
+	VINSW:        "vinsw",
+	VINSWLX:      "vinswlx",
+	VINSWRX:      "vinswrx",
+	VINSWVLX:     "vinswvlx",
+	VINSWVRX:     "vinswvrx",
+	VMODSD:       "vmodsd",
+	VMODSQ:       "vmodsq",
+	VMODSW:       "vmodsw",
+	VMODUD:       "vmodud",
+	VMODUQ:       "vmoduq",
+	VMODUW:       "vmoduw",
+	VMSUMCUD:     "vmsumcud",
+	VMULESD:      "vmulesd",
+	VMULEUD:      "vmuleud",
+	VMULHSD:      "vmulhsd",
+	VMULHSW:      "vmulhsw",
+	VMULHUD:      "vmulhud",
+	VMULHUW:      "vmulhuw",
+	VMULLD:       "vmulld",
+	VMULOSD:      "vmulosd",
+	VMULOUD:      "vmuloud",
+	VPDEPD:       "vpdepd",
+	VPEXTD:       "vpextd",
+	VRLQ:         "vrlq",
+	VRLQMI:       "vrlqmi",
+	VRLQNM:       "vrlqnm",
+	VSLDBI:       "vsldbi",
+	VSLQ:         "vslq",
+	VSRAQ:        "vsraq",
+	VSRDBI:       "vsrdbi",
+	VSRQ:         "vsrq",
+	VSTRIBL:      "vstribl",
+	VSTRIBLCC:    "vstribl.",
+	VSTRIBR:      "vstribr",
+	VSTRIBRCC:    "vstribr.",
+	VSTRIHL:      "vstrihl",
+	VSTRIHLCC:    "vstrihl.",
+	VSTRIHR:      "vstrihr",
+	VSTRIHRCC:    "vstrihr.",
+	XSCMPEQQP:    "xscmpeqqp",
+	XSCMPGEQP:    "xscmpgeqp",
+	XSCMPGTQP:    "xscmpgtqp",
+	XSCVQPSQZ:    "xscvqpsqz",
+	XSCVQPUQZ:    "xscvqpuqz",
+	XSCVSQQP:     "xscvsqqp",
+	XSCVUQQP:     "xscvuqqp",
+	XSMAXCQP:     "xsmaxcqp",
+	XSMINCQP:     "xsmincqp",
+	XVBF16GER2:   "xvbf16ger2",
+	XVBF16GER2NN: "xvbf16ger2nn",
+	XVBF16GER2NP: "xvbf16ger2np",
+	XVBF16GER2PN: "xvbf16ger2pn",
+	XVBF16GER2PP: "xvbf16ger2pp",
+	XVCVBF16SPN:  "xvcvbf16spn",
+	XVCVSPBF16:   "xvcvspbf16",
+	XVF16GER2:    "xvf16ger2",
+	XVF16GER2NN:  "xvf16ger2nn",
+	XVF16GER2NP:  "xvf16ger2np",
+	XVF16GER2PN:  "xvf16ger2pn",
+	XVF16GER2PP:  "xvf16ger2pp",
+	XVF32GER:     "xvf32ger",
+	XVF32GERNN:   "xvf32gernn",
+	XVF32GERNP:   "xvf32gernp",
+	XVF32GERPN:   "xvf32gerpn",
+	XVF32GERPP:   "xvf32gerpp",
+	XVF64GER:     "xvf64ger",
+	XVF64GERNN:   "xvf64gernn",
+	XVF64GERNP:   "xvf64gernp",
+	XVF64GERPN:   "xvf64gerpn",
+	XVF64GERPP:   "xvf64gerpp",
+	XVI16GER2:    "xvi16ger2",
+	XVI16GER2PP:  "xvi16ger2pp",
+	XVI16GER2S:   "xvi16ger2s",
+	XVI16GER2SPP: "xvi16ger2spp",
+	XVI4GER8:     "xvi4ger8",
+	XVI4GER8PP:   "xvi4ger8pp",
+	XVI8GER4:     "xvi8ger4",
+	XVI8GER4PP:   "xvi8ger4pp",
+	XVI8GER4SPP:  "xvi8ger4spp",
+	XVTLSBB:      "xvtlsbb",
+	XXGENPCVBM:   "xxgenpcvbm",
+	XXGENPCVDM:   "xxgenpcvdm",
+	XXGENPCVHM:   "xxgenpcvhm",
+	XXGENPCVWM:   "xxgenpcvwm",
+	XXMFACC:      "xxmfacc",
+	XXMTACC:      "xxmtacc",
+	XXSETACCZ:    "xxsetaccz",
+	MSGCLRU:      "msgclru",
+	MSGSNDU:      "msgsndu",
+	URFID:        "urfid",
+	MFFSCDRN:     "mffscdrn",
+	MFFSCDRNI:    "mffscdrni",
+	MFFSCE:       "mffsce",
+	MFFSCRN:      "mffscrn",
+	MFFSCRNI:     "mffscrni",
+	MFFSL:        "mffsl",
+	SLBIAG:       "slbiag",
+	ADDPCIS:      "addpcis",
+	BCDCFNCC:     "bcdcfn.",
+	BCDCFSQCC:    "bcdcfsq.",
+	BCDCFZCC:     "bcdcfz.",
+	BCDCPSGNCC:   "bcdcpsgn.",
+	BCDCTNCC:     "bcdctn.",
+	BCDCTSQCC:    "bcdctsq.",
+	BCDCTZCC:     "bcdctz.",
+	BCDSCC:       "bcds.",
+	BCDSETSGNCC:  "bcdsetsgn.",
+	BCDSRCC:      "bcdsr.",
+	BCDTRUNCCC:   "bcdtrunc.",
+	BCDUSCC:      "bcdus.",
+	BCDUTRUNCCC:  "bcdutrunc.",
+	CNTTZD:       "cnttzd",
+	CNTTZDCC:     "cnttzd.",
+	CNTTZW:       "cnttzw",
+	CNTTZWCC:     "cnttzw.",
+	CPABORT:      "cpabort",
+	DTSTSFI:      "dtstsfi",
+	DTSTSFIQ:     "dtstsfiq",
+	LDAT:         "ldat",
+	LWAT:         "lwat",
+	LXSD:         "lxsd",
+	LXSIBZX:      "lxsibzx",
+	LXSIHZX:      "lxsihzx",
+	LXSSP:        "lxssp",
+	LXVWSX:       "lxvwsx",
+	MSGSYNC:      "msgsync",
+	SETB:         "setb",
+	SLBIEG:       "slbieg",
+	SLBSYNC:      "slbsync",
+	STDAT:        "stdat",
+	STOP:         "stop",
+	STWAT:        "stwat",
+	STXSD:        "stxsd",
+	STXSIBX:      "stxsibx",
+	STXSIHX:      "stxsihx",
+	STXSSP:       "stxssp",
+	VABSDUB:      "vabsdub",
+	VABSDUH:      "vabsduh",
+	VABSDUW:      "vabsduw",
+	VCLZLSBB:     "vclzlsbb",
+	VCTZB:        "vctzb",
+	VCTZD:        "vctzd",
+	VCTZH:        "vctzh",
+	VCTZLSBB:     "vctzlsbb",
+	VCTZW:        "vctzw",
+	VEXTRACTD:    "vextractd",
+	VEXTRACTUB:   "vextractub",
+	VEXTRACTUH:   "vextractuh",
+	VEXTRACTUW:   "vextractuw",
+	VEXTSB2D:     "vextsb2d",
+	VEXTSB2W:     "vextsb2w",
+	VEXTSH2D:     "vextsh2d",
+	VEXTSH2W:     "vextsh2w",
+	VEXTSW2D:     "vextsw2d",
+	VEXTUBLX:     "vextublx",
+	VEXTUBRX:     "vextubrx",
+	VEXTUHLX:     "vextuhlx",
+	VEXTUHRX:     "vextuhrx",
+	VEXTUWLX:     "vextuwlx",
+	VEXTUWRX:     "vextuwrx",
+	VINSERTB:     "vinsertb",
+	VINSERTD:     "vinsertd",
+	VINSERTH:     "vinserth",
+	VINSERTW:     "vinsertw",
+	VMUL10CUQ:    "vmul10cuq",
+	VMUL10ECUQ:   "vmul10ecuq",
+	VMUL10EUQ:    "vmul10euq",
+	VMUL10UQ:     "vmul10uq",
+	VNEGD:        "vnegd",
+	VNEGW:        "vnegw",
+	VPRTYBD:      "vprtybd",
+	VPRTYBQ:      "vprtybq",
+	VPRTYBW:      "vprtybw",
+	VRLDMI:       "vrldmi",
+	VRLDNM:       "vrldnm",
+	VRLWMI:       "vrlwmi",
+	VRLWNM:       "vrlwnm",
+	VSLV:         "vslv",
+	VSRV:         "vsrv",
+	XSABSQP:      "xsabsqp",
+	XSADDQP:      "xsaddqp",
+	XSADDQPO:     "xsaddqpo",
+	XSCMPEQDP:    "xscmpeqdp",
+	XSCMPEXPDP:   "xscmpexpdp",
+	XSCMPEXPQP:   "xscmpexpqp",
+	XSCMPGEDP:    "xscmpgedp",
+	XSCMPGTDP:    "xscmpgtdp",
+	XSCMPOQP:     "xscmpoqp",
+	XSCMPUQP:     "xscmpuqp",
+	XSCPSGNQP:    "xscpsgnqp",
+	XSCVDPHP:     "xscvdphp",
+	XSCVDPQP:     "xscvdpqp",
+	XSCVHPDP:     "xscvhpdp",
+	XSCVQPDP:     "xscvqpdp",
+	XSCVQPDPO:    "xscvqpdpo",
+	XSCVQPSDZ:    "xscvqpsdz",
+	XSCVQPSWZ:    "xscvqpswz",
+	XSCVQPUDZ:    "xscvqpudz",
+	XSCVQPUWZ:    "xscvqpuwz",
+	XSCVSDQP:     "xscvsdqp",
+	XSCVUDQP:     "xscvudqp",
+	XSDIVQP:      "xsdivqp",
+	XSDIVQPO:     "xsdivqpo",
+	XSIEXPDP:     "xsiexpdp",
+	XSIEXPQP:     "xsiexpqp",
+	XSMADDQP:     "xsmaddqp",
+	XSMADDQPO:    "xsmaddqpo",
+	XSMAXCDP:     "xsmaxcdp",
+	XSMAXJDP:     "xsmaxjdp",
+	XSMINCDP:     "xsmincdp",
+	XSMINJDP:     "xsminjdp",
+	XSMSUBQP:     "xsmsubqp",
+	XSMSUBQPO:    "xsmsubqpo",
+	XSMULQP:      "xsmulqp",
+	XSMULQPO:     "xsmulqpo",
+	XSNABSQP:     "xsnabsqp",
+	XSNEGQP:      "xsnegqp",
+	XSNMADDQP:    "xsnmaddqp",
+	XSNMADDQPO:   "xsnmaddqpo",
+	XSNMSUBQP:    "xsnmsubqp",
+	XSNMSUBQPO:   "xsnmsubqpo",
+	XSRQPI:       "xsrqpi",
+	XSRQPIX:      "xsrqpix",
+	XSRQPXP:      "xsrqpxp",
+	XSSQRTQP:     "xssqrtqp",
+	XSSQRTQPO:    "xssqrtqpo",
+	XSSUBQP:      "xssubqp",
+	XSSUBQPO:     "xssubqpo",
+	XSTSTDCDP:    "xststdcdp",
+	XSTSTDCQP:    "xststdcqp",
+	XSTSTDCSP:    "xststdcsp",
+	XSXEXPDP:     "xsxexpdp",
+	XSXEXPQP:     "xsxexpqp",
+	XSXSIGDP:     "xsxsigdp",
+	XSXSIGQP:     "xsxsigqp",
+	XVCVHPSP:     "xvcvhpsp",
+	XVCVSPHP:     "xvcvsphp",
+	XVIEXPDP:     "xviexpdp",
+	XVIEXPSP:     "xviexpsp",
+	XVTSTDCDP:    "xvtstdcdp",
+	XVTSTDCSP:    "xvtstdcsp",
+	XVXEXPDP:     "xvxexpdp",
+	XVXEXPSP:     "xvxexpsp",
+	XVXSIGDP:     "xvxsigdp",
+	XVXSIGSP:     "xvxsigsp",
+	XXBRQ:        "xxbrq",
+	XXEXTRACTUW:  "xxextractuw",
+	XXINSERTW:    "xxinsertw",
+	XXPERMR:      "xxpermr",
+	XXSPLTIB:     "xxspltib",
+	XSMADDMSP:    "xsmaddmsp",
+	XSMSUBMSP:    "xsmsubmsp",
+	XSNMADDMSP:   "xsnmaddmsp",
+	XSNMSUBMSP:   "xsnmsubmsp",
+	XSMADDMDP:    "xsmaddmdp",
+	XSMSUBMDP:    "xsmsubmdp",
+	XSNMADDMDP:   "xsnmaddmdp",
+	XSNMSUBMDP:   "xsnmsubmdp",
+	XVMADDMDP:    "xvmaddmdp",
+	XVMADDMSP:    "xvmaddmsp",
+	XVMSUBMDP:    "xvmsubmdp",
+	XVMSUBMSP:    "xvmsubmsp",
+	XVNMADDMDP:   "xvnmaddmdp",
+	XVNMADDMSP:   "xvnmaddmsp",
+	XVNMSUBMDP:   "xvnmsubmdp",
+	XVNMSUBMSP:   "xvnmsubmsp",
+	DADDQ:        "daddq",
+	DADDQCC:      "daddq.",
+	DCMPOQ:       "dcmpoq",
+	DCMPUQ:       "dcmpuq",
+	DCTFIXQ:      "dctfixq",
+	DCTFIXQCC:    "dctfixq.",
+	DDEDPDQ:      "ddedpdq",
+	DDEDPDQCC:    "ddedpdq.",
+	DDIVQ:        "ddivq",
+	DDIVQCC:      "ddivq.",
+	DENBCDQ:      "denbcdq",
+	DENBCDQCC:    "denbcdq.",
+	DIEXQCC:      "diexq.",
+	DIEXQ:        "diexq",
+	DMULQ:        "dmulq",
+	DMULQCC:      "dmulq.",
+	DQUAIQ:       "dquaiq",
+	DQUAIQCC:     "dquaiq.",
+	DQUAQ:        "dquaq",
+	DQUAQCC:      "dquaq.",
+	DRINTNQ:      "drintnq",
+	DRINTNQCC:    "drintnq.",
+	DRINTXQ:      "drintxq",
+	DRINTXQCC:    "drintxq.",
+	DRRNDQ:       "drrndq",
+	DRRNDQCC:     "drrndq.",
+	DSCLIQ:       "dscliq",
+	DSCLIQCC:     "dscliq.",
+	DSCRIQ:       "dscriq",
+	DSCRIQCC:     "dscriq.",
+	DSUBQ:        "dsubq",
+	DSUBQCC:      "dsubq.",
+	DTSTDCQ:      "dtstdcq",
+	DTSTDGQ:      "dtstdgq",
+	DTSTEXQ:      "dtstexq",
+	DTSTSFQ:      "dtstsfq",
+	DXEXQ:        "dxexq",
+	DXEXQCC:      "dxexq.",
+	RFSCV:        "rfscv",
+	SCV:          "scv",
 }
 
 var (
-	ap_Reg_11_15               = &argField{Type: TypeReg, Shift: 0, BitFields: BitFields{{11, 5}}}
-	ap_Reg_6_10                = &argField{Type: TypeReg, Shift: 0, BitFields: BitFields{{6, 5}}}
-	ap_PCRel_6_29_shift2       = &argField{Type: TypePCRel, Shift: 2, BitFields: BitFields{{6, 24}}}
-	ap_Label_6_29_shift2       = &argField{Type: TypeLabel, Shift: 2, BitFields: BitFields{{6, 24}}}
-	ap_ImmUnsigned_6_10        = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{6, 5}}}
-	ap_CondRegBit_11_15        = &argField{Type: TypeCondRegBit, Shift: 0, BitFields: BitFields{{11, 5}}}
-	ap_PCRel_16_29_shift2      = &argField{Type: TypePCRel, Shift: 2, BitFields: BitFields{{16, 14}}}
-	ap_Label_16_29_shift2      = &argField{Type: TypeLabel, Shift: 2, BitFields: BitFields{{16, 14}}}
-	ap_ImmUnsigned_19_20       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{19, 2}}}
-	ap_CondRegBit_6_10         = &argField{Type: TypeCondRegBit, Shift: 0, BitFields: BitFields{{6, 5}}}
-	ap_CondRegBit_16_20        = &argField{Type: TypeCondRegBit, Shift: 0, BitFields: BitFields{{16, 5}}}
-	ap_CondRegField_6_8        = &argField{Type: TypeCondRegField, Shift: 0, BitFields: BitFields{{6, 3}}}
-	ap_CondRegField_11_13      = &argField{Type: TypeCondRegField, Shift: 0, BitFields: BitFields{{11, 3}}}
-	ap_ImmUnsigned_20_26       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{20, 7}}}
-	ap_SpReg_11_20             = &argField{Type: TypeSpReg, Shift: 0, BitFields: BitFields{{11, 10}}}
-	ap_Offset_16_31            = &argField{Type: TypeOffset, Shift: 0, BitFields: BitFields{{16, 16}}}
-	ap_Reg_16_20               = &argField{Type: TypeReg, Shift: 0, BitFields: BitFields{{16, 5}}}
-	ap_Offset_16_29_shift2     = &argField{Type: TypeOffset, Shift: 2, BitFields: BitFields{{16, 14}}}
-	ap_Offset_16_27_shift4     = &argField{Type: TypeOffset, Shift: 4, BitFields: BitFields{{16, 12}}}
-	ap_ImmUnsigned_16_20       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{16, 5}}}
-	ap_ImmSigned_16_31         = &argField{Type: TypeImmSigned, Shift: 0, BitFields: BitFields{{16, 16}}}
-	ap_ImmUnsigned_16_31       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{16, 16}}}
-	ap_CondRegBit_21_25        = &argField{Type: TypeCondRegBit, Shift: 0, BitFields: BitFields{{21, 5}}}
-	ap_ImmUnsigned_21_25       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{21, 5}}}
-	ap_ImmUnsigned_26_30       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{26, 5}}}
-	ap_ImmUnsigned_30_30_16_20 = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{30, 1}, {16, 5}}}
-	ap_ImmUnsigned_26_26_21_25 = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{26, 1}, {21, 5}}}
-	ap_SpReg_16_20_11_15       = &argField{Type: TypeSpReg, Shift: 0, BitFields: BitFields{{16, 5}, {11, 5}}}
-	ap_ImmUnsigned_12_19       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{12, 8}}}
-	ap_ImmUnsigned_10_10       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{10, 1}}}
-	ap_VecSReg_31_31_6_10      = &argField{Type: TypeVecSReg, Shift: 0, BitFields: BitFields{{31, 1}, {6, 5}}}
-	ap_FPReg_6_10              = &argField{Type: TypeFPReg, Shift: 0, BitFields: BitFields{{6, 5}}}
-	ap_FPReg_16_20             = &argField{Type: TypeFPReg, Shift: 0, BitFields: BitFields{{16, 5}}}
-	ap_FPReg_11_15             = &argField{Type: TypeFPReg, Shift: 0, BitFields: BitFields{{11, 5}}}
-	ap_FPReg_21_25             = &argField{Type: TypeFPReg, Shift: 0, BitFields: BitFields{{21, 5}}}
-	ap_ImmUnsigned_6_8         = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{6, 3}}}
-	ap_ImmUnsigned_16_19       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{16, 4}}}
-	ap_ImmUnsigned_15_15       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{15, 1}}}
-	ap_ImmUnsigned_7_14        = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{7, 8}}}
-	ap_ImmUnsigned_6_6         = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{6, 1}}}
-	ap_VecReg_6_10             = &argField{Type: TypeVecReg, Shift: 0, BitFields: BitFields{{6, 5}}}
-	ap_VecReg_11_15            = &argField{Type: TypeVecReg, Shift: 0, BitFields: BitFields{{11, 5}}}
-	ap_VecReg_16_20            = &argField{Type: TypeVecReg, Shift: 0, BitFields: BitFields{{16, 5}}}
-	ap_ImmUnsigned_12_15       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{12, 4}}}
-	ap_ImmUnsigned_13_15       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{13, 3}}}
-	ap_ImmUnsigned_14_15       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{14, 2}}}
-	ap_ImmSigned_11_15         = &argField{Type: TypeImmSigned, Shift: 0, BitFields: BitFields{{11, 5}}}
-	ap_VecReg_21_25            = &argField{Type: TypeVecReg, Shift: 0, BitFields: BitFields{{21, 5}}}
-	ap_ImmUnsigned_22_25       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{22, 4}}}
-	ap_ImmUnsigned_11_15       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{11, 5}}}
-	ap_ImmUnsigned_16_16       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{16, 1}}}
-	ap_ImmUnsigned_17_20       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{17, 4}}}
-	ap_ImmUnsigned_22_22       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{22, 1}}}
-	ap_ImmUnsigned_16_21       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{16, 6}}}
-	ap_ImmUnsigned_21_22       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{21, 2}}}
-	ap_ImmUnsigned_11_12       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{11, 2}}}
-	ap_ImmUnsigned_11_11       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{11, 1}}}
-	ap_VecSReg_28_28_6_10      = &argField{Type: TypeVecSReg, Shift: 0, BitFields: BitFields{{28, 1}, {6, 5}}}
-	ap_VecSReg_30_30_16_20     = &argField{Type: TypeVecSReg, Shift: 0, BitFields: BitFields{{30, 1}, {16, 5}}}
-	ap_VecSReg_29_29_11_15     = &argField{Type: TypeVecSReg, Shift: 0, BitFields: BitFields{{29, 1}, {11, 5}}}
-	ap_ImmUnsigned_22_23       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{22, 2}}}
-	ap_VecSReg_28_28_21_25     = &argField{Type: TypeVecSReg, Shift: 0, BitFields: BitFields{{28, 1}, {21, 5}}}
-	ap_CondRegField_29_31      = &argField{Type: TypeCondRegField, Shift: 0, BitFields: BitFields{{29, 3}}}
-	ap_ImmUnsigned_7_10        = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{7, 4}}}
-	ap_ImmUnsigned_9_10        = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{9, 2}}}
-	ap_ImmUnsigned_31_31       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{31, 1}}}
-	ap_ImmSigned_16_20         = &argField{Type: TypeImmSigned, Shift: 0, BitFields: BitFields{{16, 5}}}
-	ap_ImmUnsigned_20_20       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{20, 1}}}
-	ap_ImmUnsigned_8_10        = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{8, 3}}}
-	ap_SpReg_12_15             = &argField{Type: TypeSpReg, Shift: 0, BitFields: BitFields{{12, 4}}}
-	ap_ImmUnsigned_6_20        = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{6, 15}}}
-	ap_ImmUnsigned_11_20       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{11, 10}}}
-	ap_Reg_21_25               = &argField{Type: TypeReg, Shift: 0, BitFields: BitFields{{21, 5}}}
+	ap_Reg_11_15                     = &argField{Type: TypeReg, Shift: 0, BitFields: BitFields{{11, 5}}}
+	ap_Reg_6_10                      = &argField{Type: TypeReg, Shift: 0, BitFields: BitFields{{6, 5}}}
+	ap_PCRel_6_29_shift2             = &argField{Type: TypePCRel, Shift: 2, BitFields: BitFields{{6, 24}}}
+	ap_Label_6_29_shift2             = &argField{Type: TypeLabel, Shift: 2, BitFields: BitFields{{6, 24}}}
+	ap_ImmUnsigned_6_10              = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{6, 5}}}
+	ap_CondRegBit_11_15              = &argField{Type: TypeCondRegBit, Shift: 0, BitFields: BitFields{{11, 5}}}
+	ap_PCRel_16_29_shift2            = &argField{Type: TypePCRel, Shift: 2, BitFields: BitFields{{16, 14}}}
+	ap_Label_16_29_shift2            = &argField{Type: TypeLabel, Shift: 2, BitFields: BitFields{{16, 14}}}
+	ap_ImmUnsigned_19_20             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{19, 2}}}
+	ap_CondRegBit_6_10               = &argField{Type: TypeCondRegBit, Shift: 0, BitFields: BitFields{{6, 5}}}
+	ap_CondRegBit_16_20              = &argField{Type: TypeCondRegBit, Shift: 0, BitFields: BitFields{{16, 5}}}
+	ap_CondRegField_6_8              = &argField{Type: TypeCondRegField, Shift: 0, BitFields: BitFields{{6, 3}}}
+	ap_CondRegField_11_13            = &argField{Type: TypeCondRegField, Shift: 0, BitFields: BitFields{{11, 3}}}
+	ap_ImmUnsigned_20_26             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{20, 7}}}
+	ap_SpReg_11_20                   = &argField{Type: TypeSpReg, Shift: 0, BitFields: BitFields{{11, 10}}}
+	ap_Offset_16_31                  = &argField{Type: TypeOffset, Shift: 0, BitFields: BitFields{{16, 16}}}
+	ap_Reg_16_20                     = &argField{Type: TypeReg, Shift: 0, BitFields: BitFields{{16, 5}}}
+	ap_Offset_16_29_shift2           = &argField{Type: TypeOffset, Shift: 2, BitFields: BitFields{{16, 14}}}
+	ap_Offset_16_27_shift4           = &argField{Type: TypeOffset, Shift: 4, BitFields: BitFields{{16, 12}}}
+	ap_ImmUnsigned_16_20             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{16, 5}}}
+	ap_ImmSigned_16_31               = &argField{Type: TypeImmSigned, Shift: 0, BitFields: BitFields{{16, 16}}}
+	ap_ImmUnsigned_10_10             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{10, 1}}}
+	ap_ImmUnsigned_16_31             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{16, 16}}}
+	ap_CondRegBit_21_25              = &argField{Type: TypeCondRegBit, Shift: 0, BitFields: BitFields{{21, 5}}}
+	ap_ImmUnsigned_21_25             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{21, 5}}}
+	ap_ImmUnsigned_26_30             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{26, 5}}}
+	ap_ImmUnsigned_30_30_16_20       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{30, 1}, {16, 5}}}
+	ap_ImmUnsigned_26_26_21_25       = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{26, 1}, {21, 5}}}
+	ap_SpReg_16_20_11_15             = &argField{Type: TypeSpReg, Shift: 0, BitFields: BitFields{{16, 5}, {11, 5}}}
+	ap_ImmUnsigned_12_19             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{12, 8}}}
+	ap_VecSReg_31_31_6_10            = &argField{Type: TypeVecSReg, Shift: 0, BitFields: BitFields{{31, 1}, {6, 5}}}
+	ap_FPReg_6_10                    = &argField{Type: TypeFPReg, Shift: 0, BitFields: BitFields{{6, 5}}}
+	ap_FPReg_16_20                   = &argField{Type: TypeFPReg, Shift: 0, BitFields: BitFields{{16, 5}}}
+	ap_FPReg_11_15                   = &argField{Type: TypeFPReg, Shift: 0, BitFields: BitFields{{11, 5}}}
+	ap_FPReg_21_25                   = &argField{Type: TypeFPReg, Shift: 0, BitFields: BitFields{{21, 5}}}
+	ap_ImmUnsigned_6_8               = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{6, 3}}}
+	ap_ImmUnsigned_16_19             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{16, 4}}}
+	ap_ImmUnsigned_15_15             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{15, 1}}}
+	ap_ImmUnsigned_7_14              = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{7, 8}}}
+	ap_ImmUnsigned_6_6               = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{6, 1}}}
+	ap_VecReg_6_10                   = &argField{Type: TypeVecReg, Shift: 0, BitFields: BitFields{{6, 5}}}
+	ap_VecReg_11_15                  = &argField{Type: TypeVecReg, Shift: 0, BitFields: BitFields{{11, 5}}}
+	ap_VecReg_16_20                  = &argField{Type: TypeVecReg, Shift: 0, BitFields: BitFields{{16, 5}}}
+	ap_ImmUnsigned_12_15             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{12, 4}}}
+	ap_ImmUnsigned_13_15             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{13, 3}}}
+	ap_ImmUnsigned_14_15             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{14, 2}}}
+	ap_ImmSigned_11_15               = &argField{Type: TypeImmSigned, Shift: 0, BitFields: BitFields{{11, 5}}}
+	ap_VecReg_21_25                  = &argField{Type: TypeVecReg, Shift: 0, BitFields: BitFields{{21, 5}}}
+	ap_ImmUnsigned_22_25             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{22, 4}}}
+	ap_ImmUnsigned_11_15             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{11, 5}}}
+	ap_ImmUnsigned_16_16             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{16, 1}}}
+	ap_ImmUnsigned_17_20             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{17, 4}}}
+	ap_ImmUnsigned_22_22             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{22, 1}}}
+	ap_ImmUnsigned_16_21             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{16, 6}}}
+	ap_ImmUnsigned_21_22             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{21, 2}}}
+	ap_ImmUnsigned_11_12             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{11, 2}}}
+	ap_ImmUnsigned_11_11             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{11, 1}}}
+	ap_VecSReg_28_28_6_10            = &argField{Type: TypeVecSReg, Shift: 0, BitFields: BitFields{{28, 1}, {6, 5}}}
+	ap_VecSReg_30_30_16_20           = &argField{Type: TypeVecSReg, Shift: 0, BitFields: BitFields{{30, 1}, {16, 5}}}
+	ap_VecSReg_29_29_11_15           = &argField{Type: TypeVecSReg, Shift: 0, BitFields: BitFields{{29, 1}, {11, 5}}}
+	ap_ImmUnsigned_22_23             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{22, 2}}}
+	ap_VecSReg_28_28_21_25           = &argField{Type: TypeVecSReg, Shift: 0, BitFields: BitFields{{28, 1}, {21, 5}}}
+	ap_ImmUnsigned_7_10              = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{7, 4}}}
+	ap_ImmUnsigned_8_10              = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{8, 3}}}
+	ap_ImmUnsigned_31_31             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{31, 1}}}
+	ap_ImmUnsigned_9_10              = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{9, 2}}}
+	ap_ImmUnsigned_20_20             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{20, 1}}}
+	ap_ImmUnsigned_12_13             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{12, 2}}}
+	ap_ImmUnsigned_14_14             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{14, 1}}}
+	ap_Reg_21_25                     = &argField{Type: TypeReg, Shift: 0, BitFields: BitFields{{21, 5}}}
+	ap_VecSpReg_10_10_6_9            = &argField{Type: TypeVecSpReg, Shift: 0, BitFields: BitFields{{10, 1}, {6, 4}}}
+	ap_ImmUnsigned_16_25_11_15_31_31 = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{16, 10}, {11, 5}, {31, 1}}}
+	ap_ImmUnsigned_23_25             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{23, 3}}}
+	ap_MMAReg_6_8                    = &argField{Type: TypeMMAReg, Shift: 0, BitFields: BitFields{{6, 3}}}
+	ap_ImmUnsigned_18_20             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{18, 3}}}
+	ap_ImmSigned_16_25_11_15_31_31   = &argField{Type: TypeImmSigned, Shift: 0, BitFields: BitFields{{16, 10}, {11, 5}, {31, 1}}}
+	ap_ImmUnsigned_10_15             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{10, 6}}}
+	ap_ImmUnsigned_9_15              = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{9, 7}}}
+	ap_ImmUnsigned_25_25_29_29_11_15 = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{25, 1}, {29, 1}, {11, 5}}}
+	ap_ImmUnsigned_13_20             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{13, 8}}}
 )
 
 var instFormats = [...]instFormat{
-	{CNTLZW, 0xfc0007ff, 0x7c000034, 0xf800, // Count Leading Zeros Word X-form (cntlzw RA, RS)
+	{CNTLZW, 0xfc0007ff, 0x7c000034, 0xf800, // Count Leading Zeros Word X-form (cntlzw RA,RS)
 		[5]*argField{ap_Reg_11_15, ap_Reg_6_10}},
-	{CNTLZWCC, 0xfc0007ff, 0x7c000035, 0xf800, // Count Leading Zeros Word X-form (cntlzw. RA, RS)
+	{CNTLZWCC, 0xfc0007ff, 0x7c000035, 0xf800, // Count Leading Zeros Word X-form (cntlzw. RA,RS)
 		[5]*argField{ap_Reg_11_15, ap_Reg_6_10}},
 	{B, 0xfc000003, 0x48000000, 0x0, // Branch I-form (b target_addr)
 		[5]*argField{ap_PCRel_6_29_shift2}},
@@ -2889,7 +2844,7 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_ImmUnsigned_20_26}},
 	{CLRBHRB, 0xfc0007fe, 0x7c00035c, 0x3fff801, // Clear BHRB X-form (clrbhrb)
 		[5]*argField{}},
-	{MFBHRBE, 0xfc0007fe, 0x7c00025c, 0x1, // Move From Branch History Rolling Buffer XFX-form (mfbhrbe RT,BHRBE)
+	{MFBHRBE, 0xfc0007fe, 0x7c00025c, 0x1, // Move From BHRB XFX-form (mfbhrbe RT,BHRBE)
 		[5]*argField{ap_Reg_6_10, ap_SpReg_11_20}},
 	{LBZ, 0xfc000000, 0x88000000, 0x0, // Load Byte and Zero D-form (lbz RT,D(RA))
 		[5]*argField{ap_Reg_6_10, ap_Offset_16_31, ap_Reg_11_15}},
@@ -3001,7 +2956,7 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_Reg_6_10, ap_ImmSigned_16_31}},
 	{ADDI, 0xfc000000, 0x38000000, 0x0, // Add Immediate D-form (addi RT,RA,SI)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_ImmSigned_16_31}},
-	{LIS, 0xfc1f0000, 0x3c000000, 0x0, // Add Immediate Shifted D-form (lis RT, SI)
+	{LIS, 0xfc1f0000, 0x3c000000, 0x0, // Add Immediate Shifted D-form (lis RT,SI)
 		[5]*argField{ap_Reg_6_10, ap_ImmSigned_16_31}},
 	{ADDIS, 0xfc000000, 0x3c000000, 0x0, // Add Immediate Shifted D-form (addis RT,RA,SI)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_ImmSigned_16_31}},
@@ -3013,7 +2968,7 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{ADDOCC, 0xfc0007ff, 0x7c000615, 0x0, // Add XO-form (addo. RT,RA,RB)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{ADDIC, 0xfc000000, 0x30000000, 0x0, // Add Immediate Carrying D-form (addic RT,RA,SI)
+	{ADDIC, 0xfc000000, 0x30000000, 0x0, // Add Immediate Carrying D-formy (addic RT,RA,SI)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_ImmSigned_16_31}},
 	{SUBF, 0xfc0007ff, 0x7c000050, 0x0, // Subtract From XO-form (subf RT,RA,RB)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
@@ -3209,18 +3164,26 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_ImmSigned_16_31}},
 	{CMPDI, 0xfc200000, 0x2c200000, 0x400000, // Compare Immediate D-form (cmpdi BF,RA,SI)
 		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_ImmSigned_16_31}},
+	{CMPI, 0xfc000000, 0x2c000000, 0x400000, // Compare Immediate D-form (cmpi BF,L,RA,SI)
+		[5]*argField{ap_CondRegField_6_8, ap_ImmUnsigned_10_10, ap_Reg_11_15, ap_ImmSigned_16_31}},
 	{CMPW, 0xfc2007fe, 0x7c000000, 0x400001, // Compare X-form (cmpw BF,RA,RB)
 		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
 	{CMPD, 0xfc2007fe, 0x7c200000, 0x400001, // Compare X-form (cmpd BF,RA,RB)
 		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
+	{CMP, 0xfc0007fe, 0x7c000000, 0x400001, // Compare X-form (cmp BF,L,RA,RB)
+		[5]*argField{ap_CondRegField_6_8, ap_ImmUnsigned_10_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{CMPLWI, 0xfc200000, 0x28000000, 0x400000, // Compare Logical Immediate D-form (cmplwi BF,RA,UI)
 		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_ImmUnsigned_16_31}},
 	{CMPLDI, 0xfc200000, 0x28200000, 0x400000, // Compare Logical Immediate D-form (cmpldi BF,RA,UI)
 		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_ImmUnsigned_16_31}},
+	{CMPLI, 0xfc000000, 0x28000000, 0x400000, // Compare Logical Immediate D-form (cmpli BF,L,RA,UI)
+		[5]*argField{ap_CondRegField_6_8, ap_ImmUnsigned_10_10, ap_Reg_11_15, ap_ImmUnsigned_16_31}},
 	{CMPLW, 0xfc2007fe, 0x7c000040, 0x400001, // Compare Logical X-form (cmplw BF,RA,RB)
 		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
 	{CMPLD, 0xfc2007fe, 0x7c200040, 0x400001, // Compare Logical X-form (cmpld BF,RA,RB)
 		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
+	{CMPL, 0xfc0007fe, 0x7c000040, 0x400001, // Compare Logical X-form (cmpl BF,L,RA,RB)
+		[5]*argField{ap_CondRegField_6_8, ap_ImmUnsigned_10_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{TWI, 0xfc000000, 0xc000000, 0x0, // Trap Word Immediate D-form (twi TO,RA,SI)
 		[5]*argField{ap_ImmUnsigned_6_10, ap_Reg_11_15, ap_ImmSigned_16_31}},
 	{TW, 0xfc0007fe, 0x7c000008, 0x1, // Trap Word X-form (tw TO,RA,RB)
@@ -3387,28 +3350,20 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_ImmUnsigned_12_19, ap_Reg_6_10}},
 	{MFCR, 0xfc1007fe, 0x7c000026, 0xff801, // Move From Condition Register XFX-form (mfcr RT)
 		[5]*argField{ap_Reg_6_10}},
-	{MTSLE, 0xfc0007fe, 0x7c000126, 0x3dff801, // Move To Split Little Endian X-form (mtsle L)
-		[5]*argField{ap_ImmUnsigned_10_10}},
-	{MFVSRD, 0xfc0007fe, 0x7c000066, 0xf800, // Move From VSR Doubleword XX1-form (mfvsrd RA,XS)
+	{MFVSRD, 0xfc0007fe, 0x7c000066, 0xf800, // Move From VSR Doubleword X-form (mfvsrd RA,XS)
 		[5]*argField{ap_Reg_11_15, ap_VecSReg_31_31_6_10}},
-	{MFVSRWZ, 0xfc0007fe, 0x7c0000e6, 0xf800, // Move From VSR Word and Zero XX1-form (mfvsrwz RA,XS)
+	{MFVSRWZ, 0xfc0007fe, 0x7c0000e6, 0xf800, // Move From VSR Word and Zero X-form (mfvsrwz RA,XS)
 		[5]*argField{ap_Reg_11_15, ap_VecSReg_31_31_6_10}},
-	{MTVSRD, 0xfc0007fe, 0x7c000166, 0xf800, // Move To VSR Doubleword XX1-form (mtvsrd XT,RA)
+	{MTVSRD, 0xfc0007fe, 0x7c000166, 0xf800, // Move To VSR Doubleword X-form (mtvsrd XT,RA)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15}},
-	{MTVSRWA, 0xfc0007fe, 0x7c0001a6, 0xf800, // Move To VSR Word Algebraic XX1-form (mtvsrwa XT,RA)
+	{MTVSRWA, 0xfc0007fe, 0x7c0001a6, 0xf800, // Move To VSR Word Algebraic X-form (mtvsrwa XT,RA)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15}},
-	{MTVSRWZ, 0xfc0007fe, 0x7c0001e6, 0xf800, // Move To VSR Word and Zero XX1-form (mtvsrwz XT,RA)
+	{MTVSRWZ, 0xfc0007fe, 0x7c0001e6, 0xf800, // Move To VSR Word and Zero X-form (mtvsrwz XT,RA)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15}},
 	{MTOCRF, 0xfc1007fe, 0x7c100120, 0x801, // Move To One Condition Register Field XFX-form (mtocrf FXM,RS)
 		[5]*argField{ap_ImmUnsigned_12_19, ap_Reg_6_10}},
 	{MFOCRF, 0xfc1007fe, 0x7c100026, 0x801, // Move From One Condition Register Field XFX-form (mfocrf RT,FXM)
 		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_12_19}},
-	{MCRXR, 0xfc0007fe, 0x7c000400, 0x7ff801, // Move to Condition Register from XER X-form (mcrxr BF)
-		[5]*argField{ap_CondRegField_6_8}},
-	{MTDCRUX, 0xfc0007fe, 0x7c000346, 0xf801, // Move To Device Control Register User-mode Indexed X-form (mtdcrux RS,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{MFDCRUX, 0xfc0007fe, 0x7c000246, 0xf801, // Move From Device Control Register User-mode Indexed X-form (mfdcrux RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
 	{LFS, 0xfc000000, 0xc0000000, 0x0, // Load Floating-Point Single D-form (lfs FRT,D(RA))
 		[5]*argField{ap_FPReg_6_10, ap_Offset_16_31, ap_Reg_11_15}},
 	{LFSU, 0xfc000000, 0xc4000000, 0x0, // Load Floating-Point Single with Update D-form (lfsu FRT,D(RA))
@@ -3427,7 +3382,7 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_FPReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{LFIWAX, 0xfc0007fe, 0x7c0006ae, 0x1, // Load Floating-Point as Integer Word Algebraic Indexed X-form (lfiwax FRT,RA,RB)
 		[5]*argField{ap_FPReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LFIWZX, 0xfc0007fe, 0x7c0006ee, 0x1, // Load Floating-Point as Integer Word and Zero Indexed X-form (lfiwzx FRT,RA,RB)
+	{LFIWZX, 0xfc0007fe, 0x7c0006ee, 0x1, // Load Floating-Point as Integer Word & Zero Indexed X-form (lfiwzx FRT,RA,RB)
 		[5]*argField{ap_FPReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{STFS, 0xfc000000, 0xd0000000, 0x0, // Store Floating-Point Single D-form (stfs FRS,D(RA))
 		[5]*argField{ap_FPReg_6_10, ap_Offset_16_31, ap_Reg_11_15}},
@@ -3479,149 +3434,149 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
 	{FMRGOW, 0xfc0007fe, 0xfc00068c, 0x1, // Floating Merge Odd Word X-form (fmrgow FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{FADD, 0xfc00003f, 0xfc00002a, 0x7c0, // Floating Add [Single] A-form (fadd FRT,FRA,FRB)
+	{FADD, 0xfc00003f, 0xfc00002a, 0x7c0, // Floating Add A-form (fadd FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{FADDCC, 0xfc00003f, 0xfc00002b, 0x7c0, // Floating Add [Single] A-form (fadd. FRT,FRA,FRB)
+	{FADDCC, 0xfc00003f, 0xfc00002b, 0x7c0, // Floating Add A-form (fadd. FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{FADDS, 0xfc00003f, 0xec00002a, 0x7c0, // Floating Add [Single] A-form (fadds FRT,FRA,FRB)
+	{FADDS, 0xfc00003f, 0xec00002a, 0x7c0, // Floating Add Single A-form (fadds FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{FADDSCC, 0xfc00003f, 0xec00002b, 0x7c0, // Floating Add [Single] A-form (fadds. FRT,FRA,FRB)
+	{FADDSCC, 0xfc00003f, 0xec00002b, 0x7c0, // Floating Add Single A-form (fadds. FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{FSUB, 0xfc00003f, 0xfc000028, 0x7c0, // Floating Subtract [Single] A-form (fsub FRT,FRA,FRB)
+	{FSUB, 0xfc00003f, 0xfc000028, 0x7c0, // Floating Subtract A-form (fsub FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{FSUBCC, 0xfc00003f, 0xfc000029, 0x7c0, // Floating Subtract [Single] A-form (fsub. FRT,FRA,FRB)
+	{FSUBCC, 0xfc00003f, 0xfc000029, 0x7c0, // Floating Subtract A-form (fsub. FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{FSUBS, 0xfc00003f, 0xec000028, 0x7c0, // Floating Subtract [Single] A-form (fsubs FRT,FRA,FRB)
+	{FSUBS, 0xfc00003f, 0xec000028, 0x7c0, // Floating Subtract Single A-form (fsubs FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{FSUBSCC, 0xfc00003f, 0xec000029, 0x7c0, // Floating Subtract [Single] A-form (fsubs. FRT,FRA,FRB)
+	{FSUBSCC, 0xfc00003f, 0xec000029, 0x7c0, // Floating Subtract Single A-form (fsubs. FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{FMUL, 0xfc00003f, 0xfc000032, 0xf800, // Floating Multiply [Single] A-form (fmul FRT,FRA,FRC)
+	{FMUL, 0xfc00003f, 0xfc000032, 0xf800, // Floating Multiply A-form (fmul FRT,FRA,FRC)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25}},
-	{FMULCC, 0xfc00003f, 0xfc000033, 0xf800, // Floating Multiply [Single] A-form (fmul. FRT,FRA,FRC)
+	{FMULCC, 0xfc00003f, 0xfc000033, 0xf800, // Floating Multiply A-form (fmul. FRT,FRA,FRC)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25}},
-	{FMULS, 0xfc00003f, 0xec000032, 0xf800, // Floating Multiply [Single] A-form (fmuls FRT,FRA,FRC)
+	{FMULS, 0xfc00003f, 0xec000032, 0xf800, // Floating Multiply Single A-form (fmuls FRT,FRA,FRC)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25}},
-	{FMULSCC, 0xfc00003f, 0xec000033, 0xf800, // Floating Multiply [Single] A-form (fmuls. FRT,FRA,FRC)
+	{FMULSCC, 0xfc00003f, 0xec000033, 0xf800, // Floating Multiply Single A-form (fmuls. FRT,FRA,FRC)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25}},
-	{FDIV, 0xfc00003f, 0xfc000024, 0x7c0, // Floating Divide [Single] A-form (fdiv FRT,FRA,FRB)
+	{FDIV, 0xfc00003f, 0xfc000024, 0x7c0, // Floating Divide A-form (fdiv FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{FDIVCC, 0xfc00003f, 0xfc000025, 0x7c0, // Floating Divide [Single] A-form (fdiv. FRT,FRA,FRB)
+	{FDIVCC, 0xfc00003f, 0xfc000025, 0x7c0, // Floating Divide A-form (fdiv. FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{FDIVS, 0xfc00003f, 0xec000024, 0x7c0, // Floating Divide [Single] A-form (fdivs FRT,FRA,FRB)
+	{FDIVS, 0xfc00003f, 0xec000024, 0x7c0, // Floating Divide Single A-form (fdivs FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{FDIVSCC, 0xfc00003f, 0xec000025, 0x7c0, // Floating Divide [Single] A-form (fdivs. FRT,FRA,FRB)
+	{FDIVSCC, 0xfc00003f, 0xec000025, 0x7c0, // Floating Divide Single A-form (fdivs. FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{FSQRT, 0xfc00003f, 0xfc00002c, 0x1f07c0, // Floating Square Root [Single] A-form (fsqrt FRT,FRB)
+	{FSQRT, 0xfc00003f, 0xfc00002c, 0x1f07c0, // Floating Square Root A-form (fsqrt FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FSQRTCC, 0xfc00003f, 0xfc00002d, 0x1f07c0, // Floating Square Root [Single] A-form (fsqrt. FRT,FRB)
+	{FSQRTCC, 0xfc00003f, 0xfc00002d, 0x1f07c0, // Floating Square Root A-form (fsqrt. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FSQRTS, 0xfc00003f, 0xec00002c, 0x1f07c0, // Floating Square Root [Single] A-form (fsqrts FRT,FRB)
+	{FSQRTS, 0xfc00003f, 0xec00002c, 0x1f07c0, // Floating Square Root Single A-form (fsqrts FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FSQRTSCC, 0xfc00003f, 0xec00002d, 0x1f07c0, // Floating Square Root [Single] A-form (fsqrts. FRT,FRB)
+	{FSQRTSCC, 0xfc00003f, 0xec00002d, 0x1f07c0, // Floating Square Root Single A-form (fsqrts. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FRE, 0xfc00003f, 0xfc000030, 0x1f07c0, // Floating Reciprocal Estimate [Single] A-form (fre FRT,FRB)
+	{FRE, 0xfc00003f, 0xfc000030, 0x1f07c0, // Floating Reciprocal Estimate A-form (fre FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FRECC, 0xfc00003f, 0xfc000031, 0x1f07c0, // Floating Reciprocal Estimate [Single] A-form (fre. FRT,FRB)
+	{FRECC, 0xfc00003f, 0xfc000031, 0x1f07c0, // Floating Reciprocal Estimate A-form (fre. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FRES, 0xfc00003f, 0xec000030, 0x1f07c0, // Floating Reciprocal Estimate [Single] A-form (fres FRT,FRB)
+	{FRES, 0xfc00003f, 0xec000030, 0x1f07c0, // Floating Reciprocal Estimate Single A-form (fres FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FRESCC, 0xfc00003f, 0xec000031, 0x1f07c0, // Floating Reciprocal Estimate [Single] A-form (fres. FRT,FRB)
+	{FRESCC, 0xfc00003f, 0xec000031, 0x1f07c0, // Floating Reciprocal Estimate Single A-form (fres. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FRSQRTE, 0xfc00003f, 0xfc000034, 0x1f07c0, // Floating Reciprocal Square Root Estimate [Single] A-form (frsqrte FRT,FRB)
+	{FRSQRTE, 0xfc00003f, 0xfc000034, 0x1f07c0, // Floating Reciprocal Square Root Estimate A-form (frsqrte FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FRSQRTECC, 0xfc00003f, 0xfc000035, 0x1f07c0, // Floating Reciprocal Square Root Estimate [Single] A-form (frsqrte. FRT,FRB)
+	{FRSQRTECC, 0xfc00003f, 0xfc000035, 0x1f07c0, // Floating Reciprocal Square Root Estimate A-form (frsqrte. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FRSQRTES, 0xfc00003f, 0xec000034, 0x1f07c0, // Floating Reciprocal Square Root Estimate [Single] A-form (frsqrtes FRT,FRB)
+	{FRSQRTES, 0xfc00003f, 0xec000034, 0x1f07c0, // Floating Reciprocal Square Root Estimate Single A-form (frsqrtes FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FRSQRTESCC, 0xfc00003f, 0xec000035, 0x1f07c0, // Floating Reciprocal Square Root Estimate [Single] A-form (frsqrtes. FRT,FRB)
+	{FRSQRTESCC, 0xfc00003f, 0xec000035, 0x1f07c0, // Floating Reciprocal Square Root Estimate Single A-form (frsqrtes. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
 	{FTDIV, 0xfc0007fe, 0xfc000100, 0x600001, // Floating Test for software Divide X-form (ftdiv BF,FRA,FRB)
 		[5]*argField{ap_CondRegField_6_8, ap_FPReg_11_15, ap_FPReg_16_20}},
 	{FTSQRT, 0xfc0007fe, 0xfc000140, 0x7f0001, // Floating Test for software Square Root X-form (ftsqrt BF,FRB)
 		[5]*argField{ap_CondRegField_6_8, ap_FPReg_16_20}},
-	{FMADD, 0xfc00003f, 0xfc00003a, 0x0, // Floating Multiply-Add [Single] A-form (fmadd FRT,FRA,FRC,FRB)
+	{FMADD, 0xfc00003f, 0xfc00003a, 0x0, // Floating Multiply-Add A-form (fmadd FRT,FRA,FRC,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25, ap_FPReg_16_20}},
-	{FMADDCC, 0xfc00003f, 0xfc00003b, 0x0, // Floating Multiply-Add [Single] A-form (fmadd. FRT,FRA,FRC,FRB)
+	{FMADDCC, 0xfc00003f, 0xfc00003b, 0x0, // Floating Multiply-Add A-form (fmadd. FRT,FRA,FRC,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25, ap_FPReg_16_20}},
-	{FMADDS, 0xfc00003f, 0xec00003a, 0x0, // Floating Multiply-Add [Single] A-form (fmadds FRT,FRA,FRC,FRB)
+	{FMADDS, 0xfc00003f, 0xec00003a, 0x0, // Floating Multiply-Add Single A-form (fmadds FRT,FRA,FRC,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25, ap_FPReg_16_20}},
-	{FMADDSCC, 0xfc00003f, 0xec00003b, 0x0, // Floating Multiply-Add [Single] A-form (fmadds. FRT,FRA,FRC,FRB)
+	{FMADDSCC, 0xfc00003f, 0xec00003b, 0x0, // Floating Multiply-Add Single A-form (fmadds. FRT,FRA,FRC,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25, ap_FPReg_16_20}},
-	{FMSUB, 0xfc00003f, 0xfc000038, 0x0, // Floating Multiply-Subtract [Single] A-form (fmsub FRT,FRA,FRC,FRB)
+	{FMSUB, 0xfc00003f, 0xfc000038, 0x0, // Floating Multiply-Subtract A-form (fmsub FRT,FRA,FRC,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25, ap_FPReg_16_20}},
-	{FMSUBCC, 0xfc00003f, 0xfc000039, 0x0, // Floating Multiply-Subtract [Single] A-form (fmsub. FRT,FRA,FRC,FRB)
+	{FMSUBCC, 0xfc00003f, 0xfc000039, 0x0, // Floating Multiply-Subtract A-form (fmsub. FRT,FRA,FRC,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25, ap_FPReg_16_20}},
-	{FMSUBS, 0xfc00003f, 0xec000038, 0x0, // Floating Multiply-Subtract [Single] A-form (fmsubs FRT,FRA,FRC,FRB)
+	{FMSUBS, 0xfc00003f, 0xec000038, 0x0, // Floating Multiply-Subtract Single A-form (fmsubs FRT,FRA,FRC,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25, ap_FPReg_16_20}},
-	{FMSUBSCC, 0xfc00003f, 0xec000039, 0x0, // Floating Multiply-Subtract [Single] A-form (fmsubs. FRT,FRA,FRC,FRB)
+	{FMSUBSCC, 0xfc00003f, 0xec000039, 0x0, // Floating Multiply-Subtract Single A-form (fmsubs. FRT,FRA,FRC,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25, ap_FPReg_16_20}},
-	{FNMADD, 0xfc00003f, 0xfc00003e, 0x0, // Floating Negative Multiply-Add [Single] A-form (fnmadd FRT,FRA,FRC,FRB)
+	{FNMADD, 0xfc00003f, 0xfc00003e, 0x0, // Floating Negative Multiply-Add A-form (fnmadd FRT,FRA,FRC,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25, ap_FPReg_16_20}},
-	{FNMADDCC, 0xfc00003f, 0xfc00003f, 0x0, // Floating Negative Multiply-Add [Single] A-form (fnmadd. FRT,FRA,FRC,FRB)
+	{FNMADDCC, 0xfc00003f, 0xfc00003f, 0x0, // Floating Negative Multiply-Add A-form (fnmadd. FRT,FRA,FRC,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25, ap_FPReg_16_20}},
-	{FNMADDS, 0xfc00003f, 0xec00003e, 0x0, // Floating Negative Multiply-Add [Single] A-form (fnmadds FRT,FRA,FRC,FRB)
+	{FNMADDS, 0xfc00003f, 0xec00003e, 0x0, // Floating Negative Multiply-Add Single A-form (fnmadds FRT,FRA,FRC,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25, ap_FPReg_16_20}},
-	{FNMADDSCC, 0xfc00003f, 0xec00003f, 0x0, // Floating Negative Multiply-Add [Single] A-form (fnmadds. FRT,FRA,FRC,FRB)
+	{FNMADDSCC, 0xfc00003f, 0xec00003f, 0x0, // Floating Negative Multiply-Add Single A-form (fnmadds. FRT,FRA,FRC,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25, ap_FPReg_16_20}},
-	{FNMSUB, 0xfc00003f, 0xfc00003c, 0x0, // Floating Negative Multiply-Subtract [Single] A-form (fnmsub FRT,FRA,FRC,FRB)
+	{FNMSUB, 0xfc00003f, 0xfc00003c, 0x0, // Floating Negative Multiply-Subtract A-form (fnmsub FRT,FRA,FRC,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25, ap_FPReg_16_20}},
-	{FNMSUBCC, 0xfc00003f, 0xfc00003d, 0x0, // Floating Negative Multiply-Subtract [Single] A-form (fnmsub. FRT,FRA,FRC,FRB)
+	{FNMSUBCC, 0xfc00003f, 0xfc00003d, 0x0, // Floating Negative Multiply-Subtract A-form (fnmsub. FRT,FRA,FRC,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25, ap_FPReg_16_20}},
-	{FNMSUBS, 0xfc00003f, 0xec00003c, 0x0, // Floating Negative Multiply-Subtract [Single] A-form (fnmsubs FRT,FRA,FRC,FRB)
+	{FNMSUBS, 0xfc00003f, 0xec00003c, 0x0, // Floating Negative Multiply-Subtract Single A-form (fnmsubs FRT,FRA,FRC,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25, ap_FPReg_16_20}},
-	{FNMSUBSCC, 0xfc00003f, 0xec00003d, 0x0, // Floating Negative Multiply-Subtract [Single] A-form (fnmsubs. FRT,FRA,FRC,FRB)
+	{FNMSUBSCC, 0xfc00003f, 0xec00003d, 0x0, // Floating Negative Multiply-Subtract Single A-form (fnmsubs. FRT,FRA,FRC,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25, ap_FPReg_16_20}},
 	{FRSP, 0xfc0007ff, 0xfc000018, 0x1f0000, // Floating Round to Single-Precision X-form (frsp FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
 	{FRSPCC, 0xfc0007ff, 0xfc000019, 0x1f0000, // Floating Round to Single-Precision X-form (frsp. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCTID, 0xfc0007ff, 0xfc00065c, 0x1f0000, // Floating Convert To Integer Doubleword X-form (fctid FRT,FRB)
+	{FCTID, 0xfc0007ff, 0xfc00065c, 0x1f0000, // Floating Convert with round Double-Precision To Signed Doubleword format X-form (fctid FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCTIDCC, 0xfc0007ff, 0xfc00065d, 0x1f0000, // Floating Convert To Integer Doubleword X-form (fctid. FRT,FRB)
+	{FCTIDCC, 0xfc0007ff, 0xfc00065d, 0x1f0000, // Floating Convert with round Double-Precision To Signed Doubleword format X-form (fctid. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCTIDZ, 0xfc0007ff, 0xfc00065e, 0x1f0000, // Floating Convert To Integer Doubleword with round toward Zero X-form (fctidz FRT,FRB)
+	{FCTIDZ, 0xfc0007ff, 0xfc00065e, 0x1f0000, // Floating Convert with truncate Double-Precision To Signed Doubleword format X-form (fctidz FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCTIDZCC, 0xfc0007ff, 0xfc00065f, 0x1f0000, // Floating Convert To Integer Doubleword with round toward Zero X-form (fctidz. FRT,FRB)
+	{FCTIDZCC, 0xfc0007ff, 0xfc00065f, 0x1f0000, // Floating Convert with truncate Double-Precision To Signed Doubleword format X-form (fctidz. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCTIDU, 0xfc0007ff, 0xfc00075c, 0x1f0000, // Floating Convert To Integer Doubleword Unsigned X-form (fctidu FRT,FRB)
+	{FCTIDU, 0xfc0007ff, 0xfc00075c, 0x1f0000, // Floating Convert with round Double-Precision To Unsigned Doubleword format X-form (fctidu FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCTIDUCC, 0xfc0007ff, 0xfc00075d, 0x1f0000, // Floating Convert To Integer Doubleword Unsigned X-form (fctidu. FRT,FRB)
+	{FCTIDUCC, 0xfc0007ff, 0xfc00075d, 0x1f0000, // Floating Convert with round Double-Precision To Unsigned Doubleword format X-form (fctidu. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCTIDUZ, 0xfc0007ff, 0xfc00075e, 0x1f0000, // Floating Convert To Integer Doubleword Unsigned with round toward Zero X-form (fctiduz FRT,FRB)
+	{FCTIDUZ, 0xfc0007ff, 0xfc00075e, 0x1f0000, // Floating Convert with truncate Double-Precision To Unsigned Doubleword format X-form (fctiduz FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCTIDUZCC, 0xfc0007ff, 0xfc00075f, 0x1f0000, // Floating Convert To Integer Doubleword Unsigned with round toward Zero X-form (fctiduz. FRT,FRB)
+	{FCTIDUZCC, 0xfc0007ff, 0xfc00075f, 0x1f0000, // Floating Convert with truncate Double-Precision To Unsigned Doubleword format X-form (fctiduz. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCTIW, 0xfc0007ff, 0xfc00001c, 0x1f0000, // Floating Convert To Integer Word X-form (fctiw FRT,FRB)
+	{FCTIW, 0xfc0007ff, 0xfc00001c, 0x1f0000, // Floating Convert with round Double-Precision To Signed Word format X-form (fctiw FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCTIWCC, 0xfc0007ff, 0xfc00001d, 0x1f0000, // Floating Convert To Integer Word X-form (fctiw. FRT,FRB)
+	{FCTIWCC, 0xfc0007ff, 0xfc00001d, 0x1f0000, // Floating Convert with round Double-Precision To Signed Word format X-form (fctiw. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCTIWZ, 0xfc0007ff, 0xfc00001e, 0x1f0000, // Floating Convert To Integer Word with round toward Zero X-form (fctiwz FRT,FRB)
+	{FCTIWZ, 0xfc0007ff, 0xfc00001e, 0x1f0000, // Floating Convert with truncate Double-Precision To Signed Word fomat X-form (fctiwz FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCTIWZCC, 0xfc0007ff, 0xfc00001f, 0x1f0000, // Floating Convert To Integer Word with round toward Zero X-form (fctiwz. FRT,FRB)
+	{FCTIWZCC, 0xfc0007ff, 0xfc00001f, 0x1f0000, // Floating Convert with truncate Double-Precision To Signed Word fomat X-form (fctiwz. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCTIWU, 0xfc0007ff, 0xfc00011c, 0x1f0000, // Floating Convert To Integer Word Unsigned X-form (fctiwu FRT,FRB)
+	{FCTIWU, 0xfc0007ff, 0xfc00011c, 0x1f0000, // Floating Convert with round Double-Precision To Unsigned Word format X-form (fctiwu FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCTIWUCC, 0xfc0007ff, 0xfc00011d, 0x1f0000, // Floating Convert To Integer Word Unsigned X-form (fctiwu. FRT,FRB)
+	{FCTIWUCC, 0xfc0007ff, 0xfc00011d, 0x1f0000, // Floating Convert with round Double-Precision To Unsigned Word format X-form (fctiwu. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCTIWUZ, 0xfc0007ff, 0xfc00011e, 0x1f0000, // Floating Convert To Integer Word Unsigned with round toward Zero X-form (fctiwuz FRT,FRB)
+	{FCTIWUZ, 0xfc0007ff, 0xfc00011e, 0x1f0000, // Floating Convert with truncate Double-Precision To Unsigned Word format X-form (fctiwuz FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCTIWUZCC, 0xfc0007ff, 0xfc00011f, 0x1f0000, // Floating Convert To Integer Word Unsigned with round toward Zero X-form (fctiwuz. FRT,FRB)
+	{FCTIWUZCC, 0xfc0007ff, 0xfc00011f, 0x1f0000, // Floating Convert with truncate Double-Precision To Unsigned Word format X-form (fctiwuz. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCFID, 0xfc0007ff, 0xfc00069c, 0x1f0000, // Floating Convert From Integer Doubleword X-form (fcfid FRT,FRB)
+	{FCFID, 0xfc0007ff, 0xfc00069c, 0x1f0000, // Floating Convert with round Signed Doubleword to Double-Precision format X-form (fcfid FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCFIDCC, 0xfc0007ff, 0xfc00069d, 0x1f0000, // Floating Convert From Integer Doubleword X-form (fcfid. FRT,FRB)
+	{FCFIDCC, 0xfc0007ff, 0xfc00069d, 0x1f0000, // Floating Convert with round Signed Doubleword to Double-Precision format X-form (fcfid. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCFIDU, 0xfc0007ff, 0xfc00079c, 0x1f0000, // Floating Convert From Integer Doubleword Unsigned X-form (fcfidu FRT,FRB)
+	{FCFIDU, 0xfc0007ff, 0xfc00079c, 0x1f0000, // Floating Convert with round Unsigned Doubleword to Double-Precision format X-form (fcfidu FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCFIDUCC, 0xfc0007ff, 0xfc00079d, 0x1f0000, // Floating Convert From Integer Doubleword Unsigned X-form (fcfidu. FRT,FRB)
+	{FCFIDUCC, 0xfc0007ff, 0xfc00079d, 0x1f0000, // Floating Convert with round Unsigned Doubleword to Double-Precision format X-form (fcfidu. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCFIDS, 0xfc0007ff, 0xec00069c, 0x1f0000, // Floating Convert From Integer Doubleword Single X-form (fcfids FRT,FRB)
+	{FCFIDS, 0xfc0007ff, 0xec00069c, 0x1f0000, // Floating Convert with round Signed Doubleword to Single-Precision format X-form (fcfids FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCFIDSCC, 0xfc0007ff, 0xec00069d, 0x1f0000, // Floating Convert From Integer Doubleword Single X-form (fcfids. FRT,FRB)
+	{FCFIDSCC, 0xfc0007ff, 0xec00069d, 0x1f0000, // Floating Convert with round Signed Doubleword to Single-Precision format X-form (fcfids. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCFIDUS, 0xfc0007ff, 0xec00079c, 0x1f0000, // Floating Convert From Integer Doubleword Unsigned Single X-form (fcfidus FRT,FRB)
+	{FCFIDUS, 0xfc0007ff, 0xec00079c, 0x1f0000, // Floating Convert with round Unsigned Doubleword to Single-Precision format X-form (fcfidus FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{FCFIDUSCC, 0xfc0007ff, 0xec00079d, 0x1f0000, // Floating Convert From Integer Doubleword Unsigned Single X-form (fcfidus. FRT,FRB)
+	{FCFIDUSCC, 0xfc0007ff, 0xec00079d, 0x1f0000, // Floating Convert with round Unsigned Doubleword to Single-Precision format X-form (fcfidus. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
 	{FRIN, 0xfc0007ff, 0xfc000310, 0x1f0000, // Floating Round to Integer Nearest X-form (frin FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
@@ -3647,9 +3602,9 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25, ap_FPReg_16_20}},
 	{FSELCC, 0xfc00003f, 0xfc00002f, 0x0, // Floating Select A-form (fsel. FRT,FRA,FRC,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_21_25, ap_FPReg_16_20}},
-	{MFFS, 0xfc0007ff, 0xfc00048e, 0x1ff800, // Move From FPSCR X-form (mffs FRT)
+	{MFFS, 0xfc1f07ff, 0xfc00048e, 0xf800, // Move From FPSCR X-form (mffs FRT)
 		[5]*argField{ap_FPReg_6_10}},
-	{MFFSCC, 0xfc0007ff, 0xfc00048f, 0x1ff800, // Move From FPSCR X-form (mffs. FRT)
+	{MFFSCC, 0xfc1f07ff, 0xfc00048f, 0xf800, // Move From FPSCR X-form (mffs. FRT)
 		[5]*argField{ap_FPReg_6_10}},
 	{MCRFS, 0xfc0007fe, 0xfc000080, 0x63f801, // Move to Condition Register from FPSCR X-form (mcrfs BF,BFA)
 		[5]*argField{ap_CondRegField_6_8, ap_CondRegField_11_13}},
@@ -3677,7 +3632,7 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{LVX, 0xfc0007fe, 0x7c0000ce, 0x1, // Load Vector Indexed X-form (lvx VRT,RA,RB)
 		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LVXL, 0xfc0007fe, 0x7c0002ce, 0x1, // Load Vector Indexed LRU X-form (lvxl VRT,RA,RB)
+	{LVXL, 0xfc0007fe, 0x7c0002ce, 0x1, // Load Vector Indexed Last X-form (lvxl VRT,RA,RB)
 		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{STVEBX, 0xfc0007fe, 0x7c00010e, 0x1, // Store Vector Element Byte Indexed X-form (stvebx VRS,RA,RB)
 		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
@@ -3687,7 +3642,7 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{STVX, 0xfc0007fe, 0x7c0001ce, 0x1, // Store Vector Indexed X-form (stvx VRS,RA,RB)
 		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STVXL, 0xfc0007fe, 0x7c0003ce, 0x1, // Store Vector Indexed LRU X-form (stvxl VRS,RA,RB)
+	{STVXL, 0xfc0007fe, 0x7c0003ce, 0x1, // Store Vector Indexed Last X-form (stvxl VRS,RA,RB)
 		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{LVSL, 0xfc0007fe, 0x7c00000c, 0x1, // Load Vector for Shift Left Indexed X-form (lvsl VRT,RA,RB)
 		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
@@ -3779,7 +3734,7 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
 	{VSRO, 0xfc0007ff, 0x1000044c, 0x0, // Vector Shift Right by Octet VX-form (vsro VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VADDCUW, 0xfc0007ff, 0x10000180, 0x0, // Vector Add and Write Carry-Out Unsigned Word VX-form (vaddcuw VRT,VRA,VRB)
+	{VADDCUW, 0xfc0007ff, 0x10000180, 0x0, // Vector Add & write Carry Unsigned Word VX-form (vaddcuw VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
 	{VADDSBS, 0xfc0007ff, 0x10000300, 0x0, // Vector Add Signed Byte Saturate VX-form (vaddsbs VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
@@ -3809,7 +3764,7 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
 	{VADDECUQ, 0xfc00003f, 0x1000003d, 0x0, // Vector Add Extended & write Carry Unsigned Quadword VA-form (vaddecuq VRT,VRA,VRB,VRC)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20, ap_VecReg_21_25}},
-	{VSUBCUW, 0xfc0007ff, 0x10000580, 0x0, // Vector Subtract and Write Carry-Out Unsigned Word VX-form (vsubcuw VRT,VRA,VRB)
+	{VSUBCUW, 0xfc0007ff, 0x10000580, 0x0, // Vector Subtract & Write Carry-out Unsigned Word VX-form (vsubcuw VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
 	{VSUBSBS, 0xfc0007ff, 0x10000700, 0x0, // Vector Subtract Signed Byte Saturate VX-form (vsubsbs VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
@@ -3835,9 +3790,9 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
 	{VSUBEUQM, 0xfc00003f, 0x1000003e, 0x0, // Vector Subtract Extended Unsigned Quadword Modulo VA-form (vsubeuqm VRT,VRA,VRB,VRC)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20, ap_VecReg_21_25}},
-	{VSUBCUQ, 0xfc0007ff, 0x10000540, 0x0, // Vector Subtract & write Carry Unsigned Quadword VX-form (vsubcuq VRT,VRA,VRB)
+	{VSUBCUQ, 0xfc0007ff, 0x10000540, 0x0, // Vector Subtract & write Carry-out Unsigned Quadword VX-form (vsubcuq VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VSUBECUQ, 0xfc00003f, 0x1000003f, 0x0, // Vector Subtract Extended & write Carry Unsigned Quadword VA-form (vsubecuq VRT,VRA,VRB,VRC)
+	{VSUBECUQ, 0xfc00003f, 0x1000003f, 0x0, // Vector Subtract Extended & write Carry-out Unsigned Quadword VA-form (vsubecuq VRT,VRA,VRB,VRC)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20, ap_VecReg_21_25}},
 	{VMULESB, 0xfc0007ff, 0x10000308, 0x0, // Vector Multiply Even Signed Byte VX-form (vmulesb VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
@@ -3939,53 +3894,53 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
 	{VMINUW, 0xfc0007ff, 0x10000282, 0x0, // Vector Minimum Unsigned Word VX-form (vminuw VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPEQUB, 0xfc0007ff, 0x10000006, 0x0, // Vector Compare Equal To Unsigned Byte VC-form (vcmpequb VRT,VRA,VRB)
+	{VCMPEQUB, 0xfc0007ff, 0x10000006, 0x0, // Vector Compare Equal Unsigned Byte VC-form (vcmpequb VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPEQUBCC, 0xfc0007ff, 0x10000406, 0x0, // Vector Compare Equal To Unsigned Byte VC-form (vcmpequb. VRT,VRA,VRB)
+	{VCMPEQUBCC, 0xfc0007ff, 0x10000406, 0x0, // Vector Compare Equal Unsigned Byte VC-form (vcmpequb. VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPEQUH, 0xfc0007ff, 0x10000046, 0x0, // Vector Compare Equal To Unsigned Halfword VC-form (vcmpequh VRT,VRA,VRB)
+	{VCMPEQUH, 0xfc0007ff, 0x10000046, 0x0, // Vector Compare Equal Unsigned Halfword VC-form (vcmpequh VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPEQUHCC, 0xfc0007ff, 0x10000446, 0x0, // Vector Compare Equal To Unsigned Halfword VC-form (vcmpequh. VRT,VRA,VRB)
+	{VCMPEQUHCC, 0xfc0007ff, 0x10000446, 0x0, // Vector Compare Equal Unsigned Halfword VC-form (vcmpequh. VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPEQUW, 0xfc0007ff, 0x10000086, 0x0, // Vector Compare Equal To Unsigned Word VC-form (vcmpequw VRT,VRA,VRB)
+	{VCMPEQUW, 0xfc0007ff, 0x10000086, 0x0, // Vector Compare Equal Unsigned Word VC-form (vcmpequw VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPEQUWCC, 0xfc0007ff, 0x10000486, 0x0, // Vector Compare Equal To Unsigned Word VC-form (vcmpequw. VRT,VRA,VRB)
+	{VCMPEQUWCC, 0xfc0007ff, 0x10000486, 0x0, // Vector Compare Equal Unsigned Word VC-form (vcmpequw. VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPEQUD, 0xfc0007ff, 0x100000c7, 0x0, // Vector Compare Equal To Unsigned Doubleword VX-form (vcmpequd VRT,VRA,VRB)
+	{VCMPEQUD, 0xfc0007ff, 0x100000c7, 0x0, // Vector Compare Equal Unsigned Doubleword VC-form (vcmpequd VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPEQUDCC, 0xfc0007ff, 0x100004c7, 0x0, // Vector Compare Equal To Unsigned Doubleword VX-form (vcmpequd. VRT,VRA,VRB)
+	{VCMPEQUDCC, 0xfc0007ff, 0x100004c7, 0x0, // Vector Compare Equal Unsigned Doubleword VC-form (vcmpequd. VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPNEB, 0xfc0007ff, 0x10000007, 0x0, // Vector Compare Not Equal Byte VX-form (vcmpneb VRT,VRA,VRB)
+	{VCMPNEB, 0xfc0007ff, 0x10000007, 0x0, // Vector Compare Not Equal Byte VC-form (vcmpneb VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPNEBCC, 0xfc0007ff, 0x10000407, 0x0, // Vector Compare Not Equal Byte VX-form (vcmpneb. VRT,VRA,VRB)
+	{VCMPNEBCC, 0xfc0007ff, 0x10000407, 0x0, // Vector Compare Not Equal Byte VC-form (vcmpneb. VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPNEZB, 0xfc0007ff, 0x10000107, 0x0, // Vector Compare Not Equal or Zero Byte VX-form (vcmpnezb VRT,VRA,VRB)
+	{VCMPNEZB, 0xfc0007ff, 0x10000107, 0x0, // Vector Compare Not Equal or Zero Byte VC-form (vcmpnezb VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPNEZBCC, 0xfc0007ff, 0x10000507, 0x0, // Vector Compare Not Equal or Zero Byte VX-form (vcmpnezb. VRT,VRA,VRB)
+	{VCMPNEZBCC, 0xfc0007ff, 0x10000507, 0x0, // Vector Compare Not Equal or Zero Byte VC-form (vcmpnezb. VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPNEH, 0xfc0007ff, 0x10000047, 0x0, // Vector Compare Not Equal Halfword VX-form (vcmpneh VRT,VRA,VRB)
+	{VCMPNEH, 0xfc0007ff, 0x10000047, 0x0, // Vector Compare Not Equal Halfword VC-form (vcmpneh VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPNEHCC, 0xfc0007ff, 0x10000447, 0x0, // Vector Compare Not Equal Halfword VX-form (vcmpneh. VRT,VRA,VRB)
+	{VCMPNEHCC, 0xfc0007ff, 0x10000447, 0x0, // Vector Compare Not Equal Halfword VC-form (vcmpneh. VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPNEZH, 0xfc0007ff, 0x10000147, 0x0, // Vector Compare Not Equal or Zero Halfword VX-form (vcmpnezh VRT,VRA,VRB)
+	{VCMPNEZH, 0xfc0007ff, 0x10000147, 0x0, // Vector Compare Not Equal or Zero Halfword VC-form (vcmpnezh VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPNEZHCC, 0xfc0007ff, 0x10000547, 0x0, // Vector Compare Not Equal or Zero Halfword VX-form (vcmpnezh. VRT,VRA,VRB)
+	{VCMPNEZHCC, 0xfc0007ff, 0x10000547, 0x0, // Vector Compare Not Equal or Zero Halfword VC-form (vcmpnezh. VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPNEW, 0xfc0007ff, 0x10000087, 0x0, // Vector Compare Not Equal Word VX-form (vcmpnew VRT,VRA,VRB)
+	{VCMPNEW, 0xfc0007ff, 0x10000087, 0x0, // Vector Compare Not Equal Word VC-form (vcmpnew VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPNEWCC, 0xfc0007ff, 0x10000487, 0x0, // Vector Compare Not Equal Word VX-form (vcmpnew. VRT,VRA,VRB)
+	{VCMPNEWCC, 0xfc0007ff, 0x10000487, 0x0, // Vector Compare Not Equal Word VC-form (vcmpnew. VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPNEZW, 0xfc0007ff, 0x10000187, 0x0, // Vector Compare Not Equal or Zero Word VX-form (vcmpnezw VRT,VRA,VRB)
+	{VCMPNEZW, 0xfc0007ff, 0x10000187, 0x0, // Vector Compare Not Equal or Zero Word VC-form (vcmpnezw VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPNEZWCC, 0xfc0007ff, 0x10000587, 0x0, // Vector Compare Not Equal or Zero Word VX-form (vcmpnezw. VRT,VRA,VRB)
+	{VCMPNEZWCC, 0xfc0007ff, 0x10000587, 0x0, // Vector Compare Not Equal or Zero Word VC-form (vcmpnezw. VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
 	{VCMPGTSB, 0xfc0007ff, 0x10000306, 0x0, // Vector Compare Greater Than Signed Byte VC-form (vcmpgtsb VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
 	{VCMPGTSBCC, 0xfc0007ff, 0x10000706, 0x0, // Vector Compare Greater Than Signed Byte VC-form (vcmpgtsb. VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPGTSD, 0xfc0007ff, 0x100003c7, 0x0, // Vector Compare Greater Than Signed Doubleword VX-form (vcmpgtsd VRT,VRA,VRB)
+	{VCMPGTSD, 0xfc0007ff, 0x100003c7, 0x0, // Vector Compare Greater Than Signed Doubleword VC-form (vcmpgtsd VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPGTSDCC, 0xfc0007ff, 0x100007c7, 0x0, // Vector Compare Greater Than Signed Doubleword VX-form (vcmpgtsd. VRT,VRA,VRB)
+	{VCMPGTSDCC, 0xfc0007ff, 0x100007c7, 0x0, // Vector Compare Greater Than Signed Doubleword VC-form (vcmpgtsd. VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
 	{VCMPGTSH, 0xfc0007ff, 0x10000346, 0x0, // Vector Compare Greater Than Signed Halfword VC-form (vcmpgtsh VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
@@ -3999,9 +3954,9 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
 	{VCMPGTUBCC, 0xfc0007ff, 0x10000606, 0x0, // Vector Compare Greater Than Unsigned Byte VC-form (vcmpgtub. VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPGTUD, 0xfc0007ff, 0x100002c7, 0x0, // Vector Compare Greater Than Unsigned Doubleword VX-form (vcmpgtud VRT,VRA,VRB)
+	{VCMPGTUD, 0xfc0007ff, 0x100002c7, 0x0, // Vector Compare Greater Than Unsigned Doubleword VC-form (vcmpgtud VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPGTUDCC, 0xfc0007ff, 0x100006c7, 0x0, // Vector Compare Greater Than Unsigned Doubleword VX-form (vcmpgtud. VRT,VRA,VRB)
+	{VCMPGTUDCC, 0xfc0007ff, 0x100006c7, 0x0, // Vector Compare Greater Than Unsigned Doubleword VC-form (vcmpgtud. VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
 	{VCMPGTUH, 0xfc0007ff, 0x10000246, 0x0, // Vector Compare Greater Than Unsigned Halfword VC-form (vcmpgtuh VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
@@ -4015,7 +3970,7 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
 	{VANDC, 0xfc0007ff, 0x10000444, 0x0, // Vector Logical AND with Complement VX-form (vandc VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VEQV, 0xfc0007ff, 0x10000684, 0x0, // Vector Logical Equivalent VX-form (veqv VRT,VRA,VRB)
+	{VEQV, 0xfc0007ff, 0x10000684, 0x0, // Vector Logical Equivalence VX-form (veqv VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
 	{VNAND, 0xfc0007ff, 0x10000584, 0x0, // Vector Logical NAND VX-form (vnand VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
@@ -4059,57 +4014,57 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
 	{VSRAD, 0xfc0007ff, 0x100003c4, 0x0, // Vector Shift Right Algebraic Doubleword VX-form (vsrad VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VADDFP, 0xfc0007ff, 0x1000000a, 0x0, // Vector Add Single-Precision VX-form (vaddfp VRT,VRA,VRB)
+	{VADDFP, 0xfc0007ff, 0x1000000a, 0x0, // Vector Add Floating-Point VX-form (vaddfp VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VSUBFP, 0xfc0007ff, 0x1000004a, 0x0, // Vector Subtract Single-Precision VX-form (vsubfp VRT,VRA,VRB)
+	{VSUBFP, 0xfc0007ff, 0x1000004a, 0x0, // Vector Subtract Floating-Point VX-form (vsubfp VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VMADDFP, 0xfc00003f, 0x1000002e, 0x0, // Vector Multiply-Add Single-Precision VA-form (vmaddfp VRT,VRA,VRC,VRB)
+	{VMADDFP, 0xfc00003f, 0x1000002e, 0x0, // Vector Multiply-Add Floating-Point VA-form (vmaddfp VRT,VRA,VRC,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_21_25, ap_VecReg_16_20}},
-	{VNMSUBFP, 0xfc00003f, 0x1000002f, 0x0, // Vector Negative Multiply-Subtract Single-Precision VA-form (vnmsubfp VRT,VRA,VRC,VRB)
+	{VNMSUBFP, 0xfc00003f, 0x1000002f, 0x0, // Vector Negative Multiply-Subtract Floating-Point VA-form (vnmsubfp VRT,VRA,VRC,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_21_25, ap_VecReg_16_20}},
-	{VMAXFP, 0xfc0007ff, 0x1000040a, 0x0, // Vector Maximum Single-Precision VX-form (vmaxfp VRT,VRA,VRB)
+	{VMAXFP, 0xfc0007ff, 0x1000040a, 0x0, // Vector Maximum Floating-Point VX-form (vmaxfp VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VMINFP, 0xfc0007ff, 0x1000044a, 0x0, // Vector Minimum Single-Precision VX-form (vminfp VRT,VRA,VRB)
+	{VMINFP, 0xfc0007ff, 0x1000044a, 0x0, // Vector Minimum Floating-Point VX-form (vminfp VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCTSXS, 0xfc0007ff, 0x100003ca, 0x0, // Vector Convert To Signed Fixed-Point Word Saturate VX-form (vctsxs VRT,VRB,UIM)
+	{VCTSXS, 0xfc0007ff, 0x100003ca, 0x0, // Vector Convert with round to zero from floating-point To Signed Word format Saturate VX-form (vctsxs VRT,VRB,UIM)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_11_15}},
-	{VCTUXS, 0xfc0007ff, 0x1000038a, 0x0, // Vector Convert To Unsigned Fixed-Point Word Saturate VX-form (vctuxs VRT,VRB,UIM)
+	{VCTUXS, 0xfc0007ff, 0x1000038a, 0x0, // Vector Convert with round to zero from floating-point To Unsigned Word format Saturate VX-form (vctuxs VRT,VRB,UIM)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_11_15}},
-	{VCFSX, 0xfc0007ff, 0x1000034a, 0x0, // Vector Convert From Signed Fixed-Point Word VX-form (vcfsx VRT,VRB,UIM)
+	{VCFSX, 0xfc0007ff, 0x1000034a, 0x0, // Vector Convert with round to nearest From Signed Word to floating-point format VX-form (vcfsx VRT,VRB,UIM)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_11_15}},
-	{VCFUX, 0xfc0007ff, 0x1000030a, 0x0, // Vector Convert From Unsigned Fixed-Point Word VX-form (vcfux VRT,VRB,UIM)
+	{VCFUX, 0xfc0007ff, 0x1000030a, 0x0, // Vector Convert with round to nearest From Unsigned Word to floating-point format VX-form (vcfux VRT,VRB,UIM)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_11_15}},
-	{VRFIM, 0xfc0007ff, 0x100002ca, 0x1f0000, // Vector Round to Single-Precision Integer toward -Infinity VX-form (vrfim VRT,VRB)
+	{VRFIM, 0xfc0007ff, 0x100002ca, 0x1f0000, // Vector Round to Floating-Point Integer toward -Infinity VX-form (vrfim VRT,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
-	{VRFIN, 0xfc0007ff, 0x1000020a, 0x1f0000, // Vector Round to Single-Precision Integer Nearest VX-form (vrfin VRT,VRB)
+	{VRFIN, 0xfc0007ff, 0x1000020a, 0x1f0000, // Vector Round to Floating-Point Integer Nearest VX-form (vrfin VRT,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
-	{VRFIP, 0xfc0007ff, 0x1000028a, 0x1f0000, // Vector Round to Single-Precision Integer toward +Infinity VX-form (vrfip VRT,VRB)
+	{VRFIP, 0xfc0007ff, 0x1000028a, 0x1f0000, // Vector Round to Floating-Point Integer toward +Infinity VX-form (vrfip VRT,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
-	{VRFIZ, 0xfc0007ff, 0x1000024a, 0x1f0000, // Vector Round to Single-Precision Integer toward Zero VX-form (vrfiz VRT,VRB)
+	{VRFIZ, 0xfc0007ff, 0x1000024a, 0x1f0000, // Vector Round to Floating-Point Integer toward Zero VX-form (vrfiz VRT,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
-	{VCMPBFP, 0xfc0007ff, 0x100003c6, 0x0, // Vector Compare Bounds Single-Precision VC-form (vcmpbfp VRT,VRA,VRB)
+	{VCMPBFP, 0xfc0007ff, 0x100003c6, 0x0, // Vector Compare Bounds Floating-Point VC-form (vcmpbfp VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPBFPCC, 0xfc0007ff, 0x100007c6, 0x0, // Vector Compare Bounds Single-Precision VC-form (vcmpbfp. VRT,VRA,VRB)
+	{VCMPBFPCC, 0xfc0007ff, 0x100007c6, 0x0, // Vector Compare Bounds Floating-Point VC-form (vcmpbfp. VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPEQFP, 0xfc0007ff, 0x100000c6, 0x0, // Vector Compare Equal To Single-Precision VC-form (vcmpeqfp VRT,VRA,VRB)
+	{VCMPEQFP, 0xfc0007ff, 0x100000c6, 0x0, // Vector Compare Equal Floating-Point VC-form (vcmpeqfp VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPEQFPCC, 0xfc0007ff, 0x100004c6, 0x0, // Vector Compare Equal To Single-Precision VC-form (vcmpeqfp. VRT,VRA,VRB)
+	{VCMPEQFPCC, 0xfc0007ff, 0x100004c6, 0x0, // Vector Compare Equal Floating-Point VC-form (vcmpeqfp. VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPGEFP, 0xfc0007ff, 0x100001c6, 0x0, // Vector Compare Greater Than or Equal To Single-Precision VC-form (vcmpgefp VRT,VRA,VRB)
+	{VCMPGEFP, 0xfc0007ff, 0x100001c6, 0x0, // Vector Compare Greater Than or Equal Floating-Point VC-form (vcmpgefp VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPGEFPCC, 0xfc0007ff, 0x100005c6, 0x0, // Vector Compare Greater Than or Equal To Single-Precision VC-form (vcmpgefp. VRT,VRA,VRB)
+	{VCMPGEFPCC, 0xfc0007ff, 0x100005c6, 0x0, // Vector Compare Greater Than or Equal Floating-Point VC-form (vcmpgefp. VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPGTFP, 0xfc0007ff, 0x100002c6, 0x0, // Vector Compare Greater Than Single-Precision VC-form (vcmpgtfp VRT,VRA,VRB)
+	{VCMPGTFP, 0xfc0007ff, 0x100002c6, 0x0, // Vector Compare Greater Than Floating-Point VC-form (vcmpgtfp VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VCMPGTFPCC, 0xfc0007ff, 0x100006c6, 0x0, // Vector Compare Greater Than Single-Precision VC-form (vcmpgtfp. VRT,VRA,VRB)
+	{VCMPGTFPCC, 0xfc0007ff, 0x100006c6, 0x0, // Vector Compare Greater Than Floating-Point VC-form (vcmpgtfp. VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
 	{VEXPTEFP, 0xfc0007ff, 0x1000018a, 0x1f0000, // Vector 2 Raised to the Exponent Estimate Floating-Point VX-form (vexptefp VRT,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
 	{VLOGEFP, 0xfc0007ff, 0x100001ca, 0x1f0000, // Vector Log Base 2 Estimate Floating-Point VX-form (vlogefp VRT,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
-	{VREFP, 0xfc0007ff, 0x1000010a, 0x1f0000, // Vector Reciprocal Estimate Single-Precision VX-form (vrefp VRT,VRB)
+	{VREFP, 0xfc0007ff, 0x1000010a, 0x1f0000, // Vector Reciprocal Estimate Floating-Point VX-form (vrefp VRT,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
-	{VRSQRTEFP, 0xfc0007ff, 0x1000014a, 0x1f0000, // Vector Reciprocal Square Root Estimate Single-Precision VX-form (vrsqrtefp VRT,VRB)
+	{VRSQRTEFP, 0xfc0007ff, 0x1000014a, 0x1f0000, // Vector Reciprocal Square Root Estimate Floating-Point VX-form (vrsqrtefp VRT,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
 	{VCIPHER, 0xfc0007ff, 0x10000508, 0x0, // Vector AES Cipher VX-form (vcipher VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
@@ -4133,7 +4088,7 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
 	{VPMSUMW, 0xfc0007ff, 0x10000488, 0x0, // Vector Polynomial Multiply-Sum Word VX-form (vpmsumw VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
-	{VPERMXOR, 0xfc00003f, 0x1000002d, 0x0, // Vector Permute and Exclusive-OR VA-form (vpermxor VRT,VRA,VRB,VRC)
+	{VPERMXOR, 0xfc00003f, 0x1000002d, 0x0, // Vector Permute & Exclusive-OR VA-form (vpermxor VRT,VRA,VRB,VRC)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20, ap_VecReg_21_25}},
 	{VGBBD, 0xfc0007ff, 0x1000050c, 0x1f0000, // Vector Gather Bits by Bytes by Doubleword VX-form (vgbbd VRT,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
@@ -4143,15 +4098,15 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
 	{VCLZW, 0xfc0007ff, 0x10000782, 0x1f0000, // Vector Count Leading Zeros Word VX-form (vclzw VRT,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
-	{VCLZD, 0xfc0007ff, 0x100007c2, 0x1f0000, // Vector Count Leading Zeros Doubleword (vclzd VRT,VRB)
+	{VCLZD, 0xfc0007ff, 0x100007c2, 0x1f0000, // Vector Count Leading Zeros Doubleword VX-form (vclzd VRT,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
-	{VPOPCNTB, 0xfc0007ff, 0x10000703, 0x1f0000, // Vector Population Count Byte (vpopcntb VRT,VRB)
+	{VPOPCNTB, 0xfc0007ff, 0x10000703, 0x1f0000, // Vector Population Count Byte VX-form (vpopcntb VRT,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
-	{VPOPCNTD, 0xfc0007ff, 0x100007c3, 0x1f0000, // Vector Population Count Doubleword (vpopcntd VRT,VRB)
+	{VPOPCNTD, 0xfc0007ff, 0x100007c3, 0x1f0000, // Vector Population Count Doubleword VX-form (vpopcntd VRT,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
-	{VPOPCNTH, 0xfc0007ff, 0x10000743, 0x1f0000, // Vector Population Count Halfword (vpopcnth VRT,VRB)
+	{VPOPCNTH, 0xfc0007ff, 0x10000743, 0x1f0000, // Vector Population Count Halfword VX-form (vpopcnth VRT,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
-	{VPOPCNTW, 0xfc0007ff, 0x10000783, 0x1f0000, // Vector Population Count Word (vpopcntw VRT,VRB)
+	{VPOPCNTW, 0xfc0007ff, 0x10000783, 0x1f0000, // Vector Population Count Word VX-form (vpopcntw VRT,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
 	{VBPERMQ, 0xfc0007ff, 0x1000054c, 0x0, // Vector Bit Permute Quadword VX-form (vbpermq VRT,VRA,VRB)
 		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
@@ -4165,53 +4120,53 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_VecReg_16_20}},
 	{MFVSCR, 0xfc0007ff, 0x10000604, 0x1ff800, // Move From Vector Status and Control Register VX-form (mfvscr VRT)
 		[5]*argField{ap_VecReg_6_10}},
-	{DADD, 0xfc0007ff, 0xec000004, 0x0, // DFP Add [Quad] X-form (dadd FRT,FRA,FRB)
+	{DADD, 0xfc0007ff, 0xec000004, 0x0, // DFP Add X-form (dadd FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{DADDCC, 0xfc0007ff, 0xec000005, 0x0, // DFP Add [Quad] X-form (dadd. FRT,FRA,FRB)
+	{DADDCC, 0xfc0007ff, 0xec000005, 0x0, // DFP Add X-form (dadd. FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{DSUB, 0xfc0007ff, 0xec000404, 0x0, // DFP Subtract [Quad] X-form (dsub FRT,FRA,FRB)
+	{DSUB, 0xfc0007ff, 0xec000404, 0x0, // DFP Subtract X-form (dsub FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{DSUBCC, 0xfc0007ff, 0xec000405, 0x0, // DFP Subtract [Quad] X-form (dsub. FRT,FRA,FRB)
+	{DSUBCC, 0xfc0007ff, 0xec000405, 0x0, // DFP Subtract X-form (dsub. FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{DMUL, 0xfc0007ff, 0xec000044, 0x0, // DFP Multiply [Quad] X-form (dmul FRT,FRA,FRB)
+	{DMUL, 0xfc0007ff, 0xec000044, 0x0, // DFP Multiply X-form (dmul FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{DMULCC, 0xfc0007ff, 0xec000045, 0x0, // DFP Multiply [Quad] X-form (dmul. FRT,FRA,FRB)
+	{DMULCC, 0xfc0007ff, 0xec000045, 0x0, // DFP Multiply X-form (dmul. FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{DDIV, 0xfc0007ff, 0xec000444, 0x0, // DFP Divide [Quad] X-form (ddiv FRT,FRA,FRB)
+	{DDIV, 0xfc0007ff, 0xec000444, 0x0, // DFP Divide X-form (ddiv FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{DDIVCC, 0xfc0007ff, 0xec000445, 0x0, // DFP Divide [Quad] X-form (ddiv. FRT,FRA,FRB)
+	{DDIVCC, 0xfc0007ff, 0xec000445, 0x0, // DFP Divide X-form (ddiv. FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{DCMPU, 0xfc0007fe, 0xec000504, 0x600001, // DFP Compare Unordered [Quad] X-form (dcmpu BF,FRA,FRB)
+	{DCMPU, 0xfc0007fe, 0xec000504, 0x600001, // DFP Compare Unordered X-form (dcmpu BF,FRA,FRB)
 		[5]*argField{ap_CondRegField_6_8, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{DCMPO, 0xfc0007fe, 0xec000104, 0x600001, // DFP Compare Ordered [Quad] X-form (dcmpo BF,FRA,FRB)
+	{DCMPO, 0xfc0007fe, 0xec000104, 0x600001, // DFP Compare Ordered X-form (dcmpo BF,FRA,FRB)
 		[5]*argField{ap_CondRegField_6_8, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{DTSTDC, 0xfc0003fe, 0xec000184, 0x600001, // DFP Test Data Class [Quad] Z22-form (dtstdc BF,FRA,DCM)
+	{DTSTDC, 0xfc0003fe, 0xec000184, 0x600001, // DFP Test Data Class Z22-form (dtstdc BF,FRA,DCM)
 		[5]*argField{ap_CondRegField_6_8, ap_FPReg_11_15, ap_ImmUnsigned_16_21}},
-	{DTSTDG, 0xfc0003fe, 0xec0001c4, 0x600001, // DFP Test Data Group [Quad] Z22-form (dtstdg BF,FRA,DGM)
+	{DTSTDG, 0xfc0003fe, 0xec0001c4, 0x600001, // DFP Test Data Group Z22-form (dtstdg BF,FRA,DGM)
 		[5]*argField{ap_CondRegField_6_8, ap_FPReg_11_15, ap_ImmUnsigned_16_21}},
-	{DTSTEX, 0xfc0007fe, 0xec000144, 0x600001, // DFP Test Exponent [Quad] X-form (dtstex BF,FRA,FRB)
+	{DTSTEX, 0xfc0007fe, 0xec000144, 0x600001, // DFP Test Exponent X-form (dtstex BF,FRA,FRB)
 		[5]*argField{ap_CondRegField_6_8, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{DTSTSF, 0xfc0007fe, 0xec000544, 0x600001, // DFP Test Significance [Quad] X-form (dtstsf BF,FRA,FRB)
+	{DTSTSF, 0xfc0007fe, 0xec000544, 0x600001, // DFP Test Significance X-form (dtstsf BF,FRA,FRB)
 		[5]*argField{ap_CondRegField_6_8, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{DQUAI, 0xfc0001ff, 0xec000086, 0x0, // DFP Quantize Immediate [Quad] Z23-form (dquai TE,FRT,FRB,RMC)
+	{DQUAI, 0xfc0001ff, 0xec000086, 0x0, // DFP Quantize Immediate Z23-form (dquai TE,FRT,FRB,RMC)
 		[5]*argField{ap_ImmSigned_11_15, ap_FPReg_6_10, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
-	{DQUAICC, 0xfc0001ff, 0xec000087, 0x0, // DFP Quantize Immediate [Quad] Z23-form (dquai. TE,FRT,FRB,RMC)
+	{DQUAICC, 0xfc0001ff, 0xec000087, 0x0, // DFP Quantize Immediate Z23-form (dquai. TE,FRT,FRB,RMC)
 		[5]*argField{ap_ImmSigned_11_15, ap_FPReg_6_10, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
-	{DQUA, 0xfc0001ff, 0xec000006, 0x0, // DFP Quantize [Quad] Z23-form (dqua FRT,FRA,FRB,RMC)
+	{DQUA, 0xfc0001ff, 0xec000006, 0x0, // DFP Quantize Z23-form (dqua FRT,FRA,FRB,RMC)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
-	{DQUACC, 0xfc0001ff, 0xec000007, 0x0, // DFP Quantize [Quad] Z23-form (dqua. FRT,FRA,FRB,RMC)
+	{DQUACC, 0xfc0001ff, 0xec000007, 0x0, // DFP Quantize Z23-form (dqua. FRT,FRA,FRB,RMC)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
-	{DRRND, 0xfc0001ff, 0xec000046, 0x0, // DFP Reround [Quad] Z23-form (drrnd FRT,FRA,FRB,RMC)
+	{DRRND, 0xfc0001ff, 0xec000046, 0x0, // DFP Reround Z23-form (drrnd FRT,FRA,FRB,RMC)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
-	{DRRNDCC, 0xfc0001ff, 0xec000047, 0x0, // DFP Reround [Quad] Z23-form (drrnd. FRT,FRA,FRB,RMC)
+	{DRRNDCC, 0xfc0001ff, 0xec000047, 0x0, // DFP Reround Z23-form (drrnd. FRT,FRA,FRB,RMC)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
-	{DRINTX, 0xfc0001ff, 0xec0000c6, 0x1e0000, // DFP Round To FP Integer With Inexact [Quad] Z23-form (drintx R,FRT,FRB,RMC)
+	{DRINTX, 0xfc0001ff, 0xec0000c6, 0x1e0000, // DFP Round To FP Integer With Inexact Z23-form (drintx R,FRT,FRB,RMC)
 		[5]*argField{ap_ImmUnsigned_15_15, ap_FPReg_6_10, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
-	{DRINTXCC, 0xfc0001ff, 0xec0000c7, 0x1e0000, // DFP Round To FP Integer With Inexact [Quad] Z23-form (drintx. R,FRT,FRB,RMC)
+	{DRINTXCC, 0xfc0001ff, 0xec0000c7, 0x1e0000, // DFP Round To FP Integer With Inexact Z23-form (drintx. R,FRT,FRB,RMC)
 		[5]*argField{ap_ImmUnsigned_15_15, ap_FPReg_6_10, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
-	{DRINTN, 0xfc0001ff, 0xec0001c6, 0x1e0000, // DFP Round To FP Integer Without Inexact [Quad] Z23-form (drintn R,FRT,FRB,RMC)
+	{DRINTN, 0xfc0001ff, 0xec0001c6, 0x1e0000, // DFP Round To FP Integer Without Inexact Z23-form (drintn R,FRT,FRB,RMC)
 		[5]*argField{ap_ImmUnsigned_15_15, ap_FPReg_6_10, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
-	{DRINTNCC, 0xfc0001ff, 0xec0001c7, 0x1e0000, // DFP Round To FP Integer Without Inexact [Quad] Z23-form (drintn. R,FRT,FRB,RMC)
+	{DRINTNCC, 0xfc0001ff, 0xec0001c7, 0x1e0000, // DFP Round To FP Integer Without Inexact Z23-form (drintn. R,FRT,FRB,RMC)
 		[5]*argField{ap_ImmUnsigned_15_15, ap_FPReg_6_10, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
 	{DCTDP, 0xfc0007ff, 0xec000204, 0x1f0000, // DFP Convert To DFP Long X-form (dctdp FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
@@ -4237,83 +4192,83 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
 	{DCFFIXQCC, 0xfc0007ff, 0xfc000645, 0x1f0000, // DFP Convert From Fixed Quad X-form (dcffixq. FRTp,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{DCTFIX, 0xfc0007ff, 0xec000244, 0x1f0000, // DFP Convert To Fixed [Quad] X-form (dctfix FRT,FRB)
+	{DCTFIX, 0xfc0007ff, 0xec000244, 0x1f0000, // DFP Convert To Fixed X-form (dctfix FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{DCTFIXCC, 0xfc0007ff, 0xec000245, 0x1f0000, // DFP Convert To Fixed [Quad] X-form (dctfix. FRT,FRB)
+	{DCTFIXCC, 0xfc0007ff, 0xec000245, 0x1f0000, // DFP Convert To Fixed X-form (dctfix. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{DDEDPD, 0xfc0007ff, 0xec000284, 0x70000, // DFP Decode DPD To BCD [Quad] X-form (ddedpd SP,FRT,FRB)
+	{DDEDPD, 0xfc0007ff, 0xec000284, 0x70000, // DFP Decode DPD To BCD X-form (ddedpd SP,FRT,FRB)
 		[5]*argField{ap_ImmUnsigned_11_12, ap_FPReg_6_10, ap_FPReg_16_20}},
-	{DDEDPDCC, 0xfc0007ff, 0xec000285, 0x70000, // DFP Decode DPD To BCD [Quad] X-form (ddedpd. SP,FRT,FRB)
+	{DDEDPDCC, 0xfc0007ff, 0xec000285, 0x70000, // DFP Decode DPD To BCD X-form (ddedpd. SP,FRT,FRB)
 		[5]*argField{ap_ImmUnsigned_11_12, ap_FPReg_6_10, ap_FPReg_16_20}},
-	{DENBCD, 0xfc0007ff, 0xec000684, 0xf0000, // DFP Encode BCD To DPD [Quad] X-form (denbcd S,FRT,FRB)
+	{DENBCD, 0xfc0007ff, 0xec000684, 0xf0000, // DFP Encode BCD To DPD X-form (denbcd S,FRT,FRB)
 		[5]*argField{ap_ImmUnsigned_11_11, ap_FPReg_6_10, ap_FPReg_16_20}},
-	{DENBCDCC, 0xfc0007ff, 0xec000685, 0xf0000, // DFP Encode BCD To DPD [Quad] X-form (denbcd. S,FRT,FRB)
+	{DENBCDCC, 0xfc0007ff, 0xec000685, 0xf0000, // DFP Encode BCD To DPD X-form (denbcd. S,FRT,FRB)
 		[5]*argField{ap_ImmUnsigned_11_11, ap_FPReg_6_10, ap_FPReg_16_20}},
-	{DXEX, 0xfc0007ff, 0xec0002c4, 0x1f0000, // DFP Extract Biased Exponent [Quad] X-form (dxex FRT,FRB)
+	{DXEX, 0xfc0007ff, 0xec0002c4, 0x1f0000, // DFP Extract Biased Exponent X-form (dxex FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{DXEXCC, 0xfc0007ff, 0xec0002c5, 0x1f0000, // DFP Extract Biased Exponent [Quad] X-form (dxex. FRT,FRB)
+	{DXEXCC, 0xfc0007ff, 0xec0002c5, 0x1f0000, // DFP Extract Biased Exponent X-form (dxex. FRT,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
-	{DIEX, 0xfc0007ff, 0xec0006c4, 0x0, // DFP Insert Biased Exponent [Quad] X-form (diex FRT,FRA,FRB)
+	{DIEX, 0xfc0007ff, 0xec0006c4, 0x0, // DFP Insert Biased Exponent X-form (diex FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{DIEXCC, 0xfc0007ff, 0xec0006c5, 0x0, // DFP Insert Biased Exponent [Quad] X-form (diex. FRT,FRA,FRB)
+	{DIEXCC, 0xfc0007ff, 0xec0006c5, 0x0, // DFP Insert Biased Exponent X-form (diex. FRT,FRA,FRB)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
-	{DSCLI, 0xfc0003ff, 0xec000084, 0x0, // DFP Shift Significand Left Immediate [Quad] Z22-form (dscli FRT,FRA,SH)
+	{DSCLI, 0xfc0003ff, 0xec000084, 0x0, // DFP Shift Significand Left Immediate Z22-form (dscli FRT,FRA,SH)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_ImmUnsigned_16_21}},
-	{DSCLICC, 0xfc0003ff, 0xec000085, 0x0, // DFP Shift Significand Left Immediate [Quad] Z22-form (dscli. FRT,FRA,SH)
+	{DSCLICC, 0xfc0003ff, 0xec000085, 0x0, // DFP Shift Significand Left Immediate Z22-form (dscli. FRT,FRA,SH)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_ImmUnsigned_16_21}},
-	{DSCRI, 0xfc0003ff, 0xec0000c4, 0x0, // DFP Shift Significand Right Immediate [Quad] Z22-form (dscri FRT,FRA,SH)
+	{DSCRI, 0xfc0003ff, 0xec0000c4, 0x0, // DFP Shift Significand Right Immediate Z22-form (dscri FRT,FRA,SH)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_ImmUnsigned_16_21}},
-	{DSCRICC, 0xfc0003ff, 0xec0000c5, 0x0, // DFP Shift Significand Right Immediate [Quad] Z22-form (dscri. FRT,FRA,SH)
+	{DSCRICC, 0xfc0003ff, 0xec0000c5, 0x0, // DFP Shift Significand Right Immediate Z22-form (dscri. FRT,FRA,SH)
 		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_ImmUnsigned_16_21}},
-	{LXSDX, 0xfc0007fe, 0x7c000498, 0x0, // Load VSX Scalar Doubleword Indexed XX1-form (lxsdx XT,RA,RB)
+	{LXSDX, 0xfc0007fe, 0x7c000498, 0x0, // Load VSX Scalar Doubleword Indexed X-form (lxsdx XT,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LXSIWAX, 0xfc0007fe, 0x7c000098, 0x0, // Load VSX Scalar as Integer Word Algebraic Indexed XX1-form (lxsiwax XT,RA,RB)
+	{LXSIWAX, 0xfc0007fe, 0x7c000098, 0x0, // Load VSX Scalar as Integer Word Algebraic Indexed X-form (lxsiwax XT,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LXSIWZX, 0xfc0007fe, 0x7c000018, 0x0, // Load VSX Scalar as Integer Word and Zero Indexed XX1-form (lxsiwzx XT,RA,RB)
+	{LXSIWZX, 0xfc0007fe, 0x7c000018, 0x0, // Load VSX Scalar as Integer Word & Zero Indexed X-form (lxsiwzx XT,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LXSSPX, 0xfc0007fe, 0x7c000418, 0x0, // Load VSX Scalar Single-Precision Indexed XX1-form (lxsspx XT,RA,RB)
+	{LXSSPX, 0xfc0007fe, 0x7c000418, 0x0, // Load VSX Scalar Single-Precision Indexed X-form (lxsspx XT,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LXVD2X, 0xfc0007fe, 0x7c000698, 0x0, // Load VSX Vector Doubleword*2 Indexed XX1-form (lxvd2x XT,RA,RB)
+	{LXVD2X, 0xfc0007fe, 0x7c000698, 0x0, // Load VSX Vector Doubleword*2 Indexed X-form (lxvd2x XT,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LXVDSX, 0xfc0007fe, 0x7c000298, 0x0, // Load VSX Vector Doubleword & Splat Indexed XX1-form (lxvdsx XT,RA,RB)
+	{LXVDSX, 0xfc0007fe, 0x7c000298, 0x0, // Load VSX Vector Doubleword & Splat Indexed X-form (lxvdsx XT,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LXVW4X, 0xfc0007fe, 0x7c000618, 0x0, // Load VSX Vector Word*4 Indexed XX1-form (lxvw4x XT,RA,RB)
+	{LXVW4X, 0xfc0007fe, 0x7c000618, 0x0, // Load VSX Vector Word*4 Indexed X-form (lxvw4x XT,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LXVH8X, 0xfc0007fe, 0x7c000658, 0x0, // Load VSX Vector Halfword*8 Indexed XX1-form (lxvh8x XT,RA,RB)
+	{LXVH8X, 0xfc0007fe, 0x7c000658, 0x0, // Load VSX Vector Halfword*8 Indexed X-form (lxvh8x XT,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LXVB16X, 0xfc0007fe, 0x7c0006d8, 0x0, // Load VSX Vector Byte*16 Indexed XX1-form (lxvb16x XT,RA,RB)
+	{LXVB16X, 0xfc0007fe, 0x7c0006d8, 0x0, // Load VSX Vector Byte*16 Indexed X-form (lxvb16x XT,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{LXV, 0xfc000007, 0xf4000001, 0x0, // Load VSX Vector DQ-form (lxv XT,DQ(RA))
 		[5]*argField{ap_VecSReg_28_28_6_10, ap_Offset_16_27_shift4, ap_Reg_11_15}},
 	{LXVL, 0xfc0007fe, 0x7c00021a, 0x0, // Load VSX Vector with Length X-form (lxvl XT,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LXVLL, 0xfc0007fe, 0x7c00025a, 0x0, // Load VSX Vector Left-justified with Length X-form (lxvll XT,RA,RB)
+	{LXVLL, 0xfc0007fe, 0x7c00025a, 0x0, // Load VSX Vector with Length Left-justified X-form (lxvll XT,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{LXVX, 0xfc0007be, 0x7c000218, 0x40, // Load VSX Vector Indexed X-form (lxvx XT,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STXSDX, 0xfc0007fe, 0x7c000598, 0x0, // Store VSX Scalar Doubleword Indexed XX1-form (stxsdx XS,RA,RB)
+	{STXSDX, 0xfc0007fe, 0x7c000598, 0x0, // Store VSX Scalar Doubleword Indexed X-form (stxsdx XS,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STXSIWX, 0xfc0007fe, 0x7c000118, 0x0, // Store VSX Scalar as Integer Word Indexed XX1-form (stxsiwx XS,RA,RB)
+	{STXSIWX, 0xfc0007fe, 0x7c000118, 0x0, // Store VSX Scalar as Integer Word Indexed X-form (stxsiwx XS,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STXSSPX, 0xfc0007fe, 0x7c000518, 0x0, // Store VSX Scalar Single-Precision Indexed XX1-form (stxsspx XS,RA,RB)
+	{STXSSPX, 0xfc0007fe, 0x7c000518, 0x0, // Store VSX Scalar Single-Precision Indexed X-form (stxsspx XS,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STXVD2X, 0xfc0007fe, 0x7c000798, 0x0, // Store VSX Vector Doubleword*2 Indexed XX1-form (stxvd2x XS,RA,RB)
+	{STXVD2X, 0xfc0007fe, 0x7c000798, 0x0, // Store VSX Vector Doubleword*2 Indexed X-form (stxvd2x XS,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STXVW4X, 0xfc0007fe, 0x7c000718, 0x0, // Store VSX Vector Word*4 Indexed XX1-form (stxvw4x XS,RA,RB)
+	{STXVW4X, 0xfc0007fe, 0x7c000718, 0x0, // Store VSX Vector Word*4 Indexed X-form (stxvw4x XS,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STXVH8X, 0xfc0007fe, 0x7c000758, 0x0, // Store VSX Vector Halfword*4 Indexed XX1-form (stxvh8x XS,RA,RB)
+	{STXVH8X, 0xfc0007fe, 0x7c000758, 0x0, // Store VSX Vector Halfword*8 Indexed X-form (stxvh8x XS,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STXVB16X, 0xfc0007fe, 0x7c0007d8, 0x0, // Store VSX Vector Byte*16 Indexed XX1-form (stxvb16x XS,RA,RB)
+	{STXVB16X, 0xfc0007fe, 0x7c0007d8, 0x0, // Store VSX Vector Byte*16 Indexed X-form (stxvb16x XS,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{STXV, 0xfc000007, 0xf4000005, 0x0, // Store VSX Vector DQ-form (stxv XS,DQ(RA))
 		[5]*argField{ap_VecSReg_28_28_6_10, ap_Offset_16_27_shift4, ap_Reg_11_15}},
 	{STXVL, 0xfc0007fe, 0x7c00031a, 0x0, // Store VSX Vector with Length X-form (stxvl XS,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STXVLL, 0xfc0007fe, 0x7c00035a, 0x0, // Store VSX Vector Left-justified with Length X-form (stxvll XS,RA,RB)
+	{STXVLL, 0xfc0007fe, 0x7c00035a, 0x0, // Store VSX Vector with Length Left-justified X-form (stxvll XS,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{STXVX, 0xfc0007fe, 0x7c000318, 0x0, // Store VSX Vector Indexed X-form (stxvx XS,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{XSABSDP, 0xfc0007fc, 0xf0000564, 0x1f0000, // VSX Scalar Absolute Value Double-Precision XX2-form (xsabsdp XT,XB)
+	{XSABSDP, 0xfc0007fc, 0xf0000564, 0x1f0000, // VSX Scalar Absolute Double-Precision XX2-form (xsabsdp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
 	{XSADDDP, 0xfc0007f8, 0xf0000100, 0x0, // VSX Scalar Add Double-Precision XX3-form (xsadddp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
@@ -4325,61 +4280,61 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_CondRegField_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
 	{XSCPSGNDP, 0xfc0007f8, 0xf0000580, 0x0, // VSX Scalar Copy Sign Double-Precision XX3-form (xscpsgndp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XSCVDPSP, 0xfc0007fc, 0xf0000424, 0x1f0000, // VSX Scalar round Double-Precision to single-precision and Convert to Single-Precision format XX2-form (xscvdpsp XT,XB)
+	{XSCVDPSP, 0xfc0007fc, 0xf0000424, 0x1f0000, // VSX Scalar Convert with round Double-Precision to Single-Precision format XX2-form (xscvdpsp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
 	{XSCVDPSPN, 0xfc0007fc, 0xf000042c, 0x1f0000, // VSX Scalar Convert Scalar Single-Precision to Vector Single-Precision format Non-signalling XX2-form (xscvdpspn XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XSCVDPSXDS, 0xfc0007fc, 0xf0000560, 0x1f0000, // VSX Scalar truncate Double-Precision to integer and Convert to Signed Integer Doubleword format with Saturate XX2-form (xscvdpsxds XT,XB)
+	{XSCVDPSXDS, 0xfc0007fc, 0xf0000560, 0x1f0000, // VSX Scalar Convert with round to zero Double-Precision to Signed Doubleword format XX2-form (xscvdpsxds XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XSCVDPSXWS, 0xfc0007fc, 0xf0000160, 0x1f0000, // VSX Scalar truncate Double-Precision to integer and Convert to Signed Integer Word format with Saturate XX2-form (xscvdpsxws XT,XB)
+	{XSCVDPSXWS, 0xfc0007fc, 0xf0000160, 0x1f0000, // VSX Scalar Convert with round to zero Double-Precision to Signed Word format XX2-form (xscvdpsxws XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XSCVDPUXDS, 0xfc0007fc, 0xf0000520, 0x1f0000, // VSX Scalar truncate Double-Precision integer and Convert to Unsigned Integer Doubleword format with Saturate XX2-form (xscvdpuxds XT,XB)
+	{XSCVDPUXDS, 0xfc0007fc, 0xf0000520, 0x1f0000, // VSX Scalar Convert with round to zero Double-Precision to Unsigned Doubleword format XX2-form (xscvdpuxds XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XSCVDPUXWS, 0xfc0007fc, 0xf0000120, 0x1f0000, // VSX Scalar truncate Double-Precision to integer and Convert to Unsigned Integer Word format with Saturate XX2-form (xscvdpuxws XT,XB)
+	{XSCVDPUXWS, 0xfc0007fc, 0xf0000120, 0x1f0000, // VSX Scalar Convert with round to zero Double-Precision to Unsigned Word format XX2-form (xscvdpuxws XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
 	{XSCVSPDP, 0xfc0007fc, 0xf0000524, 0x1f0000, // VSX Scalar Convert Single-Precision to Double-Precision format XX2-form (xscvspdp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
 	{XSCVSPDPN, 0xfc0007fc, 0xf000052c, 0x1f0000, // VSX Scalar Convert Single-Precision to Double-Precision format Non-signalling XX2-form (xscvspdpn XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XSCVSXDDP, 0xfc0007fc, 0xf00005e0, 0x1f0000, // VSX Scalar Convert Signed Integer Doubleword to floating-point format and round to Double-Precision format XX2-form (xscvsxddp XT,XB)
+	{XSCVSXDDP, 0xfc0007fc, 0xf00005e0, 0x1f0000, // VSX Scalar Convert with round Signed Doubleword to Double-Precision format XX2-form (xscvsxddp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XSCVSXDSP, 0xfc0007fc, 0xf00004e0, 0x1f0000, // VSX Scalar Convert Signed Integer Doubleword to floating-point format and round to Single-Precision XX2-form (xscvsxdsp XT,XB)
+	{XSCVSXDSP, 0xfc0007fc, 0xf00004e0, 0x1f0000, // VSX Scalar Convert with round Signed Doubleword to Single-Precision format XX2-form (xscvsxdsp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XSCVUXDDP, 0xfc0007fc, 0xf00005a0, 0x1f0000, // VSX Scalar Convert Unsigned Integer Doubleword to floating-point format and round to Double-Precision format XX2-form (xscvuxddp XT,XB)
+	{XSCVUXDDP, 0xfc0007fc, 0xf00005a0, 0x1f0000, // VSX Scalar Convert with round Unsigned Doubleword to Double-Precision format XX2-form (xscvuxddp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XSCVUXDSP, 0xfc0007fc, 0xf00004a0, 0x1f0000, // VSX Scalar Convert Unsigned Integer Doubleword to floating-point format and round to Single-Precision XX2-form (xscvuxdsp XT,XB)
+	{XSCVUXDSP, 0xfc0007fc, 0xf00004a0, 0x1f0000, // VSX Scalar Convert with round Unsigned Doubleword to Single-Precision XX2-form (xscvuxdsp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
 	{XSDIVDP, 0xfc0007f8, 0xf00001c0, 0x0, // VSX Scalar Divide Double-Precision XX3-form (xsdivdp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
 	{XSDIVSP, 0xfc0007f8, 0xf00000c0, 0x0, // VSX Scalar Divide Single-Precision XX3-form (xsdivsp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XSMADDADP, 0xfc0007f8, 0xf0000108, 0x0, // VSX Scalar Multiply-Add Double-Precision XX3-form (xsmaddadp XT,XA,XB)
+	{XSMADDADP, 0xfc0007f8, 0xf0000108, 0x0, // VSX Scalar Multiply-Add Type-A Double-Precision XX3-form (xsmaddadp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XSMADDASP, 0xfc0007f8, 0xf0000008, 0x0, // VSX Scalar Multiply-Add Single-Precision XX3-form (xsmaddasp XT,XA,XB)
+	{XSMADDASP, 0xfc0007f8, 0xf0000008, 0x0, // VSX Scalar Multiply-Add Type-A Single-Precision XX3-form (xsmaddasp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
 	{XSMAXDP, 0xfc0007f8, 0xf0000500, 0x0, // VSX Scalar Maximum Double-Precision XX3-form (xsmaxdp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
 	{XSMINDP, 0xfc0007f8, 0xf0000540, 0x0, // VSX Scalar Minimum Double-Precision XX3-form (xsmindp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XSMSUBADP, 0xfc0007f8, 0xf0000188, 0x0, // VSX Scalar Multiply-Subtract Double-Precision XX3-form (xsmsubadp XT,XA,XB)
+	{XSMSUBADP, 0xfc0007f8, 0xf0000188, 0x0, // VSX Scalar Multiply-Subtract Type-A Double-Precision XX3-form (xsmsubadp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XSMSUBASP, 0xfc0007f8, 0xf0000088, 0x0, // VSX Scalar Multiply-Subtract Single-Precision XX3-form (xsmsubasp XT,XA,XB)
+	{XSMSUBASP, 0xfc0007f8, 0xf0000088, 0x0, // VSX Scalar Multiply-Subtract Type-A Single-Precision XX3-form (xsmsubasp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
 	{XSMULDP, 0xfc0007f8, 0xf0000180, 0x0, // VSX Scalar Multiply Double-Precision XX3-form (xsmuldp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
 	{XSMULSP, 0xfc0007f8, 0xf0000080, 0x0, // VSX Scalar Multiply Single-Precision XX3-form (xsmulsp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XSNABSDP, 0xfc0007fc, 0xf00005a4, 0x1f0000, // VSX Scalar Negative Absolute Value Double-Precision XX2-form (xsnabsdp XT,XB)
+	{XSNABSDP, 0xfc0007fc, 0xf00005a4, 0x1f0000, // VSX Scalar Negative Absolute Double-Precision XX2-form (xsnabsdp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
 	{XSNEGDP, 0xfc0007fc, 0xf00005e4, 0x1f0000, // VSX Scalar Negate Double-Precision XX2-form (xsnegdp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XSNMADDADP, 0xfc0007f8, 0xf0000508, 0x0, // VSX Scalar Negative Multiply-Add Double-Precision XX3-form (xsnmaddadp XT,XA,XB)
+	{XSNMADDADP, 0xfc0007f8, 0xf0000508, 0x0, // VSX Scalar Negative Multiply-Add Type-A Double-Precision XX3-form (xsnmaddadp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XSNMADDASP, 0xfc0007f8, 0xf0000408, 0x0, // VSX Scalar Negative Multiply-Add Single-Precision XX3-form (xsnmaddasp XT,XA,XB)
+	{XSNMADDASP, 0xfc0007f8, 0xf0000408, 0x0, // VSX Scalar Negative Multiply-Add Type-A Single-Precision XX3-form (xsnmaddasp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XSNMSUBADP, 0xfc0007f8, 0xf0000588, 0x0, // VSX Scalar Negative Multiply-Subtract Double-Precision XX3-form (xsnmsubadp XT,XA,XB)
+	{XSNMSUBADP, 0xfc0007f8, 0xf0000588, 0x0, // VSX Scalar Negative Multiply-Subtract Type-A Double-Precision XX3-form (xsnmsubadp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XSNMSUBASP, 0xfc0007f8, 0xf0000488, 0x0, // VSX Scalar Negative Multiply-Subtract Single-Precision XX3-form (xsnmsubasp XT,XA,XB)
+	{XSNMSUBASP, 0xfc0007f8, 0xf0000488, 0x0, // VSX Scalar Negative Multiply-Subtract Type-A Single-Precision XX3-form (xsnmsubasp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
 	{XSRDPI, 0xfc0007fc, 0xf0000124, 0x1f0000, // VSX Scalar Round to Double-Precision Integer using round to Nearest Away XX2-form (xsrdpi XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
@@ -4403,7 +4358,7 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
 	{XSSQRTDP, 0xfc0007fc, 0xf000012c, 0x1f0000, // VSX Scalar Square Root Double-Precision XX2-form (xssqrtdp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XSSQRTSP, 0xfc0007fc, 0xf000002c, 0x1f0000, // VSX Scalar Square Root Single-Precision XX-form (xssqrtsp XT,XB)
+	{XSSQRTSP, 0xfc0007fc, 0xf000002c, 0x1f0000, // VSX Scalar Square Root Single-Precision XX2-form (xssqrtsp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
 	{XSSUBDP, 0xfc0007f8, 0xf0000140, 0x0, // VSX Scalar Subtract Double-Precision XX3-form (xssubdp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
@@ -4421,77 +4376,77 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
 	{XVADDSP, 0xfc0007f8, 0xf0000200, 0x0, // VSX Vector Add Single-Precision XX3-form (xvaddsp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVCMPEQDP, 0xfc0007f8, 0xf0000318, 0x0, // VSX Vector Compare Equal To Double-Precision [ & Record ] XX3-form (xvcmpeqdp XT,XA,XB)
+	{XVCMPEQDP, 0xfc0007f8, 0xf0000318, 0x0, // VSX Vector Compare Equal To Double-Precision XX3-form (xvcmpeqdp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVCMPEQDPCC, 0xfc0007f8, 0xf0000718, 0x0, // VSX Vector Compare Equal To Double-Precision [ & Record ] XX3-form (xvcmpeqdp. XT,XA,XB)
+	{XVCMPEQDPCC, 0xfc0007f8, 0xf0000718, 0x0, // VSX Vector Compare Equal To Double-Precision XX3-form (xvcmpeqdp. XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVCMPEQSP, 0xfc0007f8, 0xf0000218, 0x0, // VSX Vector Compare Equal To Single-Precision [ & Record ] XX3-form (xvcmpeqsp XT,XA,XB)
+	{XVCMPEQSP, 0xfc0007f8, 0xf0000218, 0x0, // VSX Vector Compare Equal To Single-Precision XX3-form (xvcmpeqsp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVCMPEQSPCC, 0xfc0007f8, 0xf0000618, 0x0, // VSX Vector Compare Equal To Single-Precision [ & Record ] XX3-form (xvcmpeqsp. XT,XA,XB)
+	{XVCMPEQSPCC, 0xfc0007f8, 0xf0000618, 0x0, // VSX Vector Compare Equal To Single-Precision XX3-form (xvcmpeqsp. XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVCMPGEDP, 0xfc0007f8, 0xf0000398, 0x0, // VSX Vector Compare Greater Than or Equal To Double-Precision [ & Record ] XX3-form (xvcmpgedp XT,XA,XB)
+	{XVCMPGEDP, 0xfc0007f8, 0xf0000398, 0x0, // VSX Vector Compare Greater Than or Equal To Double-Precision XX3-form (xvcmpgedp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVCMPGEDPCC, 0xfc0007f8, 0xf0000798, 0x0, // VSX Vector Compare Greater Than or Equal To Double-Precision [ & Record ] XX3-form (xvcmpgedp. XT,XA,XB)
+	{XVCMPGEDPCC, 0xfc0007f8, 0xf0000798, 0x0, // VSX Vector Compare Greater Than or Equal To Double-Precision XX3-form (xvcmpgedp. XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVCMPGESP, 0xfc0007f8, 0xf0000298, 0x0, // VSX Vector Compare Greater Than or Equal To Single-Precision [ & record CR6 ] XX3-form (xvcmpgesp XT,XA,XB)
+	{XVCMPGESP, 0xfc0007f8, 0xf0000298, 0x0, // VSX Vector Compare Greater Than or Equal To Single-Precision XX3-form (xvcmpgesp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVCMPGESPCC, 0xfc0007f8, 0xf0000698, 0x0, // VSX Vector Compare Greater Than or Equal To Single-Precision [ & record CR6 ] XX3-form (xvcmpgesp. XT,XA,XB)
+	{XVCMPGESPCC, 0xfc0007f8, 0xf0000698, 0x0, // VSX Vector Compare Greater Than or Equal To Single-Precision XX3-form (xvcmpgesp. XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVCMPGTDP, 0xfc0007f8, 0xf0000358, 0x0, // VSX Vector Compare Greater Than Double-Precision [ & record CR6 ] XX3-form (xvcmpgtdp XT,XA,XB)
+	{XVCMPGTDP, 0xfc0007f8, 0xf0000358, 0x0, // VSX Vector Compare Greater Than Double-Precision XX3-form (xvcmpgtdp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVCMPGTDPCC, 0xfc0007f8, 0xf0000758, 0x0, // VSX Vector Compare Greater Than Double-Precision [ & record CR6 ] XX3-form (xvcmpgtdp. XT,XA,XB)
+	{XVCMPGTDPCC, 0xfc0007f8, 0xf0000758, 0x0, // VSX Vector Compare Greater Than Double-Precision XX3-form (xvcmpgtdp. XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVCMPGTSP, 0xfc0007f8, 0xf0000258, 0x0, // VSX Vector Compare Greater Than Single-Precision [ & record CR6 ] XX3-form (xvcmpgtsp XT,XA,XB)
+	{XVCMPGTSP, 0xfc0007f8, 0xf0000258, 0x0, // VSX Vector Compare Greater Than Single-Precision XX3-form (xvcmpgtsp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVCMPGTSPCC, 0xfc0007f8, 0xf0000658, 0x0, // VSX Vector Compare Greater Than Single-Precision [ & record CR6 ] XX3-form (xvcmpgtsp. XT,XA,XB)
+	{XVCMPGTSPCC, 0xfc0007f8, 0xf0000658, 0x0, // VSX Vector Compare Greater Than Single-Precision XX3-form (xvcmpgtsp. XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
 	{XVCPSGNDP, 0xfc0007f8, 0xf0000780, 0x0, // VSX Vector Copy Sign Double-Precision XX3-form (xvcpsgndp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
 	{XVCPSGNSP, 0xfc0007f8, 0xf0000680, 0x0, // VSX Vector Copy Sign Single-Precision XX3-form (xvcpsgnsp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVCVDPSP, 0xfc0007fc, 0xf0000624, 0x1f0000, // VSX Vector round Double-Precision to single-precision and Convert to Single-Precision format XX2-form (xvcvdpsp XT,XB)
+	{XVCVDPSP, 0xfc0007fc, 0xf0000624, 0x1f0000, // VSX Vector Convert with round Double-Precision to Single-Precision format XX2-form (xvcvdpsp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XVCVDPSXDS, 0xfc0007fc, 0xf0000760, 0x1f0000, // VSX Vector truncate Double-Precision to integer and Convert to Signed Integer Doubleword format with Saturate XX2-form (xvcvdpsxds XT,XB)
+	{XVCVDPSXDS, 0xfc0007fc, 0xf0000760, 0x1f0000, // VSX Vector Convert with round to zero Double-Precision to Signed Doubleword format XX2-form (xvcvdpsxds XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XVCVDPSXWS, 0xfc0007fc, 0xf0000360, 0x1f0000, // VSX Vector truncate Double-Precision to integer and Convert to Signed Integer Word format with Saturate XX2-form (xvcvdpsxws XT,XB)
+	{XVCVDPSXWS, 0xfc0007fc, 0xf0000360, 0x1f0000, // VSX Vector Convert with round to zero Double-Precision to Signed Word format XX2-form (xvcvdpsxws XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XVCVDPUXDS, 0xfc0007fc, 0xf0000720, 0x1f0000, // VSX Vector truncate Double-Precision to integer and Convert to Unsigned Integer Doubleword format with Saturate XX2-form (xvcvdpuxds XT,XB)
+	{XVCVDPUXDS, 0xfc0007fc, 0xf0000720, 0x1f0000, // VSX Vector Convert with round to zero Double-Precision to Unsigned Doubleword format XX2-form (xvcvdpuxds XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XVCVDPUXWS, 0xfc0007fc, 0xf0000320, 0x1f0000, // VSX Vector truncate Double-Precision to integer and Convert to Unsigned Integer Word format with Saturate XX2-form (xvcvdpuxws XT,XB)
+	{XVCVDPUXWS, 0xfc0007fc, 0xf0000320, 0x1f0000, // VSX Vector Convert with round to zero Double-Precision to Unsigned Word format XX2-form (xvcvdpuxws XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
 	{XVCVSPDP, 0xfc0007fc, 0xf0000724, 0x1f0000, // VSX Vector Convert Single-Precision to Double-Precision format XX2-form (xvcvspdp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XVCVSPSXDS, 0xfc0007fc, 0xf0000660, 0x1f0000, // VSX Vector truncate Single-Precision to integer and Convert to Signed Integer Doubleword format with Saturate XX2-form (xvcvspsxds XT,XB)
+	{XVCVSPSXDS, 0xfc0007fc, 0xf0000660, 0x1f0000, // VSX Vector Convert with round to zero Single-Precision to Signed Doubleword format XX2-form (xvcvspsxds XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XVCVSPSXWS, 0xfc0007fc, 0xf0000260, 0x1f0000, // VSX Vector truncate Single-Precision to integer and Convert to Signed Integer Word format with Saturate XX2-form (xvcvspsxws XT,XB)
+	{XVCVSPSXWS, 0xfc0007fc, 0xf0000260, 0x1f0000, // VSX Vector Convert with round to zero Single-Precision to Signed Word format XX2-form (xvcvspsxws XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XVCVSPUXDS, 0xfc0007fc, 0xf0000620, 0x1f0000, // VSX Vector truncate Single-Precision to integer and Convert to Unsigned Integer Doubleword format with Saturate XX2-form (xvcvspuxds XT,XB)
+	{XVCVSPUXDS, 0xfc0007fc, 0xf0000620, 0x1f0000, // VSX Vector Convert with round to zero Single-Precision to Unsigned Doubleword format XX2-form (xvcvspuxds XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XVCVSPUXWS, 0xfc0007fc, 0xf0000220, 0x1f0000, // VSX Vector truncate Single-Precision to integer and Convert to Unsigned Integer Word format with Saturate XX2-form (xvcvspuxws XT,XB)
+	{XVCVSPUXWS, 0xfc0007fc, 0xf0000220, 0x1f0000, // VSX Vector Convert with round to zero Single-Precision to Unsigned Word format XX2-form (xvcvspuxws XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XVCVSXDDP, 0xfc0007fc, 0xf00007e0, 0x1f0000, // VSX Vector Convert and round Signed Integer Doubleword to Double-Precision format XX2-form (xvcvsxddp XT,XB)
+	{XVCVSXDDP, 0xfc0007fc, 0xf00007e0, 0x1f0000, // VSX Vector Convert with round Signed Doubleword to Double-Precision format XX2-form (xvcvsxddp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XVCVSXDSP, 0xfc0007fc, 0xf00006e0, 0x1f0000, // VSX Vector Convert and round Signed Integer Doubleword to Single-Precision format XX2-form (xvcvsxdsp XT,XB)
+	{XVCVSXDSP, 0xfc0007fc, 0xf00006e0, 0x1f0000, // VSX Vector Convert with round Signed Doubleword to Single-Precision format XX2-form (xvcvsxdsp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XVCVSXWDP, 0xfc0007fc, 0xf00003e0, 0x1f0000, // VSX Vector Convert Signed Integer Word to Double-Precision format XX2-form (xvcvsxwdp XT,XB)
+	{XVCVSXWDP, 0xfc0007fc, 0xf00003e0, 0x1f0000, // VSX Vector Convert Signed Word to Double-Precision format XX2-form (xvcvsxwdp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XVCVSXWSP, 0xfc0007fc, 0xf00002e0, 0x1f0000, // VSX Vector Convert and round Signed Integer Word to Single-Precision format XX2-form (xvcvsxwsp XT,XB)
+	{XVCVSXWSP, 0xfc0007fc, 0xf00002e0, 0x1f0000, // VSX Vector Convert with round Signed Word to Single-Precision format XX2-form (xvcvsxwsp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XVCVUXDDP, 0xfc0007fc, 0xf00007a0, 0x1f0000, // VSX Vector Convert and round Unsigned Integer Doubleword to Double-Precision format XX2-form (xvcvuxddp XT,XB)
+	{XVCVUXDDP, 0xfc0007fc, 0xf00007a0, 0x1f0000, // VSX Vector Convert with round Unsigned Doubleword to Double-Precision format XX2-form (xvcvuxddp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XVCVUXDSP, 0xfc0007fc, 0xf00006a0, 0x1f0000, // VSX Vector Convert and round Unsigned Integer Doubleword to Single-Precision format XX2-form (xvcvuxdsp XT,XB)
+	{XVCVUXDSP, 0xfc0007fc, 0xf00006a0, 0x1f0000, // VSX Vector Convert with round Unsigned Doubleword to Single-Precision format XX2-form (xvcvuxdsp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XVCVUXWDP, 0xfc0007fc, 0xf00003a0, 0x1f0000, // VSX Vector Convert and round Unsigned Integer Word to Double-Precision format XX2-form (xvcvuxwdp XT,XB)
+	{XVCVUXWDP, 0xfc0007fc, 0xf00003a0, 0x1f0000, // VSX Vector Convert Unsigned Word to Double-Precision format XX2-form (xvcvuxwdp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XVCVUXWSP, 0xfc0007fc, 0xf00002a0, 0x1f0000, // VSX Vector Convert and round Unsigned Integer Word to Single-Precision format XX2-form (xvcvuxwsp XT,XB)
+	{XVCVUXWSP, 0xfc0007fc, 0xf00002a0, 0x1f0000, // VSX Vector Convert with round Unsigned Word to Single-Precision format XX2-form (xvcvuxwsp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
 	{XVDIVDP, 0xfc0007f8, 0xf00003c0, 0x0, // VSX Vector Divide Double-Precision XX3-form (xvdivdp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
 	{XVDIVSP, 0xfc0007f8, 0xf00002c0, 0x0, // VSX Vector Divide Single-Precision XX3-form (xvdivsp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVMADDADP, 0xfc0007f8, 0xf0000308, 0x0, // VSX Vector Multiply-Add Double-Precision XX3-form (xvmaddadp XT,XA,XB)
+	{XVMADDADP, 0xfc0007f8, 0xf0000308, 0x0, // VSX Vector Multiply-Add Type-A Double-Precision XX3-form (xvmaddadp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVMADDASP, 0xfc0007f8, 0xf0000208, 0x0, // VSX Vector Multiply-Add Single-Precision XX3-form (xvmaddasp XT,XA,XB)
+	{XVMADDASP, 0xfc0007f8, 0xf0000208, 0x0, // VSX Vector Multiply-Add Type-A Single-Precision XX3-form (xvmaddasp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
 	{XVMAXDP, 0xfc0007f8, 0xf0000700, 0x0, // VSX Vector Maximum Double-Precision XX3-form (xvmaxdp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
@@ -4501,29 +4456,29 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
 	{XVMINSP, 0xfc0007f8, 0xf0000640, 0x0, // VSX Vector Minimum Single-Precision XX3-form (xvminsp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVMSUBADP, 0xfc0007f8, 0xf0000388, 0x0, // VSX Vector Multiply-Subtract Double-Precision XX3-form (xvmsubadp XT,XA,XB)
+	{XVMSUBADP, 0xfc0007f8, 0xf0000388, 0x0, // VSX Vector Multiply-Subtract Type-A Double-Precision XX3-form (xvmsubadp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVMSUBASP, 0xfc0007f8, 0xf0000288, 0x0, // VSX Vector Multiply-Subtract Single-Precision XX3-form (xvmsubasp XT,XA,XB)
+	{XVMSUBASP, 0xfc0007f8, 0xf0000288, 0x0, // VSX Vector Multiply-Subtract Type-A Single-Precision XX3-form (xvmsubasp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
 	{XVMULDP, 0xfc0007f8, 0xf0000380, 0x0, // VSX Vector Multiply Double-Precision XX3-form (xvmuldp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
 	{XVMULSP, 0xfc0007f8, 0xf0000280, 0x0, // VSX Vector Multiply Single-Precision XX3-form (xvmulsp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVNABSDP, 0xfc0007fc, 0xf00007a4, 0x1f0000, // VSX Vector Negative Absolute Value Double-Precision XX2-form (xvnabsdp XT,XB)
+	{XVNABSDP, 0xfc0007fc, 0xf00007a4, 0x1f0000, // VSX Vector Negative Absolute Double-Precision XX2-form (xvnabsdp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XVNABSSP, 0xfc0007fc, 0xf00006a4, 0x1f0000, // VSX Vector Negative Absolute Value Single-Precision XX2-form (xvnabssp XT,XB)
+	{XVNABSSP, 0xfc0007fc, 0xf00006a4, 0x1f0000, // VSX Vector Negative Absolute Single-Precision XX2-form (xvnabssp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
 	{XVNEGDP, 0xfc0007fc, 0xf00007e4, 0x1f0000, // VSX Vector Negate Double-Precision XX2-form (xvnegdp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
 	{XVNEGSP, 0xfc0007fc, 0xf00006e4, 0x1f0000, // VSX Vector Negate Single-Precision XX2-form (xvnegsp XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{XVNMADDADP, 0xfc0007f8, 0xf0000708, 0x0, // VSX Vector Negative Multiply-Add Double-Precision XX3-form (xvnmaddadp XT,XA,XB)
+	{XVNMADDADP, 0xfc0007f8, 0xf0000708, 0x0, // VSX Vector Negative Multiply-Add Type-A Double-Precision XX3-form (xvnmaddadp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVNMADDASP, 0xfc0007f8, 0xf0000608, 0x0, // VSX Vector Negative Multiply-Add Single-Precision XX3-form (xvnmaddasp XT,XA,XB)
+	{XVNMADDASP, 0xfc0007f8, 0xf0000608, 0x0, // VSX Vector Negative Multiply-Add Type-A Single-Precision XX3-form (xvnmaddasp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVNMSUBADP, 0xfc0007f8, 0xf0000788, 0x0, // VSX Vector Negative Multiply-Subtract Double-Precision XX3-form (xvnmsubadp XT,XA,XB)
+	{XVNMSUBADP, 0xfc0007f8, 0xf0000788, 0x0, // VSX Vector Negative Multiply-Subtract Type-A Double-Precision XX3-form (xvnmsubadp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XVNMSUBASP, 0xfc0007f8, 0xf0000688, 0x0, // VSX Vector Negative Multiply-Subtract Single-Precision XX3-form (xvnmsubasp XT,XA,XB)
+	{XVNMSUBASP, 0xfc0007f8, 0xf0000688, 0x0, // VSX Vector Negative Multiply-Subtract Type-A Single-Precision XX3-form (xvnmsubasp XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
 	{XVRDPI, 0xfc0007fc, 0xf0000324, 0x1f0000, // VSX Vector Round to Double-Precision Integer using round to Nearest Away XX2-form (xvrdpi XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
@@ -4569,35 +4524,35 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_CondRegField_6_8, ap_VecSReg_30_30_16_20}},
 	{XVTSQRTSP, 0xfc0007fc, 0xf00002a8, 0x7f0001, // VSX Vector Test for software Square Root Single-Precision XX2-form (xvtsqrtsp BF,XB)
 		[5]*argField{ap_CondRegField_6_8, ap_VecSReg_30_30_16_20}},
-	{XXLAND, 0xfc0007f8, 0xf0000410, 0x0, // VSX Logical AND XX3-form (xxland XT,XA,XB)
+	{XXLAND, 0xfc0007f8, 0xf0000410, 0x0, // VSX Vector Logical AND XX3-form (xxland XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XXLANDC, 0xfc0007f8, 0xf0000450, 0x0, // VSX Logical AND with Complement XX3-form (xxlandc XT,XA,XB)
+	{XXLANDC, 0xfc0007f8, 0xf0000450, 0x0, // VSX Vector Logical AND with Complement XX3-form (xxlandc XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XXLEQV, 0xfc0007f8, 0xf00005d0, 0x0, // VSX Logical Equivalence XX3-form (xxleqv XT,XA,XB)
+	{XXLEQV, 0xfc0007f8, 0xf00005d0, 0x0, // VSX Vector Logical Equivalence XX3-form (xxleqv XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XXLNAND, 0xfc0007f8, 0xf0000590, 0x0, // VSX Logical NAND XX3-form (xxlnand XT,XA,XB)
+	{XXLNAND, 0xfc0007f8, 0xf0000590, 0x0, // VSX Vector Logical NAND XX3-form (xxlnand XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XXLORC, 0xfc0007f8, 0xf0000550, 0x0, // VSX Logical OR with Complement XX3-form (xxlorc XT,XA,XB)
+	{XXLORC, 0xfc0007f8, 0xf0000550, 0x0, // VSX Vector Logical OR with Complement XX3-form (xxlorc XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XXLNOR, 0xfc0007f8, 0xf0000510, 0x0, // VSX Logical NOR XX3-form (xxlnor XT,XA,XB)
+	{XXLNOR, 0xfc0007f8, 0xf0000510, 0x0, // VSX Vector Logical NOR XX3-form (xxlnor XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XXLOR, 0xfc0007f8, 0xf0000490, 0x0, // VSX Logical OR XX3-form (xxlor XT,XA,XB)
+	{XXLOR, 0xfc0007f8, 0xf0000490, 0x0, // VSX Vector Logical OR XX3-form (xxlor XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XXLXOR, 0xfc0007f8, 0xf00004d0, 0x0, // VSX Logical XOR XX3-form (xxlxor XT,XA,XB)
+	{XXLXOR, 0xfc0007f8, 0xf00004d0, 0x0, // VSX Vector Logical XOR XX3-form (xxlxor XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XXMRGHW, 0xfc0007f8, 0xf0000090, 0x0, // VSX Merge High Word XX3-form (xxmrghw XT,XA,XB)
+	{XXMRGHW, 0xfc0007f8, 0xf0000090, 0x0, // VSX Vector Merge High Word XX3-form (xxmrghw XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XXMRGLW, 0xfc0007f8, 0xf0000190, 0x0, // VSX Merge Low Word XX3-form (xxmrglw XT,XA,XB)
+	{XXMRGLW, 0xfc0007f8, 0xf0000190, 0x0, // VSX Vector Merge Low Word XX3-form (xxmrglw XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XXPERMDI, 0xfc0004f8, 0xf0000050, 0x0, // VSX Permute Doubleword Immediate XX3-form (xxpermdi XT,XA,XB,DM)
+	{XXPERMDI, 0xfc0004f8, 0xf0000050, 0x0, // VSX Vector Permute Doubleword Immediate XX3-form (xxpermdi XT,XA,XB,DM)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20, ap_ImmUnsigned_22_23}},
-	{XXPERM, 0xfc0007f8, 0xf00000d0, 0x0, // VSX Permute XX3-form (xxperm XT,XA,XB)
+	{XXPERM, 0xfc0007f8, 0xf00000d0, 0x0, // VSX Vector Permute XX3-form (xxperm XT,XA,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
-	{XXSEL, 0xfc000030, 0xf0000030, 0x0, // VSX Select XX4-form (xxsel XT,XA,XB,XC)
+	{XXSEL, 0xfc000030, 0xf0000030, 0x0, // VSX Vector Select XX4-form (xxsel XT,XA,XB,XC)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20, ap_VecSReg_28_28_21_25}},
-	{XXSLDWI, 0xfc0004f8, 0xf0000010, 0x0, // VSX Shift Left Double by Word Immediate XX3-form (xxsldwi XT,XA,XB,SHW)
+	{XXSLDWI, 0xfc0004f8, 0xf0000010, 0x0, // VSX Vector Shift Left Double by Word Immediate XX3-form (xxsldwi XT,XA,XB,SHW)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20, ap_ImmUnsigned_22_23}},
-	{XXSPLTW, 0xfc0007fc, 0xf0000290, 0x1c0000, // VSX Splat Word XX2-form (xxspltw XT,XB,UIM)
+	{XXSPLTW, 0xfc0007fc, 0xf0000290, 0x1c0000, // VSX Vector Splat Word XX2-form (xxspltw XT,XB,UIM)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20, ap_ImmUnsigned_14_15}},
 	{XXBRD, 0xfc1f07fc, 0xf017076c, 0x0, // VSX Vector Byte-Reverse Doubleword XX2-form (xxbrd XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
@@ -4605,803 +4560,63 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
 	{XXBRH, 0xfc1f07fc, 0xf007076c, 0x0, // VSX Vector Byte-Reverse Halfword XX2-form (xxbrh XT,XB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
-	{BRINC, 0xfc0007ff, 0x1000020f, 0x0, // Bit Reversed Increment EVX-form (brinc RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVABS, 0xfc0007ff, 0x10000208, 0xf800, // Vector Absolute Value EVX-form (evabs RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVADDIW, 0xfc0007ff, 0x10000202, 0x0, // Vector Add Immediate Word EVX-form (evaddiw RT,RB,UI)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20, ap_ImmUnsigned_11_15}},
-	{EVADDSMIAAW, 0xfc0007ff, 0x100004c9, 0xf800, // Vector Add Signed, Modulo, Integer to Accumulator Word EVX-form (evaddsmiaaw RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVADDSSIAAW, 0xfc0007ff, 0x100004c1, 0xf800, // Vector Add Signed, Saturate, Integer to Accumulator Word EVX-form (evaddssiaaw RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVADDUMIAAW, 0xfc0007ff, 0x100004c8, 0xf800, // Vector Add Unsigned, Modulo, Integer to Accumulator Word EVX-form (evaddumiaaw RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVADDUSIAAW, 0xfc0007ff, 0x100004c0, 0xf800, // Vector Add Unsigned, Saturate, Integer to Accumulator Word EVX-form (evaddusiaaw RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVADDW, 0xfc0007ff, 0x10000200, 0x0, // Vector Add Word EVX-form (evaddw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVAND, 0xfc0007ff, 0x10000211, 0x0, // Vector AND EVX-form (evand RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVCMPEQ, 0xfc0007ff, 0x10000234, 0x600000, // Vector Compare Equal EVX-form (evcmpeq BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVANDC, 0xfc0007ff, 0x10000212, 0x0, // Vector AND with Complement EVX-form (evandc RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVCMPGTS, 0xfc0007ff, 0x10000231, 0x600000, // Vector Compare Greater Than Signed EVX-form (evcmpgts BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVCMPGTU, 0xfc0007ff, 0x10000230, 0x600000, // Vector Compare Greater Than Unsigned EVX-form (evcmpgtu BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVCMPLTU, 0xfc0007ff, 0x10000232, 0x600000, // Vector Compare Less Than Unsigned EVX-form (evcmpltu BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVCMPLTS, 0xfc0007ff, 0x10000233, 0x600000, // Vector Compare Less Than Signed EVX-form (evcmplts BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVCNTLSW, 0xfc0007ff, 0x1000020e, 0xf800, // Vector Count Leading Signed Bits Word EVX-form (evcntlsw RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVCNTLZW, 0xfc0007ff, 0x1000020d, 0xf800, // Vector Count Leading Zeros Word EVX-form (evcntlzw RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVDIVWS, 0xfc0007ff, 0x100004c6, 0x0, // Vector Divide Word Signed EVX-form (evdivws RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVDIVWU, 0xfc0007ff, 0x100004c7, 0x0, // Vector Divide Word Unsigned EVX-form (evdivwu RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVEQV, 0xfc0007ff, 0x10000219, 0x0, // Vector Equivalent EVX-form (eveqv RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVEXTSB, 0xfc0007ff, 0x1000020a, 0xf800, // Vector Extend Sign Byte EVX-form (evextsb RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVEXTSH, 0xfc0007ff, 0x1000020b, 0xf800, // Vector Extend Sign Halfword EVX-form (evextsh RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVLDD, 0xfc0007ff, 0x10000301, 0x0, // Vector Load Double Word into Double Word EVX-form (evldd RT,D(RA))
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_16_20, ap_Reg_11_15}},
-	{EVLDH, 0xfc0007ff, 0x10000305, 0x0, // Vector Load Double into Four Halfwords EVX-form (evldh RT,D(RA))
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_16_20, ap_Reg_11_15}},
-	{EVLDDX, 0xfc0007ff, 0x10000300, 0x0, // Vector Load Double Word into Double Word Indexed EVX-form (evlddx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVLDHX, 0xfc0007ff, 0x10000304, 0x0, // Vector Load Double into Four Halfwords Indexed EVX-form (evldhx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVLDW, 0xfc0007ff, 0x10000303, 0x0, // Vector Load Double into Two Words EVX-form (evldw RT,D(RA))
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_16_20, ap_Reg_11_15}},
-	{EVLHHESPLAT, 0xfc0007ff, 0x10000309, 0x0, // Vector Load Halfword into Halfwords Even and Splat EVX-form (evlhhesplat RT,D(RA))
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_16_20, ap_Reg_11_15}},
-	{EVLDWX, 0xfc0007ff, 0x10000302, 0x0, // Vector Load Double into Two Words Indexed EVX-form (evldwx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVLHHESPLATX, 0xfc0007ff, 0x10000308, 0x0, // Vector Load Halfword into Halfwords Even and Splat Indexed EVX-form (evlhhesplatx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVLHHOSSPLAT, 0xfc0007ff, 0x1000030f, 0x0, // Vector Load Halfword into Halfword Odd Signed and Splat EVX-form (evlhhossplat RT,D(RA))
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_16_20, ap_Reg_11_15}},
-	{EVLHHOUSPLAT, 0xfc0007ff, 0x1000030d, 0x0, // Vector Load Halfword into Halfword Odd Unsigned and Splat EVX-form (evlhhousplat RT,D(RA))
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_16_20, ap_Reg_11_15}},
-	{EVLHHOSSPLATX, 0xfc0007ff, 0x1000030e, 0x0, // Vector Load Halfword into Halfword Odd Signed and Splat Indexed EVX-form (evlhhossplatx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVLHHOUSPLATX, 0xfc0007ff, 0x1000030c, 0x0, // Vector Load Halfword into Halfword Odd Unsigned and Splat Indexed EVX-form (evlhhousplatx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVLWHE, 0xfc0007ff, 0x10000311, 0x0, // Vector Load Word into Two Halfwords Even EVX-form (evlwhe RT,D(RA))
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_16_20, ap_Reg_11_15}},
-	{EVLWHOS, 0xfc0007ff, 0x10000317, 0x0, // Vector Load Word into Two Halfwords Odd Signed (with sign extension) EVX-form (evlwhos RT,D(RA))
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_16_20, ap_Reg_11_15}},
-	{EVLWHEX, 0xfc0007ff, 0x10000310, 0x0, // Vector Load Word into Two Halfwords Even Indexed EVX-form (evlwhex RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVLWHOSX, 0xfc0007ff, 0x10000316, 0x0, // Vector Load Word into Two Halfwords Odd Signed Indexed (with sign extension) EVX-form (evlwhosx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVLWHOU, 0xfc0007ff, 0x10000315, 0x0, // Vector Load Word into Two Halfwords Odd Unsigned (zero-extended) EVX-form (evlwhou RT,D(RA))
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_16_20, ap_Reg_11_15}},
-	{EVLWHSPLAT, 0xfc0007ff, 0x1000031d, 0x0, // Vector Load Word into Two Halfwords and Splat EVX-form (evlwhsplat RT,D(RA))
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_16_20, ap_Reg_11_15}},
-	{EVLWHOUX, 0xfc0007ff, 0x10000314, 0x0, // Vector Load Word into Two Halfwords Odd Unsigned Indexed (zero-extended) EVX-form (evlwhoux RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVLWHSPLATX, 0xfc0007ff, 0x1000031c, 0x0, // Vector Load Word into Two Halfwords and Splat Indexed EVX-form (evlwhsplatx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVLWWSPLAT, 0xfc0007ff, 0x10000319, 0x0, // Vector Load Word into Word and Splat EVX-form (evlwwsplat RT,D(RA))
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_16_20, ap_Reg_11_15}},
-	{EVMERGEHI, 0xfc0007ff, 0x1000022c, 0x0, // Vector Merge High EVX-form (evmergehi RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVLWWSPLATX, 0xfc0007ff, 0x10000318, 0x0, // Vector Load Word into Word and Splat Indexed EVX-form (evlwwsplatx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMERGELO, 0xfc0007ff, 0x1000022d, 0x0, // Vector Merge Low EVX-form (evmergelo RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMERGEHILO, 0xfc0007ff, 0x1000022e, 0x0, // Vector Merge High/Low EVX-form (evmergehilo RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHEGSMFAA, 0xfc0007ff, 0x1000052b, 0x0, // Vector Multiply Halfwords, Even, Guarded, Signed, Modulo, Fractional and Accumulate EVX-form (evmhegsmfaa RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMERGELOHI, 0xfc0007ff, 0x1000022f, 0x0, // Vector Merge Low/High EVX-form (evmergelohi RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHEGSMFAN, 0xfc0007ff, 0x100005ab, 0x0, // Vector Multiply Halfwords, Even, Guarded, Signed, Modulo, Fractional and Accumulate Negative EVX-form (evmhegsmfan RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHEGSMIAA, 0xfc0007ff, 0x10000529, 0x0, // Vector Multiply Halfwords, Even, Guarded, Signed, Modulo, Integer and Accumulate EVX-form (evmhegsmiaa RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHEGUMIAA, 0xfc0007ff, 0x10000528, 0x0, // Vector Multiply Halfwords, Even, Guarded, Unsigned, Modulo, Integer and Accumulate EVX-form (evmhegumiaa RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHEGSMIAN, 0xfc0007ff, 0x100005a9, 0x0, // Vector Multiply Halfwords, Even, Guarded, Signed, Modulo, Integer and Accumulate Negative EVX-form (evmhegsmian RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHEGUMIAN, 0xfc0007ff, 0x100005a8, 0x0, // Vector Multiply Halfwords, Even, Guarded, Unsigned, Modulo, Integer and Accumulate Negative EVX-form (evmhegumian RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHESMF, 0xfc0007ff, 0x1000040b, 0x0, // Vector Multiply Halfwords, Even, Signed, Modulo, Fractional EVX-form (evmhesmf RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHESMFAAW, 0xfc0007ff, 0x1000050b, 0x0, // Vector Multiply Halfwords, Even, Signed, Modulo, Fractional and Accumulate into Words EVX-form (evmhesmfaaw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHESMFA, 0xfc0007ff, 0x1000042b, 0x0, // Vector Multiply Halfwords, Even, Signed, Modulo, Fractional to Accumulator EVX-form (evmhesmfa RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHESMFANW, 0xfc0007ff, 0x1000058b, 0x0, // Vector Multiply Halfwords, Even, Signed, Modulo, Fractional and Accumulate Negative into Words EVX-form (evmhesmfanw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHESMI, 0xfc0007ff, 0x10000409, 0x0, // Vector Multiply Halfwords, Even, Signed, Modulo, Integer EVX-form (evmhesmi RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHESMIAAW, 0xfc0007ff, 0x10000509, 0x0, // Vector Multiply Halfwords, Even, Signed, Modulo, Integer and Accumulate into Words EVX-form (evmhesmiaaw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHESMIA, 0xfc0007ff, 0x10000429, 0x0, // Vector Multiply Halfwords, Even, Signed, Modulo, Integer to Accumulator EVX-form (evmhesmia RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHESMIANW, 0xfc0007ff, 0x10000589, 0x0, // Vector Multiply Halfwords, Even, Signed, Modulo, Integer and Accumulate Negative into Words EVX-form (evmhesmianw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHESSF, 0xfc0007ff, 0x10000403, 0x0, // Vector Multiply Halfwords, Even, Signed, Saturate, Fractional EVX-form (evmhessf RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHESSFA, 0xfc0007ff, 0x10000423, 0x0, // Vector Multiply Halfwords, Even, Signed, Saturate, Fractional to Accumulator EVX-form (evmhessfa RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHESSFAAW, 0xfc0007ff, 0x10000503, 0x0, // Vector Multiply Halfwords, Even, Signed, Saturate, Fractional and Accumulate into Words EVX-form (evmhessfaaw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHESSFANW, 0xfc0007ff, 0x10000583, 0x0, // Vector Multiply Halfwords, Even, Signed, Saturate, Fractional and Accumulate Negative into Words EVX-form (evmhessfanw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHESSIAAW, 0xfc0007ff, 0x10000501, 0x0, // Vector Multiply Halfwords, Even, Signed, Saturate, Integer and Accumulate into Words EVX-form (evmhessiaaw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHESSIANW, 0xfc0007ff, 0x10000581, 0x0, // Vector Multiply Halfwords, Even, Signed, Saturate, Integer and Accumulate Negative into Words EVX-form (evmhessianw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHEUMI, 0xfc0007ff, 0x10000408, 0x0, // Vector Multiply Halfwords, Even, Unsigned, Modulo, Integer EVX-form (evmheumi RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHEUMIAAW, 0xfc0007ff, 0x10000508, 0x0, // Vector Multiply Halfwords, Even, Unsigned, Modulo, Integer and Accumulate into Words EVX-form (evmheumiaaw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHEUMIA, 0xfc0007ff, 0x10000428, 0x0, // Vector Multiply Halfwords, Even, Unsigned, Modulo, Integer to Accumulator EVX-form (evmheumia RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHEUMIANW, 0xfc0007ff, 0x10000588, 0x0, // Vector Multiply Halfwords, Even, Unsigned, Modulo, Integer and Accumulate Negative into Words EVX-form (evmheumianw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHEUSIAAW, 0xfc0007ff, 0x10000500, 0x0, // Vector Multiply Halfwords, Even, Unsigned, Saturate, Integer and Accumulate into Words EVX-form (evmheusiaaw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHEUSIANW, 0xfc0007ff, 0x10000580, 0x0, // Vector Multiply Halfwords, Even, Unsigned, Saturate, Integer and Accumulate Negative into Words EVX-form (evmheusianw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOGSMFAA, 0xfc0007ff, 0x1000052f, 0x0, // Vector Multiply Halfwords, Odd, Guarded, Signed, Modulo, Fractional and Accumulate EVX-form (evmhogsmfaa RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOGSMIAA, 0xfc0007ff, 0x1000052d, 0x0, // Vector Multiply Halfwords, Odd, Guarded, Signed, Modulo, Integer and Accumulate EVX-form (evmhogsmiaa RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOGSMFAN, 0xfc0007ff, 0x100005af, 0x0, // Vector Multiply Halfwords, Odd, Guarded, Signed, Modulo, Fractional and Accumulate Negative EVX-form (evmhogsmfan RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOGSMIAN, 0xfc0007ff, 0x100005ad, 0x0, // Vector Multiply Halfwords, Odd, Guarded, Signed, Modulo, Integer and Accumulate Negative EVX-form (evmhogsmian RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOGUMIAA, 0xfc0007ff, 0x1000052c, 0x0, // Vector Multiply Halfwords, Odd, Guarded, Unsigned, Modulo, Integer and Accumulate EVX-form (evmhogumiaa RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOSMF, 0xfc0007ff, 0x1000040f, 0x0, // Vector Multiply Halfwords, Odd, Signed, Modulo, Fractional EVX-form (evmhosmf RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOGUMIAN, 0xfc0007ff, 0x100005ac, 0x0, // Vector Multiply Halfwords, Odd, Guarded, Unsigned, Modulo, Integer and Accumulate Negative EVX-form (evmhogumian RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOSMFA, 0xfc0007ff, 0x1000042f, 0x0, // Vector Multiply Halfwords, Odd, Signed, Modulo, Fractional to Accumulator EVX-form (evmhosmfa RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOSMFAAW, 0xfc0007ff, 0x1000050f, 0x0, // Vector Multiply Halfwords, Odd, Signed, Modulo, Fractional and Accumulate into Words EVX-form (evmhosmfaaw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOSMI, 0xfc0007ff, 0x1000040d, 0x0, // Vector Multiply Halfwords, Odd, Signed, Modulo, Integer EVX-form (evmhosmi RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOSMFANW, 0xfc0007ff, 0x1000058f, 0x0, // Vector Multiply Halfwords, Odd, Signed, Modulo, Fractional and Accumulate Negative into Words EVX-form (evmhosmfanw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOSMIA, 0xfc0007ff, 0x1000042d, 0x0, // Vector Multiply Halfwords, Odd, Signed, Modulo, Integer to Accumulator EVX-form (evmhosmia RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOSMIAAW, 0xfc0007ff, 0x1000050d, 0x0, // Vector Multiply Halfwords, Odd, Signed, Modulo, Integer and Accumulate into Words EVX-form (evmhosmiaaw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOSMIANW, 0xfc0007ff, 0x1000058d, 0x0, // Vector Multiply Halfwords, Odd, Signed, Modulo, Integer and Accumulate Negative into Words EVX-form (evmhosmianw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOSSF, 0xfc0007ff, 0x10000407, 0x0, // Vector Multiply Halfwords, Odd, Signed, Saturate, Fractional EVX-form (evmhossf RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOSSFA, 0xfc0007ff, 0x10000427, 0x0, // Vector Multiply Halfwords, Odd, Signed, Saturate, Fractional to Accumulator EVX-form (evmhossfa RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOSSFAAW, 0xfc0007ff, 0x10000507, 0x0, // Vector Multiply Halfwords, Odd, Signed, Saturate, Fractional and Accumulate into Words EVX-form (evmhossfaaw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOSSFANW, 0xfc0007ff, 0x10000587, 0x0, // Vector Multiply Halfwords, Odd, Signed, Saturate, Fractional and Accumulate Negative into Words EVX-form (evmhossfanw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOSSIAAW, 0xfc0007ff, 0x10000505, 0x0, // Vector Multiply Halfwords, Odd, Signed, Saturate, Integer and Accumulate into Words EVX-form (evmhossiaaw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOUMI, 0xfc0007ff, 0x1000040c, 0x0, // Vector Multiply Halfwords, Odd, Unsigned, Modulo, Integer EVX-form (evmhoumi RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOSSIANW, 0xfc0007ff, 0x10000585, 0x0, // Vector Multiply Halfwords, Odd, Signed, Saturate, Integer and Accumulate Negative into Words EVX-form (evmhossianw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOUMIA, 0xfc0007ff, 0x1000042c, 0x0, // Vector Multiply Halfwords, Odd, Unsigned, Modulo, Integer to Accumulator EVX-form (evmhoumia RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOUMIAAW, 0xfc0007ff, 0x1000050c, 0x0, // Vector Multiply Halfwords, Odd, Unsigned, Modulo, Integer and Accumulate into Words EVX-form (evmhoumiaaw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOUSIAAW, 0xfc0007ff, 0x10000504, 0x0, // Vector Multiply Halfwords, Odd, Unsigned, Saturate, Integer and Accumulate into Words EVX-form (evmhousiaaw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOUMIANW, 0xfc0007ff, 0x1000058c, 0x0, // Vector Multiply Halfwords, Odd, Unsigned, Modulo, Integer and Accumulate Negative into Words EVX-form (evmhoumianw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMHOUSIANW, 0xfc0007ff, 0x10000584, 0x0, // Vector Multiply Halfwords, Odd, Unsigned, Saturate, Integer and Accumulate Negative into Words EVX-form (evmhousianw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMRA, 0xfc0007ff, 0x100004c4, 0xf800, // Initialize Accumulator EVX-form (evmra RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVMWHSMF, 0xfc0007ff, 0x1000044f, 0x0, // Vector Multiply Word High Signed, Modulo, Fractional EVX-form (evmwhsmf RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWHSMI, 0xfc0007ff, 0x1000044d, 0x0, // Vector Multiply Word High Signed, Modulo, Integer EVX-form (evmwhsmi RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWHSMFA, 0xfc0007ff, 0x1000046f, 0x0, // Vector Multiply Word High Signed, Modulo, Fractional to Accumulator EVX-form (evmwhsmfa RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWHSMIA, 0xfc0007ff, 0x1000046d, 0x0, // Vector Multiply Word High Signed, Modulo, Integer to Accumulator EVX-form (evmwhsmia RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWHSSF, 0xfc0007ff, 0x10000447, 0x0, // Vector Multiply Word High Signed, Saturate, Fractional EVX-form (evmwhssf RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWHUMI, 0xfc0007ff, 0x1000044c, 0x0, // Vector Multiply Word High Unsigned, Modulo, Integer EVX-form (evmwhumi RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWHSSFA, 0xfc0007ff, 0x10000467, 0x0, // Vector Multiply Word High Signed, Saturate, Fractional to Accumulator EVX-form (evmwhssfa RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWHUMIA, 0xfc0007ff, 0x1000046c, 0x0, // Vector Multiply Word High Unsigned, Modulo, Integer to Accumulator EVX-form (evmwhumia RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWLSMIAAW, 0xfc0007ff, 0x10000549, 0x0, // Vector Multiply Word Low Signed, Modulo, Integer and Accumulate into Words EVX-form (evmwlsmiaaw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWLSSIAAW, 0xfc0007ff, 0x10000541, 0x0, // Vector Multiply Word Low Signed, Saturate, Integer and Accumulate into Words EVX-form (evmwlssiaaw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWLSMIANW, 0xfc0007ff, 0x100005c9, 0x0, // Vector Multiply Word Low Signed, Modulo, Integer and Accumulate Negative in Words EVX-form (evmwlsmianw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWLSSIANW, 0xfc0007ff, 0x100005c1, 0x0, // Vector Multiply Word Low Signed, Saturate, Integer and Accumulate Negative in Words EVX-form (evmwlssianw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWLUMI, 0xfc0007ff, 0x10000448, 0x0, // Vector Multiply Word Low Unsigned, Modulo, Integer EVX-form (evmwlumi RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWLUMIAAW, 0xfc0007ff, 0x10000548, 0x0, // Vector Multiply Word Low Unsigned, Modulo, Integer and Accumulate into Words EVX-form (evmwlumiaaw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWLUMIA, 0xfc0007ff, 0x10000468, 0x0, // Vector Multiply Word Low Unsigned, Modulo, Integer to Accumulator EVX-form (evmwlumia RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWLUMIANW, 0xfc0007ff, 0x100005c8, 0x0, // Vector Multiply Word Low Unsigned, Modulo, Integer and Accumulate Negative in Words EVX-form (evmwlumianw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWLUSIAAW, 0xfc0007ff, 0x10000540, 0x0, // Vector Multiply Word Low Unsigned, Saturate, Integer and Accumulate into Words EVX-form (evmwlusiaaw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWSMF, 0xfc0007ff, 0x1000045b, 0x0, // Vector Multiply Word Signed, Modulo, Fractional EVX-form (evmwsmf RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWLUSIANW, 0xfc0007ff, 0x100005c0, 0x0, // Vector Multiply Word Low Unsigned, Saturate, Integer and Accumulate Negative in Words EVX-form (evmwlusianw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWSMFA, 0xfc0007ff, 0x1000047b, 0x0, // Vector Multiply Word Signed, Modulo, Fractional to Accumulator EVX-form (evmwsmfa RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWSMFAA, 0xfc0007ff, 0x1000055b, 0x0, // Vector Multiply Word Signed, Modulo, Fractional and Accumulate EVX-form (evmwsmfaa RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWSMI, 0xfc0007ff, 0x10000459, 0x0, // Vector Multiply Word Signed, Modulo, Integer EVX-form (evmwsmi RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWSMIAA, 0xfc0007ff, 0x10000559, 0x0, // Vector Multiply Word Signed, Modulo, Integer and Accumulate EVX-form (evmwsmiaa RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWSMFAN, 0xfc0007ff, 0x100005db, 0x0, // Vector Multiply Word Signed, Modulo, Fractional and Accumulate Negative EVX-form (evmwsmfan RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWSMIA, 0xfc0007ff, 0x10000479, 0x0, // Vector Multiply Word Signed, Modulo, Integer to Accumulator EVX-form (evmwsmia RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWSMIAN, 0xfc0007ff, 0x100005d9, 0x0, // Vector Multiply Word Signed, Modulo, Integer and Accumulate Negative EVX-form (evmwsmian RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWSSF, 0xfc0007ff, 0x10000453, 0x0, // Vector Multiply Word Signed, Saturate, Fractional EVX-form (evmwssf RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWSSFA, 0xfc0007ff, 0x10000473, 0x0, // Vector Multiply Word Signed, Saturate, Fractional to Accumulator EVX-form (evmwssfa RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWSSFAA, 0xfc0007ff, 0x10000553, 0x0, // Vector Multiply Word Signed, Saturate, Fractional and Accumulate EVX-form (evmwssfaa RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWUMI, 0xfc0007ff, 0x10000458, 0x0, // Vector Multiply Word Unsigned, Modulo, Integer EVX-form (evmwumi RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWSSFAN, 0xfc0007ff, 0x100005d3, 0x0, // Vector Multiply Word Signed, Saturate, Fractional and Accumulate Negative EVX-form (evmwssfan RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWUMIA, 0xfc0007ff, 0x10000478, 0x0, // Vector Multiply Word Unsigned, Modulo, Integer to Accumulator EVX-form (evmwumia RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWUMIAA, 0xfc0007ff, 0x10000558, 0x0, // Vector Multiply Word Unsigned, Modulo, Integer and Accumulate EVX-form (evmwumiaa RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVNAND, 0xfc0007ff, 0x1000021e, 0x0, // Vector NAND EVX-form (evnand RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVMWUMIAN, 0xfc0007ff, 0x100005d8, 0x0, // Vector Multiply Word Unsigned, Modulo, Integer and Accumulate Negative EVX-form (evmwumian RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVNEG, 0xfc0007ff, 0x10000209, 0xf800, // Vector Negate EVX-form (evneg RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVNOR, 0xfc0007ff, 0x10000218, 0x0, // Vector NOR EVX-form (evnor RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVORC, 0xfc0007ff, 0x1000021b, 0x0, // Vector OR with Complement EVX-form (evorc RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVOR, 0xfc0007ff, 0x10000217, 0x0, // Vector OR EVX-form (evor RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVRLW, 0xfc0007ff, 0x10000228, 0x0, // Vector Rotate Left Word EVX-form (evrlw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVRLWI, 0xfc0007ff, 0x1000022a, 0x0, // Vector Rotate Left Word Immediate EVX-form (evrlwi RT,RA,UI)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_ImmUnsigned_16_20}},
-	{EVSEL, 0xfc0007f8, 0x10000278, 0x0, // Vector Select EVS-form (evsel RT,RA,RB,BFA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20, ap_CondRegField_29_31}},
-	{EVRNDW, 0xfc0007ff, 0x1000020c, 0xf800, // Vector Round Word EVX-form (evrndw RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVSLW, 0xfc0007ff, 0x10000224, 0x0, // Vector Shift Left Word EVX-form (evslw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVSPLATFI, 0xfc0007ff, 0x1000022b, 0xf800, // Vector Splat Fractional Immediate EVX-form (evsplatfi RT,SI)
-		[5]*argField{ap_Reg_6_10, ap_ImmSigned_11_15}},
-	{EVSRWIS, 0xfc0007ff, 0x10000223, 0x0, // Vector Shift Right Word Immediate Signed EVX-form (evsrwis RT,RA,UI)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_ImmUnsigned_16_20}},
-	{EVSLWI, 0xfc0007ff, 0x10000226, 0x0, // Vector Shift Left Word Immediate EVX-form (evslwi RT,RA,UI)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_ImmUnsigned_16_20}},
-	{EVSPLATI, 0xfc0007ff, 0x10000229, 0xf800, // Vector Splat Immediate EVX-form (evsplati RT,SI)
-		[5]*argField{ap_Reg_6_10, ap_ImmSigned_11_15}},
-	{EVSRWIU, 0xfc0007ff, 0x10000222, 0x0, // Vector Shift Right Word Immediate Unsigned EVX-form (evsrwiu RT,RA,UI)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_ImmUnsigned_16_20}},
-	{EVSRWS, 0xfc0007ff, 0x10000221, 0x0, // Vector Shift Right Word Signed EVX-form (evsrws RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVSTDD, 0xfc0007ff, 0x10000321, 0x0, // Vector Store Double of Double EVX-form (evstdd RS,D(RA))
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_16_20, ap_Reg_11_15}},
-	{EVSRWU, 0xfc0007ff, 0x10000220, 0x0, // Vector Shift Right Word Unsigned EVX-form (evsrwu RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVSTDDX, 0xfc0007ff, 0x10000320, 0x0, // Vector Store Double of Double Indexed EVX-form (evstddx RS,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVSTDH, 0xfc0007ff, 0x10000325, 0x0, // Vector Store Double of Four Halfwords EVX-form (evstdh RS,D(RA))
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_16_20, ap_Reg_11_15}},
-	{EVSTDW, 0xfc0007ff, 0x10000323, 0x0, // Vector Store Double of Two Words EVX-form (evstdw RS,D(RA))
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_16_20, ap_Reg_11_15}},
-	{EVSTDHX, 0xfc0007ff, 0x10000324, 0x0, // Vector Store Double of Four Halfwords Indexed EVX-form (evstdhx RS,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVSTDWX, 0xfc0007ff, 0x10000322, 0x0, // Vector Store Double of Two Words Indexed EVX-form (evstdwx RS,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVSTWHE, 0xfc0007ff, 0x10000331, 0x0, // Vector Store Word of Two Halfwords from Even EVX-form (evstwhe RS,D(RA))
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_16_20, ap_Reg_11_15}},
-	{EVSTWHO, 0xfc0007ff, 0x10000335, 0x0, // Vector Store Word of Two Halfwords from Odd EVX-form (evstwho RS,D(RA))
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_16_20, ap_Reg_11_15}},
-	{EVSTWWE, 0xfc0007ff, 0x10000339, 0x0, // Vector Store Word of Word from Even EVX-form (evstwwe RS,D(RA))
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_16_20, ap_Reg_11_15}},
-	{EVSTWHEX, 0xfc0007ff, 0x10000330, 0x0, // Vector Store Word of Two Halfwords from Even Indexed EVX-form (evstwhex RS,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVSTWHOX, 0xfc0007ff, 0x10000334, 0x0, // Vector Store Word of Two Halfwords from Odd Indexed EVX-form (evstwhox RS,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVSTWWEX, 0xfc0007ff, 0x10000338, 0x0, // Vector Store Word of Word from Even Indexed EVX-form (evstwwex RS,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVSTWWO, 0xfc0007ff, 0x1000033d, 0x0, // Vector Store Word of Word from Odd EVX-form (evstwwo RS,D(RA))
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_16_20, ap_Reg_11_15}},
-	{EVSUBFSMIAAW, 0xfc0007ff, 0x100004cb, 0xf800, // Vector Subtract Signed, Modulo, Integer to Accumulator Word EVX-form (evsubfsmiaaw RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVSTWWOX, 0xfc0007ff, 0x1000033c, 0x0, // Vector Store Word of Word from Odd Indexed EVX-form (evstwwox RS,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVSUBFSSIAAW, 0xfc0007ff, 0x100004c3, 0xf800, // Vector Subtract Signed, Saturate, Integer to Accumulator Word EVX-form (evsubfssiaaw RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVSUBFUMIAAW, 0xfc0007ff, 0x100004ca, 0xf800, // Vector Subtract Unsigned, Modulo, Integer to Accumulator Word EVX-form (evsubfumiaaw RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVSUBFUSIAAW, 0xfc0007ff, 0x100004c2, 0xf800, // Vector Subtract Unsigned, Saturate, Integer to Accumulator Word EVX-form (evsubfusiaaw RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVSUBFW, 0xfc0007ff, 0x10000204, 0x0, // Vector Subtract from Word EVX-form (evsubfw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVSUBIFW, 0xfc0007ff, 0x10000206, 0x0, // Vector Subtract Immediate from Word EVX-form (evsubifw RT,UI,RB)
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_11_15, ap_Reg_16_20}},
-	{EVXOR, 0xfc0007ff, 0x10000216, 0x0, // Vector XOR EVX-form (evxor RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVFSABS, 0xfc0007ff, 0x10000284, 0xf800, // Vector Floating-Point Single-Precision Absolute Value EVX-form (evfsabs RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVFSNABS, 0xfc0007ff, 0x10000285, 0xf800, // Vector Floating-Point Single-Precision Negative Absolute Value EVX-form (evfsnabs RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVFSNEG, 0xfc0007ff, 0x10000286, 0xf800, // Vector Floating-Point Single-Precision Negate EVX-form (evfsneg RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EVFSADD, 0xfc0007ff, 0x10000280, 0x0, // Vector Floating-Point Single-Precision Add EVX-form (evfsadd RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVFSMUL, 0xfc0007ff, 0x10000288, 0x0, // Vector Floating-Point Single-Precision Multiply EVX-form (evfsmul RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVFSSUB, 0xfc0007ff, 0x10000281, 0x0, // Vector Floating-Point Single-Precision Subtract EVX-form (evfssub RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVFSDIV, 0xfc0007ff, 0x10000289, 0x0, // Vector Floating-Point Single-Precision Divide EVX-form (evfsdiv RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVFSCMPGT, 0xfc0007ff, 0x1000028c, 0x600000, // Vector Floating-Point Single-Precision Compare Greater Than EVX-form (evfscmpgt BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVFSCMPLT, 0xfc0007ff, 0x1000028d, 0x600000, // Vector Floating-Point Single-Precision Compare Less Than EVX-form (evfscmplt BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVFSCMPEQ, 0xfc0007ff, 0x1000028e, 0x600000, // Vector Floating-Point Single-Precision Compare Equal EVX-form (evfscmpeq BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVFSTSTGT, 0xfc0007ff, 0x1000029c, 0x600000, // Vector Floating-Point Single-Precision Test Greater Than EVX-form (evfststgt BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVFSTSTLT, 0xfc0007ff, 0x1000029d, 0x600000, // Vector Floating-Point Single-Precision Test Less Than EVX-form (evfststlt BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVFSTSTEQ, 0xfc0007ff, 0x1000029e, 0x600000, // Vector Floating-Point Single-Precision Test Equal EVX-form (evfststeq BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVFSCFSI, 0xfc0007ff, 0x10000291, 0x1f0000, // Vector Convert Floating-Point Single-Precision from Signed Integer EVX-form (evfscfsi RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EVFSCFSF, 0xfc0007ff, 0x10000293, 0x1f0000, // Vector Convert Floating-Point Single-Precision from Signed Fraction EVX-form (evfscfsf RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EVFSCFUI, 0xfc0007ff, 0x10000290, 0x1f0000, // Vector Convert Floating-Point Single-Precision from Unsigned Integer EVX-form (evfscfui RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EVFSCFUF, 0xfc0007ff, 0x10000292, 0x1f0000, // Vector Convert Floating-Point Single-Precision from Unsigned Fraction EVX-form (evfscfuf RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EVFSCTSI, 0xfc0007ff, 0x10000295, 0x1f0000, // Vector Convert Floating-Point Single-Precision to Signed Integer EVX-form (evfsctsi RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EVFSCTUI, 0xfc0007ff, 0x10000294, 0x1f0000, // Vector Convert Floating-Point Single-Precision to Unsigned Integer EVX-form (evfsctui RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EVFSCTSIZ, 0xfc0007ff, 0x1000029a, 0x1f0000, // Vector Convert Floating-Point Single-Precision to Signed Integer with Round toward Zero EVX-form (evfsctsiz RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EVFSCTUIZ, 0xfc0007ff, 0x10000298, 0x1f0000, // Vector Convert Floating-Point Single-Precision to Unsigned Integer with Round toward Zero EVX-form (evfsctuiz RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EVFSCTSF, 0xfc0007ff, 0x10000297, 0x1f0000, // Vector Convert Floating-Point Single-Precision to Signed Fraction EVX-form (evfsctsf RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EVFSCTUF, 0xfc0007ff, 0x10000296, 0x1f0000, // Vector Convert Floating-Point Single-Precision to Unsigned Fraction EVX-form (evfsctuf RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFSABS, 0xfc0007ff, 0x100002c4, 0xf800, // Floating-Point Single-Precision Absolute Value EVX-form (efsabs RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EFSNEG, 0xfc0007ff, 0x100002c6, 0xf800, // Floating-Point Single-Precision Negate EVX-form (efsneg RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EFSNABS, 0xfc0007ff, 0x100002c5, 0xf800, // Floating-Point Single-Precision Negative Absolute Value EVX-form (efsnabs RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EFSADD, 0xfc0007ff, 0x100002c0, 0x0, // Floating-Point Single-Precision Add EVX-form (efsadd RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFSMUL, 0xfc0007ff, 0x100002c8, 0x0, // Floating-Point Single-Precision Multiply EVX-form (efsmul RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFSSUB, 0xfc0007ff, 0x100002c1, 0x0, // Floating-Point Single-Precision Subtract EVX-form (efssub RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFSDIV, 0xfc0007ff, 0x100002c9, 0x0, // Floating-Point Single-Precision Divide EVX-form (efsdiv RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFSCMPGT, 0xfc0007ff, 0x100002cc, 0x600000, // Floating-Point Single-Precision Compare Greater Than EVX-form (efscmpgt BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFSCMPLT, 0xfc0007ff, 0x100002cd, 0x600000, // Floating-Point Single-Precision Compare Less Than EVX-form (efscmplt BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFSCMPEQ, 0xfc0007ff, 0x100002ce, 0x600000, // Floating-Point Single-Precision Compare Equal EVX-form (efscmpeq BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFSTSTGT, 0xfc0007ff, 0x100002dc, 0x600000, // Floating-Point Single-Precision Test Greater Than EVX-form (efststgt BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFSTSTLT, 0xfc0007ff, 0x100002dd, 0x600000, // Floating-Point Single-Precision Test Less Than EVX-form (efststlt BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFSTSTEQ, 0xfc0007ff, 0x100002de, 0x600000, // Floating-Point Single-Precision Test Equal EVX-form (efststeq BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFSCFSI, 0xfc0007ff, 0x100002d1, 0x1f0000, // Convert Floating-Point Single-Precision from Signed Integer EVX-form (efscfsi RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFSCFSF, 0xfc0007ff, 0x100002d3, 0x1f0000, // Convert Floating-Point Single-Precision from Signed Fraction EVX-form (efscfsf RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFSCTSI, 0xfc0007ff, 0x100002d5, 0x1f0000, // Convert Floating-Point Single-Precision to Signed Integer EVX-form (efsctsi RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFSCFUI, 0xfc0007ff, 0x100002d0, 0x1f0000, // Convert Floating-Point Single-Precision from Unsigned Integer EVX-form (efscfui RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFSCFUF, 0xfc0007ff, 0x100002d2, 0x1f0000, // Convert Floating-Point Single-Precision from Unsigned Fraction EVX-form (efscfuf RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFSCTUI, 0xfc0007ff, 0x100002d4, 0x1f0000, // Convert Floating-Point Single-Precision to Unsigned Integer EVX-form (efsctui RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFSCTSIZ, 0xfc0007ff, 0x100002da, 0x1f0000, // Convert Floating-Point Single-Precision to Signed Integer with Round toward Zero EVX-form (efsctsiz RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFSCTSF, 0xfc0007ff, 0x100002d7, 0x1f0000, // Convert Floating-Point Single-Precision to Signed Fraction EVX-form (efsctsf RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFSCTUIZ, 0xfc0007ff, 0x100002d8, 0x1f0000, // Convert Floating-Point Single-Precision to Unsigned Integer with Round toward Zero EVX-form (efsctuiz RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFSCTUF, 0xfc0007ff, 0x100002d6, 0x1f0000, // Convert Floating-Point Single-Precision to Unsigned Fraction EVX-form (efsctuf RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFDABS, 0xfc0007ff, 0x100002e4, 0xf800, // Floating-Point Double-Precision Absolute Value EVX-form (efdabs RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EFDNEG, 0xfc0007ff, 0x100002e6, 0xf800, // Floating-Point Double-Precision Negate EVX-form (efdneg RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EFDNABS, 0xfc0007ff, 0x100002e5, 0xf800, // Floating-Point Double-Precision Negative Absolute Value EVX-form (efdnabs RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{EFDADD, 0xfc0007ff, 0x100002e0, 0x0, // Floating-Point Double-Precision Add EVX-form (efdadd RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFDMUL, 0xfc0007ff, 0x100002e8, 0x0, // Floating-Point Double-Precision Multiply EVX-form (efdmul RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFDSUB, 0xfc0007ff, 0x100002e1, 0x0, // Floating-Point Double-Precision Subtract EVX-form (efdsub RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFDDIV, 0xfc0007ff, 0x100002e9, 0x0, // Floating-Point Double-Precision Divide EVX-form (efddiv RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFDCMPGT, 0xfc0007ff, 0x100002ec, 0x600000, // Floating-Point Double-Precision Compare Greater Than EVX-form (efdcmpgt BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFDCMPEQ, 0xfc0007ff, 0x100002ee, 0x600000, // Floating-Point Double-Precision Compare Equal EVX-form (efdcmpeq BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFDCMPLT, 0xfc0007ff, 0x100002ed, 0x600000, // Floating-Point Double-Precision Compare Less Than EVX-form (efdcmplt BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFDTSTGT, 0xfc0007ff, 0x100002fc, 0x600000, // Floating-Point Double-Precision Test Greater Than EVX-form (efdtstgt BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFDTSTLT, 0xfc0007ff, 0x100002fd, 0x600000, // Floating-Point Double-Precision Test Less Than EVX-form (efdtstlt BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFDCFSI, 0xfc0007ff, 0x100002f1, 0x1f0000, // Convert Floating-Point Double-Precision from Signed Integer EVX-form (efdcfsi RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFDTSTEQ, 0xfc0007ff, 0x100002fe, 0x600000, // Floating-Point Double-Precision Test Equal EVX-form (efdtsteq BF,RA,RB)
-		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{EFDCFUI, 0xfc0007ff, 0x100002f0, 0x1f0000, // Convert Floating-Point Double-Precision from Unsigned Integer EVX-form (efdcfui RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFDCFSID, 0xfc0007ff, 0x100002e3, 0x1f0000, // Convert Floating-Point Double-Precision from Signed Integer Doubleword EVX-form (efdcfsid RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFDCFSF, 0xfc0007ff, 0x100002f3, 0x1f0000, // Convert Floating-Point Double-Precision from Signed Fraction EVX-form (efdcfsf RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFDCFUF, 0xfc0007ff, 0x100002f2, 0x1f0000, // Convert Floating-Point Double-Precision from Unsigned Fraction EVX-form (efdcfuf RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFDCFUID, 0xfc0007ff, 0x100002e2, 0x1f0000, // Convert Floating-Point Double-Precision from Unsigned Integer Doubleword EVX-form (efdcfuid RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFDCTSI, 0xfc0007ff, 0x100002f5, 0x1f0000, // Convert Floating-Point Double-Precision to Signed Integer EVX-form (efdctsi RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFDCTUI, 0xfc0007ff, 0x100002f4, 0x1f0000, // Convert Floating-Point Double-Precision to Unsigned Integer EVX-form (efdctui RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFDCTSIDZ, 0xfc0007ff, 0x100002eb, 0x1f0000, // Convert Floating-Point Double-Precision to Signed Integer Doubleword with Round toward Zero EVX-form (efdctsidz RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFDCTUIDZ, 0xfc0007ff, 0x100002ea, 0x1f0000, // Convert Floating-Point Double-Precision to Unsigned Integer Doubleword with Round toward Zero EVX-form (efdctuidz RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFDCTSIZ, 0xfc0007ff, 0x100002fa, 0x1f0000, // Convert Floating-Point Double-Precision to Signed Integer with Round toward Zero EVX-form (efdctsiz RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFDCTSF, 0xfc0007ff, 0x100002f7, 0x1f0000, // Convert Floating-Point Double-Precision to Signed Fraction EVX-form (efdctsf RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFDCTUF, 0xfc0007ff, 0x100002f6, 0x1f0000, // Convert Floating-Point Double-Precision to Unsigned Fraction EVX-form (efdctuf RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFDCTUIZ, 0xfc0007ff, 0x100002f8, 0x1f0000, // Convert Floating-Point Double-Precision to Unsigned Integer with Round toward Zero EVX-form (efdctuiz RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFDCFS, 0xfc0007ff, 0x100002ef, 0x1f0000, // Floating-Point Double-Precision Convert from Single-Precision EVX-form (efdcfs RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{EFSCFD, 0xfc0007ff, 0x100002cf, 0x1f0000, // Floating-Point Single-Precision Convert from Double-Precision EVX-form (efscfd RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{DLMZB, 0xfc0007ff, 0x7c00009c, 0x0, // Determine Leftmost Zero Byte X-form (dlmzb RA,RS,RB)
-		[5]*argField{ap_Reg_11_15, ap_Reg_6_10, ap_Reg_16_20}},
-	{DLMZBCC, 0xfc0007ff, 0x7c00009d, 0x0, // Determine Leftmost Zero Byte X-form (dlmzb. RA,RS,RB)
-		[5]*argField{ap_Reg_11_15, ap_Reg_6_10, ap_Reg_16_20}},
-	{MACCHW, 0xfc0007ff, 0x10000158, 0x0, // Multiply Accumulate Cross Halfword to Word Modulo Signed XO-form (macchw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACCHWCC, 0xfc0007ff, 0x10000159, 0x0, // Multiply Accumulate Cross Halfword to Word Modulo Signed XO-form (macchw. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACCHWO, 0xfc0007ff, 0x10000558, 0x0, // Multiply Accumulate Cross Halfword to Word Modulo Signed XO-form (macchwo RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACCHWOCC, 0xfc0007ff, 0x10000559, 0x0, // Multiply Accumulate Cross Halfword to Word Modulo Signed XO-form (macchwo. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACCHWS, 0xfc0007ff, 0x100001d8, 0x0, // Multiply Accumulate Cross Halfword to Word Saturate Signed XO-form (macchws RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACCHWSCC, 0xfc0007ff, 0x100001d9, 0x0, // Multiply Accumulate Cross Halfword to Word Saturate Signed XO-form (macchws. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACCHWSO, 0xfc0007ff, 0x100005d8, 0x0, // Multiply Accumulate Cross Halfword to Word Saturate Signed XO-form (macchwso RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACCHWSOCC, 0xfc0007ff, 0x100005d9, 0x0, // Multiply Accumulate Cross Halfword to Word Saturate Signed XO-form (macchwso. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACCHWU, 0xfc0007ff, 0x10000118, 0x0, // Multiply Accumulate Cross Halfword to Word Modulo Unsigned XO-form (macchwu RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACCHWUCC, 0xfc0007ff, 0x10000119, 0x0, // Multiply Accumulate Cross Halfword to Word Modulo Unsigned XO-form (macchwu. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACCHWUO, 0xfc0007ff, 0x10000518, 0x0, // Multiply Accumulate Cross Halfword to Word Modulo Unsigned XO-form (macchwuo RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACCHWUOCC, 0xfc0007ff, 0x10000519, 0x0, // Multiply Accumulate Cross Halfword to Word Modulo Unsigned XO-form (macchwuo. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACCHWSU, 0xfc0007ff, 0x10000198, 0x0, // Multiply Accumulate Cross Halfword to Word Saturate Unsigned XO-form (macchwsu RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACCHWSUCC, 0xfc0007ff, 0x10000199, 0x0, // Multiply Accumulate Cross Halfword to Word Saturate Unsigned XO-form (macchwsu. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACCHWSUO, 0xfc0007ff, 0x10000598, 0x0, // Multiply Accumulate Cross Halfword to Word Saturate Unsigned XO-form (macchwsuo RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACCHWSUOCC, 0xfc0007ff, 0x10000599, 0x0, // Multiply Accumulate Cross Halfword to Word Saturate Unsigned XO-form (macchwsuo. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACHHW, 0xfc0007ff, 0x10000058, 0x0, // Multiply Accumulate High Halfword to Word Modulo Signed XO-form (machhw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACHHWCC, 0xfc0007ff, 0x10000059, 0x0, // Multiply Accumulate High Halfword to Word Modulo Signed XO-form (machhw. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACHHWO, 0xfc0007ff, 0x10000458, 0x0, // Multiply Accumulate High Halfword to Word Modulo Signed XO-form (machhwo RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACHHWOCC, 0xfc0007ff, 0x10000459, 0x0, // Multiply Accumulate High Halfword to Word Modulo Signed XO-form (machhwo. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACHHWS, 0xfc0007ff, 0x100000d8, 0x0, // Multiply Accumulate High Halfword to Word Saturate Signed XO-form (machhws RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACHHWSCC, 0xfc0007ff, 0x100000d9, 0x0, // Multiply Accumulate High Halfword to Word Saturate Signed XO-form (machhws. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACHHWSO, 0xfc0007ff, 0x100004d8, 0x0, // Multiply Accumulate High Halfword to Word Saturate Signed XO-form (machhwso RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACHHWSOCC, 0xfc0007ff, 0x100004d9, 0x0, // Multiply Accumulate High Halfword to Word Saturate Signed XO-form (machhwso. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACHHWU, 0xfc0007ff, 0x10000018, 0x0, // Multiply Accumulate High Halfword to Word Modulo Unsigned XO-form (machhwu RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACHHWUCC, 0xfc0007ff, 0x10000019, 0x0, // Multiply Accumulate High Halfword to Word Modulo Unsigned XO-form (machhwu. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACHHWUO, 0xfc0007ff, 0x10000418, 0x0, // Multiply Accumulate High Halfword to Word Modulo Unsigned XO-form (machhwuo RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACHHWUOCC, 0xfc0007ff, 0x10000419, 0x0, // Multiply Accumulate High Halfword to Word Modulo Unsigned XO-form (machhwuo. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACHHWSU, 0xfc0007ff, 0x10000098, 0x0, // Multiply Accumulate High Halfword to Word Saturate Unsigned XO-form (machhwsu RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACHHWSUCC, 0xfc0007ff, 0x10000099, 0x0, // Multiply Accumulate High Halfword to Word Saturate Unsigned XO-form (machhwsu. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACHHWSUO, 0xfc0007ff, 0x10000498, 0x0, // Multiply Accumulate High Halfword to Word Saturate Unsigned XO-form (machhwsuo RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACHHWSUOCC, 0xfc0007ff, 0x10000499, 0x0, // Multiply Accumulate High Halfword to Word Saturate Unsigned XO-form (machhwsuo. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACLHW, 0xfc0007ff, 0x10000358, 0x0, // Multiply Accumulate Low Halfword to Word Modulo Signed XO-form (maclhw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACLHWCC, 0xfc0007ff, 0x10000359, 0x0, // Multiply Accumulate Low Halfword to Word Modulo Signed XO-form (maclhw. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACLHWO, 0xfc0007ff, 0x10000758, 0x0, // Multiply Accumulate Low Halfword to Word Modulo Signed XO-form (maclhwo RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACLHWOCC, 0xfc0007ff, 0x10000759, 0x0, // Multiply Accumulate Low Halfword to Word Modulo Signed XO-form (maclhwo. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACLHWS, 0xfc0007ff, 0x100003d8, 0x0, // Multiply Accumulate Low Halfword to Word Saturate Signed XO-form (maclhws RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACLHWSCC, 0xfc0007ff, 0x100003d9, 0x0, // Multiply Accumulate Low Halfword to Word Saturate Signed XO-form (maclhws. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACLHWSO, 0xfc0007ff, 0x100007d8, 0x0, // Multiply Accumulate Low Halfword to Word Saturate Signed XO-form (maclhwso RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACLHWSOCC, 0xfc0007ff, 0x100007d9, 0x0, // Multiply Accumulate Low Halfword to Word Saturate Signed XO-form (maclhwso. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACLHWU, 0xfc0007ff, 0x10000318, 0x0, // Multiply Accumulate Low Halfword to Word Modulo Unsigned XO-form (maclhwu RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACLHWUCC, 0xfc0007ff, 0x10000319, 0x0, // Multiply Accumulate Low Halfword to Word Modulo Unsigned XO-form (maclhwu. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACLHWUO, 0xfc0007ff, 0x10000718, 0x0, // Multiply Accumulate Low Halfword to Word Modulo Unsigned XO-form (maclhwuo RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACLHWUOCC, 0xfc0007ff, 0x10000719, 0x0, // Multiply Accumulate Low Halfword to Word Modulo Unsigned XO-form (maclhwuo. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MULCHW, 0xfc0007ff, 0x10000150, 0x0, // Multiply Cross Halfword to Word Signed X-form (mulchw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MULCHWCC, 0xfc0007ff, 0x10000151, 0x0, // Multiply Cross Halfword to Word Signed X-form (mulchw. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACLHWSU, 0xfc0007ff, 0x10000398, 0x0, // Multiply Accumulate Low Halfword to Word Saturate Unsigned XO-form (maclhwsu RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACLHWSUCC, 0xfc0007ff, 0x10000399, 0x0, // Multiply Accumulate Low Halfword to Word Saturate Unsigned XO-form (maclhwsu. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACLHWSUO, 0xfc0007ff, 0x10000798, 0x0, // Multiply Accumulate Low Halfword to Word Saturate Unsigned XO-form (maclhwsuo RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MACLHWSUOCC, 0xfc0007ff, 0x10000799, 0x0, // Multiply Accumulate Low Halfword to Word Saturate Unsigned XO-form (maclhwsuo. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MULCHWU, 0xfc0007ff, 0x10000110, 0x0, // Multiply Cross Halfword to Word Unsigned X-form (mulchwu RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MULCHWUCC, 0xfc0007ff, 0x10000111, 0x0, // Multiply Cross Halfword to Word Unsigned X-form (mulchwu. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MULHHW, 0xfc0007ff, 0x10000050, 0x0, // Multiply High Halfword to Word Signed X-form (mulhhw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MULHHWCC, 0xfc0007ff, 0x10000051, 0x0, // Multiply High Halfword to Word Signed X-form (mulhhw. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MULLHW, 0xfc0007ff, 0x10000350, 0x0, // Multiply Low Halfword to Word Signed X-form (mullhw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MULLHWCC, 0xfc0007ff, 0x10000351, 0x0, // Multiply Low Halfword to Word Signed X-form (mullhw. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MULHHWU, 0xfc0007ff, 0x10000010, 0x0, // Multiply High Halfword to Word Unsigned X-form (mulhhwu RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MULHHWUCC, 0xfc0007ff, 0x10000011, 0x0, // Multiply High Halfword to Word Unsigned X-form (mulhhwu. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MULLHWU, 0xfc0007ff, 0x10000310, 0x0, // Multiply Low Halfword to Word Unsigned X-form (mullhwu RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MULLHWUCC, 0xfc0007ff, 0x10000311, 0x0, // Multiply Low Halfword to Word Unsigned X-form (mullhwu. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACCHW, 0xfc0007ff, 0x1000015c, 0x0, // Negative Multiply Accumulate Cross Halfword to Word Modulo Signed XO-form (nmacchw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACCHWCC, 0xfc0007ff, 0x1000015d, 0x0, // Negative Multiply Accumulate Cross Halfword to Word Modulo Signed XO-form (nmacchw. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACCHWO, 0xfc0007ff, 0x1000055c, 0x0, // Negative Multiply Accumulate Cross Halfword to Word Modulo Signed XO-form (nmacchwo RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACCHWOCC, 0xfc0007ff, 0x1000055d, 0x0, // Negative Multiply Accumulate Cross Halfword to Word Modulo Signed XO-form (nmacchwo. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACCHWS, 0xfc0007ff, 0x100001dc, 0x0, // Negative Multiply Accumulate Cross Halfword to Word Saturate Signed XO-form (nmacchws RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACCHWSCC, 0xfc0007ff, 0x100001dd, 0x0, // Negative Multiply Accumulate Cross Halfword to Word Saturate Signed XO-form (nmacchws. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACCHWSO, 0xfc0007ff, 0x100005dc, 0x0, // Negative Multiply Accumulate Cross Halfword to Word Saturate Signed XO-form (nmacchwso RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACCHWSOCC, 0xfc0007ff, 0x100005dd, 0x0, // Negative Multiply Accumulate Cross Halfword to Word Saturate Signed XO-form (nmacchwso. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACHHW, 0xfc0007ff, 0x1000005c, 0x0, // Negative Multiply Accumulate High Halfword to Word Modulo Signed XO-form (nmachhw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACHHWCC, 0xfc0007ff, 0x1000005d, 0x0, // Negative Multiply Accumulate High Halfword to Word Modulo Signed XO-form (nmachhw. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACHHWO, 0xfc0007ff, 0x1000045c, 0x0, // Negative Multiply Accumulate High Halfword to Word Modulo Signed XO-form (nmachhwo RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACHHWOCC, 0xfc0007ff, 0x1000045d, 0x0, // Negative Multiply Accumulate High Halfword to Word Modulo Signed XO-form (nmachhwo. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACHHWS, 0xfc0007ff, 0x100000dc, 0x0, // Negative Multiply Accumulate High Halfword to Word Saturate Signed XO-form (nmachhws RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACHHWSCC, 0xfc0007ff, 0x100000dd, 0x0, // Negative Multiply Accumulate High Halfword to Word Saturate Signed XO-form (nmachhws. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACHHWSO, 0xfc0007ff, 0x100004dc, 0x0, // Negative Multiply Accumulate High Halfword to Word Saturate Signed XO-form (nmachhwso RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACHHWSOCC, 0xfc0007ff, 0x100004dd, 0x0, // Negative Multiply Accumulate High Halfword to Word Saturate Signed XO-form (nmachhwso. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACLHW, 0xfc0007ff, 0x1000035c, 0x0, // Negative Multiply Accumulate Low Halfword to Word Modulo Signed XO-form (nmaclhw RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACLHWCC, 0xfc0007ff, 0x1000035d, 0x0, // Negative Multiply Accumulate Low Halfword to Word Modulo Signed XO-form (nmaclhw. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACLHWO, 0xfc0007ff, 0x1000075c, 0x0, // Negative Multiply Accumulate Low Halfword to Word Modulo Signed XO-form (nmaclhwo RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACLHWOCC, 0xfc0007ff, 0x1000075d, 0x0, // Negative Multiply Accumulate Low Halfword to Word Modulo Signed XO-form (nmaclhwo. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACLHWS, 0xfc0007ff, 0x100003dc, 0x0, // Negative Multiply Accumulate Low Halfword to Word Saturate Signed XO-form (nmaclhws RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACLHWSCC, 0xfc0007ff, 0x100003dd, 0x0, // Negative Multiply Accumulate Low Halfword to Word Saturate Signed XO-form (nmaclhws. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACLHWSO, 0xfc0007ff, 0x100007dc, 0x0, // Negative Multiply Accumulate Low Halfword to Word Saturate Signed XO-form (nmaclhwso RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{NMACLHWSOCC, 0xfc0007ff, 0x100007dd, 0x0, // Negative Multiply Accumulate Low Halfword to Word Saturate Signed XO-form (nmaclhwso. RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{ICBI, 0xfc0007fe, 0x7c0007ac, 0x3e00001, // Instruction Cache Block Invalidate X-form (icbi RA,RB)
 		[5]*argField{ap_Reg_11_15, ap_Reg_16_20}},
 	{ICBT, 0xfc0007fe, 0x7c00002c, 0x2000001, // Instruction Cache Block Touch X-form (icbt CT, RA, RB)
 		[5]*argField{ap_ImmUnsigned_7_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{DCBA, 0xfc0007fe, 0x7c0005ec, 0x3e00001, // Data Cache Block Allocate X-form (dcba RA,RB)
-		[5]*argField{ap_Reg_11_15, ap_Reg_16_20}},
 	{DCBT, 0xfc0007fe, 0x7c00022c, 0x1, // Data Cache Block Touch X-form (dcbt RA,RB,TH)
 		[5]*argField{ap_Reg_11_15, ap_Reg_16_20, ap_ImmUnsigned_6_10}},
-	{DCBT, 0xfc0007fe, 0x7c00022c, 0x1, // Data Cache Block Touch X-form (dcbt TH,RA,RB)
-		[5]*argField{ap_ImmUnsigned_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{DCBTST, 0xfc0007fe, 0x7c0001ec, 0x1, // Data Cache Block Touch for Store X-form (dcbtst RA,RB,TH)
 		[5]*argField{ap_Reg_11_15, ap_Reg_16_20, ap_ImmUnsigned_6_10}},
-	{DCBTST, 0xfc0007fe, 0x7c0001ec, 0x1, // Data Cache Block Touch for Store X-form (dcbtst TH,RA,RB)
-		[5]*argField{ap_ImmUnsigned_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{DCBZ, 0xfc0007fe, 0x7c0007ec, 0x3e00001, // Data Cache Block set to Zero X-form (dcbz RA,RB)
 		[5]*argField{ap_Reg_11_15, ap_Reg_16_20}},
 	{DCBST, 0xfc0007fe, 0x7c00006c, 0x3e00001, // Data Cache Block Store X-form (dcbst RA,RB)
 		[5]*argField{ap_Reg_11_15, ap_Reg_16_20}},
-	{DCBF, 0xfc0007fe, 0x7c0000ac, 0x3800001, // Data Cache Block Flush X-form (dcbf RA,RB,L)
-		[5]*argField{ap_Reg_11_15, ap_Reg_16_20, ap_ImmUnsigned_9_10}},
+	{DCBF, 0xfc0007fe, 0x7c0000ac, 0x3000001, // Data Cache Block Flush X-form (dcbf RA,RB,L)
+		[5]*argField{ap_Reg_11_15, ap_Reg_16_20, ap_ImmUnsigned_8_10}},
 	{ISYNC, 0xfc0007fe, 0x4c00012c, 0x3fff801, // Instruction Synchronize XL-form (isync)
 		[5]*argField{}},
-	{LBARX, 0xfc0007ff, 0x7c000068, 0x0, // Load Byte And Reserve Indexed X-form [Category: Phased-In] (lbarx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LBARX, 0xfc0007fe, 0x7c000068, 0x0, // Load Byte And Reserve Indexed X-form [Category: Phased-In] (lbarx RT,RA,RB,EH)
+	{LBARX, 0xfc0007fe, 0x7c000068, 0x0, // Load Byte And Reserve Indexed X-form (lbarx RT,RA,RB,EH)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20, ap_ImmUnsigned_31_31}},
-	{LHARX, 0xfc0007ff, 0x7c0000e8, 0x0, // Load Halfword And Reserve Indexed X-form [Category: Phased-In] (lharx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LHARX, 0xfc0007fe, 0x7c0000e8, 0x0, // Load Halfword And Reserve Indexed X-form [Category: Phased-In] (lharx RT,RA,RB,EH)
+	{LHARX, 0xfc0007fe, 0x7c0000e8, 0x0, // Load Halfword And Reserve Indexed Xform (lharx RT,RA,RB,EH)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20, ap_ImmUnsigned_31_31}},
-	{LWARX, 0xfc0007ff, 0x7c000028, 0x0, // Load Word And Reserve Indexed X-form (lwarx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LWARX, 0xfc0007ff, 0x7c000028, 0x0, // Load Word And Reserve Indexed X-form (lwarx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LWARX, 0xfc0007fe, 0x7c000028, 0x0, // Load Word And Reserve Indexed X-form (lwarx RT,RA,RB,EH)
+	{LWARX, 0xfc0007fe, 0x7c000028, 0x0, // Load Word & Reserve Indexed X-form (lwarx RT,RA,RB,EH)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20, ap_ImmUnsigned_31_31}},
-	{STBCXCC, 0xfc0007ff, 0x7c00056d, 0x0, // Store Byte Conditional Indexed X-form [Category: Phased-In] (stbcx. RS,RA,RB)
+	{STBCXCC, 0xfc0007ff, 0x7c00056d, 0x0, // Store Byte Conditional Indexed X-form (stbcx. RS,RA,RB)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STHCXCC, 0xfc0007ff, 0x7c0005ad, 0x0, // Store Halfword Conditional Indexed X-form [Category: Phased-In] (sthcx. RS,RA,RB)
+	{STHCXCC, 0xfc0007ff, 0x7c0005ad, 0x0, // Store Halfword Conditional Indexed X-form (sthcx. RS,RA,RB)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{STWCXCC, 0xfc0007ff, 0x7c00012d, 0x0, // Store Word Conditional Indexed X-form (stwcx. RS,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LDARX, 0xfc0007ff, 0x7c0000a8, 0x0, // Load Doubleword And Reserve Indexed X-form (ldarx RT,RA,RB)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{LDARX, 0xfc0007fe, 0x7c0000a8, 0x0, // Load Doubleword And Reserve Indexed X-form (ldarx RT,RA,RB,EH)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20, ap_ImmUnsigned_31_31}},
 	{STDCXCC, 0xfc0007ff, 0x7c0001ad, 0x0, // Store Doubleword Conditional Indexed X-form (stdcx. RS,RA,RB)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LQARX, 0xfc0007ff, 0x7c000228, 0x0, // Load Quadword And Reserve Indexed X-form (lqarx RTp,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{LQARX, 0xfc0007fe, 0x7c000228, 0x0, // Load Quadword And Reserve Indexed X-form (lqarx RTp,RA,RB,EH)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20, ap_ImmUnsigned_31_31}},
 	{STQCXCC, 0xfc0007ff, 0x7c00016d, 0x0, // Store Quadword Conditional Indexed X-form (stqcx. RSp,RA,RB)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{SYNC, 0xfc0007fe, 0x7c0004ac, 0x390f801, // Synchronize X-form (sync L, E)
-		[5]*argField{ap_ImmUnsigned_9_10, ap_ImmUnsigned_12_15}},
+	{SYNC, 0xfc0007fe, 0x7c0004ac, 0x31cf801, // Synchronize X-form (sync L,SC)
+		[5]*argField{ap_ImmUnsigned_8_10, ap_ImmUnsigned_14_15}},
 	{EIEIO, 0xfc0007fe, 0x7c0006ac, 0x3fff801, // Enforce In-order Execution of I/O X-form (eieio)
 		[5]*argField{}},
-	{MBAR, 0xfc0007fe, 0x7c0006ac, 0x1ff801, // Memory Barrier X-form (mbar MO)
-		[5]*argField{ap_ImmUnsigned_6_10}},
-	{WAIT, 0xfc0007fe, 0x7c00007c, 0x39ff801, // Wait X-form (wait WC)
-		[5]*argField{ap_ImmUnsigned_9_10}},
-	{TBEGINCC, 0xfc0007ff, 0x7c00051d, 0x1dff800, // Transaction Begin X-form (tbegin. R)
-		[5]*argField{ap_ImmUnsigned_10_10}},
-	{TENDCC, 0xfc0007ff, 0x7c00055d, 0x1fff800, // Transaction End X-form (tend. A)
-		[5]*argField{ap_ImmUnsigned_6_6}},
-	{TABORTCC, 0xfc0007ff, 0x7c00071d, 0x3e0f800, // Transaction Abort X-form (tabort. RA)
-		[5]*argField{ap_Reg_11_15}},
-	{TABORTWCCC, 0xfc0007ff, 0x7c00061d, 0x0, // Transaction Abort Word Conditional X-form (tabortwc. TO,RA,RB)
-		[5]*argField{ap_ImmUnsigned_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{TABORTWCICC, 0xfc0007ff, 0x7c00069d, 0x0, // Transaction Abort Word Conditional Immediate X-form (tabortwci. TO,RA,SI)
-		[5]*argField{ap_ImmUnsigned_6_10, ap_Reg_11_15, ap_ImmSigned_16_20}},
-	{TABORTDCCC, 0xfc0007ff, 0x7c00065d, 0x0, // Transaction Abort Doubleword Conditional X-form (tabortdc. TO,RA,RB)
-		[5]*argField{ap_ImmUnsigned_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{TABORTDCICC, 0xfc0007ff, 0x7c0006dd, 0x0, // Transaction Abort Doubleword Conditional Immediate X-form (tabortdci. TO,RA, SI)
-		[5]*argField{ap_ImmUnsigned_6_10, ap_Reg_11_15, ap_ImmSigned_16_20}},
-	{TSRCC, 0xfc0007ff, 0x7c0005dd, 0x3dff800, // Transaction Suspend or Resume X-form (tsr. L)
-		[5]*argField{ap_ImmUnsigned_10_10}},
-	{TCHECK, 0xfc0007fe, 0x7c00059c, 0x7ff801, // Transaction Check X-form (tcheck BF)
-		[5]*argField{ap_CondRegField_6_8}},
+	{WAIT, 0xfc0007fe, 0x7c00003c, 0x9cf801, // Wait X-form (wait WC,PL)
+		[5]*argField{ap_ImmUnsigned_9_10, ap_ImmUnsigned_14_15}},
 	{MFTB, 0xfc0007fe, 0x7c0002e6, 0x1, // Move From Time Base XFX-form (mftb RT,TBR)
 		[5]*argField{ap_Reg_6_10, ap_SpReg_16_20_11_15}},
-	{RFEBB, 0xfc0007fe, 0x4c000124, 0x3fff001, // Return from Event-Based Branch XL-form (rfebb S)
+	{RFEBB, 0xfc0007fe, 0x4c000124, 0x3fff001, // Return from Event Based Branch XL-form (rfebb S)
 		[5]*argField{ap_ImmUnsigned_20_20}},
-	{LBDX, 0xfc0007fe, 0x7c000406, 0x1, // Load Byte with Decoration Indexed X-form (lbdx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LHDX, 0xfc0007fe, 0x7c000446, 0x1, // Load Halfword with Decoration Indexed X-form (lhdx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LWDX, 0xfc0007fe, 0x7c000486, 0x1, // Load Word with Decoration Indexed X-form (lwdx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LDDX, 0xfc0007fe, 0x7c0004c6, 0x1, // Load Doubleword with Decoration Indexed X-form (lddx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LFDDX, 0xfc0007fe, 0x7c000646, 0x1, // Load Floating Doubleword with Decoration Indexed X-form (lfddx FRT,RA,RB)
-		[5]*argField{ap_FPReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STBDX, 0xfc0007fe, 0x7c000506, 0x1, // Store Byte with Decoration Indexed X-form (stbdx RS,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STHDX, 0xfc0007fe, 0x7c000546, 0x1, // Store Halfword with Decoration Indexed X-form (sthdx RS,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STWDX, 0xfc0007fe, 0x7c000586, 0x1, // Store Word with Decoration Indexed X-form (stwdx RS,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STDDX, 0xfc0007fe, 0x7c0005c6, 0x1, // Store Doubleword with Decoration Indexed X-form (stddx RS,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STFDDX, 0xfc0007fe, 0x7c000746, 0x1, // Store Floating Doubleword with Decoration Indexed X-form (stfddx FRS,RA,RB)
-		[5]*argField{ap_FPReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{DSN, 0xfc0007fe, 0x7c0003c6, 0x3e00001, // Decorated Storage Notify X-form (dsn RA,RB)
-		[5]*argField{ap_Reg_11_15, ap_Reg_16_20}},
-	{ECIWX, 0xfc0007fe, 0x7c00026c, 0x1, // External Control In Word Indexed X-form (eciwx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{ECOWX, 0xfc0007fe, 0x7c00036c, 0x1, // External Control Out Word Indexed X-form (ecowx RS,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{SC, 0xfc000002, 0x44000002, 0x3fff01d, // System Call SC-form (sc LEV)
 		[5]*argField{ap_ImmUnsigned_20_26}},
-	{RFID, 0xfc0007fe, 0x4c000024, 0x3fff801, // Return From Interrupt Doubleword XL-form (rfid)
+	{RFID, 0xfc0007fe, 0x4c000024, 0x3fff801, // Return from Interrupt Doubleword XL-form (rfid)
 		[5]*argField{}},
-	{HRFID, 0xfc0007fe, 0x4c000224, 0x3fff801, // Hypervisor Return From Interrupt Doubleword XL-form (hrfid)
+	{HRFID, 0xfc0007fe, 0x4c000224, 0x3fff801, // Return From Interrupt Doubleword Hypervisor XL-form (hrfid)
 		[5]*argField{}},
-	{DOZE, 0xfc0007fe, 0x4c000324, 0x3fff801, // Doze XL-form (doze)
-		[5]*argField{}},
-	{NAP, 0xfc0007fe, 0x4c000364, 0x3fff801, // Nap XL-form (nap)
-		[5]*argField{}},
-	{SLEEP, 0xfc0007fe, 0x4c0003a4, 0x3fff801, // Sleep XL-form (sleep)
-		[5]*argField{}},
-	{RVWINKLE, 0xfc0007fe, 0x4c0003e4, 0x3fff801, // Rip Van Winkle XL-form (rvwinkle)
-		[5]*argField{}},
-	{LBZCIX, 0xfc0007fe, 0x7c0006aa, 0x1, // Load Byte and Zero Caching Inhibited Indexed X-form (lbzcix RT,RA,RB)
+	{LBZCIX, 0xfc0007fe, 0x7c0006aa, 0x1, // Load Byte & Zero Caching Inhibited Indexed X-form (lbzcix RT,RA,RB)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LWZCIX, 0xfc0007fe, 0x7c00062a, 0x1, // Load Word and Zero Caching Inhibited Indexed X-form (lwzcix RT,RA,RB)
+	{LWZCIX, 0xfc0007fe, 0x7c00062a, 0x1, // Load Word & Zero Caching Inhibited Indexed X-form (lwzcix RT,RA,RB)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LHZCIX, 0xfc0007fe, 0x7c00066a, 0x1, // Load Halfword and Zero Caching Inhibited Indexed X-form (lhzcix RT,RA,RB)
+	{LHZCIX, 0xfc0007fe, 0x7c00066a, 0x1, // Load Halfword & Zero Caching Inhibited Indexed X-form (lhzcix RT,RA,RB)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{LDCIX, 0xfc0007fe, 0x7c0006ea, 0x1, // Load Doubleword Caching Inhibited Indexed X-form (ldcix RT,RA,RB)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
@@ -5413,19 +4628,15 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{STDCIX, 0xfc0007fe, 0x7c0007ea, 0x1, // Store Doubleword Caching Inhibited Indexed X-form (stdcix RS,RA,RB)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{TRECLAIMCC, 0xfc0007ff, 0x7c00075d, 0x3e0f800, // Transaction Reclaim X-form (treclaim. RA)
-		[5]*argField{ap_Reg_11_15}},
-	{TRECHKPTCC, 0xfc0007ff, 0x7c0007dd, 0x3fff800, // Transaction Recheckpoint X-form (trechkpt.)
-		[5]*argField{}},
 	{MTSPR, 0xfc0007fe, 0x7c0003a6, 0x1, // Move To Special Purpose Register XFX-form (mtspr SPR,RS)
 		[5]*argField{ap_SpReg_16_20_11_15, ap_Reg_6_10}},
 	{MFSPR, 0xfc0007fe, 0x7c0002a6, 0x1, // Move From Special Purpose Register XFX-form (mfspr RT,SPR)
 		[5]*argField{ap_Reg_6_10, ap_SpReg_16_20_11_15}},
-	{MTMSR, 0xfc0007fe, 0x7c000124, 0x1ef801, // Move To Machine State Register X-form (mtmsr RS,L)
+	{MTMSR, 0xfc0007fe, 0x7c000124, 0x1ef801, // Move To MSR X-form (mtmsr RS,L)
 		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_15_15}},
-	{MTMSRD, 0xfc0007fe, 0x7c000164, 0x1ef801, // Move To Machine State Register Doubleword X-form (mtmsrd RS,L)
+	{MTMSRD, 0xfc0007fe, 0x7c000164, 0x1ef801, // Move To MSR Doubleword X-form (mtmsrd RS,L)
 		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_15_15}},
-	{MFMSR, 0xfc0007fe, 0x7c0000a6, 0x1ff801, // Move From Machine State Register X-form (mfmsr RT)
+	{MFMSR, 0xfc0007fe, 0x7c0000a6, 0x1ff801, // Move From MSR X-form (mfmsr RT)
 		[5]*argField{ap_Reg_6_10}},
 	{SLBIE, 0xfc0007fe, 0x7c000364, 0x3ff0001, // SLB Invalidate Entry X-form (slbie RB)
 		[5]*argField{ap_Reg_16_20}},
@@ -5433,26 +4644,16 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_ImmUnsigned_8_10}},
 	{SLBMTE, 0xfc0007fe, 0x7c000324, 0x1f0001, // SLB Move To Entry X-form (slbmte RS,RB)
 		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{SLBMFEV, 0xfc0007fe, 0x7c0006a6, 0x1f0001, // SLB Move From Entry VSID X-form (slbmfev RT,RB)
+	{SLBMFEV, 0xfc0007fe, 0x7c0006a6, 0x1e0001, // SLB Move From Entry VSID X-form (slbmfev RT,RB)
 		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{SLBMFEE, 0xfc0007fe, 0x7c000726, 0x1f0001, // SLB Move From Entry ESID X-form (slbmfee RT,RB)
+	{SLBMFEE, 0xfc0007fe, 0x7c000726, 0x1e0001, // SLB Move From Entry ESID X-form (slbmfee RT,RB)
 		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
 	{SLBFEECC, 0xfc0007ff, 0x7c0007a7, 0x1f0000, // SLB Find Entry ESID X-form (slbfee. RT,RB)
 		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{MTSR, 0xfc0007fe, 0x7c0001a4, 0x10f801, // Move To Segment Register X-form (mtsr SR,RS)
-		[5]*argField{ap_SpReg_12_15, ap_Reg_6_10}},
-	{MTSRIN, 0xfc0007fe, 0x7c0001e4, 0x1f0001, // Move To Segment Register Indirect X-form (mtsrin RS,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{MFSR, 0xfc0007fe, 0x7c0004a6, 0x10f801, // Move From Segment Register X-form (mfsr RT,SR)
-		[5]*argField{ap_Reg_6_10, ap_SpReg_12_15}},
-	{MFSRIN, 0xfc0007fe, 0x7c000526, 0x1f0001, // Move From Segment Register Indirect X-form (mfsrin RT,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
-	{TLBIE, 0xfc0007fe, 0x7c000264, 0x1f0001, // TLB Invalidate Entry X-form (tlbie RB,RS)
-		[5]*argField{ap_Reg_16_20, ap_Reg_6_10}},
-	{TLBIEL, 0xfc0007fe, 0x7c000224, 0x3ff0001, // TLB Invalidate Entry Local X-form (tlbiel RB)
-		[5]*argField{ap_Reg_16_20}},
-	{TLBIA, 0xfc0007fe, 0x7c0002e4, 0x3fff801, // TLB Invalidate All X-form (tlbia)
-		[5]*argField{}},
+	{TLBIE, 0xfc0007fe, 0x7c000264, 0x100001, // TLB Invalidate Entry X-form (tlbie RB,RS,RIC,PRS,R)
+		[5]*argField{ap_Reg_16_20, ap_Reg_6_10, ap_ImmUnsigned_12_13, ap_ImmUnsigned_14_14, ap_ImmUnsigned_15_15}},
+	{TLBIEL, 0xfc0007fe, 0x7c000224, 0x100001, // TLB Invalidate Entry Local X-form (tlbiel RB,RS,RIC,PRS,R)
+		[5]*argField{ap_Reg_16_20, ap_Reg_6_10, ap_ImmUnsigned_12_13, ap_ImmUnsigned_14_14, ap_ImmUnsigned_15_15}},
 	{TLBSYNC, 0xfc0007fe, 0x7c00046c, 0x3fff801, // TLB Synchronize X-form (tlbsync)
 		[5]*argField{}},
 	{MSGSND, 0xfc0007fe, 0x7c00019c, 0x3ff0001, // Message Send X-form (msgsnd RB)
@@ -5463,134 +4664,22 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_Reg_16_20}},
 	{MSGCLRP, 0xfc0007fe, 0x7c00015c, 0x3ff0001, // Message Clear Privileged X-form (msgclrp RB)
 		[5]*argField{ap_Reg_16_20}},
-	{MTTMR, 0xfc0007fe, 0x7c0003dc, 0x1, // Move To Thread Management Register XFX-form (mttmr TMR,RS)
-		[5]*argField{ap_SpReg_16_20_11_15, ap_Reg_6_10}},
-	{SC, 0xfc000002, 0x44000002, 0x3fffffd, // System Call SC-form (sc)
-		[5]*argField{}},
-	{RFI, 0xfc0007fe, 0x4c000064, 0x3fff801, // Return From Interrupt XL-form (rfi)
-		[5]*argField{}},
-	{RFCI, 0xfc0007fe, 0x4c000066, 0x3fff801, // Return From Critical Interrupt XL-form (rfci)
-		[5]*argField{}},
-	{RFDI, 0xfc0007fe, 0x4c00004e, 0x3fff801, // Return From Debug Interrupt X-form (rfdi)
-		[5]*argField{}},
-	{RFMCI, 0xfc0007fe, 0x4c00004c, 0x3fff801, // Return From Machine Check Interrupt XL-form (rfmci)
-		[5]*argField{}},
-	{RFGI, 0xfc0007fe, 0x4c0000cc, 0x3fff801, // Return From Guest Interrupt XL-form (rfgi)
-		[5]*argField{}},
-	{EHPRIV, 0xfc0007fe, 0x7c00021c, 0x1, // Embedded Hypervisor Privilege XL-form (ehpriv OC)
-		[5]*argField{ap_ImmUnsigned_6_20}},
+	{SC, 0xfc000002, 0x44000002, 0x3fff01d, // System Call SC-form (sc LEV)
+		[5]*argField{ap_ImmUnsigned_20_26}},
 	{MTSPR, 0xfc0007fe, 0x7c0003a6, 0x1, // Move To Special Purpose Register XFX-form (mtspr SPR,RS)
 		[5]*argField{ap_SpReg_16_20_11_15, ap_Reg_6_10}},
 	{MFSPR, 0xfc0007fe, 0x7c0002a6, 0x1, // Move From Special Purpose Register XFX-form (mfspr RT,SPR)
 		[5]*argField{ap_Reg_6_10, ap_SpReg_16_20_11_15}},
-	{MTDCR, 0xfc0007fe, 0x7c000386, 0x1, // Move To Device Control Register XFX-form (mtdcr DCRN,RS)
-		[5]*argField{ap_SpReg_16_20_11_15, ap_Reg_6_10}},
-	{MTDCRX, 0xfc0007fe, 0x7c000306, 0xf801, // Move To Device Control Register Indexed X-form (mtdcrx RA,RS)
-		[5]*argField{ap_Reg_11_15, ap_Reg_6_10}},
-	{MFDCR, 0xfc0007fe, 0x7c000286, 0x1, // Move From Device Control Register XFX-form (mfdcr RT,DCRN)
-		[5]*argField{ap_Reg_6_10, ap_SpReg_16_20_11_15}},
-	{MFDCRX, 0xfc0007fe, 0x7c000206, 0xf801, // Move From Device Control Register Indexed X-form (mfdcrx RT,RA)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15}},
-	{MTMSR, 0xfc0007fe, 0x7c000124, 0x1ff801, // Move To Machine State Register X-form (mtmsr RS)
+	{MTMSR, 0xfc0007fe, 0x7c000124, 0x1ef801, // Move To MSR X-form (mtmsr RS,L)
+		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_15_15}},
+	{MFMSR, 0xfc0007fe, 0x7c0000a6, 0x1ff801, // Move From MSR X-form (mfmsr RT)
 		[5]*argField{ap_Reg_6_10}},
-	{MFMSR, 0xfc0007fe, 0x7c0000a6, 0x1ff801, // Move From Machine State Register X-form (mfmsr RT)
-		[5]*argField{ap_Reg_6_10}},
-	{WRTEE, 0xfc0007fe, 0x7c000106, 0x1ff801, // Write MSR External Enable X-form (wrtee RS)
-		[5]*argField{ap_Reg_6_10}},
-	{WRTEEI, 0xfc0007fe, 0x7c000146, 0x3ff7801, // Write MSR External Enable Immediate X-form (wrteei E)
-		[5]*argField{ap_ImmUnsigned_16_16}},
-	{LBEPX, 0xfc0007fe, 0x7c0000be, 0x1, // Load Byte by External Process ID Indexed X-form (lbepx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LHEPX, 0xfc0007fe, 0x7c00023e, 0x1, // Load Halfword by External Process ID Indexed X-form (lhepx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LWEPX, 0xfc0007fe, 0x7c00003e, 0x1, // Load Word by External Process ID Indexed X-form (lwepx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LDEPX, 0xfc0007fe, 0x7c00003a, 0x1, // Load Doubleword by External Process ID Indexed X-form (ldepx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STBEPX, 0xfc0007fe, 0x7c0001be, 0x1, // Store Byte by External Process ID Indexed X-form (stbepx RS,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STHEPX, 0xfc0007fe, 0x7c00033e, 0x1, // Store Halfword by External Process ID Indexed X-form (sthepx RS,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STWEPX, 0xfc0007fe, 0x7c00013e, 0x1, // Store Word by External Process ID Indexed X-form (stwepx RS,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STDEPX, 0xfc0007fe, 0x7c00013a, 0x1, // Store Doubleword by External Process ID Indexed X-form (stdepx RS,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{DCBSTEP, 0xfc0007fe, 0x7c00007e, 0x3e00001, // Data Cache Block Store by External PID X-form (dcbstep RA,RB)
-		[5]*argField{ap_Reg_11_15, ap_Reg_16_20}},
-	{DCBTEP, 0xfc0007fe, 0x7c00027e, 0x1, // Data Cache Block Touch by External PID X-form (dcbtep TH,RA,RB)
-		[5]*argField{ap_ImmUnsigned_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{DCBFEP, 0xfc0007fe, 0x7c0000fe, 0x3800001, // Data Cache Block Flush by External PID X-form (dcbfep RA,RB,L)
-		[5]*argField{ap_Reg_11_15, ap_Reg_16_20, ap_ImmUnsigned_9_10}},
-	{DCBTSTEP, 0xfc0007fe, 0x7c0001fe, 0x1, // Data Cache Block Touch for Store by External PID X-form (dcbtstep TH,RA,RB)
-		[5]*argField{ap_ImmUnsigned_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{ICBIEP, 0xfc0007fe, 0x7c0007be, 0x3e00001, // Instruction Cache Block Invalidate by External PID X-form (icbiep RA,RB)
-		[5]*argField{ap_Reg_11_15, ap_Reg_16_20}},
-	{DCBZEP, 0xfc0007fe, 0x7c0007fe, 0x3e00001, // Data Cache Block set to Zero by External PID X-form (dcbzep RA,RB)
-		[5]*argField{ap_Reg_11_15, ap_Reg_16_20}},
-	{LFDEPX, 0xfc0007fe, 0x7c0004be, 0x1, // Load Floating-Point Double by External Process ID Indexed X-form (lfdepx FRT,RA,RB)
-		[5]*argField{ap_FPReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STFDEPX, 0xfc0007fe, 0x7c0005be, 0x1, // Store Floating-Point Double by External Process ID Indexed X-form (stfdepx FRS,RA,RB)
-		[5]*argField{ap_FPReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVLDDEPX, 0xfc0007fe, 0x7c00063e, 0x1, // Vector Load Doubleword into Doubleword by External Process ID Indexed EVX-form (evlddepx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{EVSTDDEPX, 0xfc0007fe, 0x7c00073e, 0x1, // Vector Store Doubleword into Doubleword by External Process ID Indexed EVX-form (evstddepx RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LVEPX, 0xfc0007fe, 0x7c00024e, 0x1, // Load Vector by External Process ID Indexed X-form (lvepx VRT,RA,RB)
-		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{LVEPXL, 0xfc0007fe, 0x7c00020e, 0x1, // Load Vector by External Process ID Indexed LRU X-form (lvepxl VRT,RA,RB)
-		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STVEPX, 0xfc0007fe, 0x7c00064e, 0x1, // Store Vector by External Process ID Indexed X-form (stvepx VRS,RA,RB)
-		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{STVEPXL, 0xfc0007fe, 0x7c00060e, 0x1, // Store Vector by External Process ID Indexed LRU X-form (stvepxl VRS,RA,RB)
-		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{DCBI, 0xfc0007fe, 0x7c0003ac, 0x3e00001, // Data Cache Block Invalidate X-form (dcbi RA,RB)
-		[5]*argField{ap_Reg_11_15, ap_Reg_16_20}},
-	{DCBLQCC, 0xfc0007ff, 0x7c00034d, 0x2000000, // Data Cache Block Lock Query X-form (dcblq. CT,RA,RB)
-		[5]*argField{ap_ImmUnsigned_7_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{ICBLQCC, 0xfc0007ff, 0x7c00018d, 0x2000000, // Instruction Cache Block Lock Query X-form (icblq. CT,RA,RB)
-		[5]*argField{ap_ImmUnsigned_7_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{DCBTLS, 0xfc0007fe, 0x7c00014c, 0x2000001, // Data Cache Block Touch and Lock Set X-form (dcbtls CT,RA,RB)
-		[5]*argField{ap_ImmUnsigned_7_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{DCBTSTLS, 0xfc0007fe, 0x7c00010c, 0x2000001, // Data Cache Block Touch for Store and Lock Set X-form (dcbtstls CT,RA,RB)
-		[5]*argField{ap_ImmUnsigned_7_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{ICBTLS, 0xfc0007fe, 0x7c0003cc, 0x2000001, // Instruction Cache Block Touch and Lock Set X-form (icbtls CT,RA,RB)
-		[5]*argField{ap_ImmUnsigned_7_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{ICBLC, 0xfc0007fe, 0x7c0001cc, 0x2000001, // Instruction Cache Block Lock Clear X-form (icblc CT,RA,RB)
-		[5]*argField{ap_ImmUnsigned_7_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{DCBLC, 0xfc0007fe, 0x7c00030c, 0x2000001, // Data Cache Block Lock Clear X-form (dcblc CT,RA,RB)
-		[5]*argField{ap_ImmUnsigned_7_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{TLBIVAX, 0xfc0007fe, 0x7c000624, 0x3e00001, // TLB Invalidate Virtual Address Indexed X-form (tlbivax RA,RB)
-		[5]*argField{ap_Reg_11_15, ap_Reg_16_20}},
-	{TLBILX, 0xfc0007fe, 0x7c000024, 0x3800001, // TLB Invalidate Local Indexed X-form (tlbilx RA,RB])
-		[5]*argField{ap_Reg_11_15, ap_Reg_16_20}},
-	{TLBSX, 0xfc0007fe, 0x7c000724, 0x3e00001, // TLB Search Indexed X-form (tlbsx RA,RB)
-		[5]*argField{ap_Reg_11_15, ap_Reg_16_20}},
-	{TLBSRXCC, 0xfc0007ff, 0x7c0006a5, 0x3e00000, // TLB Search and Reserve Indexed X-form (tlbsrx. RA,RB)
-		[5]*argField{ap_Reg_11_15, ap_Reg_16_20}},
-	{TLBRE, 0xfc0007fe, 0x7c000764, 0x3fff801, // TLB Read Entry X-form (tlbre)
-		[5]*argField{}},
 	{TLBSYNC, 0xfc0007fe, 0x7c00046c, 0x3fff801, // TLB Synchronize X-form (tlbsync)
 		[5]*argField{}},
-	{TLBWE, 0xfc0007fe, 0x7c0007a4, 0x3fff801, // TLB Write Entry X-form (tlbwe)
-		[5]*argField{}},
-	{DNH, 0xfc0007fe, 0x4c00018c, 0x1, // Debugger Notify Halt XFX-form (dnh DUI,DUIS)
-		[5]*argField{ap_ImmUnsigned_6_10, ap_ImmUnsigned_11_20}},
 	{MSGSND, 0xfc0007fe, 0x7c00019c, 0x3ff0001, // Message Send X-form (msgsnd RB)
 		[5]*argField{ap_Reg_16_20}},
 	{MSGCLR, 0xfc0007fe, 0x7c0001dc, 0x3ff0001, // Message Clear X-form (msgclr RB)
 		[5]*argField{ap_Reg_16_20}},
-	{DCI, 0xfc0007fe, 0x7c00038c, 0x21ff801, // Data Cache Invalidate X-form (dci CT)
-		[5]*argField{ap_ImmUnsigned_7_10}},
-	{ICI, 0xfc0007fe, 0x7c00078c, 0x21ff801, // Instruction Cache Invalidate X-form (ici CT)
-		[5]*argField{ap_ImmUnsigned_7_10}},
-	{DCREAD, 0xfc0007fe, 0x7c0003cc, 0x1, // Data Cache Read X-form (dcread RT,RA,RB)
-		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{ICREAD, 0xfc0007fe, 0x7c0007cc, 0x3e00001, // Instruction Cache Read X-form (icread RA,RB)
-		[5]*argField{ap_Reg_11_15, ap_Reg_16_20}},
-	{MFPMR, 0xfc0007fe, 0x7c00029c, 0x1, // Move From Performance Monitor Register XFX-form (mfpmr RT,PMRN)
-		[5]*argField{ap_Reg_6_10, ap_SpReg_11_20}},
-	{MTPMR, 0xfc0007fe, 0x7c00039c, 0x1, // Move To Performance Monitor Register XFX-form (mtpmr PMRN,RS)
-		[5]*argField{ap_SpReg_11_20, ap_Reg_6_10}},
 	{ADDEX, 0xfc0001fe, 0x7c000154, 0x1, // Add Extended using alternate carry bit Z23-form (addex RT,RA,RB,CY)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20, ap_ImmUnsigned_21_22}},
 	{DARN, 0xfc0007fe, 0x7c0005e6, 0x1cf801, // Deliver A Random Number X-form (darn RT,L)
@@ -5605,11 +4694,11 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_CondRegField_6_8, ap_ImmUnsigned_10_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{CMPEQB, 0xfc0007fe, 0x7c0001c0, 0x600001, // Compare Equal Byte X-form (cmpeqb BF,RA,RB)
 		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{BPERMD, 0xfc0007fe, 0x7c0001f8, 0x1, // Bit Permute Doubleword X-form (bpermd RA,RS,RB])
+	{BPERMD, 0xfc0007fe, 0x7c0001f8, 0x1, // Bit Permute Doubleword X-form (bpermd RA,RS,RB)
 		[5]*argField{ap_Reg_11_15, ap_Reg_6_10, ap_Reg_16_20}},
-	{EXTSWSLI, 0xfc0007fd, 0x7c0006f4, 0x0, // Extend-Sign Word and Shift Left Immediate XS-form (extswsli RA,RS,SH)
+	{EXTSWSLI, 0xfc0007fd, 0x7c0006f4, 0x0, // Extend Sign Word and Shift Left Immediate XS-form (extswsli RA,RS,SH)
 		[5]*argField{ap_Reg_11_15, ap_Reg_6_10, ap_ImmUnsigned_30_30_16_20}},
-	{EXTSWSLICC, 0xfc0007fd, 0x7c0006f5, 0x0, // Extend-Sign Word and Shift Left Immediate XS-form (extswsli. RA,RS,SH)
+	{EXTSWSLICC, 0xfc0007fd, 0x7c0006f5, 0x0, // Extend Sign Word and Shift Left Immediate XS-form (extswsli. RA,RS,SH)
 		[5]*argField{ap_Reg_11_15, ap_Reg_6_10, ap_ImmUnsigned_30_30_16_20}},
 	{MFVSRD, 0xfc0007fe, 0x7c000066, 0xf800, // Move From VSR Doubleword X-form (mfvsrd RA,XS)
 		[5]*argField{ap_Reg_11_15, ap_VecSReg_31_31_6_10}},
@@ -5631,6 +4720,804 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_CondRegField_6_8}},
 	{COPY, 0xfc2007fe, 0x7c20060c, 0x3c00001, // Copy X-form (copy RA,RB)
 		[5]*argField{ap_Reg_11_15, ap_Reg_16_20}},
-	{PASTECC, 0xfc2007ff, 0x7c20070d, 0x3c00000, // Paste X-form (paste. RA,RB)
-		[5]*argField{ap_Reg_11_15, ap_Reg_16_20}},
+	{PASTECC, 0xfc0007ff, 0x7c00070d, 0x3c00000, // Paste X-form (paste. RA,RB,L)
+		[5]*argField{ap_Reg_11_15, ap_Reg_16_20, ap_ImmUnsigned_10_10}},
+	{BRD, 0xfc0007fe, 0x7c000176, 0xf801, // Byte-Reverse Doubleword X-form (brd RA,RS)
+		[5]*argField{ap_Reg_11_15, ap_Reg_6_10}},
+	{BRH, 0xfc0007fe, 0x7c0001b6, 0xf801, // Byte-Reverse Halfword X-form (brh RA,RS)
+		[5]*argField{ap_Reg_11_15, ap_Reg_6_10}},
+	{BRW, 0xfc0007fe, 0x7c000136, 0xf801, // Byte-Reverse Word X-form (brw RA,RS)
+		[5]*argField{ap_Reg_11_15, ap_Reg_6_10}},
+	{CFUGED, 0xfc0007fe, 0x7c0001b8, 0x1, // Centrifuge Doubleword X-form (cfuged RA,RS,RB)
+		[5]*argField{ap_Reg_11_15, ap_Reg_6_10, ap_Reg_16_20}},
+	{CNTLZDM, 0xfc0007fe, 0x7c000076, 0x1, // Count Leading Zeros Doubleword under bit Mask X-form (cntlzdm RA,RS,RB)
+		[5]*argField{ap_Reg_11_15, ap_Reg_6_10, ap_Reg_16_20}},
+	{CNTTZDM, 0xfc0007fe, 0x7c000476, 0x1, // Count Trailing Zeros Doubleword under bit Mask X-form (cnttzdm RA,RS,RB)
+		[5]*argField{ap_Reg_11_15, ap_Reg_6_10, ap_Reg_16_20}},
+	{DCFFIXQQ, 0xfc1f07fe, 0xfc0007c4, 0x1, // DFP Convert From Fixed Quadword Quad X-form (dcffixqq FRTp,VRB)
+		[5]*argField{ap_FPReg_6_10, ap_VecReg_16_20}},
+	{DCTFIXQQ, 0xfc1f07fe, 0xfc0107c4, 0x1, // DFP Convert To Fixed Quadword Quad X-form (dctfixqq VRT,FRBp)
+		[5]*argField{ap_VecReg_6_10, ap_FPReg_16_20}},
+	{LXVKQ, 0xfc1f07fe, 0xf01f02d0, 0x0, // Load VSX Vector Special Value Quadword X-form (lxvkq XT,UIM)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_ImmUnsigned_16_20}},
+	{LXVP, 0xfc00000f, 0x18000000, 0x0, // Load VSX Vector Paired DQ-form (lxvp XTp,DQ(RA))
+		[5]*argField{ap_VecSpReg_10_10_6_9, ap_Offset_16_27_shift4, ap_Reg_11_15}},
+	{LXVPX, 0xfc0007fe, 0x7c00029a, 0x1, // Load VSX Vector Paired Indexed X-form (lxvpx XTp,RA,RB)
+		[5]*argField{ap_VecSpReg_10_10_6_9, ap_Reg_11_15, ap_Reg_16_20}},
+	{LXVRBX, 0xfc0007fe, 0x7c00001a, 0x0, // Load VSX Vector Rightmost Byte Indexed X-form (lxvrbx XT,RA,RB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{LXVRDX, 0xfc0007fe, 0x7c0000da, 0x0, // Load VSX Vector Rightmost Doubleword Indexed X-form (lxvrdx XT,RA,RB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{LXVRHX, 0xfc0007fe, 0x7c00005a, 0x0, // Load VSX Vector Rightmost Halfword Indexed X-form (lxvrhx XT,RA,RB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{LXVRWX, 0xfc0007fe, 0x7c00009a, 0x0, // Load VSX Vector Rightmost Word Indexed X-form (lxvrwx XT,RA,RB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{MTVSRBM, 0xfc1f07ff, 0x10100642, 0x0, // Move to VSR Byte Mask VX-form (mtvsrbm VRT,RB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_16_20}},
+	{MTVSRBMI, 0xfc00003e, 0x10000014, 0x0, // Move To VSR Byte Mask Immediate DX-form (mtvsrbmi VRT,bm)
+		[5]*argField{ap_VecReg_6_10, ap_ImmUnsigned_16_25_11_15_31_31}},
+	{MTVSRDM, 0xfc1f07ff, 0x10130642, 0x0, // Move to VSR Doubleword Mask VX-form (mtvsrdm VRT,RB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_16_20}},
+	{MTVSRHM, 0xfc1f07ff, 0x10110642, 0x0, // Move to VSR Halfword Mask VX-form (mtvsrhm VRT,RB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_16_20}},
+	{MTVSRQM, 0xfc1f07ff, 0x10140642, 0x0, // Move to VSR Quadword Mask VX-form (mtvsrqm VRT,RB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_16_20}},
+	{MTVSRWM, 0xfc1f07ff, 0x10120642, 0x0, // Move to VSR Word Mask VX-form (mtvsrwm VRT,RB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_16_20}},
+	{PDEPD, 0xfc0007fe, 0x7c000138, 0x1, // Parallel Bits Deposit Doubleword X-form (pdepd RA,RS,RB)
+		[5]*argField{ap_Reg_11_15, ap_Reg_6_10, ap_Reg_16_20}},
+	{PEXTD, 0xfc0007fe, 0x7c000178, 0x1, // Parallel Bits Extract Doubleword X-form (pextd RA,RS,RB)
+		[5]*argField{ap_Reg_11_15, ap_Reg_6_10, ap_Reg_16_20}},
+	{SETBC, 0xfc0007fe, 0x7c000300, 0xf801, // Set Boolean Condition X-form (setbc RT,BI)
+		[5]*argField{ap_Reg_6_10, ap_CondRegBit_11_15}},
+	{SETBCR, 0xfc0007fe, 0x7c000340, 0xf801, // Set Boolean Condition Reverse X-form (setbcr RT,BI)
+		[5]*argField{ap_Reg_6_10, ap_CondRegBit_11_15}},
+	{SETNBC, 0xfc0007fe, 0x7c000380, 0xf801, // Set Negative Boolean Condition X-form (setnbc RT,BI)
+		[5]*argField{ap_Reg_6_10, ap_CondRegBit_11_15}},
+	{SETNBCR, 0xfc0007fe, 0x7c0003c0, 0xf801, // Set Negative Boolean Condition Reverse X-form (setnbcr RT,BI)
+		[5]*argField{ap_Reg_6_10, ap_CondRegBit_11_15}},
+	{STXVP, 0xfc00000f, 0x18000001, 0x0, // Store VSX Vector Paired DQ-form (stxvp XSp,DQ(RA))
+		[5]*argField{ap_VecSpReg_10_10_6_9, ap_Offset_16_27_shift4, ap_Reg_11_15}},
+	{STXVPX, 0xfc0007fe, 0x7c00039a, 0x1, // Store VSX Vector Paired Indexed X-form (stxvpx XSp,RA,RB)
+		[5]*argField{ap_VecSpReg_10_10_6_9, ap_Reg_11_15, ap_Reg_16_20}},
+	{STXVRBX, 0xfc0007fe, 0x7c00011a, 0x0, // Store VSX Vector Rightmost Byte Indexed X-form (stxvrbx XS,RA,RB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{STXVRDX, 0xfc0007fe, 0x7c0001da, 0x0, // Store VSX Vector Rightmost Doubleword Indexed X-form (stxvrdx XS,RA,RB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{STXVRHX, 0xfc0007fe, 0x7c00015a, 0x0, // Store VSX Vector Rightmost Halfword Indexed X-form (stxvrhx XS,RA,RB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{STXVRWX, 0xfc0007fe, 0x7c00019a, 0x0, // Store VSX Vector Rightmost Word Indexed X-form (stxvrwx XS,RA,RB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{VCFUGED, 0xfc0007ff, 0x1000054d, 0x0, // Vector Centrifuge Doubleword VX-form (vcfuged VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VCLRLB, 0xfc0007ff, 0x1000018d, 0x0, // Vector Clear Leftmost Bytes VX-form (vclrlb VRT,VRA,RB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_Reg_16_20}},
+	{VCLRRB, 0xfc0007ff, 0x100001cd, 0x0, // Vector Clear Rightmost Bytes VX-form (vclrrb VRT,VRA,RB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_Reg_16_20}},
+	{VCLZDM, 0xfc0007ff, 0x10000784, 0x0, // Vector Count Leading Zeros Doubleword under bit Mask VX-form (vclzdm VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VCMPEQUQ, 0xfc0007ff, 0x100001c7, 0x0, // Vector Compare Equal Quadword VC-form (vcmpequq VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VCMPEQUQCC, 0xfc0007ff, 0x100005c7, 0x0, // Vector Compare Equal Quadword VC-form (vcmpequq. VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VCMPGTSQ, 0xfc0007ff, 0x10000387, 0x0, // Vector Compare Greater Than Signed Quadword VC-form (vcmpgtsq VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VCMPGTSQCC, 0xfc0007ff, 0x10000787, 0x0, // Vector Compare Greater Than Signed Quadword VC-form (vcmpgtsq. VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VCMPGTUQ, 0xfc0007ff, 0x10000287, 0x0, // Vector Compare Greater Than Unsigned Quadword VC-form (vcmpgtuq VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VCMPGTUQCC, 0xfc0007ff, 0x10000687, 0x0, // Vector Compare Greater Than Unsigned Quadword VC-form (vcmpgtuq. VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VCMPSQ, 0xfc0007ff, 0x10000141, 0x600000, // Vector Compare Signed Quadword VX-form (vcmpsq BF,VRA,VRB)
+		[5]*argField{ap_CondRegField_6_8, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VCMPUQ, 0xfc0007ff, 0x10000101, 0x600000, // Vector Compare Unsigned Quadword VX-form (vcmpuq BF,VRA,VRB)
+		[5]*argField{ap_CondRegField_6_8, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VCNTMBB, 0xfc1e07ff, 0x10180642, 0x0, // Vector Count Mask Bits Byte VX-form (vcntmbb RT,VRB,MP)
+		[5]*argField{ap_Reg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_15_15}},
+	{VCNTMBD, 0xfc1e07ff, 0x101e0642, 0x0, // Vector Count Mask Bits Doubleword VX-form (vcntmbd RT,VRB,MP)
+		[5]*argField{ap_Reg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_15_15}},
+	{VCNTMBH, 0xfc1e07ff, 0x101a0642, 0x0, // Vector Count Mask Bits Halfword VX-form (vcntmbh RT,VRB,MP)
+		[5]*argField{ap_Reg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_15_15}},
+	{VCNTMBW, 0xfc1e07ff, 0x101c0642, 0x0, // Vector Count Mask Bits Word VX-form (vcntmbw RT,VRB,MP)
+		[5]*argField{ap_Reg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_15_15}},
+	{VCTZDM, 0xfc0007ff, 0x100007c4, 0x0, // Vector Count Trailing Zeros Doubleword under bit Mask VX-form (vctzdm VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VDIVESD, 0xfc0007ff, 0x100003cb, 0x0, // Vector Divide Extended Signed Doubleword VX-form (vdivesd VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VDIVESQ, 0xfc0007ff, 0x1000030b, 0x0, // Vector Divide Extended Signed Quadword VX-form (vdivesq VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VDIVESW, 0xfc0007ff, 0x1000038b, 0x0, // Vector Divide Extended Signed Word VX-form (vdivesw VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VDIVEUD, 0xfc0007ff, 0x100002cb, 0x0, // Vector Divide Extended Unsigned Doubleword VX-form (vdiveud VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VDIVEUQ, 0xfc0007ff, 0x1000020b, 0x0, // Vector Divide Extended Unsigned Quadword VX-form (vdiveuq VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VDIVEUW, 0xfc0007ff, 0x1000028b, 0x0, // Vector Divide Extended Unsigned Word VX-form (vdiveuw VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VDIVSD, 0xfc0007ff, 0x100001cb, 0x0, // Vector Divide Signed Doubleword VX-form (vdivsd VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VDIVSQ, 0xfc0007ff, 0x1000010b, 0x0, // Vector Divide Signed Quadword VX-form (vdivsq VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VDIVSW, 0xfc0007ff, 0x1000018b, 0x0, // Vector Divide Signed Word VX-form (vdivsw VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VDIVUD, 0xfc0007ff, 0x100000cb, 0x0, // Vector Divide Unsigned Doubleword VX-form (vdivud VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VDIVUQ, 0xfc0007ff, 0x1000000b, 0x0, // Vector Divide Unsigned Quadword VX-form (vdivuq VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VDIVUW, 0xfc0007ff, 0x1000008b, 0x0, // Vector Divide Unsigned Word VX-form (vdivuw VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VEXPANDBM, 0xfc1f07ff, 0x10000642, 0x0, // Vector Expand Byte Mask VX-form (vexpandbm VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VEXPANDDM, 0xfc1f07ff, 0x10030642, 0x0, // Vector Expand Doubleword Mask VX-form (vexpanddm VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VEXPANDHM, 0xfc1f07ff, 0x10010642, 0x0, // Vector Expand Halfword Mask VX-form (vexpandhm VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VEXPANDQM, 0xfc1f07ff, 0x10040642, 0x0, // Vector Expand Quadword Mask VX-form (vexpandqm VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VEXPANDWM, 0xfc1f07ff, 0x10020642, 0x0, // Vector Expand Word Mask VX-form (vexpandwm VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VEXTDDVLX, 0xfc00003f, 0x1000001e, 0x0, // Vector Extract Double Doubleword to VSR using GPR-specified Left-Index VA-form (vextddvlx VRT,VRA,VRB,RC)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20, ap_Reg_21_25}},
+	{VEXTDDVRX, 0xfc00003f, 0x1000001f, 0x0, // Vector Extract Double Doubleword to VSR using GPR-specified Right-Index VA-form (vextddvrx VRT,VRA,VRB,RC)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20, ap_Reg_21_25}},
+	{VEXTDUBVLX, 0xfc00003f, 0x10000018, 0x0, // Vector Extract Double Unsigned Byte to VSR using GPR-specified Left-Index VA-form (vextdubvlx VRT,VRA,VRB,RC)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20, ap_Reg_21_25}},
+	{VEXTDUBVRX, 0xfc00003f, 0x10000019, 0x0, // Vector Extract Double Unsigned Byte to VSR using GPR-specified Right-Index VA-form (vextdubvrx VRT,VRA,VRB,RC)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20, ap_Reg_21_25}},
+	{VEXTDUHVLX, 0xfc00003f, 0x1000001a, 0x0, // Vector Extract Double Unsigned Halfword to VSR using GPR-specified Left-Index VA-form (vextduhvlx VRT,VRA,VRB,RC)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20, ap_Reg_21_25}},
+	{VEXTDUHVRX, 0xfc00003f, 0x1000001b, 0x0, // Vector Extract Double Unsigned Halfword to VSR using GPR-specified Right-Index VA-form (vextduhvrx VRT,VRA,VRB,RC)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20, ap_Reg_21_25}},
+	{VEXTDUWVLX, 0xfc00003f, 0x1000001c, 0x0, // Vector Extract Double Unsigned Word to VSR using GPR-specified Left-Index VA-form (vextduwvlx VRT,VRA,VRB,RC)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20, ap_Reg_21_25}},
+	{VEXTDUWVRX, 0xfc00003f, 0x1000001d, 0x0, // Vector Extract Double Unsigned Word to VSR using GPR-specified Right-Index VA-form (vextduwvrx VRT,VRA,VRB,RC)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20, ap_Reg_21_25}},
+	{VEXTRACTBM, 0xfc1f07ff, 0x10080642, 0x0, // Vector Extract Byte Mask VX-form (vextractbm RT,VRB)
+		[5]*argField{ap_Reg_6_10, ap_VecReg_16_20}},
+	{VEXTRACTDM, 0xfc1f07ff, 0x100b0642, 0x0, // Vector Extract Doubleword Mask VX-form (vextractdm RT,VRB)
+		[5]*argField{ap_Reg_6_10, ap_VecReg_16_20}},
+	{VEXTRACTHM, 0xfc1f07ff, 0x10090642, 0x0, // Vector Extract Halfword Mask VX-form (vextracthm RT,VRB)
+		[5]*argField{ap_Reg_6_10, ap_VecReg_16_20}},
+	{VEXTRACTQM, 0xfc1f07ff, 0x100c0642, 0x0, // Vector Extract Quadword Mask VX-form (vextractqm RT,VRB)
+		[5]*argField{ap_Reg_6_10, ap_VecReg_16_20}},
+	{VEXTRACTWM, 0xfc1f07ff, 0x100a0642, 0x0, // Vector Extract Word Mask VX-form (vextractwm RT,VRB)
+		[5]*argField{ap_Reg_6_10, ap_VecReg_16_20}},
+	{VEXTSD2Q, 0xfc1f07ff, 0x101b0602, 0x0, // Vector Extend Sign Doubleword to Quadword VX-form (vextsd2q VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VGNB, 0xfc0007ff, 0x100004cc, 0x180000, // Vector Gather every Nth Bit VX-form (vgnb RT,VRB,N)
+		[5]*argField{ap_Reg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_13_15}},
+	{VINSBLX, 0xfc0007ff, 0x1000020f, 0x0, // Vector Insert Byte from GPR using GPR-specified Left-Index VX-form (vinsblx VRT,RA,RB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{VINSBRX, 0xfc0007ff, 0x1000030f, 0x0, // Vector Insert Byte from GPR using GPR-specified Right-Index VX-form (vinsbrx VRT,RA,RB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{VINSBVLX, 0xfc0007ff, 0x1000000f, 0x0, // Vector Insert Byte from VSR using GPR-specified Left-Index VX-form (vinsbvlx VRT,RA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_VecReg_16_20}},
+	{VINSBVRX, 0xfc0007ff, 0x1000010f, 0x0, // Vector Insert Byte from VSR using GPR-specified Right-Index VX-form (vinsbvrx VRT,RA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_VecReg_16_20}},
+	{VINSD, 0xfc0007ff, 0x100001cf, 0x100000, // Vector Insert Doubleword from GPR using immediate-specified index VX-form (vinsd VRT,RB,UIM)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_16_20, ap_ImmUnsigned_12_15}},
+	{VINSDLX, 0xfc0007ff, 0x100002cf, 0x0, // Vector Insert Doubleword from GPR using GPR-specified Left-Index VX-form (vinsdlx VRT,RA,RB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{VINSDRX, 0xfc0007ff, 0x100003cf, 0x0, // Vector Insert Doubleword from GPR using GPR-specified Right-Index VX-form (vinsdrx VRT,RA,RB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{VINSHLX, 0xfc0007ff, 0x1000024f, 0x0, // Vector Insert Halfword from GPR using GPR-specified Left-Index VX-form (vinshlx VRT,RA,RB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{VINSHRX, 0xfc0007ff, 0x1000034f, 0x0, // Vector Insert Halfword from GPR using GPR-specified Right-Index VX-form (vinshrx VRT,RA,RB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{VINSHVLX, 0xfc0007ff, 0x1000004f, 0x0, // Vector Insert Halfword from VSR using GPR-specified Left-Index VX-form (vinshvlx VRT,RA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_VecReg_16_20}},
+	{VINSHVRX, 0xfc0007ff, 0x1000014f, 0x0, // Vector Insert Halfword from VSR using GPR-specified Right-Index VX-form (vinshvrx VRT,RA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_VecReg_16_20}},
+	{VINSW, 0xfc0007ff, 0x100000cf, 0x100000, // Vector Insert Word from GPR using immediate-specified index VX-form (vinsw VRT,RB,UIM)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_16_20, ap_ImmUnsigned_12_15}},
+	{VINSWLX, 0xfc0007ff, 0x1000028f, 0x0, // Vector Insert Word from GPR using GPR-specified Left-Index VX-form (vinswlx VRT,RA,RB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{VINSWRX, 0xfc0007ff, 0x1000038f, 0x0, // Vector Insert Word from GPR using GPR-specified Right-Index VX-form (vinswrx VRT,RA,RB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{VINSWVLX, 0xfc0007ff, 0x1000008f, 0x0, // Vector Insert Word from VSR using GPR-specified Left-Index VX-form (vinswvlx VRT,RA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_VecReg_16_20}},
+	{VINSWVRX, 0xfc0007ff, 0x1000018f, 0x0, // Vector Insert Word from VSR using GPR-specified Left-Index VX-form (vinswvrx VRT,RA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_Reg_11_15, ap_VecReg_16_20}},
+	{VMODSD, 0xfc0007ff, 0x100007cb, 0x0, // Vector Modulo Signed Doubleword VX-form (vmodsd VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VMODSQ, 0xfc0007ff, 0x1000070b, 0x0, // Vector Modulo Signed Quadword VX-form (vmodsq VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VMODSW, 0xfc0007ff, 0x1000078b, 0x0, // Vector Modulo Signed Word VX-form (vmodsw VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VMODUD, 0xfc0007ff, 0x100006cb, 0x0, // Vector Modulo Unsigned Doubleword VX-form (vmodud VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VMODUQ, 0xfc0007ff, 0x1000060b, 0x0, // Vector Modulo Unsigned Quadword VX-form (vmoduq VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VMODUW, 0xfc0007ff, 0x1000068b, 0x0, // Vector Modulo Unsigned Word VX-form (vmoduw VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VMSUMCUD, 0xfc00003f, 0x10000017, 0x0, // Vector Multiply-Sum & write Carry-out Unsigned Doubleword VA-form (vmsumcud VRT,VRA,VRB,VRC)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20, ap_VecReg_21_25}},
+	{VMULESD, 0xfc0007ff, 0x100003c8, 0x0, // Vector Multiply Even Signed Doubleword VX-form (vmulesd VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VMULEUD, 0xfc0007ff, 0x100002c8, 0x0, // Vector Multiply Even Unsigned Doubleword VX-form (vmuleud VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VMULHSD, 0xfc0007ff, 0x100003c9, 0x0, // Vector Multiply High Signed Doubleword VX-form (vmulhsd VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VMULHSW, 0xfc0007ff, 0x10000389, 0x0, // Vector Multiply High Signed Word VX-form (vmulhsw VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VMULHUD, 0xfc0007ff, 0x100002c9, 0x0, // Vector Multiply High Unsigned Doubleword VX-form (vmulhud VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VMULHUW, 0xfc0007ff, 0x10000289, 0x0, // Vector Multiply High Unsigned Word VX-form (vmulhuw VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VMULLD, 0xfc0007ff, 0x100001c9, 0x0, // Vector Multiply Low Doubleword VX-form (vmulld VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VMULOSD, 0xfc0007ff, 0x100001c8, 0x0, // Vector Multiply Odd Signed Doubleword VX-form (vmulosd VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VMULOUD, 0xfc0007ff, 0x100000c8, 0x0, // Vector Multiply Odd Unsigned Doubleword VX-form (vmuloud VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VPDEPD, 0xfc0007ff, 0x100005cd, 0x0, // Vector Parallel Bits Deposit Doubleword VX-form (vpdepd VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VPEXTD, 0xfc0007ff, 0x1000058d, 0x0, // Vector Parallel Bits Extract Doubleword VX-form (vpextd VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VRLQ, 0xfc0007ff, 0x10000005, 0x0, // Vector Rotate Left Quadword VX-form (vrlq VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VRLQMI, 0xfc0007ff, 0x10000045, 0x0, // Vector Rotate Left Quadword then Mask Insert VX-form (vrlqmi VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VRLQNM, 0xfc0007ff, 0x10000145, 0x0, // Vector Rotate Left Quadword then AND with Mask VX-form (vrlqnm VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VSLDBI, 0xfc00063f, 0x10000016, 0x0, // Vector Shift Left Double by Bit Immediate VN-form (vsldbi VRT,VRA,VRB,SH)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20, ap_ImmUnsigned_23_25}},
+	{VSLQ, 0xfc0007ff, 0x10000105, 0x0, // Vector Shift Left Quadword VX-form (vslq VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VSRAQ, 0xfc0007ff, 0x10000305, 0x0, // Vector Shift Right Algebraic Quadword VX-form (vsraq VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VSRDBI, 0xfc00063f, 0x10000216, 0x0, // Vector Shift Right Double by Bit Immediate VN-form (vsrdbi VRT,VRA,VRB,SH)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20, ap_ImmUnsigned_23_25}},
+	{VSRQ, 0xfc0007ff, 0x10000205, 0x0, // Vector Shift Right Quadword VX-form (vsrq VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VSTRIBL, 0xfc1f07ff, 0x1000000d, 0x0, // Vector String Isolate Byte Left-justified VX-form (vstribl VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VSTRIBLCC, 0xfc1f07ff, 0x1000040d, 0x0, // Vector String Isolate Byte Left-justified VX-form (vstribl. VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VSTRIBR, 0xfc1f07ff, 0x1001000d, 0x0, // Vector String Isolate Byte Right-justified VX-form (vstribr VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VSTRIBRCC, 0xfc1f07ff, 0x1001040d, 0x0, // Vector String Isolate Byte Right-justified VX-form (vstribr. VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VSTRIHL, 0xfc1f07ff, 0x1002000d, 0x0, // Vector String Isolate Halfword Left-justified VX-form (vstrihl VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VSTRIHLCC, 0xfc1f07ff, 0x1002040d, 0x0, // Vector String Isolate Halfword Left-justified VX-form (vstrihl. VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VSTRIHR, 0xfc1f07ff, 0x1003000d, 0x0, // Vector String Isolate Halfword Right-justified VX-form (vstrihr VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VSTRIHRCC, 0xfc1f07ff, 0x1003040d, 0x0, // Vector String Isolate Halfword Right-justified VX-form (vstrihr. VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSCMPEQQP, 0xfc0007fe, 0xfc000088, 0x1, // VSX Scalar Compare Equal Quad-Precision X-form (xscmpeqqp VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSCMPGEQP, 0xfc0007fe, 0xfc000188, 0x1, // VSX Scalar Compare Greater Than or Equal Quad-Precision X-form (xscmpgeqp VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSCMPGTQP, 0xfc0007fe, 0xfc0001c8, 0x1, // VSX Scalar Compare Greater Than Quad-Precision X-form (xscmpgtqp VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSCVQPSQZ, 0xfc1f07fe, 0xfc080688, 0x1, // VSX Scalar Convert with round to zero Quad-Precision to Signed Quadword X-form (xscvqpsqz VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSCVQPUQZ, 0xfc1f07fe, 0xfc000688, 0x1, // VSX Scalar Convert with round to zero Quad-Precision to Unsigned Quadword X-form (xscvqpuqz VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSCVSQQP, 0xfc1f07fe, 0xfc0b0688, 0x1, // VSX Scalar Convert with round Signed Quadword to Quad-Precision X-form (xscvsqqp VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSCVUQQP, 0xfc1f07fe, 0xfc030688, 0x1, // VSX Scalar Convert with round Unsigned Quadword to Quad-Precision X-form (xscvuqqp VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSMAXCQP, 0xfc0007fe, 0xfc000548, 0x1, // VSX Scalar Maximum Type-C Quad-Precision X-form (xsmaxcqp VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSMINCQP, 0xfc0007fe, 0xfc0005c8, 0x1, // VSX Scalar Minimum Type-C Quad-Precision X-form (xsmincqp VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XVBF16GER2, 0xfc0007f8, 0xec000198, 0x600001, // VSX Vector bfloat16 GER (Rank-2 Update) XX3-form (xvbf16ger2 AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVBF16GER2NN, 0xfc0007f8, 0xec000790, 0x600001, // VSX Vector bfloat16 GER (Rank-2 Update) Negative multiply, Negative accumulate XX3-form (xvbf16ger2nn AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVBF16GER2NP, 0xfc0007f8, 0xec000390, 0x600001, // VSX Vector bfloat16 GER (Rank-2 Update) Negative multiply, Positive accumulate XX3-form (xvbf16ger2np AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVBF16GER2PN, 0xfc0007f8, 0xec000590, 0x600001, // VSX Vector bfloat16 GER (Rank-2 Update) Positive multiply, Negative accumulate XX3-form (xvbf16ger2pn AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVBF16GER2PP, 0xfc0007f8, 0xec000190, 0x600001, // VSX Vector bfloat16 GER (Rank-2 Update) Positive multiply, Positive accumulate XX3-form (xvbf16ger2pp AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVCVBF16SPN, 0xfc1f07fc, 0xf010076c, 0x0, // VSX Vector Convert bfloat16 to Single-Precision format XX2-form (xvcvbf16spn XT,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
+	{XVCVSPBF16, 0xfc1f07fc, 0xf011076c, 0x0, // VSX Vector Convert with round Single-Precision to bfloat16 format XX2-form (xvcvspbf16 XT,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
+	{XVF16GER2, 0xfc0007f8, 0xec000098, 0x600001, // VSX Vector 16-bit Floating-Point GER (rank-2 update) XX3-form (xvf16ger2 AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVF16GER2NN, 0xfc0007f8, 0xec000690, 0x600001, // VSX Vector 16-bit Floating-Point GER (rank-2 update) Negative multiply, Negative accumulate XX3-form (xvf16ger2nn AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVF16GER2NP, 0xfc0007f8, 0xec000290, 0x600001, // VSX Vector 16-bit Floating-Point GER (rank-2 update) Negative multiply, Positive accumulate XX3-form (xvf16ger2np AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVF16GER2PN, 0xfc0007f8, 0xec000490, 0x600001, // VSX Vector 16-bit Floating-Point GER (rank-2 update) Positive multiply, Negative accumulate XX3-form (xvf16ger2pn AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVF16GER2PP, 0xfc0007f8, 0xec000090, 0x600001, // VSX Vector 16-bit Floating-Point GER (rank-2 update) Positive multiply, Positive accumulate XX3-form (xvf16ger2pp AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVF32GER, 0xfc0007f8, 0xec0000d8, 0x600001, // VSX Vector 32-bit Floating-Point GER (rank-1 update) XX3-form (xvf32ger AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVF32GERNN, 0xfc0007f8, 0xec0006d0, 0x600001, // VSX Vector 32-bit Floating-Point GER (rank-1 update) Negative multiply, Negative accumulate XX3-form (xvf32gernn AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVF32GERNP, 0xfc0007f8, 0xec0002d0, 0x600001, // VSX Vector 32-bit Floating-Point GER (rank-1 update) Negative multiply, Positive accumulate XX3-form (xvf32gernp AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVF32GERPN, 0xfc0007f8, 0xec0004d0, 0x600001, // VSX Vector 32-bit Floating-Point GER (rank-1 update) Positive multiply, Negative accumulate XX3-form (xvf32gerpn AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVF32GERPP, 0xfc0007f8, 0xec0000d0, 0x600001, // VSX Vector 32-bit Floating-Point GER (rank-1 update) Positive multiply, Positive accumulate XX3-form (xvf32gerpp AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVF64GER, 0xfc0007f8, 0xec0001d8, 0x600001, // VSX Vector 64-bit Floating-Point GER (rank-1 update) XX3-form (xvf64ger AT,XAp,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVF64GERNN, 0xfc0007f8, 0xec0007d0, 0x600001, // VSX Vector 64-bit Floating-Point GER (rank-1 update) Negative multiply, Negative accumulate XX3-form (xvf64gernn AT,XAp,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVF64GERNP, 0xfc0007f8, 0xec0003d0, 0x600001, // VSX Vector 64-bit Floating-Point GER (rank-1 update) Negative multiply, Positive accumulate XX3-form (xvf64gernp AT,XAp,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVF64GERPN, 0xfc0007f8, 0xec0005d0, 0x600001, // VSX Vector 64-bit Floating-Point GER (rank-1 update) Positive multiply, Negative accumulate XX3-form (xvf64gerpn AT,XAp,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVF64GERPP, 0xfc0007f8, 0xec0001d0, 0x600001, // VSX Vector 64-bit Floating-Point GER (rank-1 update) Positive multiply, Positive accumulate XX3-form (xvf64gerpp AT,XAp,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVI16GER2, 0xfc0007f8, 0xec000258, 0x600001, // VSX Vector 16-bit Signed Integer GER (rank-2 update) XX3-form (xvi16ger2 AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVI16GER2PP, 0xfc0007f8, 0xec000358, 0x600001, // VSX Vector 16-bit Signed Integer GER (rank-2 update) Positive multiply, Positive accumulate XX3-form (xvi16ger2pp AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVI16GER2S, 0xfc0007f8, 0xec000158, 0x600001, // VSX Vector 16-bit Signed Integer GER (rank-2 update) with Saturation XX3-form (xvi16ger2s AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVI16GER2SPP, 0xfc0007f8, 0xec000150, 0x600001, // VSX Vector 16-bit Signed Integer GER (rank-2 update) with Saturation Positive multiply, Positive accumulate XX3-form (xvi16ger2spp AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVI4GER8, 0xfc0007f8, 0xec000118, 0x600001, // VSX Vector 4-bit Signed Integer GER (rank-8 update) XX3-form (xvi4ger8 AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVI4GER8PP, 0xfc0007f8, 0xec000110, 0x600001, // VSX Vector 4-bit Signed Integer GER (rank-8 update) Positive multiply, Positive accumulate XX3-form (xvi4ger8pp AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVI8GER4, 0xfc0007f8, 0xec000018, 0x600001, // VSX Vector 8-bit Signed/Unsigned Integer GER (rank-4 update) XX3-form (xvi8ger4 AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVI8GER4PP, 0xfc0007f8, 0xec000010, 0x600001, // VSX Vector 8-bit Signed/Unsigned Integer GER (rank-4 update) Positive multiply, Positive accumulate XX3-form (xvi8ger4pp AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVI8GER4SPP, 0xfc0007f8, 0xec000318, 0x600001, // VSX Vector 8-bit Signed/Unsigned Integer GER (rank-4 update) with Saturate Positive multiply, Positive accumulate XX3-form (xvi8ger4spp AT,XA,XB)
+		[5]*argField{ap_MMAReg_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVTLSBB, 0xfc1f07fc, 0xf002076c, 0x600001, // VSX Vector Test Least-Significant Bit by Byte XX2-form (xvtlsbb BF,XB)
+		[5]*argField{ap_CondRegField_6_8, ap_VecSReg_30_30_16_20}},
+	{XXGENPCVBM, 0xfc0007fe, 0xf0000728, 0x0, // VSX Vector Generate PCV from Byte Mask X-form (xxgenpcvbm XT,VRB,IMM)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecReg_16_20, ap_ImmUnsigned_11_15}},
+	{XXGENPCVDM, 0xfc0007fe, 0xf000076a, 0x0, // VSX Vector Generate PCV from Doubleword Mask X-form (xxgenpcvdm XT,VRB,IMM)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecReg_16_20, ap_ImmUnsigned_11_15}},
+	{XXGENPCVHM, 0xfc0007fe, 0xf000072a, 0x0, // VSX Vector Generate PCV from Halfword Mask X-form (xxgenpcvhm XT,VRB,IMM)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecReg_16_20, ap_ImmUnsigned_11_15}},
+	{XXGENPCVWM, 0xfc0007fe, 0xf0000768, 0x0, // VSX Vector Generate PCV from Word Mask X-form (xxgenpcvwm XT,VRB,IMM)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecReg_16_20, ap_ImmUnsigned_11_15}},
+	{XXMFACC, 0xfc1f07fe, 0x7c000162, 0x60f801, // VSX Move From Accumulator X-form (xxmfacc AS)
+		[5]*argField{ap_MMAReg_6_8}},
+	{XXMTACC, 0xfc1f07fe, 0x7c010162, 0x60f801, // VSX Move To Accumulator X-form (xxmtacc AT)
+		[5]*argField{ap_MMAReg_6_8}},
+	{XXSETACCZ, 0xfc1f07fe, 0x7c030162, 0x60f801, // VSX Set Accumulator to Zero X-form (xxsetaccz AT)
+		[5]*argField{ap_MMAReg_6_8}},
+	{MSGCLRU, 0xfc0007fe, 0x7c0000dc, 0x3ff0001, // Ultravisor Message Clear X-form (msgclru RB)
+		[5]*argField{ap_Reg_16_20}},
+	{MSGSNDU, 0xfc0007fe, 0x7c00009c, 0x3ff0001, // Ultravisor Message SendX-form (msgsndu RB)
+		[5]*argField{ap_Reg_16_20}},
+	{URFID, 0xfc0007fe, 0x4c000264, 0x3fff801, // Ultravisor Return From Interrupt Doubleword XL-form (urfid)
+		[5]*argField{}},
+	{MFFSCDRN, 0xfc1f07fe, 0xfc14048e, 0x1, // Move From FPSCR Control & Set DRN X-form (mffscdrn FRT,FRB)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
+	{MFFSCDRNI, 0xfc1f07fe, 0xfc15048e, 0xc001, // Move From FPSCR Control & Set DRN Immediate X-form (mffscdrni FRT,DRM)
+		[5]*argField{ap_FPReg_6_10, ap_ImmUnsigned_18_20}},
+	{MFFSCE, 0xfc1f07fe, 0xfc01048e, 0xf801, // Move From FPSCR & Clear Enables X-form (mffsce FRT)
+		[5]*argField{ap_FPReg_6_10}},
+	{MFFSCRN, 0xfc1f07fe, 0xfc16048e, 0x1, // Move From FPSCR Control & Set RN X-form (mffscrn FRT,FRB)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
+	{MFFSCRNI, 0xfc1f07fe, 0xfc17048e, 0xe001, // Move From FPSCR Control & Set RN Immediate X-form (mffscrni FRT,RM)
+		[5]*argField{ap_FPReg_6_10, ap_ImmUnsigned_19_20}},
+	{MFFSL, 0xfc1f07fe, 0xfc18048e, 0xf801, // Move From FPSCR Lightweight X-form (mffsl FRT)
+		[5]*argField{ap_FPReg_6_10}},
+	{SLBIAG, 0xfc0007fe, 0x7c0006a4, 0x1ef801, // SLB Invalidate All Global X-form (slbiag RS, L)
+		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_15_15}},
+	{ADDPCIS, 0xfc00003e, 0x4c000004, 0x0, // Add PC Immediate Shifted DX-form (addpcis RT,D)
+		[5]*argField{ap_Reg_6_10, ap_ImmSigned_16_25_11_15_31_31}},
+	{BCDCFNCC, 0xfc1f05ff, 0x10070581, 0x0, // Decimal Convert From National VX-form (bcdcfn. VRT,VRB,PS)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_22_22}},
+	{BCDCFSQCC, 0xfc1f05ff, 0x10020581, 0x0, // Decimal Convert From Signed Quadword VX-form (bcdcfsq. VRT,VRB,PS)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_22_22}},
+	{BCDCFZCC, 0xfc1f05ff, 0x10060581, 0x0, // Decimal Convert From Zoned VX-form (bcdcfz. VRT,VRB,PS)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_22_22}},
+	{BCDCPSGNCC, 0xfc0007ff, 0x10000341, 0x0, // Decimal Copy Sign VX-form (bcdcpsgn. VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{BCDCTNCC, 0xfc1f05ff, 0x10050581, 0x200, // Decimal Convert To National VX-form (bcdctn. VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{BCDCTSQCC, 0xfc1f05ff, 0x10000581, 0x200, // Decimal Convert To Signed Quadword VX-form (bcdctsq. VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{BCDCTZCC, 0xfc1f05ff, 0x10040581, 0x0, // Decimal Convert To Zoned VX-form (bcdctz. VRT,VRB,PS)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_22_22}},
+	{BCDSCC, 0xfc0005ff, 0x100004c1, 0x0, // Decimal Shift VX-form (bcds. VRT,VRA,VRB,PS)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20, ap_ImmUnsigned_22_22}},
+	{BCDSETSGNCC, 0xfc1f05ff, 0x101f0581, 0x0, // Decimal Set Sign VX-form (bcdsetsgn. VRT,VRB,PS)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_22_22}},
+	{BCDSRCC, 0xfc0005ff, 0x100005c1, 0x0, // Decimal Shift and Round VX-form (bcdsr. VRT,VRA,VRB,PS)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20, ap_ImmUnsigned_22_22}},
+	{BCDTRUNCCC, 0xfc0005ff, 0x10000501, 0x0, // Decimal Truncate VX-form (bcdtrunc. VRT,VRA,VRB,PS)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20, ap_ImmUnsigned_22_22}},
+	{BCDUSCC, 0xfc0005ff, 0x10000481, 0x200, // Decimal Unsigned Shift VX-form (bcdus. VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{BCDUTRUNCCC, 0xfc0005ff, 0x10000541, 0x200, // Decimal Unsigned Truncate VX-form (bcdutrunc. VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{CNTTZD, 0xfc0007ff, 0x7c000474, 0xf800, // Count Trailing Zeros Doubleword X-form (cnttzd RA,RS)
+		[5]*argField{ap_Reg_11_15, ap_Reg_6_10}},
+	{CNTTZDCC, 0xfc0007ff, 0x7c000475, 0xf800, // Count Trailing Zeros Doubleword X-form (cnttzd. RA,RS)
+		[5]*argField{ap_Reg_11_15, ap_Reg_6_10}},
+	{CNTTZW, 0xfc0007ff, 0x7c000434, 0xf800, // Count Trailing Zeros Word X-form (cnttzw RA,RS)
+		[5]*argField{ap_Reg_11_15, ap_Reg_6_10}},
+	{CNTTZWCC, 0xfc0007ff, 0x7c000435, 0xf800, // Count Trailing Zeros Word X-form (cnttzw. RA,RS)
+		[5]*argField{ap_Reg_11_15, ap_Reg_6_10}},
+	{CPABORT, 0xfc0007fe, 0x7c00068c, 0x3fff801, // Copy-Paste Abort X-form (cpabort)
+		[5]*argField{}},
+	{DTSTSFI, 0xfc0007fe, 0xec000546, 0x400001, // DFP Test Significance Immediate X-form (dtstsfi BF,UIM,FRB)
+		[5]*argField{ap_CondRegField_6_8, ap_ImmUnsigned_10_15, ap_FPReg_16_20}},
+	{DTSTSFIQ, 0xfc0007fe, 0xfc000546, 0x400001, // DFP Test Significance Immediate Quad X-form (dtstsfiq BF,UIM,FRBp)
+		[5]*argField{ap_CondRegField_6_8, ap_ImmUnsigned_10_15, ap_FPReg_16_20}},
+	{LDAT, 0xfc0007fe, 0x7c0004cc, 0x1, // Load Doubleword ATomic X-form (ldat RT,RA,FC)
+		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_ImmUnsigned_16_20}},
+	{LWAT, 0xfc0007fe, 0x7c00048c, 0x1, // Load Word ATomic X-form (lwat RT,RA,FC)
+		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_ImmUnsigned_16_20}},
+	{LXSD, 0xfc000003, 0xe4000002, 0x0, // Load VSX Scalar Doubleword DS-form (lxsd VRT,DS(RA))
+		[5]*argField{ap_VecReg_6_10, ap_Offset_16_29_shift2, ap_Reg_11_15}},
+	{LXSIBZX, 0xfc0007fe, 0x7c00061a, 0x0, // Load VSX Scalar as Integer Byte & Zero Indexed X-form (lxsibzx XT,RA,RB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{LXSIHZX, 0xfc0007fe, 0x7c00065a, 0x0, // Load VSX Scalar as Integer Halfword & Zero Indexed X-form (lxsihzx XT,RA,RB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{LXSSP, 0xfc000003, 0xe4000003, 0x0, // Load VSX Scalar Single-Precision DS-form (lxssp VRT,DS(RA))
+		[5]*argField{ap_VecReg_6_10, ap_Offset_16_29_shift2, ap_Reg_11_15}},
+	{LXVWSX, 0xfc0007fe, 0x7c0002d8, 0x0, // Load VSX Vector Word & Splat Indexed X-form (lxvwsx XT,RA,RB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{MSGSYNC, 0xfc0007fe, 0x7c0006ec, 0x3fff801, // Message Synchronize X-form (msgsync)
+		[5]*argField{}},
+	{SETB, 0xfc0007fe, 0x7c000100, 0x3f801, // Set Boolean X-form (setb RT,BFA)
+		[5]*argField{ap_Reg_6_10, ap_CondRegField_11_13}},
+	{SLBIEG, 0xfc0007fe, 0x7c0003a4, 0x1f0001, // SLB Invalidate Entry Global X-form (slbieg RS,RB)
+		[5]*argField{ap_Reg_6_10, ap_Reg_16_20}},
+	{SLBSYNC, 0xfc0007fe, 0x7c0002a4, 0x3fff801, // SLB Synchronize X-form (slbsync)
+		[5]*argField{}},
+	{STDAT, 0xfc0007fe, 0x7c0005cc, 0x1, // Store Doubleword ATomic X-form (stdat RS,RA,FC)
+		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_ImmUnsigned_16_20}},
+	{STOP, 0xfc0007fe, 0x4c0002e4, 0x3fff801, // Stop XL-form (stop)
+		[5]*argField{}},
+	{STWAT, 0xfc0007fe, 0x7c00058c, 0x1, // Store Word ATomic X-form (stwat RS,RA,FC)
+		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_ImmUnsigned_16_20}},
+	{STXSD, 0xfc000003, 0xf4000002, 0x0, // Store VSX Scalar Doubleword DS-form (stxsd VRS,DS(RA))
+		[5]*argField{ap_VecReg_6_10, ap_Offset_16_29_shift2, ap_Reg_11_15}},
+	{STXSIBX, 0xfc0007fe, 0x7c00071a, 0x0, // Store VSX Scalar as Integer Byte Indexed X-form (stxsibx XS,RA,RB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{STXSIHX, 0xfc0007fe, 0x7c00075a, 0x0, // Store VSX Scalar as Integer Halfword Indexed X-form (stxsihx XS,RA,RB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{STXSSP, 0xfc000003, 0xf4000003, 0x0, // Store VSX Scalar Single DS-form (stxssp VRS,DS(RA))
+		[5]*argField{ap_VecReg_6_10, ap_Offset_16_29_shift2, ap_Reg_11_15}},
+	{VABSDUB, 0xfc0007ff, 0x10000403, 0x0, // Vector Absolute Difference Unsigned Byte VX-form (vabsdub VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VABSDUH, 0xfc0007ff, 0x10000443, 0x0, // Vector Absolute Difference Unsigned Halfword VX-form (vabsduh VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VABSDUW, 0xfc0007ff, 0x10000483, 0x0, // Vector Absolute Difference Unsigned Word VX-form (vabsduw VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VCLZLSBB, 0xfc1f07ff, 0x10000602, 0x0, // Vector Count Leading Zero Least-Significant Bits Byte VX-form (vclzlsbb RT,VRB)
+		[5]*argField{ap_Reg_6_10, ap_VecReg_16_20}},
+	{VCTZB, 0xfc1f07ff, 0x101c0602, 0x0, // Vector Count Trailing Zeros Byte VX-form (vctzb VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VCTZD, 0xfc1f07ff, 0x101f0602, 0x0, // Vector Count Trailing Zeros Doubleword VX-form (vctzd VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VCTZH, 0xfc1f07ff, 0x101d0602, 0x0, // Vector Count Trailing Zeros Halfword VX-form (vctzh VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VCTZLSBB, 0xfc1f07ff, 0x10010602, 0x0, // Vector Count Trailing Zero Least-Significant Bits Byte VX-form (vctzlsbb RT,VRB)
+		[5]*argField{ap_Reg_6_10, ap_VecReg_16_20}},
+	{VCTZW, 0xfc1f07ff, 0x101e0602, 0x0, // Vector Count Trailing Zeros Word VX-form (vctzw VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VEXTRACTD, 0xfc0007ff, 0x100002cd, 0x100000, // Vector Extract Doubleword to VSR using immediate-specified index VX-form (vextractd VRT,VRB,UIM)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_12_15}},
+	{VEXTRACTUB, 0xfc0007ff, 0x1000020d, 0x100000, // Vector Extract Unsigned Byte to VSR using immediate-specified index VX-form (vextractub VRT,VRB,UIM)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_12_15}},
+	{VEXTRACTUH, 0xfc0007ff, 0x1000024d, 0x100000, // Vector Extract Unsigned Halfword to VSR using immediate-specified index VX-form (vextractuh VRT,VRB,UIM)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_12_15}},
+	{VEXTRACTUW, 0xfc0007ff, 0x1000028d, 0x100000, // Vector Extract Unsigned Word to VSR using immediate-specified index VX-form (vextractuw VRT,VRB,UIM)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_12_15}},
+	{VEXTSB2D, 0xfc1f07ff, 0x10180602, 0x0, // Vector Extend Sign Byte To Doubleword VX-form (vextsb2d VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VEXTSB2W, 0xfc1f07ff, 0x10100602, 0x0, // Vector Extend Sign Byte To Word VX-form (vextsb2w VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VEXTSH2D, 0xfc1f07ff, 0x10190602, 0x0, // Vector Extend Sign Halfword To Doubleword VX-form (vextsh2d VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VEXTSH2W, 0xfc1f07ff, 0x10110602, 0x0, // Vector Extend Sign Halfword To Word VX-form (vextsh2w VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VEXTSW2D, 0xfc1f07ff, 0x101a0602, 0x0, // Vector Extend Sign Word To Doubleword VX-form (vextsw2d VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VEXTUBLX, 0xfc0007ff, 0x1000060d, 0x0, // Vector Extract Unsigned Byte to GPR using GPR-specified Left-Index VX-form (vextublx RT,RA,VRB)
+		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_VecReg_16_20}},
+	{VEXTUBRX, 0xfc0007ff, 0x1000070d, 0x0, // Vector Extract Unsigned Byte to GPR using GPR-specified Right-Index VX-form (vextubrx RT,RA,VRB)
+		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_VecReg_16_20}},
+	{VEXTUHLX, 0xfc0007ff, 0x1000064d, 0x0, // Vector Extract Unsigned Halfword to GPR using GPR-specified Left-Index VX-form (vextuhlx RT,RA,VRB)
+		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_VecReg_16_20}},
+	{VEXTUHRX, 0xfc0007ff, 0x1000074d, 0x0, // Vector Extract Unsigned Halfword to GPR using GPR-specified Right-Index VX-form (vextuhrx RT,RA,VRB)
+		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_VecReg_16_20}},
+	{VEXTUWLX, 0xfc0007ff, 0x1000068d, 0x0, // Vector Extract Unsigned Word to GPR using GPR-specified Left-Index VX-form (vextuwlx RT,RA,VRB)
+		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_VecReg_16_20}},
+	{VEXTUWRX, 0xfc0007ff, 0x1000078d, 0x0, // Vector Extract Unsigned Word to GPR using GPR-specified Right-Index VX-form (vextuwrx RT,RA,VRB)
+		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_VecReg_16_20}},
+	{VINSERTB, 0xfc0007ff, 0x1000030d, 0x100000, // Vector Insert Byte from VSR using immediate-specified index VX-form (vinsertb VRT,VRB,UIM)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_12_15}},
+	{VINSERTD, 0xfc0007ff, 0x100003cd, 0x100000, // Vector Insert Doubleword from VSR using immediate-specified index VX-form (vinsertd VRT,VRB,UIM)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_12_15}},
+	{VINSERTH, 0xfc0007ff, 0x1000034d, 0x100000, // Vector Insert Halfword from VSR using immediate-specified index VX-form (vinserth VRT,VRB,UIM)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_12_15}},
+	{VINSERTW, 0xfc0007ff, 0x1000038d, 0x100000, // Vector Insert Word from VSR using immediate-specified index VX-form (vinsertw VRT,VRB,UIM)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_12_15}},
+	{VMUL10CUQ, 0xfc0007ff, 0x10000001, 0xf800, // Vector Multiply-by-10 & write Carry-out Unsigned Quadword VX-form (vmul10cuq VRT,VRA)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15}},
+	{VMUL10ECUQ, 0xfc0007ff, 0x10000041, 0x0, // Vector Multiply-by-10 Extended & write Carry-out Unsigned Quadword VX-form (vmul10ecuq VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VMUL10EUQ, 0xfc0007ff, 0x10000241, 0x0, // Vector Multiply-by-10 Extended Unsigned Quadword VX-form (vmul10euq VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VMUL10UQ, 0xfc0007ff, 0x10000201, 0xf800, // Vector Multiply-by-10 Unsigned Quadword VX-form (vmul10uq VRT,VRA)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15}},
+	{VNEGD, 0xfc1f07ff, 0x10070602, 0x0, // Vector Negate Doubleword VX-form (vnegd VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VNEGW, 0xfc1f07ff, 0x10060602, 0x0, // Vector Negate Word VX-form (vnegw VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VPRTYBD, 0xfc1f07ff, 0x10090602, 0x0, // Vector Parity Byte Doubleword VX-form (vprtybd VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VPRTYBQ, 0xfc1f07ff, 0x100a0602, 0x0, // Vector Parity Byte Quadword VX-form (vprtybq VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VPRTYBW, 0xfc1f07ff, 0x10080602, 0x0, // Vector Parity Byte Word VX-form (vprtybw VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{VRLDMI, 0xfc0007ff, 0x100000c5, 0x0, // Vector Rotate Left Doubleword then Mask Insert VX-form (vrldmi VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VRLDNM, 0xfc0007ff, 0x100001c5, 0x0, // Vector Rotate Left Doubleword then AND with Mask VX-form (vrldnm VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VRLWMI, 0xfc0007ff, 0x10000085, 0x0, // Vector Rotate Left Word then Mask Insert VX-form (vrlwmi VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VRLWNM, 0xfc0007ff, 0x10000185, 0x0, // Vector Rotate Left Word then AND with Mask VX-form (vrlwnm VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VSLV, 0xfc0007ff, 0x10000744, 0x0, // Vector Shift Left Variable VX-form (vslv VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{VSRV, 0xfc0007ff, 0x10000704, 0x0, // Vector Shift Right Variable VX-form (vsrv VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSABSQP, 0xfc1f07fe, 0xfc000648, 0x1, // VSX Scalar Absolute Quad-Precision X-form (xsabsqp VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSADDQP, 0xfc0007ff, 0xfc000008, 0x0, // VSX Scalar Add Quad-Precision [using round to Odd] X-form (xsaddqp VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSADDQPO, 0xfc0007ff, 0xfc000009, 0x0, // VSX Scalar Add Quad-Precision [using round to Odd] X-form (xsaddqpo VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSCMPEQDP, 0xfc0007f8, 0xf0000018, 0x0, // VSX Scalar Compare Equal Double-Precision XX3-form (xscmpeqdp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XSCMPEXPDP, 0xfc0007f8, 0xf00001d8, 0x600001, // VSX Scalar Compare Exponents Double-Precision XX3-form (xscmpexpdp BF,XA,XB)
+		[5]*argField{ap_CondRegField_6_8, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XSCMPEXPQP, 0xfc0007fe, 0xfc000148, 0x600001, // VSX Scalar Compare Exponents Quad-Precision X-form (xscmpexpqp BF,VRA,VRB)
+		[5]*argField{ap_CondRegField_6_8, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSCMPGEDP, 0xfc0007f8, 0xf0000098, 0x0, // VSX Scalar Compare Greater Than or Equal Double-Precision XX3-form (xscmpgedp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XSCMPGTDP, 0xfc0007f8, 0xf0000058, 0x0, // VSX Scalar Compare Greater Than Double-Precision XX3-form (xscmpgtdp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XSCMPOQP, 0xfc0007fe, 0xfc000108, 0x600001, // VSX Scalar Compare Ordered Quad-Precision X-form (xscmpoqp BF,VRA,VRB)
+		[5]*argField{ap_CondRegField_6_8, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSCMPUQP, 0xfc0007fe, 0xfc000508, 0x600001, // VSX Scalar Compare Unordered Quad-Precision X-form (xscmpuqp BF,VRA,VRB)
+		[5]*argField{ap_CondRegField_6_8, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSCPSGNQP, 0xfc0007fe, 0xfc0000c8, 0x1, // VSX Scalar Copy Sign Quad-Precision X-form (xscpsgnqp VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSCVDPHP, 0xfc1f07fc, 0xf011056c, 0x0, // VSX Scalar Convert with round Double-Precision to Half-Precision format XX2-form (xscvdphp XT,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
+	{XSCVDPQP, 0xfc1f07fe, 0xfc160688, 0x1, // VSX Scalar Convert Double-Precision to Quad-Precision format X-form (xscvdpqp VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSCVHPDP, 0xfc1f07fc, 0xf010056c, 0x0, // VSX Scalar Convert Half-Precision to Double-Precision format XX2-form (xscvhpdp XT,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
+	{XSCVQPDP, 0xfc1f07ff, 0xfc140688, 0x0, // VSX Scalar Convert with round Quad-Precision to Double-Precision format [using round to Odd] X-form (xscvqpdp VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSCVQPDPO, 0xfc1f07ff, 0xfc140689, 0x0, // VSX Scalar Convert with round Quad-Precision to Double-Precision format [using round to Odd] X-form (xscvqpdpo VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSCVQPSDZ, 0xfc1f07fe, 0xfc190688, 0x1, // VSX Scalar Convert with round to zero Quad-Precision to Signed Doubleword format X-form (xscvqpsdz VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSCVQPSWZ, 0xfc1f07fe, 0xfc090688, 0x1, // VSX Scalar Convert with round to zero Quad-Precision to Signed Word format X-form (xscvqpswz VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSCVQPUDZ, 0xfc1f07fe, 0xfc110688, 0x1, // VSX Scalar Convert with round to zero Quad-Precision to Unsigned Doubleword format X-form (xscvqpudz VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSCVQPUWZ, 0xfc1f07fe, 0xfc010688, 0x1, // VSX Scalar Convert with round to zero Quad-Precision to Unsigned Word format X-form (xscvqpuwz VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSCVSDQP, 0xfc1f07fe, 0xfc0a0688, 0x1, // VSX Scalar Convert Signed Doubleword to Quad-Precision format X-form (xscvsdqp VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSCVUDQP, 0xfc1f07fe, 0xfc020688, 0x1, // VSX Scalar Convert Unsigned Doubleword to Quad-Precision format X-form (xscvudqp VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSDIVQP, 0xfc0007ff, 0xfc000448, 0x0, // VSX Scalar Divide Quad-Precision [using round to Odd] X-form (xsdivqp VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSDIVQPO, 0xfc0007ff, 0xfc000449, 0x0, // VSX Scalar Divide Quad-Precision [using round to Odd] X-form (xsdivqpo VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSIEXPDP, 0xfc0007fe, 0xf000072c, 0x0, // VSX Scalar Insert Exponent Double-Precision X-form (xsiexpdp XT,RA,RB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
+	{XSIEXPQP, 0xfc0007fe, 0xfc0006c8, 0x1, // VSX Scalar Insert Exponent Quad-Precision X-form (xsiexpqp VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSMADDQP, 0xfc0007ff, 0xfc000308, 0x0, // VSX Scalar Multiply-Add Quad-Precision [using round to Odd] X-form (xsmaddqp VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSMADDQPO, 0xfc0007ff, 0xfc000309, 0x0, // VSX Scalar Multiply-Add Quad-Precision [using round to Odd] X-form (xsmaddqpo VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSMAXCDP, 0xfc0007f8, 0xf0000400, 0x0, // VSX Scalar Maximum Type-C Double-Precision XX3-form (xsmaxcdp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XSMAXJDP, 0xfc0007f8, 0xf0000480, 0x0, // VSX Scalar Maximum Type-J Double-Precision XX3-form (xsmaxjdp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XSMINCDP, 0xfc0007f8, 0xf0000440, 0x0, // VSX Scalar Minimum Type-C Double-Precision XX3-form (xsmincdp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XSMINJDP, 0xfc0007f8, 0xf00004c0, 0x0, // VSX Scalar Minimum Type-J Double-Precision XX3-form (xsminjdp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XSMSUBQP, 0xfc0007ff, 0xfc000348, 0x0, // VSX Scalar Multiply-Subtract Quad-Precision [using round to Odd] X-form (xsmsubqp VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSMSUBQPO, 0xfc0007ff, 0xfc000349, 0x0, // VSX Scalar Multiply-Subtract Quad-Precision [using round to Odd] X-form (xsmsubqpo VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSMULQP, 0xfc0007ff, 0xfc000048, 0x0, // VSX Scalar Multiply Quad-Precision [using round to Odd] X-form (xsmulqp VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSMULQPO, 0xfc0007ff, 0xfc000049, 0x0, // VSX Scalar Multiply Quad-Precision [using round to Odd] X-form (xsmulqpo VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSNABSQP, 0xfc1f07fe, 0xfc080648, 0x0, // VSX Scalar Negative Absolute Quad-Precision X-form (xsnabsqp VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSNEGQP, 0xfc1f07fe, 0xfc100648, 0x1, // VSX Scalar Negate Quad-Precision X-form (xsnegqp VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSNMADDQP, 0xfc0007ff, 0xfc000388, 0x0, // VSX Scalar Negative Multiply-Add Quad-Precision [using round to Odd] X-form (xsnmaddqp VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSNMADDQPO, 0xfc0007ff, 0xfc000389, 0x0, // VSX Scalar Negative Multiply-Add Quad-Precision [using round to Odd] X-form (xsnmaddqpo VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSNMSUBQP, 0xfc0007ff, 0xfc0003c8, 0x0, // VSX Scalar Negative Multiply-Subtract Quad-Precision [using round to Odd] X-form (xsnmsubqp VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSNMSUBQPO, 0xfc0007ff, 0xfc0003c9, 0x0, // VSX Scalar Negative Multiply-Subtract Quad-Precision [using round to Odd] X-form (xsnmsubqpo VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSRQPI, 0xfc0001ff, 0xfc00000a, 0x1e0000, // VSX Scalar Round to Quad-Precision Integer [with Inexact] Z23-form (xsrqpi R,VRT,VRB,RMC)
+		[5]*argField{ap_ImmUnsigned_15_15, ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_21_22}},
+	{XSRQPIX, 0xfc0001ff, 0xfc00000b, 0x1e0000, // VSX Scalar Round to Quad-Precision Integer [with Inexact] Z23-form (xsrqpix R,VRT,VRB,RMC)
+		[5]*argField{ap_ImmUnsigned_15_15, ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_21_22}},
+	{XSRQPXP, 0xfc0001fe, 0xfc00004a, 0x1e0001, // VSX Scalar Round Quad-Precision to Double-Extended Precision Z23-form (xsrqpxp R,VRT,VRB,RMC)
+		[5]*argField{ap_ImmUnsigned_15_15, ap_VecReg_6_10, ap_VecReg_16_20, ap_ImmUnsigned_21_22}},
+	{XSSQRTQP, 0xfc1f07ff, 0xfc1b0648, 0x0, // VSX Scalar Square Root Quad-Precision [using round to Odd] X-form (xssqrtqp VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSSQRTQPO, 0xfc1f07ff, 0xfc1b0649, 0x0, // VSX Scalar Square Root Quad-Precision [using round to Odd] X-form (xssqrtqpo VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSSUBQP, 0xfc0007ff, 0xfc000408, 0x0, // VSX Scalar Subtract Quad-Precision [using round to Odd] X-form (xssubqp VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSSUBQPO, 0xfc0007ff, 0xfc000409, 0x0, // VSX Scalar Subtract Quad-Precision [using round to Odd] X-form (xssubqpo VRT,VRA,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_11_15, ap_VecReg_16_20}},
+	{XSTSTDCDP, 0xfc0007fc, 0xf00005a8, 0x1, // VSX Scalar Test Data Class Double-Precision XX2-form (xststdcdp BF,XB,DCMX)
+		[5]*argField{ap_CondRegField_6_8, ap_VecSReg_30_30_16_20, ap_ImmUnsigned_9_15}},
+	{XSTSTDCQP, 0xfc0007fe, 0xfc000588, 0x1, // VSX Scalar Test Data Class Quad-Precision X-form (xststdcqp BF,VRB,DCMX)
+		[5]*argField{ap_CondRegField_6_8, ap_VecReg_16_20, ap_ImmUnsigned_9_15}},
+	{XSTSTDCSP, 0xfc0007fc, 0xf00004a8, 0x1, // VSX Scalar Test Data Class Single-Precision XX2-form (xststdcsp BF,XB,DCMX)
+		[5]*argField{ap_CondRegField_6_8, ap_VecSReg_30_30_16_20, ap_ImmUnsigned_9_15}},
+	{XSXEXPDP, 0xfc1f07fc, 0xf000056c, 0x1, // VSX Scalar Extract Exponent Double-Precision XX2-form (xsxexpdp RT,XB)
+		[5]*argField{ap_Reg_6_10, ap_VecSReg_30_30_16_20}},
+	{XSXEXPQP, 0xfc1f07fe, 0xfc020648, 0x1, // VSX Scalar Extract Exponent Quad-Precision X-form (xsxexpqp VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XSXSIGDP, 0xfc1f07fc, 0xf001056c, 0x1, // VSX Scalar Extract Significand Double-Precision XX2-form (xsxsigdp RT,XB)
+		[5]*argField{ap_Reg_6_10, ap_VecSReg_30_30_16_20}},
+	{XSXSIGQP, 0xfc1f07fe, 0xfc120648, 0x1, // VSX Scalar Extract Significand Quad-Precision X-form (xsxsigqp VRT,VRB)
+		[5]*argField{ap_VecReg_6_10, ap_VecReg_16_20}},
+	{XVCVHPSP, 0xfc1f07fc, 0xf018076c, 0x0, // VSX Vector Convert Half-Precision to Single-Precision format XX2-form (xvcvhpsp XT,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
+	{XVCVSPHP, 0xfc1f07fc, 0xf019076c, 0x0, // VSX Vector Convert with round Single-Precision to Half-Precision format XX2-form (xvcvsphp XT,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
+	{XVIEXPDP, 0xfc0007f8, 0xf00007c0, 0x0, // VSX Vector Insert Exponent Double-Precision XX3-form (xviexpdp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVIEXPSP, 0xfc0007f8, 0xf00006c0, 0x0, // VSX Vector Insert Exponent Single-Precision XX3-form (xviexpsp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVTSTDCDP, 0xfc0007b8, 0xf00007a8, 0x0, // VSX Vector Test Data Class Double-Precision XX2-form (xvtstdcdp XT,XB,DCMX)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20, ap_ImmUnsigned_25_25_29_29_11_15}},
+	{XVTSTDCSP, 0xfc0007b8, 0xf00006a8, 0x0, // VSX Vector Test Data Class Single-Precision XX2-form (xvtstdcsp XT,XB,DCMX)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20, ap_ImmUnsigned_25_25_29_29_11_15}},
+	{XVXEXPDP, 0xfc1f07fc, 0xf000076c, 0x0, // VSX Vector Extract Exponent Double-Precision XX2-form (xvxexpdp XT,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
+	{XVXEXPSP, 0xfc1f07fc, 0xf008076c, 0x0, // VSX Vector Extract Exponent Single-Precision XX2-form (xvxexpsp XT,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
+	{XVXSIGDP, 0xfc1f07fc, 0xf001076c, 0x0, // VSX Vector Extract Significand Double-Precision XX2-form (xvxsigdp XT,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
+	{XVXSIGSP, 0xfc1f07fc, 0xf009076c, 0x0, // VSX Vector Extract Significand Single-Precision XX2-form (xvxsigsp XT,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
+	{XXBRQ, 0xfc1f07fc, 0xf01f076c, 0x0, // VSX Vector Byte-Reverse Quadword XX2-form (xxbrq XT,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20}},
+	{XXEXTRACTUW, 0xfc0007fc, 0xf0000294, 0x100000, // VSX Vector Extract Unsigned Word XX2-form (xxextractuw XT,XB,UIM)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20, ap_ImmUnsigned_12_15}},
+	{XXINSERTW, 0xfc0007fc, 0xf00002d4, 0x100000, // VSX Vector Insert Word XX2-form (xxinsertw XT,XB,UIM)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_30_30_16_20, ap_ImmUnsigned_12_15}},
+	{XXPERMR, 0xfc0007f8, 0xf00001d0, 0x0, // VSX Vector Permute Right-indexed XX3-form (xxpermr XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XXSPLTIB, 0xfc1807fe, 0xf00002d0, 0x0, // VSX Vector Splat Immediate Byte X-form (xxspltib XT,IMM8)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_ImmUnsigned_13_20}},
+	{XSMADDMSP, 0xfc0007f8, 0xf0000048, 0x0, // VSX Scalar Multiply-Add Type-M Single-Precision XX3-form (xsmaddmsp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XSMSUBMSP, 0xfc0007f8, 0xf00000c8, 0x0, // VSX Scalar Multiply-Subtract Type-M Single-Precision XX3-form (xsmsubmsp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XSNMADDMSP, 0xfc0007f8, 0xf0000448, 0x0, // VSX Scalar Negative Multiply-Add Type-M Single-Precision XX3-form (xsnmaddmsp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XSNMSUBMSP, 0xfc0007f8, 0xf00004c8, 0x0, // VSX Scalar Negative Multiply-Subtract Type-M Single-Precision XX3-form (xsnmsubmsp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XSMADDMDP, 0xfc0007f8, 0xf0000148, 0x0, // VSX Scalar Multiply-Add Type-M Double-Precision XX3-form (xsmaddmdp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XSMSUBMDP, 0xfc0007f8, 0xf00001c8, 0x0, // VSX Scalar Multiply-Subtract Type-M Double-Precision XX3-form (xsmsubmdp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XSNMADDMDP, 0xfc0007f8, 0xf0000548, 0x0, // VSX Scalar Negative Multiply-Add Type-M Double-Precision XX3-form (xsnmaddmdp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XSNMSUBMDP, 0xfc0007f8, 0xf00005c8, 0x0, // VSX Scalar Negative Multiply-Subtract Type-M Double-Precision XX3-form (xsnmsubmdp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVMADDMDP, 0xfc0007f8, 0xf0000348, 0x0, // VSX Vector Multiply-Add Type-M Double-Precision XX3-form (xvmaddmdp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVMADDMSP, 0xfc0007f8, 0xf0000248, 0x0, // VSX Vector Multiply-Add Type-M Single-Precision XX3-form (xvmaddmsp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVMSUBMDP, 0xfc0007f8, 0xf00003c8, 0x0, // VSX Vector Multiply-Subtract Type-M Double-Precision XX3-form (xvmsubmdp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVMSUBMSP, 0xfc0007f8, 0xf00002c8, 0x0, // VSX Vector Multiply-Subtract Type-M Single-Precision XX3-form (xvmsubmsp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVNMADDMDP, 0xfc0007f8, 0xf0000748, 0x0, // VSX Vector Negative Multiply-Add Type-M Double-Precision XX3-form (xvnmaddmdp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVNMADDMSP, 0xfc0007f8, 0xf0000648, 0x0, // VSX Vector Negative Multiply-Add Type-M Single-Precision XX3-form (xvnmaddmsp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVNMSUBMDP, 0xfc0007f8, 0xf00007c8, 0x0, // VSX Vector Negative Multiply-Subtract Type-M Double-Precision XX3-form (xvnmsubmdp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{XVNMSUBMSP, 0xfc0007f8, 0xf00006c8, 0x0, // VSX Vector Negative Multiply-Subtract Type-M Single-Precision XX3-form (xvnmsubmsp XT,XA,XB)
+		[5]*argField{ap_VecSReg_31_31_6_10, ap_VecSReg_29_29_11_15, ap_VecSReg_30_30_16_20}},
+	{DADDQ, 0xfc0007ff, 0xfc000004, 0x0, // DFP Add Quad X-form (daddq FRTp,FRAp,FRBp)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
+	{DADDQCC, 0xfc0007ff, 0xfc000005, 0x0, // DFP Add Quad X-form (daddq. FRTp,FRAp,FRBp)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
+	{DCMPOQ, 0xfc0007fe, 0xfc000104, 0x600001, // DFP Compare Ordered Quad X-form (dcmpoq BF,FRAp,FRBp)
+		[5]*argField{ap_CondRegField_6_8, ap_FPReg_11_15, ap_FPReg_16_20}},
+	{DCMPUQ, 0xfc0007fe, 0xfc000504, 0x600001, // DFP Compare Unordered Quad X-form (dcmpuq BF,FRAp,FRBp)
+		[5]*argField{ap_CondRegField_6_8, ap_FPReg_11_15, ap_FPReg_16_20}},
+	{DCTFIXQ, 0xfc0007ff, 0xfc000244, 0x1f0000, // DFP Convert To Fixed Quad X-form (dctfixq FRT,FRBp)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
+	{DCTFIXQCC, 0xfc0007ff, 0xfc000245, 0x1f0000, // DFP Convert To Fixed Quad X-form (dctfixq. FRT,FRBp)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
+	{DDEDPDQ, 0xfc0007ff, 0xfc000284, 0x70000, // DFP Decode DPD To BCD Quad X-form (ddedpdq SP,FRTp,FRBp)
+		[5]*argField{ap_ImmUnsigned_11_12, ap_FPReg_6_10, ap_FPReg_16_20}},
+	{DDEDPDQCC, 0xfc0007ff, 0xfc000285, 0x70000, // DFP Decode DPD To BCD Quad X-form (ddedpdq. SP,FRTp,FRBp)
+		[5]*argField{ap_ImmUnsigned_11_12, ap_FPReg_6_10, ap_FPReg_16_20}},
+	{DDIVQ, 0xfc0007ff, 0xfc000444, 0x0, // DFP Divide Quad X-form (ddivq FRTp,FRAp,FRBp)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
+	{DDIVQCC, 0xfc0007ff, 0xfc000445, 0x0, // DFP Divide Quad X-form (ddivq. FRTp,FRAp,FRBp)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
+	{DENBCDQ, 0xfc0007ff, 0xfc000684, 0xf0000, // DFP Encode BCD To DPD Quad X-form (denbcdq S,FRTp,FRBp)
+		[5]*argField{ap_ImmUnsigned_11_11, ap_FPReg_6_10, ap_FPReg_16_20}},
+	{DENBCDQCC, 0xfc0007ff, 0xfc000685, 0xf0000, // DFP Encode BCD To DPD Quad X-form (denbcdq. S,FRTp,FRBp)
+		[5]*argField{ap_ImmUnsigned_11_11, ap_FPReg_6_10, ap_FPReg_16_20}},
+	{DIEXQCC, 0xfc0007ff, 0xfc0006c5, 0x0, // DFP Insert Biased Exponent Quad X-form (diexq. FRTp,FRA,FRBp)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
+	{DIEXQ, 0xfc0007fe, 0xfc0006c4, 0x0, // DFP Insert Biased Exponent Quad X-form (diexq FRTp,FRA,FRBp)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
+	{DMULQ, 0xfc0007ff, 0xfc000044, 0x0, // DFP Multiply Quad X-form (dmulq FRTp,FRAp,FRBp)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
+	{DMULQCC, 0xfc0007ff, 0xfc000045, 0x0, // DFP Multiply Quad X-form (dmulq. FRTp,FRAp,FRBp)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
+	{DQUAIQ, 0xfc0001ff, 0xfc000086, 0x0, // DFP Quantize Immediate Quad Z23-form (dquaiq TE,FRTp,FRBp,RMC)
+		[5]*argField{ap_ImmSigned_11_15, ap_FPReg_6_10, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
+	{DQUAIQCC, 0xfc0001ff, 0xfc000087, 0x0, // DFP Quantize Immediate Quad Z23-form (dquaiq. TE,FRTp,FRBp,RMC)
+		[5]*argField{ap_ImmSigned_11_15, ap_FPReg_6_10, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
+	{DQUAQ, 0xfc0001ff, 0xfc000006, 0x0, // DFP Quantize Quad Z23-form (dquaq FRTp,FRAp,FRBp,RMC)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
+	{DQUAQCC, 0xfc0001ff, 0xfc000007, 0x0, // DFP Quantize Quad Z23-form (dquaq. FRTp,FRAp,FRBp,RMC)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
+	{DRINTNQ, 0xfc0001ff, 0xfc0001c6, 0x1e0000, // DFP Round To FP Integer Without Inexact Quad Z23-form (drintnq R,FRTp,FRBp,RMC)
+		[5]*argField{ap_ImmUnsigned_15_15, ap_FPReg_6_10, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
+	{DRINTNQCC, 0xfc0001ff, 0xfc0001c7, 0x1e0000, // DFP Round To FP Integer Without Inexact Quad Z23-form (drintnq. R,FRTp,FRBp,RMC)
+		[5]*argField{ap_ImmUnsigned_15_15, ap_FPReg_6_10, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
+	{DRINTXQ, 0xfc0001ff, 0xfc0000c6, 0x1e0000, // DFP Round To FP Integer With Inexact Quad Z23-form (drintxq R,FRTp,FRBp,RMC)
+		[5]*argField{ap_ImmUnsigned_15_15, ap_FPReg_6_10, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
+	{DRINTXQCC, 0xfc0001ff, 0xfc0000c7, 0x1e0000, // DFP Round To FP Integer With Inexact Quad Z23-form (drintxq. R,FRTp,FRBp,RMC)
+		[5]*argField{ap_ImmUnsigned_15_15, ap_FPReg_6_10, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
+	{DRRNDQ, 0xfc0001ff, 0xfc000046, 0x0, // DFP Reround Quad Z23-form (drrndq FRTp,FRA,FRBp,RMC)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
+	{DRRNDQCC, 0xfc0001ff, 0xfc000047, 0x0, // DFP Reround Quad Z23-form (drrndq. FRTp,FRA,FRBp,RMC)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20, ap_ImmUnsigned_21_22}},
+	{DSCLIQ, 0xfc0003ff, 0xfc000084, 0x0, // DFP Shift Significand Left Immediate Quad Z22-form (dscliq FRTp,FRAp,SH)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_ImmUnsigned_16_21}},
+	{DSCLIQCC, 0xfc0003ff, 0xfc000085, 0x0, // DFP Shift Significand Left Immediate Quad Z22-form (dscliq. FRTp,FRAp,SH)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_ImmUnsigned_16_21}},
+	{DSCRIQ, 0xfc0003ff, 0xfc0000c4, 0x0, // DFP Shift Significand Right Immediate Quad Z22-form (dscriq FRTp,FRAp,SH)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_ImmUnsigned_16_21}},
+	{DSCRIQCC, 0xfc0003ff, 0xfc0000c5, 0x0, // DFP Shift Significand Right Immediate Quad Z22-form (dscriq. FRTp,FRAp,SH)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_ImmUnsigned_16_21}},
+	{DSUBQ, 0xfc0007ff, 0xfc000404, 0x0, // DFP Subtract Quad X-form (dsubq FRTp,FRAp,FRBp)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
+	{DSUBQCC, 0xfc0007ff, 0xfc000405, 0x0, // DFP Subtract Quad X-form (dsubq. FRTp,FRAp,FRBp)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_11_15, ap_FPReg_16_20}},
+	{DTSTDCQ, 0xfc0003fe, 0xfc000184, 0x600001, // DFP Test Data Class Quad Z22-form (dtstdcq BF,FRAp,DCM)
+		[5]*argField{ap_CondRegField_6_8, ap_FPReg_11_15, ap_ImmUnsigned_16_21}},
+	{DTSTDGQ, 0xfc0003fe, 0xfc0001c4, 0x600001, // DFP Test Data Group Quad Z22-form (dtstdgq BF,FRAp,DGM)
+		[5]*argField{ap_CondRegField_6_8, ap_FPReg_11_15, ap_ImmUnsigned_16_21}},
+	{DTSTEXQ, 0xfc0007fe, 0xfc000144, 0x600001, // DFP Test Exponent Quad X-form (dtstexq BF,FRAp,FRBp)
+		[5]*argField{ap_CondRegField_6_8, ap_FPReg_11_15, ap_FPReg_16_20}},
+	{DTSTSFQ, 0xfc0007fe, 0xfc000544, 0x600001, // DFP Test Significance Quad X-form (dtstsfq BF,FRA,FRBp)
+		[5]*argField{ap_CondRegField_6_8, ap_FPReg_11_15, ap_FPReg_16_20}},
+	{DXEXQ, 0xfc0007ff, 0xfc0002c4, 0x1f0000, // DFP Extract Biased Exponent Quad X-form (dxexq FRT,FRBp)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
+	{DXEXQCC, 0xfc0007ff, 0xfc0002c5, 0x1f0000, // DFP Extract Biased Exponent Quad X-form (dxexq. FRT,FRBp)
+		[5]*argField{ap_FPReg_6_10, ap_FPReg_16_20}},
+	{RFSCV, 0xfc0007fe, 0x4c0000a4, 0x3fff801, // Return From System Call Vectored XL-form (rfscv)
+		[5]*argField{}},
+	{SCV, 0xfc000003, 0x44000001, 0x3fff01c, // System Call Vectored SC-form (scv LEV)
+		[5]*argField{ap_ImmUnsigned_20_26}},
 }

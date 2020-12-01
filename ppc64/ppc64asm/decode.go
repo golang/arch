@@ -54,6 +54,10 @@ func (a argField) Parse(i uint32) Arg {
 		return V0 + Reg(a.BitFields.Parse(i))
 	case TypeVecSReg:
 		return VS0 + Reg(a.BitFields.Parse(i))
+	case TypeVecSpReg:
+		return VS0 + Reg(a.BitFields.Parse(i))*2
+	case TypeMMAReg:
+		return A0 + Reg(a.BitFields.Parse(i))
 	case TypeSpReg:
 		return SpReg(a.BitFields.Parse(i))
 	case TypeImmSigned:
@@ -81,6 +85,8 @@ const (
 	TypeFPReg                // floating point register
 	TypeVecReg               // vector register
 	TypeVecSReg              // VSX register
+	TypeVecSpReg             // VSX register pair (even only encoding)
+	TypeMMAReg               // MMA register
 	TypeSpReg                // special register (depends on Op)
 	TypeImmSigned            // signed immediate
 	TypeImmUnsigned          // unsigned immediate/flag/mask, this is the catch-all type
@@ -106,6 +112,10 @@ func (t ArgType) String() string {
 		return "VecReg"
 	case TypeVecSReg:
 		return "VecSReg"
+	case TypeVecSpReg:
+		return "VecSpReg"
+	case TypeMMAReg:
+		return "MMAReg"
 	case TypeSpReg:
 		return "SpReg"
 	case TypeImmSigned:

@@ -220,6 +220,14 @@ const (
 	VS61
 	VS62
 	VS63
+	A0 // MMA registers.  These are effectively shadow registers of four adjacent VSR's [An*4,An*4+3]
+	A1
+	A2
+	A3
+	A4
+	A5
+	A6
+	A7
 )
 
 func (Reg) IsArg() {}
@@ -233,6 +241,8 @@ func (r Reg) String() string {
 		return fmt.Sprintf("v%d", int(r-V0))
 	case VS0 <= r && r <= VS63:
 		return fmt.Sprintf("vs%d", int(r-VS0))
+	case A0 <= r && r <= A7:
+		return fmt.Sprintf("a%d", int(r-A0))
 	default:
 		return fmt.Sprintf("Reg(%d)", int(r))
 	}
