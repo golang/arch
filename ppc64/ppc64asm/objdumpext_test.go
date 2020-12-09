@@ -14,22 +14,34 @@ import (
 	"io"
 	"log"
 	"os"
+	"os/exec"
 	"runtime"
 	"strconv"
 	"strings"
 	"testing"
 )
 
-const objdumpPath = "/usr/bin/objdump"
+var objdumpPath = "objdump"
+
+var objdumpCrossNames = [...]string{"powerpc64-linux-gnu-objdump", "powerpc64le-linux-gnu-objdump"}
 
 func testObjdump(t *testing.T, generate func(func([]byte))) {
 	if testing.Short() {
 		t.Skip("skipping objdump test in short mode")
 	}
 	if runtime.GOARCH != "ppc64le" && runtime.GOARCH != "ppc64" {
-		t.Skip("skipping; test requires host tool objdump for ppc64 or ppc64le")
-	}
-	if _, err := os.Stat(objdumpPath); err != nil {
+		found := false
+		for _, c := range objdumpCrossNames {
+			if _, err := exec.LookPath(c); err == nil {
+				objdumpPath = c
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Skip("skipping; test requires host tool objdump for ppc64 or ppc64le")
+		}
+	} else if _, err := exec.LookPath(objdumpPath); err != nil {
 		t.Skip(err)
 	}
 

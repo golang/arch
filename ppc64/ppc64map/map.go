@@ -409,10 +409,20 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 			case "RA", "RB", "RC", "RS", "RSp", "RT", "RTp":
 				typ = asm.TypeReg
 			case "BT", "BA", "BB", "BC", "BI":
-				typ = asm.TypeCondRegBit
+				if strings.HasPrefix(inst.Op, "mtfs") {
+					// mtfsb[01] instructions use BT, but they specify fields in the fpscr.
+					typ = asm.TypeImmUnsigned
+				} else {
+					typ = asm.TypeCondRegBit
+				}
 			case "BF", "BFA":
-				typ = asm.TypeCondRegField
-			case "FRA", "FRB", "FRBp", "FRC", "FRS", "FRSp", "FRT", "FRTp":
+				if strings.HasPrefix(inst.Op, "mtfs") {
+					// mtfsfi[.] instructions use BF, but they specify fields in the fpscr.
+					typ = asm.TypeImmUnsigned
+				} else {
+					typ = asm.TypeCondRegField
+				}
+			case "FRA", "FRB", "FRBp", "FRC", "FRS", "FRSp", "FRT", "FRTp", "FRAp":
 				typ = asm.TypeFPReg
 			case "XA", "XB", "XC", "XS", "XT": // 5-bit, split field
 				typ = asm.TypeVecSReg
