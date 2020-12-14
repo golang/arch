@@ -4606,8 +4606,6 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_Reg_6_10, ap_SpReg_16_20_11_15}},
 	{RFEBB, 0xfc0007fe, 0x4c000124, 0x3fff001, // Return from Event Based Branch XL-form (rfebb S)
 		[5]*argField{ap_ImmUnsigned_20_20}},
-	{SC, 0xfc000002, 0x44000002, 0x3fff01d, // System Call SC-form (sc LEV)
-		[5]*argField{ap_ImmUnsigned_20_26}},
 	{RFID, 0xfc0007fe, 0x4c000024, 0x3fff801, // Return from Interrupt Doubleword XL-form (rfid)
 		[5]*argField{}},
 	{HRFID, 0xfc0007fe, 0x4c000224, 0x3fff801, // Return From Interrupt Doubleword Hypervisor XL-form (hrfid)
@@ -4628,10 +4626,6 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{STDCIX, 0xfc0007fe, 0x7c0007ea, 0x1, // Store Doubleword Caching Inhibited Indexed X-form (stdcix RS,RA,RB)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20}},
-	{MTSPR, 0xfc0007fe, 0x7c0003a6, 0x1, // Move To Special Purpose Register XFX-form (mtspr SPR,RS)
-		[5]*argField{ap_SpReg_16_20_11_15, ap_Reg_6_10}},
-	{MFSPR, 0xfc0007fe, 0x7c0002a6, 0x1, // Move From Special Purpose Register XFX-form (mfspr RT,SPR)
-		[5]*argField{ap_Reg_6_10, ap_SpReg_16_20_11_15}},
 	{MTMSR, 0xfc0007fe, 0x7c000124, 0x1ef801, // Move To MSR X-form (mtmsr RS,L)
 		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_15_15}},
 	{MTMSRD, 0xfc0007fe, 0x7c000164, 0x1ef801, // Move To MSR Doubleword X-form (mtmsrd RS,L)
@@ -4664,22 +4658,6 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_Reg_16_20}},
 	{MSGCLRP, 0xfc0007fe, 0x7c00015c, 0x3ff0001, // Message Clear Privileged X-form (msgclrp RB)
 		[5]*argField{ap_Reg_16_20}},
-	{SC, 0xfc000002, 0x44000002, 0x3fff01d, // System Call SC-form (sc LEV)
-		[5]*argField{ap_ImmUnsigned_20_26}},
-	{MTSPR, 0xfc0007fe, 0x7c0003a6, 0x1, // Move To Special Purpose Register XFX-form (mtspr SPR,RS)
-		[5]*argField{ap_SpReg_16_20_11_15, ap_Reg_6_10}},
-	{MFSPR, 0xfc0007fe, 0x7c0002a6, 0x1, // Move From Special Purpose Register XFX-form (mfspr RT,SPR)
-		[5]*argField{ap_Reg_6_10, ap_SpReg_16_20_11_15}},
-	{MTMSR, 0xfc0007fe, 0x7c000124, 0x1ef801, // Move To MSR X-form (mtmsr RS,L)
-		[5]*argField{ap_Reg_6_10, ap_ImmUnsigned_15_15}},
-	{MFMSR, 0xfc0007fe, 0x7c0000a6, 0x1ff801, // Move From MSR X-form (mfmsr RT)
-		[5]*argField{ap_Reg_6_10}},
-	{TLBSYNC, 0xfc0007fe, 0x7c00046c, 0x3fff801, // TLB Synchronize X-form (tlbsync)
-		[5]*argField{}},
-	{MSGSND, 0xfc0007fe, 0x7c00019c, 0x3ff0001, // Message Send X-form (msgsnd RB)
-		[5]*argField{ap_Reg_16_20}},
-	{MSGCLR, 0xfc0007fe, 0x7c0001dc, 0x3ff0001, // Message Clear X-form (msgclr RB)
-		[5]*argField{ap_Reg_16_20}},
 	{ADDEX, 0xfc0001fe, 0x7c000154, 0x1, // Add Extended using alternate carry bit Z23-form (addex RT,RA,RB,CY)
 		[5]*argField{ap_Reg_6_10, ap_Reg_11_15, ap_Reg_16_20, ap_ImmUnsigned_21_22}},
 	{DARN, 0xfc0007fe, 0x7c0005e6, 0x1cf801, // Deliver A Random Number X-form (darn RT,L)
@@ -4694,24 +4672,12 @@ var instFormats = [...]instFormat{
 		[5]*argField{ap_CondRegField_6_8, ap_ImmUnsigned_10_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{CMPEQB, 0xfc0007fe, 0x7c0001c0, 0x600001, // Compare Equal Byte X-form (cmpeqb BF,RA,RB)
 		[5]*argField{ap_CondRegField_6_8, ap_Reg_11_15, ap_Reg_16_20}},
-	{BPERMD, 0xfc0007fe, 0x7c0001f8, 0x1, // Bit Permute Doubleword X-form (bpermd RA,RS,RB)
-		[5]*argField{ap_Reg_11_15, ap_Reg_6_10, ap_Reg_16_20}},
 	{EXTSWSLI, 0xfc0007fd, 0x7c0006f4, 0x0, // Extend Sign Word and Shift Left Immediate XS-form (extswsli RA,RS,SH)
 		[5]*argField{ap_Reg_11_15, ap_Reg_6_10, ap_ImmUnsigned_30_30_16_20}},
 	{EXTSWSLICC, 0xfc0007fd, 0x7c0006f5, 0x0, // Extend Sign Word and Shift Left Immediate XS-form (extswsli. RA,RS,SH)
 		[5]*argField{ap_Reg_11_15, ap_Reg_6_10, ap_ImmUnsigned_30_30_16_20}},
-	{MFVSRD, 0xfc0007fe, 0x7c000066, 0xf800, // Move From VSR Doubleword X-form (mfvsrd RA,XS)
-		[5]*argField{ap_Reg_11_15, ap_VecSReg_31_31_6_10}},
 	{MFVSRLD, 0xfc0007fe, 0x7c000266, 0xf800, // Move From VSR Lower Doubleword X-form (mfvsrld RA,XS)
 		[5]*argField{ap_Reg_11_15, ap_VecSReg_31_31_6_10}},
-	{MFVSRWZ, 0xfc0007fe, 0x7c0000e6, 0xf800, // Move From VSR Word and Zero X-form (mfvsrwz RA,XS)
-		[5]*argField{ap_Reg_11_15, ap_VecSReg_31_31_6_10}},
-	{MTVSRD, 0xfc0007fe, 0x7c000166, 0xf800, // Move To VSR Doubleword X-form (mtvsrd XT,RA)
-		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15}},
-	{MTVSRWA, 0xfc0007fe, 0x7c0001a6, 0xf800, // Move To VSR Word Algebraic X-form (mtvsrwa XT,RA)
-		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15}},
-	{MTVSRWZ, 0xfc0007fe, 0x7c0001e6, 0xf800, // Move To VSR Word and Zero X-form (mtvsrwz XT,RA)
-		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15}},
 	{MTVSRDD, 0xfc0007fe, 0x7c000366, 0x0, // Move To VSR Double Doubleword X-form (mtvsrdd XT,RA,RB)
 		[5]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{MTVSRWS, 0xfc0007fe, 0x7c000326, 0xf800, // Move To VSR Word & Splat X-form (mtvsrws XT,RA)
