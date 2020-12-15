@@ -283,8 +283,51 @@ func GNUSyntax(inst Inst, pc uint64) string {
 		}
 		buf.WriteString(inst.Op.String())
 
+	case "paddi":
+		// There are several extended mnemonics.  Notably, "pla" is
+		// the only valid mnemonic for paddi (R=1), In this case, RA must
+		// always be 0.  Otherwise it is invalid.
+		r := inst.Args[3].(Imm)
+		ra := inst.Args[1].(Reg)
+		str := opName
+		if ra == R0 {
+			name := []string{"pli", "pla"}
+			str = fmt.Sprintf("%s %s,%s",
+				name[r&1],
+				gnuArg(&inst, 0, inst.Args[0], PC),
+				gnuArg(&inst, 2, inst.Args[2], PC))
+			startArg = 4
+		} else if r == 0 {
+			str = fmt.Sprintf("%s %s,%s,%s", opName,
+				gnuArg(&inst, 0, inst.Args[0], PC),
+				gnuArg(&inst, 1, inst.Args[1], PC),
+				gnuArg(&inst, 2, inst.Args[2], PC))
+			startArg = 4
+		}
+		buf.WriteString(str)
+
 	default:
-		buf.WriteString(inst.Op.String())
+		// Prefixed load/stores do not print the displacement register when R==1 (they are PCrel).
+		// This also implies RA should be 0.  Likewise, when R==0, printing of R can be omitted.
+		if strings.HasPrefix(opName, "pl") || strings.HasPrefix(opName, "pst") {
+			r := inst.Args[3].(Imm)
+			ra := inst.Args[2].(Reg)
+			d := inst.Args[1].(Offset)
+			if r == 1 && ra == R0 {
+				str := fmt.Sprintf("%s %s,%d", opName, gnuArg(&inst, 0, inst.Args[0], PC), d)
+				buf.WriteString(str)
+				startArg = 4
+			} else if r == 0 {
+				str := fmt.Sprintf("%s %s,%d(%s)", opName,
+					gnuArg(&inst, 0, inst.Args[0], PC),
+					d,
+					gnuArg(&inst, 2, inst.Args[2], PC))
+				buf.WriteString(str)
+				startArg = 4
+			}
+		} else {
+			buf.WriteString(opName)
+		}
 	}
 	for i, arg := range argList {
 		if arg == nil {

@@ -854,3 +854,4 @@ f0400fe0|	gnu	xvcvsxddp vs2,vs1
 7c2110ac|	gnu	dcbf r1,r2,1
 7c20003c|	gnu	wait 1,0
 4c000924|	gnu	rfebb 1
+0602000138800007|	gnu	pli r4,-8589869049

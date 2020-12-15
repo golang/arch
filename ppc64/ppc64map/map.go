@@ -669,7 +669,14 @@ func printASM(p *Prog) {
 	fmt.Printf("#include \"hack.h\"\n")
 	fmt.Printf(".text\n")
 	for _, inst := range p.Insts {
-		fmt.Printf("\t%s\n", inst.Encoding)
+		// Prefixed load/stores have extra restrictions with D(RA) and R. Rename them
+		// To simplify generation.
+		str := inst.Encoding
+		if str[0] == 'p' && str[len(str)-1] == 'R' {
+			str = strings.Replace(str, "D(RA),R", "Dpfx(RApfx),Rpfx", 1)
+			str = strings.Replace(str, "RA,SI,R", "RApfx,SIpfx,Rpfx", 1)
+		}
+		fmt.Printf("\t%s\n", str)
 	}
 }
 
@@ -751,7 +758,9 @@ func printDecoder(p *Prog) {
 	// Emit decoding table.
 	fmt.Fprintf(&buf, "var instFormats = [...]instFormat{\n")
 	for _, inst := range p.Insts {
-		fmt.Fprintf(&buf, "\t{ %s, %#x, %#x, %#x,", opName(inst.Op), inst.Mask, inst.Value, inst.DontCare)
+		m, v, dc := uint64(inst.Mask)<<32, uint64(inst.Value)<<32, uint64(inst.DontCare)<<32
+		m, v, dc = uint64(inst.SMask)|m, uint64(inst.SValue)|v, uint64(inst.SDontCare)|dc
+		fmt.Fprintf(&buf, "\t{ %s, %#x, %#x, %#x,", opName(inst.Op), m, v, dc)
 		fmt.Fprintf(&buf, " // %s (%s)\n\t\t[6]*argField{", inst.Text, inst.Encoding)
 		for _, f := range inst.Fields {
 			fmt.Fprintf(&buf, "%s, ", argFieldName(f))
