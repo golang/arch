@@ -14,6 +14,10 @@ import (
 type BitField struct {
 	Offs uint8 // the offset of the left-most bit.
 	Bits uint8 // length in bits.
+	// This instruction word holding this field.
+	// It is always 0 for ISA < 3.1 instructions. It is
+	// in decoding order. (0 == prefix, 1 == suffix on ISA 3.1)
+	Word uint8
 }
 
 func (b BitField) String() string {

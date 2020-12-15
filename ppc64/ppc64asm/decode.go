@@ -23,7 +23,7 @@ type instFormat struct {
 	Mask     uint32
 	Value    uint32
 	DontCare uint32
-	Args     [5]*argField
+	Args     [6]*argField
 }
 
 // argField indicate how to decode an argument to an instruction.

@@ -26,15 +26,15 @@ func TestBitField(t *testing.T) {
 		s    int32  // signed output
 		fail bool   // if the check should panic
 	}{
-		{BitField{0, 0}, 0, 0, 0, true},
-		{BitField{31, 2}, 0, 0, 0, true},
-		{BitField{31, 1}, 1, 1, -1, false},
-		{BitField{29, 2}, 0 << 1, 0, 0, false},
-		{BitField{29, 2}, 1 << 1, 1, 1, false},
-		{BitField{29, 2}, 2 << 1, 2, -2, false},
-		{BitField{29, 2}, 3 << 1, 3, -1, false},
-		{BitField{0, 32}, 1<<32 - 1, 1<<32 - 1, -1, false},
-		{BitField{16, 3}, 1 << 15, 4, -4, false},
+		{BitField{0, 0, 0}, 0, 0, 0, true},
+		{BitField{31, 2, 0}, 0, 0, 0, true},
+		{BitField{31, 1, 0}, 1, 1, -1, false},
+		{BitField{29, 2, 0}, 0 << 1, 0, 0, false},
+		{BitField{29, 2, 0}, 1 << 1, 1, 1, false},
+		{BitField{29, 2, 0}, 2 << 1, 2, -2, false},
+		{BitField{29, 2, 0}, 3 << 1, 3, -1, false},
+		{BitField{0, 32, 0}, 1<<32 - 1, 1<<32 - 1, -1, false},
+		{BitField{16, 3, 0}, 1 << 15, 4, -4, false},
 	}
 	for i, tst := range tests {
 		var (

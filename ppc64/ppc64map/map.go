@@ -97,10 +97,6 @@ func readCSV(file string) (*Prog, error) {
 
 	p := &Prog{}
 	for _, row := range table {
-		// TODO: add support for prefixed instructions. Ignore for now.
-		if row[2][0] == ',' {
-			continue
-		}
 		add(p, row[0], row[1], row[2], row[3])
 	}
 	return p, nil
@@ -123,13 +119,16 @@ func (f Field) String() string {
 }
 
 type Inst struct {
-	Text     string
-	Encoding string
-	Op       string
-	Mask     uint32
-	Value    uint32
-	DontCare uint32
-	Fields   []Field
+	Text      string
+	Encoding  string
+	Op        string
+	Mask      uint32
+	Value     uint32
+	DontCare  uint32
+	SMask     uint32 // The opcode Mask of the suffix word
+	SValue    uint32 // Likewise for the Value
+	SDontCare uint32 // Likewise for the DontCare bits
+	Fields    []Field
 }
 
 func (i Inst) String() string {
@@ -140,6 +139,9 @@ type Arg struct {
 	Name string
 	Bits int8
 	Offs int8
+	// Instruction word position.  0 for single word instructions (all < ISA 3.1 insn)
+	// For prefixed instructions, 0 for the prefix word, 1 for the second insn word.
+	Word int8
 }
 
 func (a Arg) String() string {
@@ -209,28 +211,27 @@ func (i instArray) Less(j, k int) bool {
 	return bits.OnesCount32(i[j].Mask) > bits.OnesCount32(i[k].Mask)
 }
 
-// add adds the entry from the CSV described by text, mnemonics, encoding, and tags
-// to the program p.
-func add(p *Prog, text, mnemonics, encoding, tags string) {
-	// Parse encoding, building size and offset of each field.
-	// The first field in the encoding is the smallest offset.
-	// And note the MSB is bit 0, not bit 31.
-	// Example: "31@0|RS@6|RA@11|///@16|26@21|Rc@31|"
-	var args Args
+// Split the string encoding into an Args. The encoding string loosely matches the regex
+// (arg@bitpos|)+
+func parseFields(encoding, text string, word int8) Args {
 	var err error
+	var args Args
+
 	fields := strings.Split(encoding, "|")
+
 	for i, f := range fields {
 		name, off := "", -1
 		if f == "" {
 			off = 32
 			if i == 0 || i != len(fields)-1 {
 				fmt.Fprintf(os.Stderr, "%s: wrong %d-th encoding field: %q\n", text, i, f)
-				return
+				panic("Invalid encoding entry.")
 			}
 		} else {
 			j := strings.Index(f, "@")
 			if j < 0 {
 				fmt.Fprintf(os.Stderr, "%s: wrong %d-th encoding field: %q\n", text, i, f)
+				panic("Invalid encoding entry.")
 				continue
 			}
 			k := strings.Index(f[j+1:], " ")
@@ -249,12 +250,18 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 			args[len(args)-1].Bits += int8(off)
 		}
 		if name != "" {
-			arg := Arg{Name: name, Offs: int8(off), Bits: int8(-off)}
+			arg := Arg{Name: name, Offs: int8(off), Bits: int8(-off), Word: word}
 			args.Append(arg)
 		}
 	}
 
-	var mask, value, dontCare uint32
+	return args
+}
+
+// Compute the Mask (usually Opcode + secondary Opcode bitfields),
+// the Value (the expected value under the mask), and
+// reserved bits (i.e the // fields which should be set to 0)
+func computeMaskValueReserved(args Args, text string) (mask, value, reserved uint32) {
 	for i := 0; i < len(args); i++ {
 		arg := args[i]
 		v, err := strconv.Atoi(arg.Name)
@@ -271,7 +278,7 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 			if arg.Name != strings.Repeat("/", len(arg.Name)) {
 				log.Fatalf("%s: arg %v named like a don't care bit, but it's not", text, arg)
 			}
-			dontCare |= arg.BitMask()
+			reserved |= arg.BitMask()
 			args.Delete(i)
 			i--
 		default:
@@ -291,12 +298,13 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 	}
 
 	// sanity checks
-	if mask&dontCare != 0 {
-		log.Fatalf("%s: mask (%08x) and don't care (%08x) collide", text, mask, dontCare)
+	if mask&reserved != 0 {
+		log.Fatalf("%s: mask (%08x) and don't care (%08x) collide", text, mask, reserved)
 	}
 	if value&^mask != 0 {
 		log.Fatalf("%s: value (%08x) out of range of mask (%08x)", text, value, mask)
 	}
+
 	var argMask uint32
 	for _, arg := range args {
 		if arg.Bits <= 0 || arg.Bits > 32 || arg.Offs > 31 || arg.Offs <= 0 {
@@ -310,8 +318,48 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 		}
 		argMask |= arg.BitMask()
 	}
-	if 1<<32-1 != mask|dontCare|argMask {
+	if 1<<32-1 != mask|reserved|argMask {
 		log.Fatalf("%s: args %v fail to cover all 32 bits", text, args)
+	}
+
+	return
+}
+
+// Parse a row from the CSV describing the instructions, and place the
+// detected instructions into p. One entry may generate multiple intruction
+// entries as each extended mnemonic listed in text is treated like a unique
+// instruction.
+func add(p *Prog, text, mnemonics, encoding, tags string) {
+	// Parse encoding, building size and offset of each field.
+	// The first field in the encoding is the smallest offset.
+	// And note the MSB is bit 0, not bit 31.
+	// Example: "31@0|RS@6|RA@11|///@16|26@21|Rc@31|"
+	var args, pargs Args
+	var pmask, pvalue, presv, resv uint32
+	iword := int8(0)
+	ispfx := false
+
+	// Is this a prefixed instruction?
+	if encoding[0] == ',' {
+		pfields := strings.Split(encoding, ",")[1:]
+
+		if len(pfields) != 2 {
+			fmt.Fprintf(os.Stderr, "%s: Prefixed instruction must be 2 words long.\n", text)
+			return
+		}
+		pargs = parseFields(pfields[0], text, iword)
+		pmask, pvalue, presv = computeMaskValueReserved(pargs, text)
+		// Move to next instruction word
+		iword++
+		encoding = pfields[1]
+		ispfx = true
+	}
+
+	args = parseFields(encoding, text, iword)
+	mask, value, dontCare := computeMaskValueReserved(args, text)
+
+	if ispfx {
+		args = append(args, pargs...)
 	}
 
 	// split mnemonics into individual instructions
@@ -320,6 +368,7 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 	foundInst := []Inst{}
 	for _, inst := range insts {
 		value, mask := value, mask
+		pvalue, pmask := pvalue, pmask
 		args := args.Clone()
 		if inst == "" {
 			continue
@@ -345,6 +394,9 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 			args.Delete(i)
 		}
 		inst := Inst{Text: text, Encoding: parts[1], Value: value, Mask: mask, DontCare: dontCare}
+		if ispfx {
+			inst = Inst{Text: text, Encoding: parts[1], Value: pvalue, Mask: pmask, DontCare: presv, SValue: value, SMask: mask, SDontCare: resv}
+		}
 
 		// order inst.Args according to mnemonics order
 		for i, opr := range operandRe.FindAllString(parts[1], -1) {
@@ -370,9 +422,28 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 				} else {
 					opr = "BD"
 				}
-			case "UI", "BO", "BH", "TH", "LEV", "NB", "L", "TO", "FXM", "FC", "U", "W", "FLM", "UIM", "IMM8", "RIC", "PRS", "SHB", "SHW", "ST", "SIX", "PS", "DCM", "DGM", "RMC", "R", "SP", "S", "DM", "CT", "EH", "E", "MO", "WC", "A", "IH", "OC", "DUI", "DUIS", "CY", "SC", "PL", "MP", "N", "IMM", "DRM", "RM":
+
+			case "XMSK", "YMSK", "PMSK", "IX":
+				typ = asm.TypeImmUnsigned
+
+			case "IMM32":
+				typ = asm.TypeImmUnsigned
+				opr = "imm0"
+				opr2 = "imm1"
+
+			// Handle these cases specially. Note IMM is used on
+			// prefixed MMA instructions as a bitmask. Usually, it is a signed value.
+			case "R", "UIM", "IMM":
+				if ispfx {
+					typ = asm.TypeImmUnsigned
+					break
+				}
+				fallthrough
+
+			case "UI", "BO", "BH", "TH", "LEV", "NB", "L", "TO", "FXM", "FC", "U", "W", "FLM", "IMM8", "RIC", "PRS", "SHB", "SHW", "ST", "SIX", "PS", "DCM", "DGM", "RMC", "SP", "S", "DM", "CT", "EH", "E", "MO", "WC", "A", "IH", "OC", "DUI", "DUIS", "CY", "SC", "PL", "MP", "N", "DRM", "RM":
 				typ = asm.TypeImmUnsigned
 				if i := args.Find(opr); i < 0 {
+					log.Printf("coerce to D: %s: couldn't find extended field %s in %s", text, opr, args)
 					opr = "D"
 				}
 			case "bm":
@@ -393,6 +464,12 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 					opr = n // xx[5] || xx[0:4]
 				}
 			case "SI", "SIM", "TE":
+				if ispfx {
+					typ = asm.TypeImmSigned
+					opr = "si0"
+					opr2 = "si1"
+					break
+				}
 				typ = asm.TypeImmSigned
 				if i := args.Find(opr); i < 0 {
 					opr = "D"
@@ -414,6 +491,12 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 				typ = asm.TypeOffset
 				shift = 4
 			case "D":
+				if ispfx {
+					typ = asm.TypeOffset
+					opr = "d0"
+					opr2 = "d1"
+					break
+				}
 				if i := args.Find(opr); i >= 0 {
 					typ = asm.TypeOffset
 					break
@@ -475,6 +558,7 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 
 			case "VRA", "VRB", "VRC", "VRS", "VRT":
 				typ = asm.TypeVecReg
+
 			case "SPR", "DCRN", "BHRBE", "TBR", "SR", "TMR", "PMRN": // Note: if you add to this list and the register field needs special handling, add it to switch statement below
 				typ = asm.TypeSpReg
 				switch opr {
@@ -496,28 +580,28 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 				b0 := args.Find(opr)
 				b1 := args.Find(opr2)
 				b2 := args.Find(opr3)
-				f1.Offs, f1.Bits = uint8(args[b0].Offs), uint8(args[b0].Bits)
-				f2.Offs, f2.Bits = uint8(args[b1].Offs), uint8(args[b1].Bits)
-				f3.Offs, f3.Bits = uint8(args[b2].Offs), uint8(args[b2].Bits)
+				f1.Offs, f1.Bits, f1.Word = uint8(args[b0].Offs), uint8(args[b0].Bits), uint8(args[b0].Word)
+				f2.Offs, f2.Bits, f2.Word = uint8(args[b1].Offs), uint8(args[b1].Bits), uint8(args[b1].Word)
+				f3.Offs, f3.Bits, f3.Word = uint8(args[b2].Offs), uint8(args[b2].Bits), uint8(args[b2].Word)
 
 			case opr2 != "":
 				ext := args.Find(opr)
 				if ext < 0 {
 					log.Fatalf("%s: couldn't find extended field %s in %s", text, opr, args)
 				}
-				f1.Offs, f1.Bits = uint8(args[ext].Offs), uint8(args[ext].Bits)
+				f1.Offs, f1.Bits, f1.Word = uint8(args[ext].Offs), uint8(args[ext].Bits), uint8(args[ext].Word)
 				base := args.Find(opr2)
 				if base < 0 {
 					log.Fatalf("%s: couldn't find base field %s in %s", text, opr2, args)
 				}
-				f2.Offs, f2.Bits = uint8(args[base].Offs), uint8(args[base].Bits)
+				f2.Offs, f2.Bits, f2.Word = uint8(args[base].Offs), uint8(args[base].Bits), uint8(args[base].Word)
 			case opr == "mb", opr == "me": // xx[5] || xx[0:4]
 				i := args.Find(opr)
 				if i < 0 {
 					log.Fatalf("%s: couldn't find special 'm[be]' field for %s in %s", text, opr, args)
 				}
-				f1.Offs, f1.Bits = uint8(args[i].Offs+args[i].Bits)-1, 1
-				f2.Offs, f2.Bits = uint8(args[i].Offs), uint8(args[i].Bits)-1
+				f1.Offs, f1.Bits, f1.Word = uint8(args[i].Offs+args[i].Bits)-1, 1, uint8(args[i].Word)
+				f2.Offs, f2.Bits, f2.Word = uint8(args[i].Offs), uint8(args[i].Bits)-1, uint8(args[i].Word)
 			case opr == "spr", opr == "tbr", opr == "tmr", opr == "dcr": // spr[5:9] || spr[0:4]
 				i := args.Find(opr)
 				if i < 0 {
@@ -526,14 +610,14 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 				if args[i].Bits != 10 {
 					log.Fatalf("%s: special 'spr' field is not 10-bit: %s", text, args)
 				}
-				f1.Offs, f1.Bits = uint8(args[i].Offs)+5, 5
-				f2.Offs, f2.Bits = uint8(args[i].Offs), 5
+				f1.Offs, f1.Bits, f2.Word = uint8(args[i].Offs)+5, 5, uint8(args[i].Word)
+				f2.Offs, f2.Bits, f2.Word = uint8(args[i].Offs), 5, uint8(args[i].Word)
 			default:
 				i := args.Find(opr)
 				if i < 0 {
 					log.Fatalf("%s: couldn't find %s in %s", text, opr, args)
 				}
-				f1.Offs, f1.Bits = uint8(args[i].Offs), uint8(args[i].Bits)
+				f1.Offs, f1.Bits, f1.Word = uint8(args[i].Offs), uint8(args[i].Bits), uint8(args[i].Word)
 			}
 			field.BitFields.Append(f1)
 			if f2.Bits > 0 {
@@ -598,7 +682,7 @@ func opName(op string) string {
 func argFieldName(f Field) string {
 	ns := []string{"ap", f.Type.String()}
 	for _, b := range f.BitFields {
-		ns = append(ns, fmt.Sprintf("%d_%d", b.Offs, b.Offs+b.Bits-1))
+		ns = append(ns, fmt.Sprintf("%d_%d", b.Word*32+b.Offs, b.Word*32+b.Offs+b.Bits-1))
 	}
 	if f.Shift > 0 {
 		ns = append(ns, fmt.Sprintf("shift%d", f.Shift))
@@ -657,7 +741,7 @@ func printDecoder(p *Prog) {
 			m[name] = true
 			fmt.Fprintf(&buf, "\t%s = &argField{Type: %#v, Shift: %d, BitFields: BitFields{", name, f.Type, f.Shift)
 			for _, b := range f.BitFields {
-				fmt.Fprintf(&buf, "{%d, %d},", b.Offs, b.Bits)
+				fmt.Fprintf(&buf, "{%d, %d, %d},", b.Offs, b.Bits, b.Word)
 			}
 			fmt.Fprintf(&buf, "}}\n")
 		}
@@ -668,7 +752,7 @@ func printDecoder(p *Prog) {
 	fmt.Fprintf(&buf, "var instFormats = [...]instFormat{\n")
 	for _, inst := range p.Insts {
 		fmt.Fprintf(&buf, "\t{ %s, %#x, %#x, %#x,", opName(inst.Op), inst.Mask, inst.Value, inst.DontCare)
-		fmt.Fprintf(&buf, " // %s (%s)\n\t\t[5]*argField{", inst.Text, inst.Encoding)
+		fmt.Fprintf(&buf, " // %s (%s)\n\t\t[6]*argField{", inst.Text, inst.Encoding)
 		for _, f := range inst.Fields {
 			fmt.Fprintf(&buf, "%s, ", argFieldName(f))
 		}
