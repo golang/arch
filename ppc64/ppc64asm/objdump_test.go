@@ -57,6 +57,8 @@ func allowedMismatchObjdump(text string, size int, inst *Inst, dec ExtInst) bool
 		return true
 	case VSPLTB, VSPLTH, VSPLTW: // objdump generates unreasonable result "vspltw v6,v19,4" for 10c49a8c, the last 4 should be 0.
 		return true
+	case MTVSRWA, MTVSRWZ, MFVSRWZ, MFVSRD, MTVSRD: // We don't support extended mnemonics using VRs or FPRs
+		return true
 	}
 	if hasPrefix(text, "evm", "evl", "efs") { // objdump will disassemble them wrong (e.g. evmhoumia as vsldoi)
 		return true
