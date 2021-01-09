@@ -1523,11 +1523,11 @@
 0fb8|11223344556677885f5f5f5f5f5f	64	gnu	error: unrecognized instruction
 0fb8|11223344556677885f5f5f5f5f5f	64	intel	error: unrecognized instruction
 0fb8|11223344556677885f5f5f5f5f5f	64	plan9	error: unrecognized instruction
-0fb9|11223344556677885f5f5f5f5f5f	32	intel	ud1
-0fb9|11223344556677885f5f5f5f5f5f	32	plan9	UD1
-0fb9|11223344556677885f5f5f5f5f5f	64	gnu	ud1
-0fb9|11223344556677885f5f5f5f5f5f	64	intel	ud1
-0fb9|11223344556677885f5f5f5f5f5f	64	plan9	UD1
+0fb94001|3344556677885f5f5f5f5f5f	32	intel	ud1 eax, dword ptr [eax+0x1]
+0fb94001|3344556677885f5f5f5f5f5f	32	plan9	UD1 0x1(AX), AX
+0fb94001|3344556677885f5f5f5f5f5f	64	gnu	ud1 0x1(%rax),%eax
+0fb94001|3344556677885f5f5f5f5f5f	64	intel	ud1 eax, dword ptr [rax+0x1]
+0fb94001|3344556677885f5f5f5f5f5f	64	plan9	UD1 0x1(AX), AX
 0fba11|223344556677885f5f5f5f5f5f	32	intel	error: unrecognized instruction
 0fba11|223344556677885f5f5f5f5f5f	32	plan9	error: unrecognized instruction
 0fba11|223344556677885f5f5f5f5f5f	64	gnu	error: unrecognized instruction
@@ -1898,6 +1898,11 @@
 0ffe11|223344556677885f5f5f5f5f5f	64	gnu	paddd (%rcx),%mm2
 0ffe11|223344556677885f5f5f5f5f5f	64	intel	paddd mmx2, qword ptr [rcx]
 0ffe11|223344556677885f5f5f5f5f5f	64	plan9	PADDD 0(CX), M2
+0fff4001|3344556677885f5f5f5f5f5f	32	intel	ud0 eax, dword ptr [eax+0x1]
+0fff4001|3344556677885f5f5f5f5f5f	32	plan9	UD0 0x1(AX), AX
+0fff4001|3344556677885f5f5f5f5f5f	64	gnu	ud0 0x1(%rax),%eax
+0fff4001|3344556677885f5f5f5f5f5f	64	intel	ud0 eax, dword ptr [rax+0x1]
+0fff4001|3344556677885f5f5f5f5f5f	64	plan9	UD0 0x1(AX), AX
 1011|223344556677885f5f5f5f5f5f5f	32	intel	adc byte ptr [ecx], dl
 1011|223344556677885f5f5f5f5f5f5f	32	plan9	ADCB DL, 0(CX)
 1011|223344556677885f5f5f5f5f5f5f	64	gnu	adc %dl,(%rcx)
