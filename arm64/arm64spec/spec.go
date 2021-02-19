@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build (go1.6 && amd64) || go1.8
 // +build go1.6,amd64 go1.8
 
 // arm64spec reads the ``ARMv8-A Reference Manual''

@@ -30,7 +30,9 @@ func TestPlan964Prefix(t *testing.T)   { testPrefix(t, testPlan964) }
 func TestPlan964REXTestdata(t *testing.T) {
 	testPlan964(t, filter(concat3(basicPrefixes, rexPrefixes, testdataCases(t)), isValidREX))
 }
-func TestPlan964REXModRM(t *testing.T)   { testPlan964(t, concat3(basicPrefixes, rexPrefixes, enumModRM)) }
+func TestPlan964REXModRM(t *testing.T) {
+	testPlan964(t, concat3(basicPrefixes, rexPrefixes, enumModRM))
+}
 func TestPlan964REXOneByte(t *testing.T) { testBasicREX(t, testPlan964) }
 func TestPlan964REX0F(t *testing.T)      { testBasicREX(t, testPlan964, 0x0F) }
 func TestPlan964REX0F38(t *testing.T)    { testBasicREX(t, testPlan964, 0x0F, 0x38) }

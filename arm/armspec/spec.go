@@ -2,8 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build go1.6 && (!386 || go1.8)
 // +build go1.6
 // +build !386 go1.8
+
 // ... see golang.org/issue/12840
 
 // Armspec reads the ``ARM Architecture Reference Manual''
