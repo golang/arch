@@ -12,6 +12,10 @@
 //
 //	text (default) - print decoding tree in text form
 //	decoder - print decoding tables for the ppc64asm package
+//	encoder - generate a self-contained file which can be used to encode
+//		  go obj.Progs into machine code
+//	asm - generate a gnu asm file which can be compiled by gcc containing
+//	      all opcodes discovered in ppc64.csv using macro friendly arguments.
 package main
 
 import (
@@ -20,6 +24,7 @@ import (
 	"flag"
 	"fmt"
 	gofmt "go/format"
+	asm "golang.org/x/arch/ppc64/ppc64asm"
 	"log"
 	"math/bits"
 	"os"
@@ -28,14 +33,51 @@ import (
 	"strconv"
 	"strings"
 	"text/template"
-
-	asm "golang.org/x/arch/ppc64/ppc64asm"
 )
 
 var format = flag.String("fmt", "text", "output format: text, decoder, asm")
 var debug = flag.Bool("debug", false, "enable debugging output")
 
 var inputFile string
+
+type isaversion uint32
+
+const (
+	// Sort as supersets of each other. Generally speaking, each newer ISA
+	// supports a superset of the previous instructions with a few exceptions
+	// throughout.
+	ISA_P1 isaversion = iota
+	ISA_P2
+	ISA_PPC
+	ISA_V200
+	ISA_V201
+	ISA_V202
+	ISA_V203
+	ISA_V205
+	ISA_V206
+	ISA_V207
+	ISA_V30
+	ISA_V30B
+	ISA_V30C
+	ISA_V31
+)
+
+var isaToISA = map[string]isaversion{
+	"P1":    ISA_P1,
+	"P2":    ISA_P2,
+	"PPC":   ISA_PPC,
+	"v2.00": ISA_V200,
+	"v2.01": ISA_V201,
+	"v2.02": ISA_V202,
+	"v2.03": ISA_V203,
+	"v2.05": ISA_V205,
+	"v2.06": ISA_V206,
+	"v2.07": ISA_V207,
+	"v3.0":  ISA_V30,
+	"v3.0B": ISA_V30B,
+	"v3.0C": ISA_V30C,
+	"v3.1":  ISA_V31,
+}
 
 func usage() {
 	fmt.Fprintf(os.Stderr, "usage: ppc64map [-fmt=format] ppc64.csv\n")
@@ -64,6 +106,8 @@ func main() {
 		print = printDecoder
 	case "asm":
 		print = printASM
+	case "encoder":
+		print = printEncoder
 	}
 
 	p, err := readCSV(flag.Arg(0))
@@ -104,15 +148,17 @@ func readCSV(file string) (*Prog, error) {
 }
 
 type Prog struct {
-	Insts    []Inst
-	OpRanges map[string]string
+	Insts     []Inst
+	OpRanges  map[string]string
+	nextOrder int // Next position value (used for Insts[x].order)
 }
 
 type Field struct {
-	Name      string
-	BitFields asm.BitFields
-	Type      asm.ArgType
-	Shift     uint8
+	Name          string
+	BitFields     asm.BitFields
+	BitFieldNames []string
+	Type          asm.ArgType
+	Shift         uint8
 }
 
 func (f Field) String() string {
@@ -130,6 +176,12 @@ type Inst struct {
 	SValue    uint32 // Likewise for the Value
 	SDontCare uint32 // Likewise for the DontCare bits
 	Fields    []Field
+	Words     int // Number of words instruction encodes to.
+	Isa       isaversion
+	memOp     bool // Is this a memory operation?
+	memOpX    bool // Is this an x-form memory operation?
+	memOpSt   bool // Is this a store memory operations?
+	order     int  // Position in pp64.csv.
 }
 
 func (i Inst) String() string {
@@ -330,7 +382,7 @@ func computeMaskValueReserved(args Args, text string) (mask, value, reserved uin
 // detected instructions into p. One entry may generate multiple intruction
 // entries as each extended mnemonic listed in text is treated like a unique
 // instruction.
-func add(p *Prog, text, mnemonics, encoding, tags string) {
+func add(p *Prog, text, mnemonics, encoding, isa string) {
 	// Parse encoding, building size and offset of each field.
 	// The first field in the encoding is the smallest offset.
 	// And note the MSB is bit 0, not bit 31.
@@ -340,12 +392,18 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 	iword := int8(0)
 	ispfx := false
 
+	isaLevel, fnd := isaToISA[isa]
+	if !fnd {
+		log.Fatalf("%s: ISA level '%s' is unknown\n", text, isa)
+		return
+	}
+
 	// Is this a prefixed instruction?
 	if encoding[0] == ',' {
 		pfields := strings.Split(encoding, ",")[1:]
 
 		if len(pfields) != 2 {
-			fmt.Fprintf(os.Stderr, "%s: Prefixed instruction must be 2 words long.\n", text)
+			log.Fatalf("%s: Prefixed instruction must be 2 words long.\n", text)
 			return
 		}
 		pargs = parseFields(pfields[0], text, iword)
@@ -617,16 +675,29 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 				f1.Offs, f1.Bits, f1.Word = uint8(args[i].Offs), uint8(args[i].Bits), uint8(args[i].Word)
 			}
 			field.BitFields.Append(f1)
+			field.BitFieldNames = append(field.BitFieldNames, opr)
 			if f2.Bits > 0 {
 				field.BitFields.Append(f2)
+				field.BitFieldNames = append(field.BitFieldNames, opr2)
 			}
 			if f3.Bits > 0 {
 				field.BitFields.Append(f3)
+				field.BitFieldNames = append(field.BitFieldNames, opr3)
 			}
 			inst.Fields = append(inst.Fields, field)
 		}
 		if *debug {
 			fmt.Printf("%v\n", inst)
+		}
+		inst.Isa = isaLevel
+		inst.memOp = hasMemoryArg(&inst)
+		inst.memOpX = inst.memOp && inst.Op[len(inst.Op)-1] == 'x'
+		inst.memOpSt = inst.memOp && strings.Contains(inst.Text, "Store")
+		inst.Words = 1
+		inst.order = p.nextOrder
+		p.nextOrder++
+		if ispfx {
+			inst.Words = 2
 		}
 		foundInst = append(foundInst, inst)
 	}
@@ -656,6 +727,453 @@ var operandRe = regexp.MustCompile(`([[:alpha:]][[:alnum:]_]*\.?)`)
 // printText implements the -fmt=text mode, which is not implemented (yet?).
 func printText(p *Prog) {
 	log.Fatal("-fmt=text not implemented")
+}
+
+// Some ISA instructions look like memory ops, but are not.
+var isNotMemopMap = map[string]bool{
+	"lxvkq": true,
+	"lvsl":  true,
+	"lvsr":  true,
+}
+
+// Some ISA instructions are memops, but are not described like "Load ..." or "Store ..."
+var isMemopMap = map[string]bool{}
+
+// Does this instruction contain a memory argument (e.g x-form load or d-form store)
+func hasMemoryArg(insn *Inst) bool {
+	return ((strings.HasPrefix(insn.Text, "Load") || strings.HasPrefix(insn.Text, "Store") ||
+		strings.HasPrefix(insn.Text, "Prefixed Load") || strings.HasPrefix(insn.Text, "Prefixed Store")) && !isNotMemopMap[insn.Op]) ||
+		isMemopMap[insn.Op]
+}
+
+// Generate a function which takes an obj.Proj and convert it into
+// machine code in the supplied buffer. These functions are used
+// by asm9.go.
+func insnEncFuncStr(insn *Inst, firstName [2]string) string {
+	buf := new(bytes.Buffer)
+	// Argument packing order.
+	// Note, if a2 is not a register type, it is skipped.
+	argOrder := []string{
+		"p.To",               // a6
+		"p.From",             // a1
+		"p",                  // a2
+		"p.RestArgs[0].Addr", // a3
+		"p.RestArgs[1].Addr", // a4
+		"p.RestArgs[2].Addr", // a5
+	}
+	if len(insn.Fields) > len(argOrder) {
+		log.Fatalf("cannot handle %v. Only %d args supported.", insn, len(argOrder))
+	}
+
+	// Does this field require an obj.Addr.Offset?
+	isImmediate := func(t asm.ArgType) bool {
+		return t == asm.TypeImmUnsigned || t == asm.TypeSpReg || t == asm.TypeImmSigned || t == asm.TypeOffset
+	}
+
+	if insn.memOp {
+		// Swap to/from arguments if we are generating
+		// for a store operation.
+		if insn.memOpSt {
+			// Otherwise, order first three args as: p.From, p.To, p.To
+			argOrder[0], argOrder[1] = argOrder[1], argOrder[0]
+		}
+		argOrder[2] = argOrder[1] // p.Reg is either an Index or Offset (X or D-form)
+	} else if len(insn.Fields) > 2 && isImmediate(insn.Fields[2].Type) {
+		// Delete the a2 argument if it is not a register type.
+		argOrder = append(argOrder[0:2], argOrder[3:]...)
+	}
+
+	fmt.Fprintf(buf, "// %s\n", insn.Encoding)
+	fmt.Fprintf(buf, "func type_%s(c *ctxt9, p *obj.Prog, t *Optab, out *[5]uint32) {\n", insn.Op)
+	if insn.Words > 1 {
+		fmt.Fprintf(buf, "o0 := GenPfxOpcodes[p.As - A%s]\n", firstName[1])
+	}
+	fmt.Fprintf(buf, "o%d := GenOpcodes[p.As - A%s]\n", insn.Words-1, firstName[0])
+
+	errCheck := ""
+	for j, atype := range insn.Fields {
+		itype := ".Reg"
+		if isImmediate(atype.Type) {
+			itype = ".Offset"
+		} else if insn.memOpX && atype.Name == "RA" {
+			// X-form memory operations encode RA as the index register of memory type arg.
+			itype = ".Index"
+		}
+
+		bitPos := uint64(0)
+		// VecSpReg is encoded as an even numbered VSR. It is implicitly shifted by 1.
+		if atype.Type == asm.TypeVecSpReg {
+			bitPos += 1
+		}
+		// Count the total number of bits to work backwards when shifting
+		for _, f := range atype.BitFields {
+			bitPos += uint64(f.Bits)
+		}
+		// Adjust for any shifting (e.g DQ/DS shifted instructions)
+		bitPos += uint64(atype.Shift)
+		bits := bitPos
+
+		// Generate code to twirl the respective bits into the correct position, and mask off extras.
+		for i, f := range atype.BitFields {
+			bitPos -= uint64(f.Bits)
+			argStr := argOrder[j] + itype
+			if bitPos != 0 {
+				argStr = fmt.Sprintf("(%s>>%d)", argStr, bitPos)
+			}
+			mask := (1 << uint64(f.Bits)) - 1
+			shift := 32 - uint64(f.Offs) - uint64(f.Bits)
+			fmt.Fprintf(buf, "o%d |= uint32(%s&0x%x)<<%d // %s\n", f.Word, argStr, mask, shift, atype.BitFieldNames[i])
+		}
+
+		// Generate a check to verify shifted inputs satisfy their constraints.
+		// For historical reasons this is not needed for 16 bit values shifted by 16. (i.e SI/UI constants in addis/xoris)
+		if atype.Shift != 0 && atype.Shift != 16 && bits != 32 {
+			arg := argOrder[j] + itype
+			mod := (1 << atype.Shift) - 1
+			errCheck += fmt.Sprintf("if %s & 0x%x != 0 {\n", arg, mod)
+			errCheck += fmt.Sprintf("c.ctxt.Diag(\"Constant 0x%%x (%%d) is not a multiple of %d\\n%%v\",%s,%s,p)\n", mod+1, arg, arg)
+			errCheck += fmt.Sprintf("}\n")
+		}
+		j++
+	}
+	buf.WriteString(errCheck)
+	if insn.Words > 1 {
+		fmt.Fprintf(buf, "out[1] = o1\n")
+	}
+	fmt.Fprintf(buf, "out[0] = o0\n")
+	fmt.Fprintf(buf, "}\n")
+	return buf.String()
+}
+
+// Generate a stringed name representing the type of arguments ISA
+// instruction needs to be encoded into a usable machine instruction
+func insnTypeStr(insn *Inst, uniqueRegTypes bool) string {
+	if len(insn.Fields) == 0 {
+		return "type_none"
+	}
+
+	ret := "type_"
+
+	// Tag store opcodes to give special treatment when generating
+	// assembler function. They encode similarly to their load analogues.
+	if insn.memOp {
+		if insn.memOpSt {
+			ret += "st_"
+		} else {
+			ret += "ld_"
+		}
+	}
+
+	// TODO: this is only sufficient for ISA3.1.
+	for _, atype := range insn.Fields {
+		switch atype.Type {
+		// Simple, register like 5 bit field (CR bit, FPR, GPR, VR)
+		case asm.TypeReg, asm.TypeFPReg, asm.TypeVecReg, asm.TypeCondRegBit:
+			if uniqueRegTypes {
+				ret += map[asm.ArgType]string{asm.TypeReg: "R", asm.TypeFPReg: "F", asm.TypeVecReg: "V", asm.TypeCondRegBit: "C"}[atype.Type]
+				// Handle even/odd pairs in FPR/GPR args. They encode as 5 bits too, but odd values are invalid.
+				if atype.Name[len(atype.Name)-1] == 'p' {
+					ret += "p"
+				}
+			} else {
+				ret += "R"
+			}
+		case asm.TypeMMAReg, asm.TypeCondRegField: // 3 bit register fields (MMA or CR field)
+			ret += "M"
+		case asm.TypeSpReg:
+			ret += "P"
+		case asm.TypeVecSReg: // VSX register (6 bits, usually split into 2 fields)
+			ret += "X"
+		case asm.TypeVecSpReg: // VSX register pair (5 bits, maybe split fields)
+			ret += "Y"
+		case asm.TypeImmSigned, asm.TypeOffset, asm.TypeImmUnsigned:
+			if atype.Type == asm.TypeImmUnsigned {
+				ret += "I"
+			} else {
+				ret += "S"
+			}
+			if atype.Shift != 0 {
+				ret += fmt.Sprintf("%d", atype.Shift)
+			}
+		default:
+			log.Fatalf("Unhandled type in insnTypeStr: %v\n", atype)
+		}
+
+		// And add bit packing info
+		for _, bf := range atype.BitFields {
+			ret += fmt.Sprintf("_%d_%d", bf.Word*32+bf.Offs, bf.Bits)
+		}
+	}
+	return ret
+}
+
+type AggInfo struct {
+	Insns []*Inst // List of instructions sharing this type
+	Typef string  // The generated function name matching this
+}
+
+// Generate an Optab entry for a set of instructions with identical argument types
+// and write it to buf.
+func genOptabEntry(ta *AggInfo, typeMap map[string]*Inst) string {
+	buf := new(bytes.Buffer)
+	fitArg := func(f *Field, i *Inst) string {
+		argToRegType := map[asm.ArgType]string{
+			// TODO: only complete for ISA 3.1
+			asm.TypeReg:          "C_REG",
+			asm.TypeCondRegField: "C_CREG",
+			asm.TypeCondRegBit:   "C_CRBIT",
+			asm.TypeFPReg:        "C_FREG",
+			asm.TypeVecReg:       "C_VREG",
+			asm.TypeVecSReg:      "C_VSREG",
+			asm.TypeVecSpReg:     "C_VSREG",
+			asm.TypeMMAReg:       "C_AREG",
+			asm.TypeSpReg:        "C_SPR",
+		}
+		if t, fnd := argToRegType[f.Type]; fnd {
+			if f.Name[len(f.Name)-1] == 'p' {
+				return t + "P"
+			}
+			return t
+		}
+		bits := f.Shift
+		for _, sf := range f.BitFields {
+			bits += sf.Bits
+		}
+		shift := ""
+		if f.Shift != 0 {
+			shift = fmt.Sprintf("S%d", f.Shift)
+		}
+		sign := "U"
+		if f.Type == asm.TypeImmSigned || f.Type == asm.TypeOffset {
+			sign = "S"
+			// DS/DQ offsets should explicitly test their offsets to ensure
+			// they are aligned correctly. This makes tracking down bad offset
+			// passed to the compiler more straightfoward.
+			if f.Type == asm.TypeOffset {
+				shift = ""
+			}
+		}
+		return fmt.Sprintf("C_%s%d%sCON", sign, bits, shift)
+	}
+	insn := ta.Insns[0]
+	args := [6]string{}
+	// Note, a2 is skipped if the second input argument does not map to a reg.
+	argOrder := []int{
+		5,
+		0,
+		1,
+		2,
+		3,
+		4}
+
+	i := 0
+	for _, j := range insn.Fields {
+		// skip a2 if it isn't a reg type.
+		at := fitArg(&j, insn)
+		if argOrder[i] == 1 && !strings.HasSuffix(at, "REG") {
+			i++
+		}
+		args[argOrder[i]] = at
+		i++
+	}
+
+	// Likewise, fixup memory operations. Combine imm + reg, reg + reg
+	// operations into memory type arguments.
+	if insn.memOp {
+		switch args[0] + " " + args[1] {
+		case "C_REG C_REG":
+			args[0] = "C_XOREG"
+		case "C_S16CON C_REG":
+			args[0] = "C_SOREG"
+		case "C_S34CON C_REG":
+			args[0] = "C_LOREG"
+		}
+		args[1] = ""
+		// Finally, fixup store operand ordering to match golang
+		if insn.memOpSt {
+			args[0], args[5] = args[5], args[0]
+		}
+
+	}
+	fmt.Fprintf(buf, "{as: A%s,", opName(insn.Op))
+	for i, s := range args {
+		if len(s) <= 0 {
+			continue
+		}
+		fmt.Fprintf(buf, "a%d: %s, ", i+1, s)
+	}
+	typef := typeMap[ta.Typef].Op
+
+	pfx := ""
+	if insn.Words > 1 {
+		pfx = " ispfx: true,"
+	}
+	fmt.Fprintf(buf, "asmout: type_%s,%s size: %d},\n", typef, pfx, insn.Words*4)
+	return buf.String()
+}
+
+// printEncoder implements the -fmt=encoder mode. This generates a go file named
+// asm9_gtables.go.new. It is self-contained and is called into by the PPC64
+// assembler routines.
+//
+// For now it is restricted to generating code for ISA 3.1 and newer, but it could
+// support older ISA versions with some work, and integration effort.
+func printEncoder(p *Prog) {
+	const minISA = ISA_V31
+
+	// The type map separates based on obj.Addr to a bit field.  Register types
+	// for GPR, FPR, VR pack identically, but are classified differently.
+	typeMap := map[string]*Inst{}
+	typeAggMap := map[string]*AggInfo{}
+	var oplistBuf bytes.Buffer
+	var opnameBuf bytes.Buffer
+
+	// The first opcode of 32 or 64 bits to appear in the opcode tables.
+	firstInsn := [2]string{}
+
+	// Sort the instructions by word size, then by ISA version, oldest to newest.
+	sort.Slice(p.Insts, func(i, j int) bool {
+		if p.Insts[i].Words != p.Insts[j].Words {
+			return p.Insts[i].Words < p.Insts[j].Words
+		}
+		return p.Insts[i].order > p.Insts[j].order
+	})
+
+	// Classify each opcode and it's arguments, and generate opcode name/enum values.
+	for i, insn := range p.Insts {
+		if insn.Isa < minISA {
+			continue
+		}
+		extra := ""
+		if firstInsn[insn.Words-1] == "" {
+			firstInsn[insn.Words-1] = opName(insn.Op)
+			if insn.Words == 1 {
+				extra = " = ALASTAOUT + iota"
+			}
+		}
+		opType := insnTypeStr(&insn, false)
+		opTypeOptab := insnTypeStr(&insn, true)
+		fmt.Fprintf(&oplistBuf, "A%s%s\n", opName(insn.Op), extra)
+		fmt.Fprintf(&opnameBuf, "\"%s\",\n", opName(insn.Op))
+		// Use the oldest instruction to name the encoder function.  Some names
+		// may change if minISA is lowered.
+		if _, fnd := typeMap[opType]; !fnd {
+			typeMap[opType] = &p.Insts[i]
+		}
+		at, fnd := typeAggMap[opTypeOptab]
+		if !fnd {
+			typeAggMap[opTypeOptab] = &AggInfo{[]*Inst{&p.Insts[i]}, opType}
+		} else {
+			at.Insns = append(at.Insns, &p.Insts[i])
+		}
+	}
+	fmt.Fprintf(&oplistBuf, "ALASTGEN\n")
+	fmt.Fprintf(&oplistBuf, "AFIRSTGEN = A%s\n", firstInsn[0])
+
+	// Sort type information before outputing to ensure stable ordering
+	targ := struct {
+		InputFile   string
+		Insts       []Inst
+		MinISA      isaversion
+		TypeAggList []*AggInfo
+		TypeList    []*Inst
+		FirstInsn   [2]string
+		TypeMap     map[string]*Inst
+		Oplist      string
+		Opnames     string
+	}{InputFile: inputFile, Insts: p.Insts, MinISA: minISA, FirstInsn: firstInsn, TypeMap: typeMap, Oplist: oplistBuf.String(), Opnames: opnameBuf.String()}
+	for _, v := range typeAggMap {
+		targ.TypeAggList = append(targ.TypeAggList, v)
+	}
+	for _, v := range typeMap {
+		targ.TypeList = append(targ.TypeList, v)
+	}
+	sort.Slice(targ.TypeAggList, func(i, j int) bool {
+		// Sort based on the first entry, it is the last to appear in Appendix F.
+		return targ.TypeAggList[i].Insns[0].Op < targ.TypeAggList[j].Insns[0].Op
+	})
+	sort.Slice(targ.TypeList, func(i, j int) bool {
+		return targ.TypeList[i].Op < targ.TypeList[j].Op
+	})
+
+	// Generate asm9_gtable.go from the following template.
+	asm9_gtable_go := `
+		// DO NOT EDIT
+		// generated by: ppc64map -fmt=encoder {{.InputFile}}
+
+		package ppc64
+
+		import (
+			"cmd/internal/obj"
+		)
+
+		const (
+			{{print $.Oplist -}}
+		)
+
+		var GenAnames = []string {
+			{{print $.Opnames -}}
+		}
+
+		var GenOpcodes = [...]uint32 {
+			{{range $v := .Insts}}{{if ge $v.Isa $.MinISA -}}
+			{{if (eq $v.Words 1)}}{{printf "0x%08x, // A%s" $v.Value  (opname $v.Op)}}
+			{{else}}              {{printf "0x%08x, // A%s" $v.SValue (opname $v.Op)}}
+			{{end}}{{end}}{{end -}}
+		}
+
+		var GenPfxOpcodes = [...]uint32 {
+			{{range $v := .Insts}}{{if and (ge $v.Isa $.MinISA) (eq $v.Words 2) -}}
+			{{printf "0x%08x, // A%s" $v.Value (opname $v.Op)}}
+			{{end}}{{end -}}
+		}
+
+		var optabGen = []Optab {
+			{{range $v := .TypeAggList -}}
+			{{genoptabentry $v $.TypeMap -}}
+			{{end -}}
+		}
+
+		{{range $v := .TypeList}}
+		{{genencoderfunc $v $.FirstInsn}}
+		{{end}}
+
+		func opsetGen(from obj.As) bool {
+			r0 := from & obj.AMask
+			switch from {
+			{{range $v := .TypeAggList -}}
+			case A{{opname (index $v.Insns 0).Op}}:
+				{{range $w := (slice $v.Insns 1) -}}
+				opset(A{{opname $w.Op}},r0)
+				{{end -}}
+			{{end -}}
+			default:
+				return false
+			}
+			return true
+		}
+	`
+	tmpl := template.New("asm9_gtable.go")
+	tmpl.Funcs(template.FuncMap{
+		"opname":         opName,
+		"genencoderfunc": insnEncFuncStr,
+		"genoptabentry":  genOptabEntry,
+	})
+	tmpl.Parse(asm9_gtable_go)
+
+	// Write and gofmt the new file.
+	var tbuf bytes.Buffer
+	if err := tmpl.Execute(&tbuf, targ); err != nil {
+		log.Fatal(err)
+	}
+	tout, err := gofmt.Source(tbuf.Bytes())
+	if err != nil {
+		fmt.Printf("%s", tbuf.Bytes())
+		log.Fatalf("gofmt error: %v", err)
+	}
+	if err := os.WriteFile("asm9_gtables.go.new", tout, 0666); err != nil {
+		log.Fatalf("Failed to create asm9_gtables.new: %v", err)
+	}
 }
 
 // printASM implements the -fmt=asm mode.  This prints out a gnu assembler file
