@@ -66,7 +66,7 @@ type Operand struct {
 	// Possible values:
 	//   EVEX.b context {
 	//     TXT=ZEROSTR  - zeroing
-	//     TXT=SAESTR   - surpress all exceptions
+	//     TXT=SAESTR   - suppress all exceptions
 	//     TXT=ROUNDC   - rounding
 	//     TXT=BCASTSTR - broadcasting
 	//   }
