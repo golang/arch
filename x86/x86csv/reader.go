@@ -24,7 +24,7 @@ func NewReader(r io.Reader) *Reader {
 
 // ReadAll reads all remaining rows from r.
 //
-// If error is occured, still returns all rows
+// If error has occurred, still returns all rows
 // that have been read during method execution.
 //
 // A successful call returns err == nil, not err == io.EOF.
