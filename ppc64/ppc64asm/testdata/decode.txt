@@ -41,7 +41,7 @@ e8610032|	plan9	MOVW 48(R1),R3
 7c00422c|	gnu	dcbt r0,r8,0
 7c00422c|	plan9	DCBT (R8)
 7fab3040|	gnu	cmpld cr7,r11,r6
-7fab3040|	plan9	CMPU CR7,R11,R6
+7fab3040|	plan9	CMPU R11,R6,CR7
 2c030001|	gnu	cmpwi r3,1
 2c030001|	plan9	CMPW R3,$1
 7c2b4840|	gnu	cmpld r11,r9
@@ -855,3 +855,9 @@ f0400fe0|	gnu	xvcvsxddp vs2,vs1
 7c20003c|	gnu	wait 1,0
 4c000924|	gnu	rfebb 1
 0602000138800007|	gnu	pli r4,-8589869049
+7c5b03c0|	plan9	SETNBCR CR6SO,R2
+fc811000|	plan9	FCMPU F1,F2,CR1
+7c220176|	plan9	BRD R1,R2
+7c2201b6|	plan9	BRH R1,R2
+7c220136|	plan9	BRW R1,R2
+7c2311b8|	plan9	CFUGED R1,R2,R3
