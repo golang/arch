@@ -1,0 +1,415 @@
+ac391000|	add.w $t0, $t1, $t2
+acb91000|	add.d $t0, $t1, $t2
+ac41c002|	addi.d $t0, $t1, 16
+ac01e002|	addi.d $t0, $t1, -2048
+acfdff02|	addi.d $t0, $t1, -1
+ac05e002|	addi.d $t0, $t1, -2047
+acf9ff02|	addi.d $t0, $t1, -2
+acfdff02|	addi.d $t0, $t1, -1
+ac418002|	addi.w $t0, $t1, 16
+ac410010|	addu16i.d $t0, $t1, 16
+a4fcff13|	addu16i.d $a0, $a1, -1
+acb92c00|	alsl.d $t0, $t1, $t2, 0x2
+acb90400|	alsl.w $t0, $t1, $t2, 0x2
+acb90600|	alsl.wu $t0, $t1, $t2, 0x2
+ccb56138|	amadd.d $t0, $t1, $t2
+cc356138|	amadd.w $t0, $t1, $t2
+ccb56a38|	amadd_db.d $t0, $t1, $t2
+cc356a38|	amadd_db.w $t0, $t1, $t2
+ccb56238|	amand.d $t0, $t1, $t2
+cc356238|	amand.w $t0, $t1, $t2
+ccb56b38|	amand_db.d $t0, $t1, $t2
+cc356b38|	amand_db.w $t0, $t1, $t2
+ccb56538|	ammax.d $t0, $t1, $t2
+ccb56738|	ammax.du $t0, $t1, $t2
+cc356538|	ammax.w $t0, $t1, $t2
+cc356738|	ammax.wu $t0, $t1, $t2
+ccb56e38|	ammax_db.d $t0, $t1, $t2
+ccb57038|	ammax_db.du $t0, $t1, $t2
+cc356e38|	ammax_db.w $t0, $t1, $t2
+cc357038|	ammax_db.wu $t0, $t1, $t2
+ccb56638|	ammin.d $t0, $t1, $t2
+ccb56838|	ammin.du $t0, $t1, $t2
+cc356638|	ammin.w $t0, $t1, $t2
+cc356838|	ammin.wu $t0, $t1, $t2
+ccb56f38|	ammin_db.d $t0, $t1, $t2
+ccb57138|	ammin_db.du $t0, $t1, $t2
+cc356f38|	ammin_db.w $t0, $t1, $t2
+cc357138|	ammin_db.wu $t0, $t1, $t2
+ccb56338|	amor.d $t0, $t1, $t2
+cc356338|	amor.w $t0, $t1, $t2
+ccb56c38|	amor_db.d $t0, $t1, $t2
+cc356c38|	amor_db.w $t0, $t1, $t2
+ccb56038|	amswap.d $t0, $t1, $t2
+cc356038|	amswap.w $t0, $t1, $t2
+ccb56938|	amswap_db.d $t0, $t1, $t2
+cc356938|	amswap_db.w $t0, $t1, $t2
+ccb56438|	amxor.d $t0, $t1, $t2
+cc356438|	amxor.w $t0, $t1, $t2
+ccb56d38|	amxor_db.d $t0, $t1, $t2
+cc356d38|	amxor_db.w $t0, $t1, $t2
+acb91400|	and $t0, $t1, $t2
+ac414003|	andi $t0, $t1, 0x10
+acb91600|	andn $t0, $t1, $t2
+00004003|	nop
+a0b90100|	asrtgt.d $t1, $t2
+a0390100|	asrtle.d $t1, $t2
+00100050|	b 16
+20100048|	bceqz $fcc1, 16
+20110048|	bcnez $fcc1, 16
+1ff1ff4b|	bcnez $fcc0, -16
+8d110058|	beq $t0, $t1, 16
+a0110040|	beqz $t1, 16
+9ff1ff43|	beqz $t0, -16
+8d110064|	bge $t0, $t1, 16
+8d11006c|	bgeu $t0, $t1, 16
+ac490000|	bitrev.4b $t0, $t1
+ac4d0000|	bitrev.8b $t0, $t1
+ac550000|	bitrev.d $t0, $t1
+ac510000|	bitrev.w $t0, $t1
+00100054|	bl 16
+8d110060|	blt $t0, $t1, 16
+8d110068|	bltu $t0, $t1, 16
+8d11005c|	bne $t0, $t1, 16
+a0110044|	bnez $t1, 16
+00002a00|	break 0x0
+ac158a00|	bstrins.d $t0, $t1, 0xa, 0x5
+ac156a00|	bstrins.w $t0, $t1, 0xa, 0x5
+ac15ca00|	bstrpick.d $t0, $t1, 0xa, 0x5
+ac956a00|	bstrpick.w $t0, $t1, 0xa, 0x5
+ac390d00|	bytepick.d $t0, $t1, $t2, 0x2
+ac390900|	bytepick.w $t0, $t1, $t2, 0x2
+84010406|	cacop 0x4, $t0, 256
+ac210000|	clo.d $t0, $t1
+ac110000|	clo.w $t0, $t1
+ac250000|	clz.d $t0, $t1
+ac150000|	clz.w $t0, $t1
+ac6d0000|	cpucfg $t0, $t1
+ac392400|	crc.w.b.w $t0, $t1, $t2
+acb92500|	crc.w.d.w $t0, $t1, $t2
+acb92400|	crc.w.h.w $t0, $t1, $t2
+ac392500|	crc.w.w.w $t0, $t1, $t2
+ac392600|	crcc.w.b.w $t0, $t1, $t2
+acb92700|	crcc.w.d.w $t0, $t1, $t2
+acb92600|	crcc.w.h.w $t0, $t1, $t2
+ac392700|	crcc.w.w.w $t0, $t1, $t2
+0c040004|	csrrd $t0, 0x1
+2c040004|	csrwr $t0, 0x1
+ac050004|	csrxchg $t0, $t1, 0x1
+ac290000|	cto.d $t0, $t1
+ac190000|	cto.w $t0, $t1
+ac2d0000|	ctz.d $t0, $t1
+ac1d0000|	ctz.w $t0, $t1
+00007238|	dbar 0x0
+10802a00|	dbcl 0x10
+ac392200|	div.d $t0, $t1, $t2
+ac392300|	div.du $t0, $t1, $t2
+ac392000|	div.w $t0, $t1, $t2
+ac392100|	div.wu $t0, $t1, $t2
+00384806|	ertn
+ac5d0000|	ext.w.b $t0, $t1
+ac590000|	ext.w.h $t0, $t1
+28091401|	fabs.d $ft0, $ft1
+28051401|	fabs.s $ft0, $ft1
+28250101|	fadd.d $ft0, $ft1, $ft1
+28a50001|	fadd.s $ft0, $ft1, $ft1
+28391401|	fclass.d $ft0, $ft1
+28351401|	fclass.s $ft0, $ft1
+2029200c|	fcmp.caf.d $fcc0, $ft1, $ft2
+2029100c|	fcmp.caf.s $fcc0, $ft1, $ft2
+2029220c|	fcmp.ceq.d $fcc0, $ft1, $ft2
+2029120c|	fcmp.ceq.s $fcc0, $ft1, $ft2
+2029230c|	fcmp.cle.d $fcc0, $ft1, $ft2
+2029130c|	fcmp.cle.s $fcc0, $ft1, $ft2
+2029210c|	fcmp.clt.d $fcc0, $ft1, $ft2
+2029110c|	fcmp.clt.s $fcc0, $ft1, $ft2
+2029280c|	fcmp.cne.d $fcc0, $ft1, $ft2
+2029180c|	fcmp.cne.s $fcc0, $ft1, $ft2
+20292a0c|	fcmp.cor.d $fcc0, $ft1, $ft2
+20291a0c|	fcmp.cor.s $fcc0, $ft1, $ft2
+2029260c|	fcmp.cueq.d $fcc0, $ft1, $ft2
+2029160c|	fcmp.cueq.s $fcc0, $ft1, $ft2
+2029270c|	fcmp.cule.d $fcc0, $ft1, $ft2
+2029170c|	fcmp.cule.s $fcc0, $ft1, $ft2
+2029250c|	fcmp.cult.d $fcc0, $ft1, $ft2
+2029150c|	fcmp.cult.s $fcc0, $ft1, $ft2
+20292c0c|	fcmp.cune.d $fcc0, $ft1, $ft2
+20291c0c|	fcmp.cune.s $fcc0, $ft1, $ft2
+2029240c|	fcmp.cun.d $fcc0, $ft1, $ft2
+2029140c|	fcmp.cun.s $fcc0, $ft1, $ft2
+20a9200c|	fcmp.saf.d $fcc0, $ft1, $ft2
+20a9100c|	fcmp.saf.s $fcc0, $ft1, $ft2
+20a9220c|	fcmp.seq.d $fcc0, $ft1, $ft2
+20a9120c|	fcmp.seq.s $fcc0, $ft1, $ft2
+20a9230c|	fcmp.sle.d $fcc0, $ft1, $ft2
+20a9130c|	fcmp.sle.s $fcc0, $ft1, $ft2
+20a9210c|	fcmp.slt.d $fcc0, $ft1, $ft2
+20a9110c|	fcmp.slt.s $fcc0, $ft1, $ft2
+20a9280c|	fcmp.sne.d $fcc0, $ft1, $ft2
+20a9180c|	fcmp.sne.s $fcc0, $ft1, $ft2
+20a92a0c|	fcmp.sor.d $fcc0, $ft1, $ft2
+20a91a0c|	fcmp.sor.s $fcc0, $ft1, $ft2
+20a9260c|	fcmp.sueq.d $fcc0, $ft1, $ft2
+20a9160c|	fcmp.sueq.s $fcc0, $ft1, $ft2
+20a9270c|	fcmp.sule.d $fcc0, $ft1, $ft2
+20a9170c|	fcmp.sule.s $fcc0, $ft1, $ft2
+20a9250c|	fcmp.sult.d $fcc0, $ft1, $ft2
+20a9150c|	fcmp.sult.s $fcc0, $ft1, $ft2
+20a92c0c|	fcmp.sune.d $fcc0, $ft1, $ft2
+20a91c0c|	fcmp.sune.s $fcc0, $ft1, $ft2
+20a9240c|	fcmp.sun.d $fcc0, $ft1, $ft2
+20a9140c|	fcmp.sun.s $fcc0, $ft1, $ft2
+28291301|	fcopysign.d $ft0, $ft1, $ft2
+28a91201|	fcopysign.s $ft0, $ft1, $ft2
+28251901|	fcvt.d.s $ft0, $ft1
+28191901|	fcvt.s.d $ft0, $ft1
+28290701|	fdiv.d $ft0, $ft1, $ft2
+28a90601|	fdiv.s $ft0, $ft1, $ft2
+28291d01|	ffint.d.l $ft0, $ft1
+28211d01|	ffint.d.w $ft0, $ft1
+28191d01|	ffint.s.l $ft0, $ft1
+28111d01|	ffint.s.w $ft0, $ft1
+a841802b|	fld.d $ft0, $t1, 16
+a841002b|	fld.s $ft0, $t1, 16
+a8b97438|	fldgt.d $ft0, $t1, $t2
+a8397438|	fldgt.s $ft0, $t1, $t2
+a8b97538|	fldle.d $ft0, $t1, $t2
+a8397538|	fldle.s $ft0, $t1, $t2
+a8393438|	fldx.d $ft0, $t1, $t2
+a8393038|	fldx.s $ft0, $t1, $t2
+28291401|	flogb.d $ft0, $ft1
+28251401|	flogb.s $ft0, $ft1
+28a92508|	fmadd.d $ft0, $ft1, $ft2, $ft3
+28a91508|	fmadd.s $ft0, $ft1, $ft2, $ft3
+28290901|	fmax.d $ft0, $ft1, $ft2
+28a90801|	fmax.s $ft0, $ft1, $ft2
+28290d01|	fmaxa.d $ft0, $ft1, $ft2
+28a90c01|	fmaxa.s $ft0, $ft1, $ft2
+28290b01|	fmin.d $ft0, $ft1, $ft2
+28a90a01|	fmin.s $ft0, $ft1, $ft2
+28290f01|	fmina.d $ft0, $ft1, $ft2
+28a90e01|	fmina.s $ft0, $ft1, $ft2
+48991401|	fmov.d $ft0, $ft2
+48951401|	fmov.s $ft0, $ft2
+28a96508|	fmsub.d $ft0, $ft1, $ft2, $ft3
+28a95508|	fmsub.s $ft0, $ft1, $ft2, $ft3
+28290501|	fmul.d $ft0, $ft1, $ft2
+28a90401|	fmul.s $ft0, $ft1, $ft2
+28191401|	fneg.d $ft0, $ft1
+28151401|	fneg.s $ft0, $ft1
+28a9a508|	fnmadd.d $ft0, $ft1, $ft2, $ft3
+28a99508|	fnmadd.s $ft0, $ft1, $ft2, $ft3
+28a9e508|	fnmsub.d $ft0, $ft1, $ft2, $ft3
+28a9d508|	fnmsub.s $ft0, $ft1, $ft2, $ft3
+28591401|	frecip.d $ft0, $ft1
+28551401|	frecip.s $ft0, $ft1
+28491e01|	frint.d $ft0, $ft1
+28451e01|	frint.s $ft0, $ft1
+28691401|	frsqrt.d $ft0, $ft1
+28651401|	frsqrt.s $ft0, $ft1
+28291101|	fscaleb.d $ft0, $ft1, $ft2
+28a91001|	fscaleb.s $ft0, $ft1, $ft2
+28a9000d|	fsel $ft0, $ft1, $ft2, $fcc1
+28491401|	fsqrt.d $ft0, $ft1
+28451401|	fsqrt.s $ft0, $ft1
+a841c02b|	fst.d $ft0, $t1, 16
+a841402b|	fst.s $ft0, $t1, 16
+a8b97638|	fstgt.d $ft0, $t1, $t2
+a8397638|	fstgt.s $ft0, $t1, $t2
+a8b97738|	fstle.d $ft0, $t1, $t2
+a8397738|	fstle.s $ft0, $t1, $t2
+a8393c38|	fstx.d $ft0, $t1, $t2
+a8393838|	fstx.s $ft0, $t1, $t2
+28290301|	fsub.d $ft0, $ft1, $ft2
+28a90201|	fsub.s $ft0, $ft1, $ft2
+28291b01|	ftint.l.d $ft0, $ft1
+28251b01|	ftint.l.s $ft0, $ft1
+28091b01|	ftint.w.d $ft0, $ft1
+28051b01|	ftint.w.s $ft0, $ft1
+28291a01|	ftintrm.l.d $ft0, $ft1
+28251a01|	ftintrm.l.s $ft0, $ft1
+28091a01|	ftintrm.w.d $ft0, $ft1
+28051a01|	ftintrm.w.s $ft0, $ft1
+28e91a01|	ftintrne.l.d $ft0, $ft1
+28e51a01|	ftintrne.l.s $ft0, $ft1
+28c91a01|	ftintrne.w.d $ft0, $ft1
+28c51a01|	ftintrne.w.s $ft0, $ft1
+28691a01|	ftintrp.l.d $ft0, $ft1
+28651a01|	ftintrp.l.s $ft0, $ft1
+28491a01|	ftintrp.w.d $ft0, $ft1
+28451a01|	ftintrp.w.s $ft0, $ft1
+28a91a01|	ftintrz.l.d $ft0, $ft1
+28a51a01|	ftintrz.l.s $ft0, $ft1
+28891a01|	ftintrz.w.d $ft0, $ft1
+28851a01|	ftintrz.w.s $ft0, $ft1
+00807238|	ibar 0x0
+10804806|	idle 0x10
+ac014806|	iocsrrd.b $t0, $t1
+ac054806|	iocsrrd.h $t0, $t1
+ac094806|	iocsrrd.w $t0, $t1
+ac0d4806|	iocsrrd.d $t0, $t1
+ac114806|	iocsrwr.b $t0, $t1
+ac154806|	iocsrwr.h $t0, $t1
+ac194806|	iocsrwr.w $t0, $t1
+ac1d4806|	iocsrwr.d $t0, $t1
+82b54906|	invtlb 0x2, $t0, $t1
+ac11004c|	jirl $t0, $t1, 16
+ac410028|	ld.b $t0, $t1, 16
+ac41002a|	ld.bu $t0, $t1, 16
+ac41c028|	ld.d $t0, $t1, 16
+ac414028|	ld.h $t0, $t1, 16
+ac41402a|	ld.hu $t0, $t1, 16
+ac418028|	ld.w $t0, $t1, 16
+ac41802a|	ld.wu $t0, $t1, 16
+ac414006|	lddir $t0, $t1, 0x10
+ac397838|	ldgt.b $t0, $t1, $t2
+acb97938|	ldgt.d $t0, $t1, $t2
+acb97838|	ldgt.h $t0, $t1, $t2
+ac397938|	ldgt.w $t0, $t1, $t2
+ac397a38|	ldle.b $t0, $t1, $t2
+acb97b38|	ldle.d $t0, $t1, $t2
+acb97a38|	ldle.h $t0, $t1, $t2
+ac397b38|	ldle.w $t0, $t1, $t2
+ac110026|	ldptr.d $t0, $t1, 16
+ac01e024|	ldptr.w $t0, $t1, -8192
+ac05f024|	ldptr.w $t0, $t1, -4092
+acfd1f24|	ldptr.w $t0, $t1, 8188
+acfdff24|	ldptr.w $t0, $t1, -4
+ac050024|	ldptr.w $t0, $t1, 4
+ac110024|	ldptr.w $t0, $t1, 16
+80094406|	ldpte $t0, 0x2
+ac390038|	ldx.b $t0, $t1, $t2
+ac392038|	ldx.bu $t0, $t1, $t2
+ac390c38|	ldx.d $t0, $t1, $t2
+ac390438|	ldx.h $t0, $t1, $t2
+ac392438|	ldx.hu $t0, $t1, $t2
+ac390838|	ldx.w $t0, $t1, $t2
+ac392838|	ldx.wu $t0, $t1, $t2
+ac110022|	ll.d $t0, $t1, 16
+ac110020|	ll.w $t0, $t1, 16
+0c020014|	lu12i.w $t0, 16
+0c000015|	lu12i.w $t0, -524288
+ecffff15|	lu12i.w $t0, -1
+ecffff14|	lu12i.w $t0, 524287
+0c020016|	lu32i.d $t0, 16
+ac410003|	lu52i.d $t0, $t1, 16
+ac391300|	maskeqz $t0, $t1, $t2
+acb91300|	masknez $t0, $t1, $t2
+acb92200|	mod.d $t0, $t1, $t2
+acb92300|	mod.du $t0, $t1, $t2
+acb92000|	mod.w $t0, $t1, $t2
+acb92100|	mod.wu $t0, $t1, $t2
+28d41401|	movcf2fr $ft0, $fcc1
+2cdc1401|	movcf2gr $t0, $fcc1
+0cc81401|	movfcsr2gr $t0, $fcsr0
+20d11401|	movfr2cf $fcc0, $ft1
+2cb91401|	movfr2gr.d $t0, $ft1
+2cb51401|	movfr2gr.s $t0, $ft1
+2cbd1401|	movfrh2gr.s $t0, $ft1
+a0d91401|	movgr2cf $fcc0, $t1
+80c11401|	movgr2fcsr $fcsr0, $t0
+a8a91401|	movgr2fr.d $ft0, $t1
+a8a51401|	movgr2fr.w $ft0, $t1
+a8ad1401|	movgr2frh.w $ft0, $t1
+acb91d00|	mul.d $t0, $t1, $t2
+ac391c00|	mul.w $t0, $t1, $t2
+ac391e00|	mulh.d $t0, $t1, $t2
+acb91e00|	mulh.du $t0, $t1, $t2
+acb91c00|	mulh.w $t0, $t1, $t2
+ac391d00|	mulh.wu $t0, $t1, $t2
+ac391f00|	mulw.d.w $t0, $t1, $t2
+acb91f00|	mulw.d.wu $t0, $t1, $t2
+ac391400|	nor $t0, $t1, $t2
+ac391500|	or $t0, $t1, $t2
+ac418003|	ori $t0, $t1, 0x10
+ac391600|	orn $t0, $t1, $t2
+0c020018|	pcaddi $t0, 16
+0c02001c|	pcaddu12i $t0, 16
+0c02001e|	pcaddu18i $t0, 16
+0c02001a|	pcalau12i $t0, 16
+a041c02a|	preld 0x0, $t1, 16
+a0392c38|	preldx 0x0, $t1, $t2
+ac690000|	rdtime.d $t0, $t1
+ac650000|	rdtimeh.w $t0, $t1
+ac610000|	rdtimel.w $t0, $t1
+ac310000|	revb.2h $t0, $t1
+ac390000|	revb.2w $t0, $t1
+ac350000|	revb.4h $t0, $t1
+ac3d0000|	revb.d $t0, $t1
+ac410000|	revh.2w $t0, $t1
+ac450000|	revh.d $t0, $t1
+acb91b00|	rotr.d $t0, $t1, $t2
+ac391b00|	rotr.w $t0, $t1, $t2
+ac414d00|	rotri.d $t0, $t1, 0x10
+acc14c00|	rotri.w $t0, $t1, 0x10
+ac110023|	sc.d $t0, $t1, 16
+ac110021|	sc.w $t0, $t1, 16
+acb91800|	sll.d $t0, $t1, $t2
+ac391700|	sll.w $t0, $t1, $t2
+ac414100|	slli.d $t0, $t1, 0x10
+acc14000|	slli.w $t0, $t1, 0x10
+ac391200|	slt $t0, $t1, $t2
+ac410002|	slti $t0, $t1, 16
+acb91200|	sltu $t0, $t1, $t2
+ac414002|	sltui $t0, $t1, 16
+acb91900|	sra.d $t0, $t1, $t2
+ac391800|	sra.w $t0, $t1, $t2
+ac414900|	srai.d $t0, $t1, 0x10
+acc14800|	srai.w $t0, $t1, 0x10
+ac391900|	srl.d $t0, $t1, $t2
+acb91700|	srl.w $t0, $t1, $t2
+ac414500|	srli.d $t0, $t1, 0x10
+acc14400|	srli.w $t0, $t1, 0x10
+ac410029|	st.b $t0, $t1, 16
+ac41c029|	st.d $t0, $t1, 16
+ac414029|	st.h $t0, $t1, 16
+ac418029|	st.w $t0, $t1, 16
+ac397c38|	stgt.b $t0, $t1, $t2
+acb97d38|	stgt.d $t0, $t1, $t2
+acb97c38|	stgt.h $t0, $t1, $t2
+ac397d38|	stgt.w $t0, $t1, $t2
+ac397e38|	stle.b $t0, $t1, $t2
+acb97f38|	stle.d $t0, $t1, $t2
+acb97e38|	stle.h $t0, $t1, $t2
+ac397f38|	stle.w $t0, $t1, $t2
+ac110027|	stptr.d $t0, $t1, 16
+ac110025|	stptr.w $t0, $t1, 16
+ac391038|	stx.b $t0, $t1, $t2
+ac391c38|	stx.d $t0, $t1, $t2
+ac391438|	stx.h $t0, $t1, $t2
+ac391838|	stx.w $t0, $t1, $t2
+acb91100|	sub.d $t0, $t1, $t2
+ac391100|	sub.w $t0, $t1, $t2
+00002b00|	syscall 0x0
+00204806|	tlbclr
+00344806|	tlbfill
+00244806|	tlbflush
+002c4806|	tlbrd
+00284806|	tlbsrch
+00304806|	tlbwr
+acb91500|	xor $t0, $t1, $t2
+ac41c003|	xori $t0, $t1, 0x10
+cc355d38|	amadd.b $t0, $t1, $t2
+cc355f38|	amadd_db.b $t0, $t1, $t2
+ccb55f38|	amadd_db.h $t0, $t1, $t2
+ccb55d38|	amadd.h $t0, $t1, $t2
+cc355838|	amcas.b $t0, $t1, $t2
+ccb55938|	amcas.d $t0, $t1, $t2
+cc355a38|	amcas_db.b $t0, $t1, $t2
+ccb55b38|	amcas_db.d $t0, $t1, $t2
+ccb55a38|	amcas_db.h $t0, $t1, $t2
+cc355b38|	amcas_db.w $t0, $t1, $t2
+ccb55838|	amcas.h $t0, $t1, $t2
+cc355938|	amcas.w $t0, $t1, $t2
+cc355c38|	amswap.b $t0, $t1, $t2
+cc355e38|	amswap_db.b $t0, $t1, $t2
+ccb55e38|	amswap_db.h $t0, $t1, $t2
+ccb55c38|	amswap.h $t0, $t1, $t2
+28791401|	frecipe.d $ft0, $ft1
+28751401|	frecipe.s $ft0, $ft1
+28891401|	frsqrte.d $ft0, $ft1
+28851401|	frsqrte.s $ft0, $ft1
+ac895738|	llacq.d $t0, $t1
+ac815738|	llacq.w $t0, $t1
+ac8d5738|	screl.d $t0, $t1
+ac855738|	screl.w $t0, $t1
