@@ -83,7 +83,9 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) strin
 		STH, STHU,
 		STW, STWU,
 		STD, STDU,
-		STQ, STFD, STFDU, STFS, STFSU:
+		STFD, STFDU,
+		STFS, STFSU,
+		STQ, HASHST, HASHSTP:
 		return op + " " + strings.Join(args, ",")
 
 	case FCMPU, FCMPO, CMPD, CMPDI, CMPLD, CMPLDI, CMPW, CMPWI, CMPLW, CMPLWI:

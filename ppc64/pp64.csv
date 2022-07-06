@@ -1,4 +1,4 @@
-# POWER ISA 3.1 instruction description.
+# POWER ISA 3.1B instruction description.
 #
 # This file contains comment lines, each beginning with #,
 # followed by entries in CSV format.
@@ -13,8 +13,12 @@
 #    a list of sequences of the form (,sequence)+. A leading comma is used to signify an
 #    instruction encoding requiring multiple instruction words.
 # The fourth field represents the ISA version where the instruction was introduced as
-# stated in Appendix F. of ISA 3.1
+# stated in Appendix F. of ISA 3.1B
 #
+"Hash Check X-form","hashchk RB,offset(RA)","31@0|D@6|RA@11|RB@16|754@21|DX@31|","v3.1B"
+"Hash Check Privileged X-form","hashchkp RB,offset(RA)","31@0|D@6|RA@11|RB@16|690@21|DX@31|","v3.1B"
+"Hash Store X-form","hashst RB,offset(RA)","31@0|D@6|RA@11|RB@16|722@21|DX@31|","v3.1B"
+"Hash Store Privileged X-form","hashstp RB,offset(RA)","31@0|D@6|RA@11|RB@16|658@21|DX@31|","v3.1B"
 "Byte-Reverse Doubleword X-form","brd RA,RS","31@0|RS@6|RA@11|///@16|187@21|/@31|","v3.1"
 "Byte-Reverse Halfword X-form","brh RA,RS","31@0|RS@6|RA@11|///@16|219@21|/@31|","v3.1"
 "Byte-Reverse Word X-form","brw RA,RS","31@0|RS@6|RA@11|///@16|155@21|/@31|","v3.1"
@@ -209,7 +213,7 @@
 "VSX Vector bfloat16 GER (Rank-2 Update) Negative multiply, Positive accumulate XX3-form","xvbf16ger2np AT,XA,XB","59@0|AT@6|//@9|A@11|B@16|114@21|AX@29|BX@30|/@31|","v3.1"
 "VSX Vector bfloat16 GER (Rank-2 Update) Positive multiply, Negative accumulate XX3-form","xvbf16ger2pn AT,XA,XB","59@0|AT@6|//@9|A@11|B@16|178@21|AX@29|BX@30|/@31|","v3.1"
 "VSX Vector bfloat16 GER (Rank-2 Update) Positive multiply, Positive accumulate XX3-form","xvbf16ger2pp AT,XA,XB","59@0|AT@6|//@9|A@11|B@16|50@21|AX@29|BX@30|/@31|","v3.1"
-"VSX Vector Convert bfloat16 to Single-Precision format XX2-form","xvcvbf16spn XT,XB","60@0|T@6|16@11|B@16|475@21|BX@30|TX@31|","v3.1"
+"VSX Vector Convert bfloat16 to Single-Precision format Non-signaling XX2-form","xvcvbf16spn XT,XB","60@0|T@6|16@11|B@16|475@21|BX@30|TX@31|","v3.1"
 "VSX Vector Convert with round Single-Precision to bfloat16 format XX2-form","xvcvspbf16 XT,XB","60@0|T@6|17@11|B@16|475@21|BX@30|TX@31|","v3.1"
 "VSX Vector 16-bit Floating-Point GER (rank-2 update) XX3-form","xvf16ger2 AT,XA,XB","59@0|AT@6|//@9|A@11|B@16|19@21|AX@29|BX@30|/@31|","v3.1"
 "VSX Vector 16-bit Floating-Point GER (rank-2 update) Negative multiply, Negative accumulate XX3-form","xvf16ger2nn AT,XA,XB","59@0|AT@6|//@9|A@11|B@16|210@21|AX@29|BX@30|/@31|","v3.1"
@@ -1034,7 +1038,7 @@
 "Add Carrying XO-form","addc RT,RA,RB (OE=0 Rc=0)|addc. RT,RA,RB (OE=0 Rc=1)|addco RT,RA,RB (OE=1 Rc=0)|addco. RT,RA,RB (OE=1 Rc=1)","31@0|RT@6|RA@11|RB@16|OE@21|10@22|Rc@31|","P1"
 "Add Extended XO-form","adde RT,RA,RB (OE=0 Rc=0)|adde. RT,RA,RB (OE=0 Rc=1)|addeo RT,RA,RB (OE=1 Rc=0)|addeo. RT,RA,RB (OE=1 Rc=1)","31@0|RT@6|RA@11|RB@16|OE@21|138@22|Rc@31|","P1"
 "Add Immediate D-form","addi RT,RA,SI|li RT,SI (RA=0)","14@0|RT@6|RA@11|SI@16|","P1"
-"Add Immediate Carrying D-formy","addic RT,RA,SI","12@0|RT@6|RA@11|SI@16|","P1"
+"Add Immediate Carrying D-form","addic RT,RA,SI","12@0|RT@6|RA@11|SI@16|","P1"
 "Add Immediate Carrying and Record D-form","addic. RT,RA,SI","13@0|RT@6|RA@11|SI@16|","P1"
 "Add Immediate Shifted D-form","addis RT,RA,SI|lis RT,SI (RA=0)","15@0|RT@6|RA@11|SI@16|","P1"
 "Add to Minus One Extended XO-form","addme RT,RA (OE=0 Rc=0)|addme. RT,RA (OE=0 Rc=1)|addmeo RT,RA (OE=1 Rc=0)|addmeo. RT,RA (OE=1 Rc=1)","31@0|RT@6|RA@11|///@16|OE@21|234@22|Rc@31|","P1"

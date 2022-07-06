@@ -1,3 +1,7 @@
+7e0115e5|	gnu	hashchk r2,-128(r1)
+7e011565|	gnu	hashchkp r2,-128(r1)
+7e0115a5|	gnu	hashst r2,-128(r1)
+7e011525|	gnu	hashstp r2,-128(r1)
 7c610176|	gnu	brd r1,r3
 7c6101b6|	gnu	brh r1,r3
 7c610136|	gnu	brw r1,r3
@@ -23,9 +27,9 @@ f03f0ad1|	gnu	lxvkq vs33,1
 7c611138|	gnu	pdepd r1,r3,r2
 7c611178|	gnu	pextd r1,r3,r2
 0610001688800032|	gnu	plbz r4,1441842
+60000000|	gnu	nop
 04100016e4800032|	gnu	pld r4,1441842
 06100016c8600032|	gnu	plfd f3,1441842
-60000000|	gnu	nop
 06100016c0600032|	gnu	plfs f3,1441842
 06100016a8800032|	gnu	plha r4,1441842
 06100016a0800032|	gnu	plhz r4,1441842
@@ -240,7 +244,6 @@ f02d1769|	gnu	xxgenpcvwm vs33,v2,13
 7f810162|	gnu	xxmtacc a7
 0500000188232a4f|	gnu	xxpermx vs33,vs35,vs37,vs41,1
 7f830162|	gnu	xxsetaccz a7
-60000000|	gnu	nop
 0500012380234567|	gnu	xxsplti32dx vs33,1,19088743
 0500012380254567|	gnu	xxspltidp vs33,19088743
 0500012380274567|	gnu	xxspltiw vs33,19088743
@@ -1214,13 +1217,13 @@ fc60382d|	gnu	fsqrt. f3,f7
 7c611079|	gnu	andc. r1,r3,r2
 70610000|	gnu	andi. r1,r3,0
 74610000|	gnu	andis. r1,r3,0
-48000690|	gnu	b 0x1a90
+48000690|	gnu	b 0x1a9c
 48000692|	gnu	ba 0x690
-48000691|	gnu	bl 0x1a98
+48000691|	gnu	bl 0x1aa4
 48000693|	gnu	bla 0x690
-40860690|	gnu	bne cr1,0x1aa0
+40860690|	gnu	bne cr1,0x1aac
 40860692|	gnu	bnea cr1,0x690
-40860691|	gnu	bnel cr1,0x1aa8
+40860691|	gnu	bnel cr1,0x1ab4
 40860693|	gnu	bnela cr1,0x690
 4c860420|	gnu	bnectr cr1
 4c860421|	gnu	bnectrl cr1

@@ -60,6 +60,7 @@ const (
 	ISA_V30B
 	ISA_V30C
 	ISA_V31
+	ISA_V31B
 )
 
 var isaToISA = map[string]isaversion{
@@ -77,6 +78,7 @@ var isaToISA = map[string]isaversion{
 	"v3.0B": ISA_V30B,
 	"v3.0C": ISA_V30C,
 	"v3.1":  ISA_V31,
+	"v3.1B": ISA_V31B,
 }
 
 func usage() {
@@ -482,6 +484,18 @@ func add(p *Prog, text, mnemonics, encoding, isa string) {
 					opr = "BD"
 				}
 
+			case "offset":
+				switch inst.Op {
+				// These encode a 6 bit displacement in the format of an X-form opcode.
+				// Allowable displaments are -8 to -8*64 in 8B increments.
+				case "hashchk", "hashchkp", "hashst", "hashstp":
+					typ = asm.TypeNegOffset
+					opr = "DX"
+					opr2 = "D"
+					shift = 3
+
+				}
+
 			case "XMSK", "YMSK", "PMSK", "IX", "BHRBE":
 				typ = asm.TypeImmUnsigned
 
@@ -737,7 +751,12 @@ var isNotMemopMap = map[string]bool{
 }
 
 // Some ISA instructions are memops, but are not described like "Load ..." or "Store ..."
-var isMemopMap = map[string]bool{}
+var isMemopMap = map[string]bool{
+	"hashst":   true,
+	"hashstp":  true,
+	"hashchk":  true,
+	"hashchkp": true,
+}
 
 // Does this instruction contain a memory argument (e.g x-form load or d-form store)
 func hasMemoryArg(insn *Inst) bool {
@@ -767,7 +786,7 @@ func insnEncFuncStr(insn *Inst, firstName [2]string) string {
 
 	// Does this field require an obj.Addr.Offset?
 	isImmediate := func(t asm.ArgType) bool {
-		return t == asm.TypeImmUnsigned || t == asm.TypeSpReg || t == asm.TypeImmSigned || t == asm.TypeOffset
+		return t == asm.TypeImmUnsigned || t == asm.TypeSpReg || t == asm.TypeImmSigned || t == asm.TypeOffset || t == asm.TypeNegOffset
 	}
 
 	if insn.memOp {
@@ -827,11 +846,24 @@ func insnEncFuncStr(insn *Inst, firstName [2]string) string {
 
 		// Generate a check to verify shifted inputs satisfy their constraints.
 		// For historical reasons this is not needed for 16 bit values shifted by 16. (i.e SI/UI constants in addis/xoris)
-		if atype.Shift != 0 && atype.Shift != 16 && bits != 32 {
+		if atype.Type != asm.TypeNegOffset && atype.Shift != 0 && atype.Shift != 16 && bits != 32 {
 			arg := argOrder[j] + itype
 			mod := (1 << atype.Shift) - 1
 			errCheck += fmt.Sprintf("if %s & 0x%x != 0 {\n", arg, mod)
 			errCheck += fmt.Sprintf("c.ctxt.Diag(\"Constant 0x%%x (%%d) is not a multiple of %d\\n%%v\",%s,%s,p)\n", mod+1, arg, arg)
+			errCheck += fmt.Sprintf("}\n")
+		}
+		// NegOffset requires a stronger offset check
+		if atype.Type == asm.TypeNegOffset {
+			arg := argOrder[j] + itype
+			mask := -1 << (atype.BitFields.NumBits() + int(atype.Shift))
+			maskl := mask // Sign bits are implied in this type.
+			mask |= (1 << atype.Shift) - 1
+			min := maskl
+			max := maskl | (^mask)
+			step := 1 << atype.Shift
+			errCheck += fmt.Sprintf("if %s & 0x%x != 0x%x {\n", arg, uint32(mask), uint32(maskl))
+			errCheck += fmt.Sprintf("c.ctxt.Diag(\"Constant(%%d) must within the range of [%d,%d] in steps of %d\\n%%v\",%s,p)\n", min, max, step, arg)
 			errCheck += fmt.Sprintf("}\n")
 		}
 		j++
@@ -895,6 +927,8 @@ func insnTypeStr(insn *Inst, uniqueRegTypes bool) string {
 			if atype.Shift != 0 {
 				ret += fmt.Sprintf("%d", atype.Shift)
 			}
+		case asm.TypeNegOffset: // e.g offset in hashst rb, offset(ra)
+			ret += "N"
 		default:
 			log.Fatalf("Unhandled type in insnTypeStr: %v\n", atype)
 		}
@@ -952,6 +986,14 @@ func genOptabEntry(ta *AggInfo, typeMap map[string]*Inst) string {
 			if f.Type == asm.TypeOffset {
 				shift = ""
 			}
+		}
+		if f.Type == asm.TypeNegOffset {
+			// This is a hack, but allows hashchk and like to correctly
+			// merge there argument into a C_SOREG memory location type
+			// argument a little later.
+			sign = "S"
+			bits = 16
+			shift = ""
 		}
 		return fmt.Sprintf("C_%s%d%sCON", sign, bits, shift)
 	}

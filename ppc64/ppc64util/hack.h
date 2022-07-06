@@ -129,6 +129,9 @@
 #define Rpfx 1
 #define SIpfx 0xFFFFFFFE00010007
 
+// A valid displacement value for the hash check and hash store instructions.
+#define offset -128
+
 // These decode as m.fpr* or m.vr*.  This is a matter of preference.  We
 // don't support these mnemonics, and I don't think they improve reading
 // disassembled code in most cases. so ignore.

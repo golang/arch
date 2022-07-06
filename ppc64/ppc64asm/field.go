@@ -86,3 +86,12 @@ func (bs BitFields) ParseSigned(i [2]uint32) int64 {
 	u, l := bs.parse(i)
 	return int64(u) << (64 - l) >> (64 - l)
 }
+
+// Count the number of bits in the aggregate BitFields
+func (bs BitFields) NumBits() int {
+	num := 0
+	for _, b := range bs {
+		num += int(b.Bits)
+	}
+	return num
+}
