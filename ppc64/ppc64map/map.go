@@ -5,12 +5,13 @@
 // ppc64map constructs the ppc64 opcode map from the instruction set CSV file.
 //
 // Usage:
+//
 //	ppc64map [-fmt=format] ppc64.csv
 //
 // The known output formats are:
 //
-//  text (default) - print decoding tree in text form
-//  decoder - print decoding tables for the ppc64asm package
+//	text (default) - print decoding tree in text form
+//	decoder - print decoding tables for the ppc64asm package
 package main
 
 import (
@@ -423,7 +424,7 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 					opr = "BD"
 				}
 
-			case "XMSK", "YMSK", "PMSK", "IX":
+			case "XMSK", "YMSK", "PMSK", "IX", "BHRBE":
 				typ = asm.TypeImmUnsigned
 
 			case "IMM32":
@@ -559,12 +560,8 @@ func add(p *Prog, text, mnemonics, encoding, tags string) {
 			case "VRA", "VRB", "VRC", "VRS", "VRT":
 				typ = asm.TypeVecReg
 
-			case "SPR", "DCRN", "BHRBE", "TBR", "SR", "TMR", "PMRN": // Note: if you add to this list and the register field needs special handling, add it to switch statement below
+			case "SPR", "TBR":
 				typ = asm.TypeSpReg
-				switch opr {
-				case "DCRN":
-					opr = "DCR"
-				}
 				if n := strings.ToLower(opr); n != opr && args.Find(n) >= 0 {
 					opr = n // spr[5:9] || spr[0:4]
 				}

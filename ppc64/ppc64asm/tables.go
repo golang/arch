@@ -2906,7 +2906,7 @@ var (
 	ap_FPReg_11_15                   = &argField{Type: TypeFPReg, Shift: 0, BitFields: BitFields{{11, 5, 0}}}
 	ap_ImmUnsigned_7_10              = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{7, 4, 0}}}
 	ap_ImmUnsigned_31_31             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{31, 1, 0}}}
-	ap_SpReg_11_20                   = &argField{Type: TypeSpReg, Shift: 0, BitFields: BitFields{{11, 10, 0}}}
+	ap_ImmUnsigned_11_20             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{11, 10, 0}}}
 	ap_ImmUnsigned_20_20             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{20, 1, 0}}}
 	ap_ImmUnsigned_16_16             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{16, 1, 0}}}
 	ap_ImmUnsigned_17_20             = &argField{Type: TypeImmUnsigned, Shift: 0, BitFields: BitFields{{17, 4, 0}}}
@@ -3883,7 +3883,7 @@ var instFormats = [...]instFormat{
 	{LXSSPX, 0xfc0007fe00000000, 0x7c00041800000000, 0x0, // Load VSX Scalar Single-Precision Indexed X-form (lxsspx XT,RA,RB)
 		[6]*argField{ap_VecSReg_31_31_6_10, ap_Reg_11_15, ap_Reg_16_20}},
 	{MFBHRBE, 0xfc0007fe00000000, 0x7c00025c00000000, 0x100000000, // Move From BHRB XFX-form (mfbhrbe RT,BHRBE)
-		[6]*argField{ap_Reg_6_10, ap_SpReg_11_20}},
+		[6]*argField{ap_Reg_6_10, ap_ImmUnsigned_11_20}},
 	{MFVSRD, 0xfc0007fe00000000, 0x7c00006600000000, 0xf80000000000, // Move From VSR Doubleword X-form (mfvsrd RA,XS)
 		[6]*argField{ap_Reg_11_15, ap_VecSReg_31_31_6_10}},
 	{MFVSRWZ, 0xfc0007fe00000000, 0x7c0000e600000000, 0xf80000000000, // Move From VSR Word and Zero X-form (mfvsrwz RA,XS)
