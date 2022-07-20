@@ -40,7 +40,7 @@ var (
 // from an external disassembler's output.
 type ExtInst struct {
 	addr uint32
-	enc  [4]byte
+	enc  [8]byte
 	nenc int
 	text string
 }
@@ -200,20 +200,25 @@ func writeInst(generate func(func([]byte))) (file string, f *os.File, size int, 
 	defer w.Flush()
 	size = 0
 	generate(func(x []byte) {
-		if len(x) > 4 {
-			x = x[:4]
+		if len(x) != 4 && len(x) != 8 {
+			panic(fmt.Sprintf("Unexpected instruction %v\n", x))
+		}
+		izeros := zeros
+		if len(x) == 4 {
+			// Only pad to 4 bytes for a 4 byte instruction word.
+			izeros = izeros[4:]
 		}
 		if debug {
-			fmt.Printf("%#x: %x%x\n", start+size, x, zeros[len(x):])
+			fmt.Printf("%#x: %x%x\n", start+size, x, izeros[len(x):])
 		}
 		w.Write(x)
-		w.Write(zeros[len(x):])
-		size += len(zeros)
+		w.Write(izeros[len(x):])
+		size += len(izeros)
 	})
 	return file, f, size, nil
 }
 
-var zeros = []byte{0, 0, 0, 0}
+var zeros = []byte{0, 0, 0, 0, 0, 0, 0, 0}
 
 // pad pads the code sequence with pops.
 func pad(enc []byte) []byte {
