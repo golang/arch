@@ -67,7 +67,7 @@ func (bs *BitFields) Append(b BitField) {
 // the sequence of bitfields is reasonable.
 func (bs BitFields) parse(i [2]uint32) (u uint64, Bits uint8) {
 	for _, b := range bs {
-		u = (uint64(u) << b.Bits) | uint64(b.Parse(i))
+		u = (u << b.Bits) | uint64(b.Parse(i))
 		Bits += b.Bits
 	}
 	return u, Bits
