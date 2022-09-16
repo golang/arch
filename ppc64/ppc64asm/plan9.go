@@ -251,7 +251,7 @@ func reverseOperandOrder(op Op) bool {
 		return true
 	case FADDCC, FADDSCC, FSUBCC, FMULCC, FDIVCC, FDIVSCC:
 		return true
-	case OR, ORC, AND, ANDC, XOR, NAND, EQV, NOR, ANDCC, ORCC, XORCC, EQVCC, NORCC, NANDCC:
+	case OR, ORCC, ORC, ORCCC, AND, ANDCC, ANDC, ANDCCC, XOR, XORCC, NAND, NANDCC, EQV, EQVCC, NOR, NORCC:
 		return true
 	case SLW, SLWCC, SLD, SLDCC, SRW, SRAW, SRWCC, SRAWCC, SRD, SRDCC, SRAD, SRADCC:
 		return true
@@ -305,6 +305,7 @@ var plan9OpMap = map[Op]string{
 	ORI:       "OR",
 	ANDICC:    "ANDCC",
 	ANDC:      "ANDN",
+	ANDCCC:    "ANDNCC",
 	ADDEO:     "ADDEV",
 	ADDEOCC:   "ADDEVCC",
 	ADDO:      "ADDV",
@@ -321,8 +322,12 @@ var plan9OpMap = map[Op]string{
 	SUBFZECC:  "SUBZECC",
 	SUBFZEO:   "SUBZEV",
 	SUBFZEOCC: "SUBZEVCC",
+	SUBF:      "SUB",
 	SUBFC:     "SUBC",
+	SUBFCC:    "SUBCC",
+	SUBFCCC:   "SUBCCC",
 	ORC:       "ORN",
+	ORCCC:     "ORNCC",
 	MULLWO:    "MULLWV",
 	MULLWOCC:  "MULLWVCC",
 	MULLDO:    "MULLDV",
@@ -334,7 +339,6 @@ var plan9OpMap = map[Op]string{
 	ADDI:      "ADD",
 	MULLI:     "MULLD",
 	SRADI:     "SRAD",
-	SUBF:      "SUB",
 	STBCXCC:   "STBCCC",
 	STWCXCC:   "STWCCC",
 	STDCXCC:   "STDCCC",
