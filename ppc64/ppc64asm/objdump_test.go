@@ -47,6 +47,10 @@ func allowedMismatchObjdump(text string, size int, inst *Inst, dec ExtInst) bool
 		return true
 	case SYNC, WAIT, RFEBB: // ISA 3.1 adds more bits and extended mnemonics for these book ii instructions.
 		return true
+	case BL:
+		// TODO: Ignore these for now. The output format from gnu objdump is dependent on more than the
+		// instruction itself e.g: decode(48100009) = "bl 0x100008", 4, want "bl .+0x100008", 4
+		return true
 	}
 
 	if len(dec.enc) >= 4 {

@@ -469,6 +469,9 @@ f0400fe0|	plan9	XVCVSXDDP VS1,VS2
 7c6802a6|	plan9	MOVD LR,R3
 7c6902a6|	plan9	MOVD CTR,R3
 4c8c0000|	plan9	MOVFL CR3,CR1
+48100001|	plan9	CALL foo(SB)
+48100009|	plan9	CALL foo+8(SB)
+4810000d|	plan9	CALL 0x10000c
 7c6803a6|	gnu	mtlr r3
 7c6802a6|	gnu	mflr r3
 7c6903a6|	gnu	mtctr r3
