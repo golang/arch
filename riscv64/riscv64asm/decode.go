@@ -44,9 +44,7 @@ func Decode(src []byte) (inst Inst, err error) {
 	x := binary.LittleEndian.Uint32(src)
 
 Search:
-	for i := range instFormats {
-		f := &instFormats[i]
-
+	for i, f := range instFormats {
 		if (x & f.mask) != f.value {
 			continue
 		}

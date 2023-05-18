@@ -315,21 +315,13 @@ func isFloatReg(op string, reg string) bool {
 		strings.Contains(op, "FLE") || strings.Contains(op, "FLT") ||
 		strings.Contains(op, "FMV_X_H") || strings.Contains(op, "FMV_X_D") ||
 		strings.Contains(op, "FMV_X_W"):
-		if reg == "rd" {
-			return false
-		} else {
-			return true
-		}
+		return reg != "rd"
 
 	case strings.Contains(op, "FCVT_D") || strings.Contains(op, "FCVT_S") ||
 		strings.Contains(op, "FCVT_H") || strings.Contains(op, "FCVT_Q") ||
 		strings.Contains(op, "FMV_H_X") || strings.Contains(op, "FMV_D_X") ||
 		strings.Contains(op, "FMV_W_X"):
-		if reg == "rs" {
-			return false
-		} else {
-			return true
-		}
+		return reg != "rs"
 
 	default:
 		return false
