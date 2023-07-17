@@ -791,7 +791,7 @@ func processListing(p *listing, insts *[]*instruction) {
 			for i, hdr := range heading {
 				x := row[i]
 				x = strings.Replace(x, "\n", " ", -1)
-				switch strings.TrimSpace(hdr) {
+				switch strings.Replace(strings.TrimSpace(hdr), "\n", " ", -1) {
 				default:
 					wrong = "unexpected header: " + strconv.Quote(hdr)
 					goto BadTable
