@@ -628,6 +628,8 @@ var fixHeading = strings.NewReplacer(
 	"Compat/\nLeg Mode*", "Compat/Leg Mode",
 	"Compat/\nLeg Mode", "Compat/Leg Mode",
 	"Compat/ *\nLeg Mode", "Compat/Leg Mode",
+
+	"\n", " ",
 )
 
 func halfMissing(x []string) bool {
@@ -791,7 +793,7 @@ func processListing(p *listing, insts *[]*instruction) {
 			for i, hdr := range heading {
 				x := row[i]
 				x = strings.Replace(x, "\n", " ", -1)
-				switch strings.Replace(strings.TrimSpace(hdr), "\n", " ", -1) {
+				switch strings.TrimSpace(hdr) {
 				default:
 					wrong = "unexpected header: " + strconv.Quote(hdr)
 					goto BadTable
