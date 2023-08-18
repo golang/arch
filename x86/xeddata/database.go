@@ -104,9 +104,11 @@ type xtype struct {
 // parsing of found file is.
 //
 // Lookup:
+//
 //	"$xedPath/all-state.txt" => db.LoadStates()
 //	"$xedPath/all-widths.txt" => db.LoadWidths()
 //	"$xedPath/all-element-types.txt" => db.LoadXtypes()
+//
 // $xedPath is the interpolated value of function argument.
 //
 // The call NewDatabase("") is valid and returns empty database.

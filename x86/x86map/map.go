@@ -5,13 +5,14 @@
 // X86map constructs the x86 opcode map from the instruction set CSV file.
 //
 // Usage:
+//
 //	x86map [-fmt=format] x86.csv
 //
 // The known output formats are:
 //
-//  text (default) - print decoding tree in text form
-//  decoder - print decoding tables for the x86asm package
-//  scanner - print scanning tables for x86scan package
+//	text (default) - print decoding tree in text form
+//	decoder - print decoding tables for the x86asm package
+//	scanner - print scanning tables for x86scan package
 package main
 
 import (

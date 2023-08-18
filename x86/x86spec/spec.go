@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// X86spec reads the ``Intel® 64 and IA-32 Architectures Software Developer's Manual''
+// X86spec reads the “Intel® 64 and IA-32 Architectures Software Developer's Manual”
 // to collect instruction encoding details and writes those details to standard output
 // in CSV format.
 //
@@ -20,7 +20,7 @@
 //
 // There are additional debugging flags, not shown. Run x86spec -help for the list.
 //
-// File Format
+// # File Format
 //
 // TODO: Mention comments at top of file.
 // TODO: Mention that this is version 0.2 of the file.
@@ -59,7 +59,7 @@
 //
 //	"SHR r/m32, imm8","SHRL imm8, r/m32","shrl imm8, r/m32","C1 /5 ib","V","V","","operand32","rw,r","Y","32"
 //
-// Mnemonics
+// # Mnemonics
 //
 // The instruction mnemonics are as used in the Intel manual, with a few exceptions.
 //
@@ -109,7 +109,7 @@
 // moffs8, moffs16, moffs32, moffs64, vm32x, vm32y, vm64x, and vm64y
 // are all as in the Intel manual.
 //
-// Encodings
+// # Encodings
 //
 // The encodings are also as used in the Intel manual, with automated corrections.
 // For example, the Intel manual sometimes omits the modrm /r indicator or other trailing bytes,
@@ -118,7 +118,7 @@
 // tools for processing x86 machine code.
 // See https://golang.org/x/arch/x86/x86map for one such generator.
 //
-// Valid32 and Valid64
+// # Valid32 and Valid64
 //
 // These columns hold validity abbreviations as defined in the Intel manual:
 // V, I, N.E., N.P., N.S., or N.I.
@@ -128,7 +128,7 @@
 // For example, the manual lists many instruction forms using REX bytes
 // with an incorrect "V" in the Valid32 column.
 //
-// CPUID Feature Flags
+// # CPUID Feature Flags
 //
 // This column specifies CPUID feature flags that must be present in order
 // to use the instruction. If multiple flags are required,
@@ -136,7 +136,7 @@
 // The column can also list one of the values 486, Pentium, PentiumII, and P6,
 // indicating that the instruction was introduced on that architecture version.
 //
-// Tags
+// # Tags
 //
 // The tag column does not correspond to a traditional column in the Intel manual tables.
 // Instead, it is itself a comma-separated list of tags or hints derived by analysis
@@ -169,7 +169,7 @@
 // Since most decoders will handle the REX byte separately, the form with the
 // unnecessary REX is tagged pseudo64.
 //
-// Corrections and Additions
+// # Corrections and Additions
 //
 // The x86spec program makes various corrections to the Intel manual data
 // as part of extracting the information. Those corrections are described above.
@@ -177,7 +177,7 @@
 // The x86spec program also adds a few well-known undocumented instructions,
 // such as UD1 and FFREEP.
 //
-// Examples
+// # Examples
 //
 // The latest version of the CSV file is available in this Git repository and also
 // online at https://golang.org/s/x86.csv. It is meant to be human-readable for
@@ -193,7 +193,6 @@
 // reads the CSV file and generates an x86 instruction decoder in the form
 // of a simple byte-code program. This decoder is the core of the disassembler
 // in the x86asm package (https://golang.org/x/arch/x86/x86asm).
-//
 package main
 
 import (

@@ -8,15 +8,14 @@
 
 // ... see golang.org/issue/12840
 
-// Armspec reads the ``ARM Architecture Reference Manual''
+// Armspec reads the “ARM Architecture Reference Manual”
 // to collect instruction encoding details and writes those details to standard output
 // in JSON format.
 //
-// Warning Warning Warning
+// # Warning Warning Warning
 //
 // This program is unfinished. It is being published in this incomplete form
 // for interested readers, but do not expect it to be runnable or useful.
-//
 package main
 
 import (
@@ -606,10 +605,10 @@ func sameFont(f1, f2 string) bool {
 }
 
 var jsFix = strings.NewReplacer(
-//	`\u003c`, `<`,
-//	`\u003e`, `>`,
-//	`\u0026`, `&`,
-//	`\u0009`, `\t`,
+// `\u003c`, `<`,
+// `\u003e`, `>`,
+// `\u0026`, `&`,
+// `\u0009`, `\t`,
 )
 
 func printTable(name string, table []Inst) {

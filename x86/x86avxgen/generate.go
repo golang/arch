@@ -230,8 +230,8 @@ func (gen *generator) makeYtab(zoffset int, zform string, args []*argument) ytab
 //
 // This is required due to how masking is implemented in asm6.
 // Single MASK1() instruction produces 2 ytabs, for example:
-//	1. OP xmm, mem     | Yxr, Yxm         | Does not permit K arguments (K0 implied)
-//	2. OP xmm, K2, mem | Yxr, Yknot0, Yxm | Does not permit K0 argument
+//  1. OP xmm, mem     | Yxr, Yxm         | Does not permit K arguments (K0 implied)
+//  2. OP xmm, K2, mem | Yxr, Yknot0, Yxm | Does not permit K0 argument
 //
 // This function also exploits that both ytab entries have same opbytes,
 // hence it is efficient to emit only one opbytes line and 0 Z-offset

@@ -224,16 +224,16 @@ func assignZforms(ctx *context) {
 // elements order inside ytabList.
 //
 // We want these rules to be satisfied:
-//	- EVEX-encoded entries go after VEX-encoded entries.
-//	  This way, VEX forms are selected over EVEX variants.
-//	- EVEX forms with SAE/RC must go before forms without them.
-//	  This helps to avoid problems with reg-reg instructions
-//	  that encode either of them in ModRM.R/M which causes
-//	  ambiguity in ytabList (more than 1 ytab can match args).
-//	  If first matching ytab has SAE/RC, problem will not occur.
-//	- Memory argument position affects order.
-//	  Required to be in sync with XED encoder when there
-//	  are multiple choices of how to encode instruction.
+//   - EVEX-encoded entries go after VEX-encoded entries.
+//     This way, VEX forms are selected over EVEX variants.
+//   - EVEX forms with SAE/RC must go before forms without them.
+//     This helps to avoid problems with reg-reg instructions
+//     that encode either of them in ModRM.R/M which causes
+//     ambiguity in ytabList (more than 1 ytab can match args).
+//     If first matching ytab has SAE/RC, problem will not occur.
+//   - Memory argument position affects order.
+//     Required to be in sync with XED encoder when there
+//     are multiple choices of how to encode instruction.
 func sortGroups(ctx *context) {
 	sort.SliceStable(ctx.groups, func(i, j int) bool {
 		return ctx.groups[i].opcode < ctx.groups[j].opcode

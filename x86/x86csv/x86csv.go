@@ -6,7 +6,7 @@
 // Only latest version of "x86.csv" format is supported.
 //
 // Terminology:
-//   given "OPCODE [ARGS...]" line;
+// given "OPCODE [ARGS...]" line;
 // Opcode - instruction name/mnemonic/class.
 // Args   - instruction operands.
 // Syntax - Opcode with Args.

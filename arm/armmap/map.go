@@ -5,12 +5,13 @@
 // Armmap constructs the ARM opcode map from the instruction set CSV file.
 //
 // Usage:
+//
 //	armmap [-fmt=format] arm.csv
 //
 // The known output formats are:
 //
-//  text (default) - print decoding tree in text form
-//  decoder - print decoding tables for the armasm package
+//	text (default) - print decoding tree in text form
+//	decoder - print decoding tables for the armasm package
 package main
 
 import (

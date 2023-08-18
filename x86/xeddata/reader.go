@@ -92,6 +92,7 @@ func (r *Reader) ReadAll() ([]*Object, error) {
 // It expects lines that are joined by '\' to be concatenated.
 //
 // The format can be described as:
+//
 //	unquoted field name "[A-Z_]+" (captured)
 //	field value delimiter ":"
 //	field value string (captured)
