@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build ignore
-// +build ignore
 
 // Generate interesting test cases from ppc64 objdump via
 // go run util.go
