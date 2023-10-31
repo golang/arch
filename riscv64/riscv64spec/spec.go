@@ -295,7 +295,7 @@ func isAtomic(op string) bool {
 	return false
 }
 
-// Defer whether the reg of floating-point instrution is freg or not.
+// Defer whether the reg of floating-point instruction is freg or not.
 func isFloatReg(op string, reg string) bool {
 	switch {
 	case strings.Contains(op, "FADD") || strings.Contains(op, "FSUB") ||

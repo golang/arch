@@ -74,7 +74,7 @@ Search:
 	return Inst{}, errUnknown
 }
 
-// decodeArg decodes the arg decribed by aop from the instruction bits x.
+// decodeArg decodes the arg described by aop from the instruction bits x.
 // It returns nil if x cannot be decoded according to aop.
 func decodeArg(aop instArg, x uint32, index int) Arg {
 	switch aop {
