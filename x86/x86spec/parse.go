@@ -628,6 +628,8 @@ var fixHeading = strings.NewReplacer(
 	"Compat/\nLeg Mode*", "Compat/Leg Mode",
 	"Compat/\nLeg Mode", "Compat/Leg Mode",
 	"Compat/ *\nLeg Mode", "Compat/Leg Mode",
+
+	"\n", " ",
 )
 
 func halfMissing(x []string) bool {
