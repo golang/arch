@@ -653,7 +653,7 @@ func enum8bit(try func([]byte)) {
 	}
 }
 
-// enum8bit generates all possible 2-byte sequences, followed by distinctive padding.
+// enum16bit generates all possible 2-byte sequences, followed by distinctive padding.
 func enum16bit(try func([]byte)) {
 	for i := 0; i < 1<<16; i++ {
 		try([]byte{byte(i), byte(i >> 8), 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88})
