@@ -1,0 +1,1245 @@
+    5a82100b|	gnu	a %r8,11(%r2,%r1) 
+        1a80|	gnu	ar %r8,%r0        
+    b9f80080|	gnu	ark %r8,%r0,%r0   
+e382100b005a|	gnu	ay %r8,11(%r2,%r1)
+e382100b0008|	gnu	ag %r8,11(%r2,%r1)
+    b9080080|	gnu	agr %r8,%r0       
+    b9e80080|	gnu	agrk %r8,%r0,%r0  
+e382100b0018|	gnu	agf %r8,11(%r2,%r1)
+    b9180080|	gnu	agfr %r8,%r0      
+    b34a0080|	gnu	axbr %f8,%f0      
+    b3da0080|	gnu	axtr %f8,%f0,%f0  
+    b3da0180|	gnu	axtra %f8,%f0,%f0,1
+ed82100b001a|	gnu	adb %f8,11(%r2,%r1)
+    b31a0080|	gnu	adbr %f8,%f0      
+    b3d20080|	gnu	adtr %f8,%f0,%f0  
+    b3d20180|	gnu	adtra %f8,%f0,%f0,1
+ed82100b000a|	gnu	aeb %f8,11(%r2,%r1)
+    b30a0080|	gnu	aebr %f8,%f0      
+fa332006100b|	gnu	ap 6(4,%r2),11(4,%r1)
+    4a82100b|	gnu	ah %r8,11(%r2,%r1)
+e382100b007a|	gnu	ahy %r8,11(%r2,%r1)
+e382100b0038|	gnu	agh %r8,11(%r2,%r1)
+    a78a0008|	gnu	ahi %r8,8         
+    a78b0008|	gnu	aghi %r8,8        
+    b9c80080|	gnu	ahhhr %r8,%r0,%r0 
+    b9d80080|	gnu	ahhlr %r8,%r0,%r0 
+c28900000008|	gnu	afi %r8,8         
+ec80000800d8|	gnu	ahik %r8,%r0,8    
+eb082006006a|	gnu	asi 6(%r2),8      
+ec80000800d9|	gnu	aghik %r8,%r0,8   
+c28800000008|	gnu	agfi %r8,8        
+eb082006007a|	gnu	agsi 6(%r2),8     
+cc8800000008|	gnu	aih %r8,8         
+    5e82100b|	gnu	al %r8,11(%r2,%r1)
+        1e80|	gnu	alr %r8,%r0       
+    b9fa0080|	gnu	alrk %r8,%r0,%r0  
+e382100b005e|	gnu	aly %r8,11(%r2,%r1)
+e382100b000a|	gnu	alg %r8,11(%r2,%r1)
+    b90a0080|	gnu	algr %r8,%r0      
+    b9ea0080|	gnu	algrk %r8,%r0,%r0 
+e382100b001a|	gnu	algf %r8,11(%r2,%r1)
+    b91a0080|	gnu	algfr %r8,%r0     
+    b9ca0080|	gnu	alhhhr %r8,%r0,%r0
+    b9da0080|	gnu	alhhlr %r8,%r0,%r0
+c28b00000008|	gnu	alfi %r8,8        
+c28a00000008|	gnu	algfi %r8,8       
+e382100b0098|	gnu	alc %r8,11(%r2,%r1)
+    b9980080|	gnu	alcr %r8,%r0      
+e382100b0088|	gnu	alcg %r8,11(%r2,%r1)
+    b9880080|	gnu	alcgr %r8,%r0     
+ec80000800da|	gnu	alhsik %r8,%r0,8  
+eb082006006e|	gnu	alsi 6(%r2),8     
+ec80000800db|	gnu	alghsik %r8,%r0,8 
+eb082006007e|	gnu	algsi 6(%r2),8    
+cc8a00000008|	gnu	alsih %r8,8       
+cc8b00000008|	gnu	alsihn %r8,8      
+        3680|	gnu	axr %f8,%f0       
+    6a82100b|	gnu	ad %f8,11(%r2,%r1)
+        2a80|	gnu	adr %f8,%f0       
+    7a82100b|	gnu	ae %f8,11(%r2,%r1)
+        3a80|	gnu	aer %f8,%f0       
+    6e82100b|	gnu	aw %f8,11(%r2,%r1)
+        2e80|	gnu	awr %f8,%f0       
+    7e82100b|	gnu	au %f8,11(%r2,%r1)
+        3e80|	gnu	aur %f8,%f0       
+    5482100b|	gnu	n %r8,11(%r2,%r1) 
+        1480|	gnu	nr %r8,%r0        
+    b9f40080|	gnu	nrk %r8,%r0,%r0   
+e382100b0054|	gnu	ny %r8,11(%r2,%r1)
+e382100b0080|	gnu	ng %r8,11(%r2,%r1)
+    b9800080|	gnu	ngr %r8,%r0       
+    b9e40080|	gnu	ngrk %r8,%r0,%r0  
+d4032006100b|	gnu	nc 6(4,%r2),11(%r1)
+    94082006|	gnu	ni 6(%r2),8       
+eb0820060054|	gnu	niy 6(%r2),8      
+    a5840008|	gnu	nihh %r8,8        
+    a5850008|	gnu	nihl %r8,8        
+c08a00000008|	gnu	nihf %r8,8        
+    a5860008|	gnu	nilh %r8,8        
+    a5870008|	gnu	nill %r8,8        
+c08b00000008|	gnu	nilf %r8,8        
+    b9f50080|	gnu	ncrk %r8,%r0,%r0  
+    b9e50080|	gnu	ncgrk %r8,%r0,%r0 
+    4582100b|	gnu	bal %r8,11(%r2,%r1)
+        0580|	gnu	balr %r8,%r0      
+    4d82100b|	gnu	bas %r8,11(%r2,%r1)
+        0d80|	gnu	basr %r8,%r0      
+        0c80|	gnu	bassm %r8,%r0     
+    b25a0080|	gnu	bsa %r8,%r0       
+        0b80|	gnu	bsm %r8,%r0       
+    b2400080|	gnu	bakr %r8,%r0      
+    b2580080|	gnu	bsg %r8,%r0       
+e372100b0047|	gnu	bine 11(%r2,%r1)  
+    4772100b|	gnu	bne 11(%r2,%r1)   
+        0770|	gnu	bner %r0          
+    4682100b|	gnu	bct %r8,11(%r2,%r1)
+        0680|	gnu	bctr %r8,%r0      
+e382100b0046|	gnu	bctg %r8,11(%r2,%r1)
+    b9460080|	gnu	bctgr %r8,%r0     
+    8680100b|	gnu	bxh %r8,%r0,11(%r1)
+eb80100b0044|	gnu	bxhg %r8,%r0,11(%r1)
+    8780100b|	gnu	bxle %r8,%r0,11(%r1)
+eb80100b0045|	gnu	bxleg %r8,%r0,11(%r1)
+c77060b60000|	gnu	bpp 7,0x1cc,182(%r6)
+c57000000093|	gnu	bprp 7,0x1d2,0x2f8
+    a7850000|	gnu	bras %r8,0x1d8    
+c08500000000|	gnu	brasl %r8,0x1dc   
+    a7740000|	gnu	jne 0x1e2         
+c07400000000|	gnu	jgne 0x1e6        
+    a7860000|	gnu	brct %r8,0x1ec    
+    a7870000|	gnu	brctg %r8,0x1f0   
+cc8600000000|	gnu	brcth %r8,0x1f4   
+    84800000|	gnu	brxh %r8,%r0,0x1fa
+ec8000000044|	gnu	brxhg %r8,%r0,0x1fe
+    85800000|	gnu	brxle %r8,%r0,0x204
+ec8000000045|	gnu	brxlg %r8,%r0,0x208
+    b2760000|	gnu	xsch              
+    b2410080|	gnu	cksm %r8,%r0      
+    b92e0080|	gnu	km %r8,%r0        
+    b9290080|	gnu	kma %r8,%r0,%r0   
+    b92f0080|	gnu	kmc %r8,%r0       
+    b92a0080|	gnu	kmf %r8,%r0       
+    b92d0080|	gnu	kmctr %r8,%r0,%r0 
+    b92b0080|	gnu	kmo %r8,%r0       
+    b2300000|	gnu	csch              
+    5982100b|	gnu	c %r8,11(%r2,%r1) 
+        1980|	gnu	cr %r8,%r0        
+e382100b0059|	gnu	cy %r8,11(%r2,%r1)
+e382100b0020|	gnu	cg %r8,11(%r2,%r1)
+    b9200080|	gnu	cgr %r8,%r0       
+e382100b0030|	gnu	cgf %r8,11(%r2,%r1)
+    b9300080|	gnu	cgfr %r8,%r0      
+    b3490080|	gnu	cxbr %f8,%f0      
+    b3ec0080|	gnu	cxtr %f8,%f0      
+    b3690080|	gnu	cxr %f8,%f0       
+ed82100b0019|	gnu	cdb %f8,11(%r2,%r1)
+    b3190080|	gnu	cdbr %f8,%f0      
+    b3e40080|	gnu	cdtr %f8,%f0      
+    6982100b|	gnu	cd %f8,11(%r2,%r1)
+        2980|	gnu	cdr %f8,%f0       
+ed82100b0009|	gnu	ceb %f8,11(%r2,%r1)
+    b3090080|	gnu	cebr %f8,%f0      
+    7982100b|	gnu	ce %f8,11(%r2,%r1)
+        3980|	gnu	cer %f8,%f0       
+ec8080cd30f6|	gnu	crb %r8,%r0,3,205(%r8)
+ec8080cd30e4|	gnu	cgrb %r8,%r0,3,205(%r8)
+ec80ffac3076|	gnu	crj %r8,%r0,3,0x1e6
+ec80ffac3064|	gnu	cgrj %r8,%r0,3,0x1ec
+    b21a100b|	gnu	cfc 11(%r1)       
+    b98f0180|	gnu	crdte %r8,%r0,%r0,1
+    b3480080|	gnu	kxbr %f8,%f0      
+    b3e80080|	gnu	kxtr %f8,%f0      
+ed82100b0018|	gnu	kdb %f8,11(%r2,%r1)
+    b3180080|	gnu	kdbr %f8,%f0      
+    b3e00080|	gnu	kdtr %f8,%f0      
+ed82100b0008|	gnu	keb %f8,11(%r2,%r1)
+    b3080080|	gnu	kebr %f8,%f0      
+    ba80100b|	gnu	cs %r8,%r0,11(%r1)
+eb80100b0014|	gnu	csy %r8,%r0,11(%r1)
+eb80100b0030|	gnu	csg %r8,%r0,11(%r1)
+    b2500080|	gnu	csp %r8,%r0       
+    b98a0080|	gnu	cspg %r8,%r0      
+c8022006100b|	gnu	csst 6(%r2),11(%r1),%r0
+    b9723080|	gnu	crt %r8,%r0,3     
+    b9603080|	gnu	cgrt %r8,%r0,3    
+    b3fc0080|	gnu	cextr %f8,%f0     
+    b3f40080|	gnu	cedtr %f8,%f0     
+f9332006100b|	gnu	cp 6(4,%r2),11(4,%r1)
+    bb80100b|	gnu	cds %r8,%r0,11(%r1)
+eb80100b0031|	gnu	cdsy %r8,%r0,11(%r1)
+eb80100b003e|	gnu	cdsg %r8,%r0,11(%r1)
+    4982100b|	gnu	ch %r8,11(%r2,%r1)
+e382100b0079|	gnu	chy %r8,11(%r2,%r1)
+e382100b0034|	gnu	cgh %r8,11(%r2,%r1)
+e55420060008|	gnu	chhsi 6(%r2),8    
+    a78e0008|	gnu	chi %r8,8         
+e55c20060008|	gnu	chsi 6(%r2),8     
+    a78f0008|	gnu	cghi %r8,8        
+e55820060008|	gnu	cghsi 6(%r2),8    
+c68500000000|	gnu	chrl %r8,0x330    
+c68400000000|	gnu	cghrl %r8,0x336   
+e382100b00cd|	gnu	chf %r8,11(%r2,%r1)
+    b9cd0080|	gnu	chhr %r8,%r0      
+    b9dd0080|	gnu	chlr %r8,%r0      
+c28d00000008|	gnu	cfi %r8,8         
+c28c00000008|	gnu	cgfi %r8,8        
+ec8380cd08fe|	gnu	cib %r8,8,3,205(%r8)
+ec8380cd08fc|	gnu	cgib %r8,8,3,205(%r8)
+ec83ffac087e|	gnu	cij %r8,8,3,0x2ba 
+ec83ffac087c|	gnu	cgij %r8,8,3,0x2c0
+ec8000083072|	gnu	cit %r8,8,3       
+ec8000083070|	gnu	cgit %r8,8,3      
+cc8d00000008|	gnu	cih %r8,8         
+    5582100b|	gnu	cl %r8,11(%r2,%r1)
+        1580|	gnu	clr %r8,%r0       
+e382100b0055|	gnu	cly %r8,11(%r2,%r1)
+e382100b0021|	gnu	clg %r8,11(%r2,%r1)
+    b9210080|	gnu	clgr %r8,%r0      
+e382100b0031|	gnu	clgf %r8,11(%r2,%r1)
+    b9310080|	gnu	clgfr %r8,%r0     
+d5032006100b|	gnu	clc 6(4,%r2),11(%r1)
+    95082006|	gnu	cli 6(%r2),8      
+eb0820060055|	gnu	cliy 6(%r2),8     
+ec8080cd30f7|	gnu	clrb %r8,%r0,3,205(%r8)
+ec8080cd30e5|	gnu	clgrb %r8,%r0,3,205(%r8)
+ec80ffac3077|	gnu	clrj %r8,%r0,3,0x314
+ec80ffac3065|	gnu	clgrj %r8,%r0,3,0x31a
+    b9733080|	gnu	clrt %r8,%r0,3    
+eb83100b0023|	gnu	clt %r8,3,11(%r1) 
+    b9613080|	gnu	clgrt %r8,%r0,3   
+eb83100b002b|	gnu	clgt %r8,3,11(%r1)
+eb83100b0020|	gnu	clmh %r8,3,11(%r1)
+    bd83100b|	gnu	clm %r8,3,11(%r1) 
+eb83100b0021|	gnu	clmy %r8,3,11(%r1)
+e382100b00cf|	gnu	clhf %r8,11(%r2,%r1)
+    b9cf0080|	gnu	clhhr %r8,%r0     
+    b9df0080|	gnu	clhlr %r8,%r0     
+e55520060008|	gnu	clhhsi 6(%r2),8   
+c28f00000008|	gnu	clfi %r8,8        
+e55d20060008|	gnu	clfhsi 6(%r2),8   
+e55920060008|	gnu	clghsi 6(%r2),8   
+c28e00000008|	gnu	clgfi %r8,8       
+ec8380cd08ff|	gnu	clib %r8,8,3,205(%r8)
+ec8380cd08fd|	gnu	clgib %r8,8,3,205(%r8)
+ec83ffac087f|	gnu	clij %r8,8,3,0x37c
+ec83ffac087d|	gnu	clgij %r8,8,3,0x382
+ec8000083073|	gnu	clfit %r8,8,3     
+ec8000083071|	gnu	clgit %r8,8,3     
+cc8f00000008|	gnu	clih %r8,8        
+        0f80|	gnu	clcl %r8,%r0      
+    a980100b|	gnu	clcle %r8,%r0,11(%r1)
+eb80100b008f|	gnu	clclu %r8,%r0,11(%r1)
+c68f00000000|	gnu	clrl %r8,0x44e    
+c68700000000|	gnu	clhrl %r8,0x454   
+c68a00000000|	gnu	clgrl %r8,0x45a   
+c68600000000|	gnu	clghrl %r8,0x460  
+c68e00000000|	gnu	clgfrl %r8,0x466  
+    b25d0080|	gnu	clst %r8,%r0      
+c68d00000000|	gnu	crl %r8,0x470     
+c68800000000|	gnu	cgrl %r8,0x476    
+c68c00000000|	gnu	cgfrl %r8,0x47c   
+    b2570080|	gnu	cuse %r8,%r0      
+    b2630080|	gnu	cmpsc %r8,%r0     
+    b93a0080|	gnu	kdsa %r8,%r0      
+    b93e0080|	gnu	kimd %r8,%r0      
+    b93f0080|	gnu	klmd %r8,%r0      
+    b91e0080|	gnu	kmac %r8,%r0      
+    b3590080|	gnu	thdr %f8,%f0      
+    b3580080|	gnu	thder %f8,%f0     
+    b3960080|	gnu	cxfbr %f8,%r0     
+    b3963180|	gnu	cxfbra %f8,3,%r0,1
+    b9593180|	gnu	cxftr %f8,3,%r0,1 
+    b3b60080|	gnu	cxfr %f8,%r0      
+    b3950080|	gnu	cdfbr %f8,%r0     
+    b3953180|	gnu	cdfbra %f8,3,%r0,1
+    b9513180|	gnu	cdftr %f8,3,%r0,1 
+    b3b50080|	gnu	cdfr %f8,%r0      
+    b3940080|	gnu	cefbr %f8,%r0     
+    b3943180|	gnu	cefbra %f8,3,%r0,1
+    b3b40080|	gnu	cefr %f8,%r0      
+    b3a60080|	gnu	cxgbr %f8,%r0     
+    b3a63180|	gnu	cxgbra %f8,3,%r0,1
+    b3f90080|	gnu	cxgtr %f8,%r0     
+    b3f93180|	gnu	cxgtra %f8,3,%r0,1
+    b3c60080|	gnu	cxgr %f8,%r0      
+    b3a50080|	gnu	cdgbr %f8,%r0     
+    b3a53180|	gnu	cdgbra %f8,3,%r0,1
+    b3f10080|	gnu	cdgtr %f8,%r0     
+    b3f13180|	gnu	cdgtra %f8,3,%r0,1
+    b3c50080|	gnu	cdgr %f8,%r0      
+    b3a40080|	gnu	cegbr %f8,%r0     
+    b3a43180|	gnu	cegbra %f8,3,%r0,1
+    b3c40080|	gnu	cegr %f8,%r0      
+    b3923180|	gnu	cxlfbr %f8,3,%r0,1
+    b95b3180|	gnu	cxlftr %f8,3,%r0,1
+    b3913180|	gnu	cdlfbr %f8,3,%r0,1
+    b9533180|	gnu	cdlftr %f8,3,%r0,1
+    b3903180|	gnu	celfbr %f8,3,%r0,1
+    b3a23180|	gnu	cxlgbr %f8,3,%r0,1
+    b95a3180|	gnu	cxlgtr %f8,3,%r0,1
+    b3a13180|	gnu	cdlgbr %f8,3,%r0,1
+    b9523180|	gnu	cdlgtr %f8,3,%r0,1
+    b3a03180|	gnu	celgbr %f8,3,%r0,1
+ed03100b83af|	gnu	cxpt %f8,11(4,%r1),3
+ed03100b83ae|	gnu	cdpt %f8,11(4,%r1),3
+    b3fb0080|	gnu	cxstr %f8,%r0     
+    b3f30080|	gnu	cdstr %f8,%r0     
+    b3fa0080|	gnu	cxutr %f8,%r0     
+    b3f20080|	gnu	cdutr %f8,%r0     
+ed03100b83ab|	gnu	cxzt %f8,11(4,%r1),3
+ed03100b83aa|	gnu	cdzt %f8,11(4,%r1),3
+    b3503080|	gnu	tbedr %f8,3,%f0   
+    b3513080|	gnu	tbdr %f8,3,%f0    
+    4f82100b|	gnu	cvb %r8,11(%r2,%r1)
+e382100b0006|	gnu	cvby %r8,11(%r2,%r1)
+e382100b000e|	gnu	cvbg %r8,11(%r2,%r1)
+    4e82100b|	gnu	cvd %r8,11(%r2,%r1)
+e382100b0026|	gnu	cvdy %r8,11(%r2,%r1)
+e382100b002e|	gnu	cvdg %r8,11(%r2,%r1)
+    b39a3080|	gnu	cfxbr %r8,3,%f0   
+    b39a3180|	gnu	cfxbra %r8,3,%f0,1
+    b3aa3080|	gnu	cgxbr %r8,3,%f0   
+    b3aa3180|	gnu	cgxbra %r8,3,%f0,1
+    b9493180|	gnu	cfxtr %r8,3,%f0,1 
+    b3e93080|	gnu	cgxtr %r8,3,%f0   
+    b3e93180|	gnu	cgxtra %r8,3,%f0,1
+    b3ba3080|	gnu	cfxr %r8,3,%f0    
+    b3ca3080|	gnu	cgxr %r8,3,%f0    
+    b3993080|	gnu	cfdbr %r8,3,%f0   
+    b3993180|	gnu	cfdbra %r8,3,%f0,1
+    b3a93080|	gnu	cgdbr %r8,3,%f0   
+    b3a93180|	gnu	cgdbra %r8,3,%f0,1
+    b9413180|	gnu	cfdtr %r8,3,%f0,1 
+    b3e13080|	gnu	cgdtr %r8,3,%f0   
+    b3e13180|	gnu	cgdtra %r8,3,%f0,1
+    b3b93080|	gnu	cfdr %r8,3,%f0    
+    b3c93080|	gnu	cgdr %r8,3,%f0    
+    b3983080|	gnu	cfebr %r8,3,%f0   
+    b3983180|	gnu	cfebra %r8,3,%f0,1
+    b3a83080|	gnu	cgebr %r8,3,%f0   
+    b3a83180|	gnu	cgebra %r8,3,%f0,1
+    b3b83080|	gnu	cfer %r8,3,%f0    
+    b3c83080|	gnu	cger %r8,3,%f0    
+    b39e3180|	gnu	clfxbr %r8,3,%f0,1
+    b3ae3180|	gnu	clgxbr %r8,3,%f0,1
+    b94b3180|	gnu	clfxtr %r8,3,%f0,1
+    b94a3180|	gnu	clgxtr %r8,3,%f0,1
+    b39d3180|	gnu	clfdbr %r8,3,%f0,1
+    b3ad3180|	gnu	clgdbr %r8,3,%f0,1
+    b9433180|	gnu	clfdtr %r8,3,%f0,1
+    b9423180|	gnu	clgdtr %r8,3,%f0,1
+    b39c3180|	gnu	clfebr %r8,3,%f0,1
+    b3ac3180|	gnu	clgebr %r8,3,%f0,1
+ed03100b83ad|	gnu	cpxt %f8,11(4,%r1),3
+ed03100b83ac|	gnu	cpdt %f8,11(4,%r1),3
+    b3eb0180|	gnu	csxtr %r8,%f0,1   
+    b3e30180|	gnu	csdtr %r8,%f0,1   
+    b3ea0080|	gnu	cuxtr %r8,%f0     
+    b3e20080|	gnu	cudtr %r8,%f0     
+ed03100b83a9|	gnu	czxt %f8,11(4,%r1),3
+ed03100b83a8|	gnu	czdt %f8,11(4,%r1),3
+    b2a63080|	gnu	cu21 %r8,%r0,3    
+    b9b13080|	gnu	cu24 %r8,%r0,3    
+    b2a63080|	gnu	cu21 %r8,%r0,3    
+    b2a73080|	gnu	cu12 %r8,%r0,3    
+    b2a73080|	gnu	cu12 %r8,%r0,3    
+    b9b03080|	gnu	cu14 %r8,%r0,3    
+    b9b30080|	gnu	cu42 %r8,%r0      
+    b9b20080|	gnu	cu41 %r8,%r0      
+    b24d0080|	gnu	cpya %a8,%a0      
+    b3720080|	gnu	cpsdr %f8,%f0,%f0 
+e6235000087c|	gnu	vscshp %v18,%v3,%v5
+e62350901874|	gnu	vschp %v18,%v3,%v5,1,9
+    b9390080|	gnu	dfltcc %r8,%r0,%r0
+    5d82100b|	gnu	d %r8,11(%r2,%r1) 
+        1d80|	gnu	dr %r8,%r0        
+    b34d0080|	gnu	dxbr %f8,%f0      
+    b3d90080|	gnu	dxtr %f8,%f0,%f0  
+    b3d90180|	gnu	dxtra %f8,%f0,%f0,1
+    b22d0080|	gnu	dxr %f8,%f0       
+ed82100b001d|	gnu	ddb %f8,11(%r2,%r1)
+    b31d0080|	gnu	ddbr %f8,%f0      
+    b3d10080|	gnu	ddtr %f8,%f0,%f0  
+    b3d10180|	gnu	ddtra %f8,%f0,%f0,1
+    6d82100b|	gnu	dd %f8,11(%r2,%r1)
+        2d80|	gnu	ddr %f8,%f0       
+ed82100b000d|	gnu	deb %f8,11(%r2,%r1)
+    b30d0080|	gnu	debr %f8,%f0      
+    7d82100b|	gnu	de %f8,11(%r2,%r1)
+        3d80|	gnu	der %f8,%f0       
+fd332006100b|	gnu	dp 6(4,%r2),11(4,%r1)
+e382100b0097|	gnu	dl %r8,11(%r2,%r1)
+    b9970080|	gnu	dlr %r8,%r0       
+e382100b0087|	gnu	dlg %r8,11(%r2,%r1)
+    b9870080|	gnu	dlgr %r8,%r0      
+e382100b000d|	gnu	dsg %r8,11(%r2,%r1)
+    b90d0080|	gnu	dsgr %r8,%r0      
+e382100b001d|	gnu	dsgf %r8,11(%r2,%r1)
+    b91d0080|	gnu	dsgfr %r8,%r0     
+    b35b0180|	gnu	didbr %f8,%f0,%f0,1
+    b3530180|	gnu	diebr %f8,%f0,%f0,1
+de032006100b|	gnu	ed 6(4,%r2),11(%r1)
+df032006100b|	gnu	edmk 6(4,%r2),11(%r1)
+    5782100b|	gnu	x %r8,11(%r2,%r1) 
+        1780|	gnu	xr %r8,%r0        
+    b9f70080|	gnu	xrk %r8,%r0,%r0   
+e382100b0057|	gnu	xy %r8,11(%r2,%r1)
+e382100b0082|	gnu	xg %r8,11(%r2,%r1)
+    b9820080|	gnu	xgr %r8,%r0       
+    b9e70080|	gnu	xgrk %r8,%r0,%r0  
+d7032006100b|	gnu	xc 6(4,%r2),11(%r1)
+    97082006|	gnu	xi 6(%r2),8       
+eb0820060057|	gnu	xiy 6(%r2),8      
+c08600000008|	gnu	xihf %r8,8        
+c08700000008|	gnu	xilf %r8,8        
+    4482100b|	gnu	ex %r8,11(%r2,%r1)
+c68000000000|	gnu	exrl %r8,0x720    
+    b24f0080|	gnu	ear %r8,%a0       
+    b99d0080|	gnu	esea %r8          
+    b3ed0080|	gnu	eextr %r8,%f0     
+    b3e50080|	gnu	eedtr %r8,%f0     
+eb80100b004c|	gnu	ecag %r8,%r0,11(%r1)
+c8012006100b|	gnu	ectg 6(%r2),11(%r1),%r0
+    b38c0080|	gnu	efpc %r8          
+    b2260080|	gnu	epar %r8          
+    b99a0080|	gnu	epair %r8         
+    b98d0080|	gnu	epsw %r8,%r0      
+    b2270080|	gnu	esar %r8          
+    b99b0080|	gnu	esair %r8         
+    b3ef0080|	gnu	esxtr %r8,%f0     
+    b3e70080|	gnu	esdtr %r8,%f0     
+    b2490080|	gnu	ereg %r8,%r0      
+    b90e0080|	gnu	eregg %r8,%r0     
+    b24a0080|	gnu	esta %r8,%r0      
+    b2ec0080|	gnu	etnd %r8          
+    b9830080|	gnu	flogr %r8,%r0     
+    b2310000|	gnu	hsch              
+        2480|	gnu	hdr %f8,%f0       
+        3480|	gnu	her %f8,%f0       
+    b2240080|	gnu	iac %r8           
+    b3fe0080|	gnu	iextr %f8,%f0,%r0 
+    b3f60080|	gnu	iedtr %f8,%f0,%r0 
+    4382100b|	gnu	ic %r8,11(%r2,%r1)
+e382100b0073|	gnu	icy %r8,11(%r2,%r1)
+eb83100b0080|	gnu	icmh %r8,3,11(%r1)
+    bf83100b|	gnu	icm %r8,3,11(%r1) 
+eb83100b0081|	gnu	icmy %r8,3,11(%r1)
+    a5800008|	gnu	iihh %r8,8        
+    a5810008|	gnu	iihl %r8,8        
+c08800000008|	gnu	iihf %r8,8        
+    a5820008|	gnu	iilh %r8,8        
+    a5830008|	gnu	iill %r8,8        
+c08900000008|	gnu	iilf %r8,8        
+    b2220080|	gnu	ipm %r8           
+    b20b0000|	gnu	ipk               
+    b9ac0080|	gnu	irbm %r8,%r0      
+    b2290080|	gnu	iske %r8,%r0      
+    b2230080|	gnu	ivsk %r8,%r0      
+    b98e0180|	gnu	idte %r8,%r0,%r0,1
+    b2210180|	gnu	ipte %r8,%r0,%r0,1
+    5882100b|	gnu	l %r8,11(%r2,%r1) 
+        1880|	gnu	lr %r8,%r0        
+e382100b0058|	gnu	ly %r8,11(%r2,%r1)
+e382100b0004|	gnu	lg %r8,11(%r2,%r1)
+    b9040080|	gnu	lgr %r8,%r0       
+e382100b0014|	gnu	lgf %r8,11(%r2,%r1)
+    b9140080|	gnu	lgfr %r8,%r0      
+    b3650080|	gnu	lxr %f8,%f0       
+    6882100b|	gnu	ld %f8,11(%r2,%r1)
+        2880|	gnu	ldr %f8,%f0       
+ed82100b0065|	gnu	ldy %f8,11(%r2,%r1)
+    7882100b|	gnu	le %f8,11(%r2,%r1)
+        3880|	gnu	ler %f8,%f0       
+ed82100b0064|	gnu	ley %f8,11(%r2,%r1)
+    9a80100b|	gnu	lam %a8,%a0,11(%r1)
+eb80100b009a|	gnu	lamy %a8,%a0,11(%r1)
+    4182100b|	gnu	la %r8,11(%r2,%r1)
+e382100b0071|	gnu	lay %r8,11(%r2,%r1)
+    5182100b|	gnu	lae %r8,11(%r2,%r1)
+e382100b0075|	gnu	laey %r8,11(%r2,%r1)
+c08000000000|	gnu	larl %r8,0x836    
+e5002006100b|	gnu	lasp 6(%r2),11(%r1)
+eb80100b00f8|	gnu	laa %r8,%r0,11(%r1)
+eb80100b00e8|	gnu	laag %r8,%r0,11(%r1)
+eb80100b00fa|	gnu	laal %r8,%r0,11(%r1)
+eb80100b00ea|	gnu	laalg %r8,%r0,11(%r1)
+eb80100b00f4|	gnu	lan %r8,%r0,11(%r1)
+eb80100b00e4|	gnu	lang %r8,%r0,11(%r1)
+eb80100b00f7|	gnu	lax %r8,%r0,11(%r1)
+eb80100b00e7|	gnu	laxg %r8,%r0,11(%r1)
+eb80100b00f6|	gnu	lao %r8,%r0,11(%r1)
+eb80100b00e6|	gnu	laog %r8,%r0,11(%r1)
+e382100b0012|	gnu	lt %r8,11(%r2,%r1)
+        1280|	gnu	ltr %r8,%r0       
+e382100b0002|	gnu	ltg %r8,11(%r2,%r1)
+    b9020080|	gnu	ltgr %r8,%r0      
+e382100b0032|	gnu	ltgf %r8,11(%r2,%r1)
+    b9120080|	gnu	ltgfr %r8,%r0     
+    b3420080|	gnu	ltxbr %f8,%f0     
+    b3de0080|	gnu	ltxtr %f8,%f0     
+    b3620080|	gnu	ltxr %f8,%f0      
+    b3120080|	gnu	ltdbr %f8,%f0     
+    b3d60080|	gnu	ltdtr %f8,%f0     
+        2280|	gnu	ltdr %f8,%f0      
+    b3020080|	gnu	ltebr %f8,%f0     
+        3280|	gnu	lter %f8,%f0      
+e382100b009f|	gnu	lat %r8,11(%r2,%r1)
+e382100b0085|	gnu	lgat %r8,11(%r2,%r1)
+e382100b003b|	gnu	lzrf %r8,11(%r2,%r1)
+e382100b002a|	gnu	lzrg %r8,11(%r2,%r1)
+    b200100b|	gnu	lbear 11(%r1)     
+e382100b0076|	gnu	lb %r8,11(%r2,%r1)
+    b9260080|	gnu	lbr %r8,%r0       
+e382100b0077|	gnu	lgb %r8,11(%r2,%r1)
+    b9060080|	gnu	lgbr %r8,%r0      
+e382100b00c0|	gnu	lbh %r8,11(%r2,%r1)
+        1380|	gnu	lcr %r8,%r0       
+    b9030080|	gnu	lcgr %r8,%r0      
+    b9130080|	gnu	lcgfr %r8,%r0     
+    b3430080|	gnu	lcxbr %f8,%f0     
+    b3630080|	gnu	lcxr %f8,%f0      
+    b3130080|	gnu	lcdbr %f8,%f0     
+        2380|	gnu	lcdr %f8,%f0      
+    b3730080|	gnu	lcdfr %f8,%f0     
+    b3030080|	gnu	lcebr %f8,%f0     
+        3380|	gnu	lcer %f8,%f0      
+    b780100b|	gnu	lctl %c8,%c0,11(%r1)
+eb80100b002f|	gnu	lctlg %c8,%c0,11(%r1)
+e782100b3027|	gnu	lcbb %r8,11(%r2,%r1),3
+    b3473080|	gnu	fixbr %f8,3,%f0   
+    b3473180|	gnu	fixbra %f8,3,%f0,1
+    b3df3180|	gnu	fixtr %f8,3,%f0,1 
+    b3670080|	gnu	fixr %f8,%f0      
+    b35f3080|	gnu	fidbr %f8,3,%f0   
+    b35f3180|	gnu	fidbra %f8,3,%f0,1
+    b3d73180|	gnu	fidtr %f8,3,%f0,1 
+    b37f0080|	gnu	fidr %f8,%f0      
+    b3573080|	gnu	fiebr %f8,3,%f0   
+    b3573180|	gnu	fiebra %f8,3,%f0,1
+    b3770080|	gnu	fier %f8,%f0      
+    b29d100b|	gnu	lfpc 11(%r1)      
+    b2bd100b|	gnu	lfas 11(%r1)      
+    b3c10080|	gnu	ldgr %f8,%r0      
+    b3cd0080|	gnu	lgdr %r8,%f0      
+e382100b004c|	gnu	lgg %r8,11(%r2,%r1)
+e382100b004d|	gnu	lgsc %r8,11(%r2,%r1)
+    4882100b|	gnu	lh %r8,11(%r2,%r1)
+    b9270080|	gnu	lhr %r8,%r0       
+e382100b0078|	gnu	lhy %r8,11(%r2,%r1)
+e382100b0015|	gnu	lgh %r8,11(%r2,%r1)
+    b9070080|	gnu	lghr %r8,%r0      
+e382100b00c4|	gnu	lhh %r8,11(%r2,%r1)
+ec830008004e|	gnu	lochhinle %r8,8   
+    a7880008|	gnu	lhi %r8,8         
+    a7890008|	gnu	lghi %r8,8        
+ec8300080042|	gnu	lochinle %r8,8    
+ec8300080046|	gnu	locghinle %r8,8   
+c48500000000|	gnu	lhrl %r8,0x99e    
+c48400000000|	gnu	lghrl %r8,0x9a4   
+e382100b00ca|	gnu	lfh %r8,11(%r2,%r1)
+e382100b00c8|	gnu	lfhat %r8,11(%r2,%r1)
+eb83100b00e0|	gnu	locfhnle %r8,11(%r1)
+    b9e03080|	gnu	locfhrnle %r8,%r0 
+c08100000008|	gnu	lgfi %r8,8        
+ed82100b0005|	gnu	lxdb %f8,11(%r2,%r1)
+    b3050080|	gnu	lxdbr %f8,%f0     
+    b3dc0180|	gnu	lxdtr %f8,%f0,1   
+ed82100b0025|	gnu	lxd %f8,11(%r2,%r1)
+    b3250080|	gnu	lxdr %f8,%f0      
+ed82100b0006|	gnu	lxeb %f8,11(%r2,%r1)
+    b3060080|	gnu	lxebr %f8,%f0     
+ed82100b0026|	gnu	lxe %f8,11(%r2,%r1)
+    b3260080|	gnu	lxer %f8,%f0      
+ed82100b0004|	gnu	ldeb %f8,11(%r2,%r1)
+    b3040080|	gnu	ldebr %f8,%f0     
+    b3d40180|	gnu	ldetr %f8,%f0,1   
+ed82100b0024|	gnu	lde %f8,11(%r2,%r1)
+    b3240080|	gnu	lder %f8,%f0      
+e382100b0016|	gnu	llgf %r8,11(%r2,%r1)
+    b9160080|	gnu	llgfr %r8,%r0     
+e382100b0048|	gnu	llgfsg %r8,11(%r2,%r1)
+e382100b009d|	gnu	llgfat %r8,11(%r2,%r1)
+e382100b003a|	gnu	llzrgf %r8,11(%r2,%r1)
+e382100b0094|	gnu	llc %r8,11(%r2,%r1)
+    b9940080|	gnu	llcr %r8,%r0      
+e382100b0090|	gnu	llgc %r8,11(%r2,%r1)
+    b9840080|	gnu	llgcr %r8,%r0     
+e382100b00c2|	gnu	llch %r8,11(%r2,%r1)
+e382100b0095|	gnu	llh %r8,11(%r2,%r1)
+    b9950080|	gnu	llhr %r8,%r0      
+e382100b0091|	gnu	llgh %r8,11(%r2,%r1)
+    b9850080|	gnu	llghr %r8,%r0     
+e382100b00c6|	gnu	llhh %r8,11(%r2,%r1)
+c48200000000|	gnu	llhrl %r8,0xa5a   
+c48600000000|	gnu	llghrl %r8,0xa60  
+    a58c0008|	gnu	llihh %r8,8       
+    a58d0008|	gnu	llihl %r8,8       
+c08e00000008|	gnu	llihf %r8,8       
+    a58e0008|	gnu	llilh %r8,8       
+    a58f0008|	gnu	llill %r8,8       
+c08f00000008|	gnu	llilf %r8,8       
+c48e00000000|	gnu	llgfrl %r8,0xa82  
+e382100b0017|	gnu	llgt %r8,11(%r2,%r1)
+    b9170080|	gnu	llgtr %r8,%r0     
+e382100b009c|	gnu	llgtat %r8,11(%r2,%r1)
+    9880100b|	gnu	lm %r8,%r0,11(%r1)
+eb80100b0098|	gnu	lmy %r8,%r0,11(%r1)
+eb80100b0004|	gnu	lmg %r8,%r0,11(%r1)
+ef80100b80cd|	gnu	lmd %r8,%r0,11(%r1),205(%r8)
+eb80100b0096|	gnu	lmh %r8,%r0,11(%r1)
+        1180|	gnu	lnr %r8,%r0       
+    b9010080|	gnu	lngr %r8,%r0      
+    b9110080|	gnu	lngfr %r8,%r0     
+    b3410080|	gnu	lnxbr %f8,%f0     
+    b3610080|	gnu	lnxr %f8,%f0      
+    b3110080|	gnu	lndbr %f8,%f0     
+        2180|	gnu	lndr %f8,%f0      
+    b3710080|	gnu	lndfr %f8,%f0     
+    b3010080|	gnu	lnebr %f8,%f0     
+        3180|	gnu	lner %f8,%f0      
+eb83100b00f2|	gnu	locnle %r8,11(%r1)
+    b9f23080|	gnu	locrnle %r8,%r0   
+eb83100b00e2|	gnu	locgnle %r8,11(%r1)
+    b9e23080|	gnu	locgrnle %r8,%r0  
+    b9aa0180|	gnu	lptea %r8,%r0,%r0,1
+c8042006100b|	gnu	lpd %r0,6(%r2),11(%r1)
+c8052006100b|	gnu	lpdg %r0,6(%r2),11(%r1)
+e382100b008f|	gnu	lpq %r8,11(%r2,%r1)
+        1080|	gnu	lpr %r8,%r0       
+    b9000080|	gnu	lpgr %r8,%r0      
+    b9100080|	gnu	lpgfr %r8,%r0     
+    b3400080|	gnu	lpxbr %f8,%f0     
+    b3600080|	gnu	lpxr %f8,%f0      
+    b3100080|	gnu	lpdbr %f8,%f0     
+        2080|	gnu	lpdr %f8,%f0      
+    b3700080|	gnu	lpdfr %f8,%f0     
+    b3000080|	gnu	lpebr %f8,%f0     
+        3080|	gnu	lper %f8,%f0      
+    82002006|	gnu	lpsw 6(%r2)       
+    b2b2100b|	gnu	lpswe 11(%r1)     
+eb0020060071|	gnu	lpswey 6(%r2)     
+    b182100b|	gnu	lra %r8,11(%r2,%r1)
+e382100b0013|	gnu	lray %r8,11(%r2,%r1)
+e382100b0003|	gnu	lrag %r8,11(%r2,%r1)
+c48d00000000|	gnu	lrl %r8,0xb40     
+c48800000000|	gnu	lgrl %r8,0xb46    
+c48c00000000|	gnu	lgfrl %r8,0xb4c   
+e382100b001f|	gnu	lrvh %r8,11(%r2,%r1)
+e382100b001e|	gnu	lrv %r8,11(%r2,%r1)
+    b91f0080|	gnu	lrvr %r8,%r0      
+e382100b000f|	gnu	lrvg %r8,11(%r2,%r1)
+    b90f0080|	gnu	lrvgr %r8,%r0     
+    b3450080|	gnu	ldxbr %f8,%f0     
+    b3453180|	gnu	ldxbra %f8,3,%f0,1
+    b3dd3180|	gnu	ldxtr %f8,3,%f0,1 
+        2580|	gnu	ldxr %f8,%f0      
+        2580|	gnu	ldxr %f8,%f0      
+    b3460080|	gnu	lexbr %f8,%f0     
+    b3463180|	gnu	lexbra %f8,3,%f0,1
+    b3660080|	gnu	lexr %f8,%f0      
+    b3440080|	gnu	ledbr %f8,%f0     
+    b3443180|	gnu	ledbra %f8,3,%f0,1
+    b3d53180|	gnu	ledtr %f8,3,%f0,1 
+        3580|	gnu	ledr %f8,%f0      
+        3580|	gnu	ledr %f8,%f0      
+    b24b0080|	gnu	lura %r8,%r0      
+    b9050080|	gnu	lurag %r8,%r0     
+    b3760080|	gnu	lzxr %f8          
+    b3750080|	gnu	lzdr %f8          
+    b3740080|	gnu	lzer %f8          
+    b2470080|	gnu	msta %r8          
+    b232100b|	gnu	msch 11(%r1)      
+    af082006|	gnu	mc 6(%r2),8       
+e54420060008|	gnu	mvhhi 6(%r2),8    
+e54c20060008|	gnu	mvhi 6(%r2),8     
+e54820060008|	gnu	mvghi 6(%r2),8    
+d2032006100b|	gnu	mvc 6(4,%r2),11(%r1)
+    92082006|	gnu	mvi 6(%r2),8      
+eb0820060052|	gnu	mviy 6(%r2),8     
+e8032006100b|	gnu	mvcin 6(4,%r2),11(%r1)
+        0e80|	gnu	mvcl %r8,%r0      
+    a880100b|	gnu	mvcle %r8,%r0,11(%r1)
+eb80100b008e|	gnu	mvclu %r8,%r0,11(%r1)
+d1032006100b|	gnu	mvn 6(4,%r2),11(%r1)
+    b2540080|	gnu	mvpg %r8,%r0      
+e50a2006100b|	gnu	mvcrl 6(%r2),11(%r1)
+    b2550080|	gnu	mvst %r8,%r0      
+da802006100b|	gnu	mvcp 6(%r8,%r2),11(%r1),%r0
+db802006100b|	gnu	mvcs 6(%r8,%r2),11(%r1),%r0
+e50f2006100b|	gnu	mvcdk 6(%r2),11(%r1)
+d9802006100b|	gnu	mvck 6(%r8,%r2),11(%r1),%r0
+f1332006100b|	gnu	mvo 6(4,%r2),11(4,%r1)
+c8002006100b|	gnu	mvcos 6(%r2),11(%r1),%r0
+e50e2006100b|	gnu	mvcsk 6(%r2),11(%r1)
+d3032006100b|	gnu	mvz 6(4,%r2),11(%r1)
+e382100b0084|	gnu	mg %r8,11(%r2,%r1)
+    b9ec0080|	gnu	mgrk %r8,%r0,%r0  
+    5c82100b|	gnu	m %r8,11(%r2,%r1) 
+e382100b005c|	gnu	mfy %r8,11(%r2,%r1)
+        1c80|	gnu	mr %r8,%r0        
+    b34c0080|	gnu	mxbr %f8,%f0      
+    b3d80080|	gnu	mxtr %f8,%f0,%f0  
+    b3d80180|	gnu	mxtra %f8,%f0,%f0,1
+        2680|	gnu	mxr %f8,%f0       
+ed82100b001c|	gnu	mdb %f8,11(%r2,%r1)
+    b31c0080|	gnu	mdbr %f8,%f0      
+    b3d00080|	gnu	mdtr %f8,%f0,%f0  
+    b3d00180|	gnu	mdtra %f8,%f0,%f0,1
+    6c82100b|	gnu	md %f8,11(%r2,%r1)
+        2c80|	gnu	mdr %f8,%f0       
+ed82100b0007|	gnu	mxdb %f8,11(%r2,%r1)
+    b3070080|	gnu	mxdbr %f8,%f0     
+    6782100b|	gnu	mxd %f8,11(%r2,%r1)
+        2780|	gnu	mxdr %f8,%f0      
+ed82100b0017|	gnu	meeb %f8,11(%r2,%r1)
+    b3170080|	gnu	meebr %f8,%f0     
+ed82100b0037|	gnu	mee %f8,11(%r2,%r1)
+    b3370080|	gnu	meer %f8,%f0      
+ed82100b000c|	gnu	mdeb %f8,11(%r2,%r1)
+    b30c0080|	gnu	mdebr %f8,%f0     
+    7c82100b|	gnu	mde %f8,11(%r2,%r1)
+        3c80|	gnu	mder %f8,%f0      
+    7c82100b|	gnu	mde %f8,11(%r2,%r1)
+        3c80|	gnu	mder %f8,%f0      
+ed02100b803a|	gnu	may %f8,%f0,11(%r2,%r1)
+    b33a8000|	gnu	mayr %f8,%f0,%f0  
+ed02100b801e|	gnu	madb %f8,%f0,11(%r2,%r1)
+    b31e8000|	gnu	madbr %f8,%f0,%f0 
+ed02100b803e|	gnu	mad %f8,%f0,11(%r2,%r1)
+    b33e8000|	gnu	madr %f8,%f0,%f0  
+ed02100b800e|	gnu	maeb %f8,%f0,11(%r2,%r1)
+    b30e8000|	gnu	maebr %f8,%f0,%f0 
+ed02100b802e|	gnu	mae %f8,%f0,11(%r2,%r1)
+    b32e8000|	gnu	maer %f8,%f0,%f0  
+ed02100b803c|	gnu	mayh %f8,%f0,11(%r2,%r1)
+    b33c8000|	gnu	mayhr %f8,%f0,%f0 
+ed02100b8038|	gnu	mayl %f8,%f0,11(%r2,%r1)
+    b3388000|	gnu	maylr %f8,%f0,%f0 
+ed02100b801f|	gnu	msdb %f8,%f0,11(%r2,%r1)
+    b31f8000|	gnu	msdbr %f8,%f0,%f0 
+ed02100b803f|	gnu	msd %f8,%f0,11(%r2,%r1)
+    b33f8000|	gnu	msdr %f8,%f0,%f0  
+ed02100b800f|	gnu	mseb %f8,%f0,11(%r2,%r1)
+    b30f8000|	gnu	msebr %f8,%f0,%f0 
+ed02100b802f|	gnu	mse %f8,%f0,11(%r2,%r1)
+    b32f8000|	gnu	mser %f8,%f0,%f0  
+fc332006100b|	gnu	mp 6(4,%r2),11(4,%r1)
+    4c82100b|	gnu	mh %r8,11(%r2,%r1)
+e382100b007c|	gnu	mhy %r8,11(%r2,%r1)
+e382100b003c|	gnu	mgh %r8,11(%r2,%r1)
+    a78c0008|	gnu	mhi %r8,8         
+    a78d0008|	gnu	mghi %r8,8        
+e382100b0086|	gnu	mlg %r8,11(%r2,%r1)
+    b9860080|	gnu	mlgr %r8,%r0      
+e382100b0096|	gnu	ml %r8,11(%r2,%r1)
+    b9960080|	gnu	mlr %r8,%r0       
+    7182100b|	gnu	ms %r8,11(%r2,%r1)
+e382100b0053|	gnu	msc %r8,11(%r2,%r1)
+    b2520080|	gnu	msr %r8,%r0       
+    b9fd0080|	gnu	msrkc %r8,%r0,%r0 
+e382100b0051|	gnu	msy %r8,11(%r2,%r1)
+e382100b000c|	gnu	msg %r8,11(%r2,%r1)
+e382100b0083|	gnu	msgc %r8,11(%r2,%r1)
+    b90c0080|	gnu	msgr %r8,%r0      
+    b9ed0080|	gnu	msgrkc %r8,%r0,%r0
+e382100b001c|	gnu	msgf %r8,11(%r2,%r1)
+    b91c0080|	gnu	msgfr %r8,%r0     
+c28100000008|	gnu	msfi %r8,8        
+c28000000008|	gnu	msgfi %r8,8       
+ed02100b803d|	gnu	myh %f8,%f0,11(%r2,%r1)
+    b33d8000|	gnu	myhr %f8,%f0,%f0  
+ed02100b8039|	gnu	myl %f8,%f0,11(%r2,%r1)
+    b3398000|	gnu	mylr %f8,%f0,%f0  
+ed02100b803b|	gnu	my %f8,%f0,11(%r2,%r1)
+    b33b8000|	gnu	myr %f8,%f0,%f0   
+    b9740080|	gnu	nnrk %r8,%r0,%r0  
+    b9640080|	gnu	nngrk %r8,%r0,%r0 
+    b93b0000|	gnu	nnpa              
+    b2fa00c8|	gnu	niai 12,8         
+e382100b0025|	gnu	ntstg %r8,11(%r2,%r1)
+    b9760080|	gnu	nork %r8,%r0,%r0  
+    b9660080|	gnu	nogrk %r8,%r0,%r0 
+    b9770080|	gnu	nxrk %r8,%r0,%r0  
+    b9670080|	gnu	nxgrk %r8,%r0,%r0 
+    5682100b|	gnu	o %r8,11(%r2,%r1) 
+        1680|	gnu	or %r8,%r0        
+    b9f60080|	gnu	ork %r8,%r0,%r0   
+e382100b0056|	gnu	oy %r8,11(%r2,%r1)
+e382100b0081|	gnu	og %r8,11(%r2,%r1)
+    b9810080|	gnu	ogr %r8,%r0       
+    b9e60080|	gnu	ogrk %r8,%r0,%r0  
+d6032006100b|	gnu	oc 6(4,%r2),11(%r1)
+    96082006|	gnu	oi 6(%r2),8       
+eb0820060056|	gnu	oiy 6(%r2),8      
+    a5880008|	gnu	oihh %r8,8        
+    a5890008|	gnu	oihl %r8,8        
+c08c00000008|	gnu	oihf %r8,8        
+    a58a0008|	gnu	oilh %r8,8        
+    a58b0008|	gnu	oill %r8,8        
+c08d00000008|	gnu	oilf %r8,8        
+    b9750080|	gnu	ocrk %r8,%r0,%r0  
+    b9650080|	gnu	ocgrk %r8,%r0,%r0 
+f2332006100b|	gnu	pack 6(4,%r2),11(4,%r1)
+e9032006100b|	gnu	pka 6(%r2),11(4,%r1)
+e1032006100b|	gnu	pku 6(%r2),11(4,%r1)
+    b22e0080|	gnu	pgin %r8,%r0      
+    b22f0080|	gnu	pgout %r8,%r0     
+    b92c0000|	gnu	pcc               
+    b9280000|	gnu	pckmo             
+        010a|	gnu	pfpo              
+    b9af0080|	gnu	pfmf %r8,%r0      
+ee80100b80cd|	gnu	plo %r8,11(%r1),%r0,205(%r8)
+    b2e83080|	gnu	ppa %r8,%r0,3     
+    b93c0080|	gnu	prno %r8,%r0      
+    b93c0080|	gnu	prno %r8,%r0      
+        0104|	gnu	ptff              
+    b9a20080|	gnu	ptf %r8           
+    b9e13080|	gnu	popcnt %r8,%r0,3  
+e372100b0036|	gnu	pfd 7,11(%r2,%r1) 
+c67200000000|	gnu	pfdrl 7,0xe68     
+    b218100b|	gnu	pc 11(%r1)        
+        0101|	gnu	pr                
+    b2280080|	gnu	pt %r8,%r0        
+    b99e0080|	gnu	pti %r8,%r0       
+    b2480000|	gnu	palb              
+    b20d0000|	gnu	ptlb              
+    b3fd0180|	gnu	qaxtr %f8,%f0,%f0,1
+    b3f50180|	gnu	qadtr %f8,%f0,%f0,1
+    b28f100b|	gnu	qpaci 11(%r1)     
+    b3ff0180|	gnu	rrxtr %f8,%f0,%r0,1
+    b3f70180|	gnu	rrdtr %f8,%f0,%r0,1
+    b23b0000|	gnu	rchp              
+    b98b0180|	gnu	rdp %r8,%r0,%r0,1 
+    b22a0080|	gnu	rrbe %r8,%r0      
+    b9ae0080|	gnu	rrbm %r8,%r0      
+    b277100b|	gnu	rp 11(%r1)        
+    b2380000|	gnu	rsch              
+eb80100b001d|	gnu	rll %r8,%r0,11(%r1)
+eb80100b001c|	gnu	rllg %r8,%r0,11(%r1)
+ec8009691254|	gnu	rnsbg %r8,%r0,9,105,18
+ec8009691257|	gnu	rxsbg %r8,%r0,9,105,18
+ec8009691255|	gnu	risbg %r8,%r0,9,105,18
+ec8009691259|	gnu	risbgn %r8,%r0,9,105,18
+ec800969125d|	gnu	risbhg %r8,%r0,9,105,18
+ec8009691251|	gnu	risblg %r8,%r0,9,105,18
+ec8009691256|	gnu	rosbg %r8,%r0,9,105,18
+    b25e0080|	gnu	srst %r8,%r0      
+    b9be0080|	gnu	srstu %r8,%r0     
+    b9f00180|	gnu	selro %r8,%r0,%r0 
+    b9e30180|	gnu	selgro %r8,%r0,%r0
+    b9c00180|	gnu	selfhro %r8,%r0,%r0
+    b24e0080|	gnu	sar %a8,%r0       
+    b2370000|	gnu	sal               
+    b219100b|	gnu	sac 11(%r1)       
+    b279100b|	gnu	sacf 11(%r1)      
+        010c|	gnu	sam24             
+        010d|	gnu	sam31             
+        010e|	gnu	sam64             
+    b299100b|	gnu	srnm 11(%r1)      
+    b2b8100b|	gnu	srnmb 11(%r1)     
+    b23c0000|	gnu	schm              
+    b204100b|	gnu	sck 11(%r1)       
+    b206100b|	gnu	sckc 11(%r1)      
+        0107|	gnu	sckpf             
+    b208100b|	gnu	spt 11(%r1)       
+    b2b9100b|	gnu	srnmt 11(%r1)     
+    b3840080|	gnu	sfpc %r8          
+    b3850080|	gnu	sfasr %r8         
+    b210100b|	gnu	spx 11(%r1)       
+        0480|	gnu	spm %r8           
+    b20a100b|	gnu	spka 11(%r1)      
+    b2250080|	gnu	ssar %r8          
+    b99f0080|	gnu	ssair %r8         
+    b22b3080|	gnu	sske %r8,%r0,3    
+    80002006|	gnu	ssm 6(%r2)        
+f0392006100b|	gnu	srp 6(4,%r2),11(%r1),9
+    8f80100b|	gnu	slda %r8,11(%r1)  
+    8d80100b|	gnu	sldl %r8,11(%r1)  
+    8b80100b|	gnu	sla %r8,11(%r1)   
+eb80100b00dd|	gnu	slak %r8,%r0,11(%r1)
+eb80100b000b|	gnu	slag %r8,%r0,11(%r1)
+    8980100b|	gnu	sll %r8,11(%r1)   
+eb80100b00df|	gnu	sllk %r8,%r0,11(%r1)
+eb80100b000d|	gnu	sllg %r8,%r0,11(%r1)
+    8e80100b|	gnu	srda %r8,11(%r1)  
+    8c80100b|	gnu	srdl %r8,11(%r1)  
+    8a80100b|	gnu	sra %r8,11(%r1)   
+eb80100b00dc|	gnu	srak %r8,%r0,11(%r1)
+eb80100b000a|	gnu	srag %r8,%r0,11(%r1)
+    8880100b|	gnu	srl %r8,11(%r1)   
+eb80100b00de|	gnu	srlk %r8,%r0,11(%r1)
+eb80100b000c|	gnu	srlg %r8,%r0,11(%r1)
+ed02100b8048|	gnu	slxt %f8,%f0,11(%r2,%r1)
+ed02100b8040|	gnu	sldt %f8,%f0,11(%r2,%r1)
+ed02100b8049|	gnu	srxt %f8,%f0,11(%r2,%r1)
+ed02100b8041|	gnu	srdt %f8,%f0,11(%r2,%r1)
+    ae80100b|	gnu	sigp %r8,%r0,11(%r1)
+    b9380080|	gnu	sortl %r8,%r0     
+    b3160080|	gnu	sqxbr %f8,%f0     
+    b3360080|	gnu	sqxr %f8,%f0      
+ed82100b0015|	gnu	sqdb %f8,11(%r2,%r1)
+    b3150080|	gnu	sqdbr %f8,%f0     
+ed82100b0035|	gnu	sqd %f8,11(%r2,%r1)
+    b2440080|	gnu	sqdr %f8,%f0      
+ed82100b0014|	gnu	sqeb %f8,11(%r2,%r1)
+    b3140080|	gnu	sqebr %f8,%f0     
+ed82100b0034|	gnu	sqe %f8,11(%r2,%r1)
+    b2450080|	gnu	sqer %f8,%f0      
+    b233100b|	gnu	ssch 11(%r1)      
+    5082100b|	gnu	st %r8,11(%r2,%r1)
+e382100b0050|	gnu	sty %r8,11(%r2,%r1)
+e382100b0024|	gnu	stg %r8,11(%r2,%r1)
+    6082100b|	gnu	std %f8,11(%r2,%r1)
+ed82100b0067|	gnu	stdy %f8,11(%r2,%r1)
+    7082100b|	gnu	ste %f8,11(%r2,%r1)
+ed82100b0066|	gnu	stey %f8,11(%r2,%r1)
+    9b80100b|	gnu	stam %a8,%a0,11(%r1)
+eb80100b009b|	gnu	stamy %a8,%a0,11(%r1)
+    b201100b|	gnu	stbear 11(%r1)    
+    b23a100b|	gnu	stcps 11(%r1)     
+    b239100b|	gnu	stcrw 11(%r1)     
+    4282100b|	gnu	stc %r8,11(%r2,%r1)
+e382100b0072|	gnu	stcy %r8,11(%r2,%r1)
+e382100b00c3|	gnu	stch %r8,11(%r2,%r1)
+eb83100b002c|	gnu	stcmh %r8,3,11(%r1)
+    be83100b|	gnu	stcm %r8,3,11(%r1)
+eb83100b002d|	gnu	stcmy %r8,3,11(%r1)
+    b205100b|	gnu	stck 11(%r1)      
+    b207100b|	gnu	stckc 11(%r1)     
+    b278100b|	gnu	stcke 11(%r1)     
+    b27c100b|	gnu	stckf 11(%r1)     
+    b680100b|	gnu	stctl %c8,%c0,11(%r1)
+eb80100b0025|	gnu	stctg %c8,%c0,11(%r1)
+    b212100b|	gnu	stap 11(%r1)      
+    b202100b|	gnu	stidp 11(%r1)     
+    b209100b|	gnu	stpt 11(%r1)      
+    b2b1100b|	gnu	stfl 11(%r1)      
+    b2b0100b|	gnu	stfle 11(%r1)     
+    b29c100b|	gnu	stfpc 11(%r1)     
+e382100b0049|	gnu	stgsc %r8,11(%r2,%r1)
+    4082100b|	gnu	sth %r8,11(%r2,%r1)
+e382100b0070|	gnu	sthy %r8,11(%r2,%r1)
+e382100b00c7|	gnu	sthh %r8,11(%r2,%r1)
+c48700000000|	gnu	sthrl %r8,0x109c  
+e382100b00cb|	gnu	stfh %r8,11(%r2,%r1)
+eb83100b00e1|	gnu	stocfhnle %r8,11(%r1)
+    9080100b|	gnu	stm %r8,%r0,11(%r1)
+eb80100b0090|	gnu	stmy %r8,%r0,11(%r1)
+eb80100b0024|	gnu	stmg %r8,%r0,11(%r1)
+eb80100b0026|	gnu	stmh %r8,%r0,11(%r1)
+eb83100b00f3|	gnu	stocnle %r8,11(%r1)
+eb83100b00e3|	gnu	stocgnle %r8,11(%r1)
+e382100b008e|	gnu	stpq %r8,11(%r2,%r1)
+    b211100b|	gnu	stpx 11(%r1)      
+e5022006100b|	gnu	strag 6(%r2),11(%r1)
+c48f00000000|	gnu	strl %r8,0x10e0   
+c48b00000000|	gnu	stgrl %r8,0x10e6  
+e382100b003f|	gnu	strvh %r8,11(%r2,%r1)
+e382100b003e|	gnu	strv %r8,11(%r2,%r1)
+e382100b002f|	gnu	strvg %r8,11(%r2,%r1)
+    b234100b|	gnu	stsch 11(%r1)     
+    b27d100b|	gnu	stsi 11(%r1)      
+    ac082006|	gnu	stnsm 6(%r2),8    
+    ad082006|	gnu	stosm 6(%r2),8    
+    b2460080|	gnu	stura %r8,%r0     
+    b9250080|	gnu	sturg %r8,%r0     
+    5b82100b|	gnu	s %r8,11(%r2,%r1) 
+        1b80|	gnu	sr %r8,%r0        
+    b9f90080|	gnu	srk %r8,%r0,%r0   
+e382100b005b|	gnu	sy %r8,11(%r2,%r1)
+e382100b0009|	gnu	sg %r8,11(%r2,%r1)
+    b9090080|	gnu	sgr %r8,%r0       
+    b9e90080|	gnu	sgrk %r8,%r0,%r0  
+e382100b0019|	gnu	sgf %r8,11(%r2,%r1)
+    b9190080|	gnu	sgfr %r8,%r0      
+    b34b0080|	gnu	sxbr %f8,%f0      
+    b3db0080|	gnu	sxtr %f8,%f0,%f0  
+    b3db0180|	gnu	sxtra %f8,%f0,%f0,1
+ed82100b001b|	gnu	sdb %f8,11(%r2,%r1)
+    b31b0080|	gnu	sdbr %f8,%f0      
+    b3d30080|	gnu	sdtr %f8,%f0,%f0  
+    b3d30180|	gnu	sdtra %f8,%f0,%f0,1
+ed82100b000b|	gnu	seb %f8,11(%r2,%r1)
+    b30b0080|	gnu	sebr %f8,%f0      
+fb332006100b|	gnu	sp 6(4,%r2),11(4,%r1)
+    4b82100b|	gnu	sh %r8,11(%r2,%r1)
+e382100b007b|	gnu	shy %r8,11(%r2,%r1)
+e382100b0039|	gnu	sgh %r8,11(%r2,%r1)
+    b9c90080|	gnu	shhhr %r8,%r0,%r0 
+    b9d90080|	gnu	shhlr %r8,%r0,%r0 
+    5f82100b|	gnu	sl %r8,11(%r2,%r1)
+        1f80|	gnu	slr %r8,%r0       
+    b9fb0080|	gnu	slrk %r8,%r0,%r0  
+e382100b005f|	gnu	sly %r8,11(%r2,%r1)
+e382100b000b|	gnu	slg %r8,11(%r2,%r1)
+    b90b0080|	gnu	slgr %r8,%r0      
+    b9eb0080|	gnu	slgrk %r8,%r0,%r0 
+e382100b001b|	gnu	slgf %r8,11(%r2,%r1)
+    b91b0080|	gnu	slgfr %r8,%r0     
+    b9cb0080|	gnu	slhhhr %r8,%r0,%r0
+    b9db0080|	gnu	slhhlr %r8,%r0,%r0
+c28500000008|	gnu	slfi %r8,8        
+c28400000008|	gnu	slgfi %r8,8       
+e382100b0099|	gnu	slb %r8,11(%r2,%r1)
+    b9990080|	gnu	slbr %r8,%r0      
+e382100b0089|	gnu	slbg %r8,11(%r2,%r1)
+    b9890080|	gnu	slbgr %r8,%r0     
+        3780|	gnu	sxr %f8,%f0       
+    6b82100b|	gnu	sd %f8,11(%r2,%r1)
+        2b80|	gnu	sdr %f8,%f0       
+    7b82100b|	gnu	se %f8,11(%r2,%r1)
+        3b80|	gnu	ser %f8,%f0       
+    6f82100b|	gnu	sw %f8,11(%r2,%r1)
+        2f80|	gnu	swr %f8,%f0       
+    7f82100b|	gnu	su %f8,11(%r2,%r1)
+        3f80|	gnu	sur %f8,%f0
+        0a7c|	gnu	svc 124
+    b24c0080|	gnu	tar %a8,%r0
+        010b|	gnu	tam
+    93002006|	gnu	ts 6(%r2)
+    b22c0080|	gnu	tb %r8,%r0
+ed82100b0012|	gnu	tcxb %f8,11(%r2,%r1)
+ed82100b0058|	gnu	tdcxt %f8,11(%r2,%r1)
+ed82100b0011|	gnu	tcdb %f8,11(%r2,%r1)
+ed82100b0054|	gnu	tdcdt %f8,11(%r2,%r1)
+ed82100b0010|	gnu	tceb %f8,11(%r2,%r1)
+ed82100b0050|	gnu	tdcet %f8,11(%r2,%r1)
+ed82100b0059|	gnu	tdgxt %f8,11(%r2,%r1)
+ed82100b0055|	gnu	tdgdt %f8,11(%r2,%r1)
+ed82100b0051|	gnu	tdget %f8,11(%r2,%r1)
+eb30200600c0|	gnu	tp 6(4,%r2)
+    b9a10080|	gnu	tpei %r8,%r0
+    b236100b|	gnu	tpi 11(%r1)
+e5012006100b|	gnu	tprot 6(%r2),11(%r1)
+    b235100b|	gnu	tsch 11(%r1)
+    91082006|	gnu	tm 6(%r2),8
+eb0820060051|	gnu	tmy 6(%r2),8
+    a7820008|	gnu	tmhh %r8,8
+    a7830008|	gnu	tmhl %r8,8
+    a7800008|	gnu	tmlh %r8,8
+    a7810008|	gnu	tmll %r8,8
+    a7800008|	gnu	tmlh %r8,8
+    a7810008|	gnu	tmll %r8,8
+    9980100b|	gnu	trace %r8,%r0,11(%r1)
+eb80100b000f|	gnu	tracg %r8,%r0,11(%r1)
+    b2fc100b|	gnu	tabort 11(%r1)
+e56120060008|	gnu	tbeginc 6(%r2),8
+e56020060008|	gnu	tbegin 6(%r2),8
+    b2f80000|	gnu	tend
+dc032006100b|	gnu	tr 6(4,%r2),11(%r1)
+dd032006100b|	gnu	trt 6(4,%r2),11(%r1)
+    b9bf3080|	gnu	trte %r8,%r0,3
+d0032006100b|	gnu	trtr 6(4,%r2),11(%r1)
+    b9bd3080|	gnu	trtre %r8,%r0,3
+    b2a50080|	gnu	tre %r8,%r0    
+    b9933080|	gnu	troo %r8,%r0,3
+    b9923080|	gnu	trot %r8,%r0,3
+    b9913080|	gnu	trto %r8,%r0,3
+    b9903080|	gnu	trtt %r8,%r0,3
+        01ff|	gnu	trap2
+    b2ff100b|	gnu	trap4 11(%r1)
+f3332006100b|	gnu	unpk 6(4,%r2),11(4,%r1)
+ea032006100b|	gnu	unpka 6(4,%r2),11(%r1)
+e2032006100b|	gnu	unpku 6(4,%r2),11(%r1)
+        0102|	gnu	upt
+e723500018f3|	gnu	vah %v18,%v3,%v5
+e723500018f1|	gnu	vacch %v18,%v3,%v5
+e62350969871|	gnu	vap %v18,%v3,%v5,105,9
+e723590088bb|	gnu	vac %v18,%v3,%v5,%v8,9
+e723590088b9|	gnu	vaccc %v18,%v3,%v5,%v8,9
+e72350000868|	gnu	vn %v18,%v3,%v5
+e72350000869|	gnu	vnc %v18,%v3,%v5
+e723500018f2|	gnu	vavgh %v18,%v3,%v5
+e723500018f0|	gnu	vavglh %v18,%v3,%v5
+e72350000885|	gnu	vbperm %v18,%v3,%v5
+e72350000866|	gnu	vcksm %v18,%v3,%v5
+e60230300477|	gnu	vcp %v18,%v3,3
+e723509018f8|	gnu	vceq %v18,%v3,%v5,1,9
+e723509018fb|	gnu	vch %v18,%v3,%v5,1,9
+e723509018f9|	gnu	vchl %v18,%v3,%v5,1,9
+e6235010087d|	gnu	vcsph %v18,%v3,%v5,1
+e68300310050|	gnu	vcvb %r8,%v3,3,1
+e68300310052|	gnu	vcvbg %r8,%v3,3,1
+e62000109858|	gnu	vcvd %v18,%r0,9,1
+e6200010985a|	gnu	vcvdg %v18,%r0,9,1
+e62300300851|	gnu	vclzdp %v18,%v3,3
+e72300003853|	gnu	vclzg %v18,%v3
+e72300003852|	gnu	vctzg %v18,%v3
+e6235096987a|	gnu	vdp %v18,%v3,%v5,105,9
+e723000038db|	gnu	vecg %v18,%v3
+e723000038d9|	gnu	veclg %v18,%v3
+e72350699872|	gnu	verim %v18,%v3,%v5,105,9
+e725100b1833|	gnu	verllh %v18,%v5,11(%r1)
+e72350001873|	gnu	verllvh %v18,%v3,%v5
+e72350001870|	gnu	veslvh %v18,%v3,%v5
+e725100b1830|	gnu	veslh %v18,%v5,11(%r1)
+e725100b183a|	gnu	vesrah %v18,%v5,11(%r1)
+e7235000187a|	gnu	vesravh %v18,%v3,%v5
+e725100b1838|	gnu	vesrlh %v18,%v5,11(%r1)
+e72350001878|	gnu	vesrlvh %v18,%v3,%v5
+e7235000086d|	gnu	vx %v18,%v3,%v5
+e72350901882|	gnu	vfaehs %v18,%v3,%v5,8
+e72350901880|	gnu	vfeeh %v18,%v3,%v5,9
+e72350901881|	gnu	vfeneh %v18,%v3,%v5,9
+e723500918e3|	gnu	vfa %v18,%v3,%v5,1,9
+e723000138ca|	gnu	wfk %v18,%v3,3,1
+e72350b918e8|	gnu	vfce %v18,%v3,%v5,1,9,11
+e72350b918eb|	gnu	vfch %v18,%v3,%v5,1,9,11
+e72350b918ea|	gnu	vfche %v18,%v3,%v5,1,9,11
+e723000138cb|	gnu	wfc %v18,%v3,3,1
+e62300013856|	gnu	vclfnh %v18,%v3,3,1
+e6230001385e|	gnu	vclfnl %v18,%v3,3,1
+e62350091875|	gnu	vcrnf %v18,%v3,%v5,1,9
+e723009138c3|	gnu	vcdgb %v18,%v3,1,9
+e723009138c3|	gnu	vcdgb %v18,%v3,1,9
+e723009138c1|	gnu	vcdlgb %v18,%v3,1,9
+e723009138c1|	gnu	vcdlgb %v18,%v3,1,9
+e6230001385d|	gnu	vcfn %v18,%v3,3,1
+e723009138c2|	gnu	vcgdb %v18,%v3,1,9
+e723009138c2|	gnu	vcgdb %v18,%v3,1,9
+e723009138c0|	gnu	vclgdb %v18,%v3,1,9
+e723009138c0|	gnu	vclgdb %v18,%v3,1,9
+e62300013855|	gnu	vcnf %v18,%v3,3,1
+e723500918e5|	gnu	vfd %v18,%v3,%v5,1,9
+e723000138c4|	gnu	vfll %v18,%v3,3,1
+e723009138c5|	gnu	vflrd %v18,%v3,1,9
+e72350b918ef|	gnu	vfmax %v18,%v3,%v5,1,9,11
+e72350b918ee|	gnu	vfmin %v18,%v3,%v5,1,9,11
+e723500918e7|	gnu	vfm %v18,%v3,%v5,1,9
+e7235b09888f|	gnu	vfma %v18,%v3,%v5,%v8,9,11
+e7235b09888e|	gnu	vfms %v18,%v3,%v5,%v8,9,11
+e7235b09889f|	gnu	vfnma %v18,%v3,%v5,%v8,9,11
+e7235b09889e|	gnu	vfnms %v18,%v3,%v5,%v8,9,11
+e723009138cc|	gnu	vfpso %v18,%v3,3,1,9
+e723000138ce|	gnu	vfsq %v18,%v3,3,1
+e723500918e2|	gnu	vfs %v18,%v3,%v5,1,9
+e7230099184a|	gnu	vftci %v18,%v3,9,1,9
+e723500018b4|	gnu	vgfmh %v18,%v3,%v5
+e723590088bc|	gnu	vgfma %v18,%v3,%v5,%v8,9
+e723100b3813|	gnu	vgef %v18,11(%v3,%r1),3
+e723100b3812|	gnu	vgeg %v18,11(%v3,%r1),3
+e72000080844|	gnu	vgbm %v18,8
+e72008091846|	gnu	vgmh %v18,8,9
+e7230090385c|	gnu	vistr %v18,%v3,3,9
+e722100b3806|	gnu	vl %v18,11(%r2,%r1),3
+e72300000856|	gnu	vlr %v18,%v3
+e722100b3805|	gnu	vlrepg %v18,11(%r2,%r1)
+e622100b3801|	gnu	vlebrh %v18,11(%r2,%r1),3
+e622100b3803|	gnu	vlebrf %v18,11(%r2,%r1),3
+e622100b3802|	gnu	vlebrg %v18,11(%r2,%r1),3
+e622100b3805|	gnu	vlbrrepg %v18,11(%r2,%r1)
+e622100b3804|	gnu	ldrv %v18,11(%r2,%r1)
+e622100b3806|	gnu	vlbrg %v18,11(%r2,%r1)
+e723000038de|	gnu	vlcg %v18,%v3
+e722100b3801|	gnu	vleh %v18,11(%r2,%r1),3
+e722100b3803|	gnu	vlef %v18,11(%r2,%r1),3
+e722100b3802|	gnu	vleg %v18,11(%r2,%r1),3
+e722100b3800|	gnu	vleb %v18,11(%r2,%r1),3
+e72000083841|	gnu	vleih %v18,8,3
+e72000083843|	gnu	vleif %v18,8,3
+e72000083842|	gnu	vleig %v18,8,3
+e72000083840|	gnu	vleib %v18,8,3
+e622100b3807|	gnu	vlerg %v18,11(%r2,%r1)
+e723009138c7|	gnu	vfidb %v18,%v3,1,9
+e785100b1021|	gnu	vlgvh %r8,%v5,11(%r1)
+e62000089849|	gnu	vlip %v18,8,9
+e722100b3804|	gnu	vllezg %v18,11(%r2,%r1)
+e725100b1836|	gnu	vlm %v18,%v5,11(%r1),1
+e723000038df|	gnu	vlpg %v18,%v3
+e609100b2135|	gnu	vlrl %v18,11(%r1),9
+e600100b2137|	gnu	vlrlr %v18,%r0,11(%r1)
+e722100b3807|	gnu	vlbb %v18,11(%r2,%r1),3
+e720100b1822|	gnu	vlvgh %v18,%r0,11(%r1)
+e72000000862|	gnu	vlvgp %v18,%r0,%r0
+e720100b0837|	gnu	vll %v18,%r0,11(%r1)
+e723500018ff|	gnu	vmxh %v18,%v3,%v5
+e723500018fd|	gnu	vmxlh %v18,%v3,%v5
+e72350001861|	gnu	vmrhh %v18,%v3,%v5
+e72350001860|	gnu	vmrlh %v18,%v3,%v5
+e723500018fe|	gnu	vmnh %v18,%v3,%v5
+e723500018fc|	gnu	vmnlh %v18,%v3,%v5
+e723590088ae|	gnu	vmae %v18,%v3,%v5,%v8,9
+e723590088ab|	gnu	vmah %v18,%v3,%v5,%v8,9
+e723590088ac|	gnu	vmale %v18,%v3,%v5,%v8,9
+e723590088a9|	gnu	vmalh %v18,%v3,%v5,%v8,9
+e723590088ad|	gnu	vmalo %v18,%v3,%v5,%v8,9
+e723590088aa|	gnu	vmal %v18,%v3,%v5,%v8,9
+e723590088af|	gnu	vmao %v18,%v3,%v5,%v8,9
+e62350969879|	gnu	vmsp %v18,%v3,%v5,105,9
+e62350969878|	gnu	vmp %v18,%v3,%v5,105,9
+e723500018a6|	gnu	vmeh %v18,%v3,%v5
+e723500018a3|	gnu	vmhh %v18,%v3,%v5
+e723500018a4|	gnu	vmleh %v18,%v3,%v5
+e723500018a1|	gnu	vmlhh %v18,%v3,%v5
+e723500018a5|	gnu	vmloh %v18,%v3,%v5
+e723500018a2|	gnu	vmlhw %v18,%v3,%v5
+e723500018a7|	gnu	vmoh %v18,%v3,%v5
+e72359b088b8|	gnu	vmsl %v18,%v3,%v5,%v8,9,11
+e7235000086e|	gnu	vnn %v18,%v3,%v5
+e7235000086b|	gnu	vno %v18,%v3,%v5
+e7235000086c|	gnu	vnx %v18,%v3,%v5
+e7235000086a|	gnu	vo %v18,%v3,%v5
+e7235000086f|	gnu	voc %v18,%v3,%v5
+e72350001894|	gnu	vpkh %v18,%v3,%v5
+e72350901895|	gnu	vpkls %v18,%v3,%v5,1,9
+e72350901897|	gnu	vpks %v18,%v3,%v5,1,9
+e609100b2134|	gnu	vpkz %v18,11(%r1),9
+e62350969870|	gnu	vpkzr %v18,%v3,%v5,105,9
+e6236990985b|	gnu	vpsop %v18,%v3,9,105,9
+e7235000888c|	gnu	vperm %v18,%v3,%v5,%v8
+e72350001884|	gnu	vpdi %v18,%v3,%v5,1
+e72300003850|	gnu	vpopctg %v18,%v3
+e6235096987b|	gnu	vrp %v18,%v3,%v5,105,9
+e7250008184d|	gnu	vreph %v18,%v5,8
+e72000083845|	gnu	vrepig %v18,8
+e723100b381b|	gnu	vscef %v18,11(%v3,%r1),3
+e723100b381a|	gnu	vsceg %v18,11(%v3,%r1),3
+e7235000888d|	gnu	vsel %v18,%v3,%v5,%v8
+e6235096987e|	gnu	vsdp %v18,%v3,%v5,105,9
+e62369909859|	gnu	vsrp %v18,%v3,9,105,9
+e62350969872|	gnu	vsrpr %v18,%v3,%v5,105,9
+e72350000874|	gnu	vsl %v18,%v3,%v5
+e72350000875|	gnu	vslb %v18,%v3,%v5
+e72350690886|	gnu	vsld %v18,%v3,%v5,105
+e72350690877|	gnu	vsldb %v18,%v3,%v5,105
+e7235000087e|	gnu	vsra %v18,%v3,%v5
+e7235000087f|	gnu	vsrab %v18,%v3,%v5
+e72350690887|	gnu	vsrd %v18,%v3,%v5,105
+e7235000087c|	gnu	vsrl %v18,%v3,%v5
+e7235000087d|	gnu	vsrlb %v18,%v3,%v5
+e7230000385f|	gnu	vseg %v18,%v3,3
+e722100b380e|	gnu	vst %v18,11(%r2,%r1),3
+e622100b3809|	gnu	vstebrh %v18,11(%r2,%r1),3
+e622100b380b|	gnu	vstebrf %v18,11(%r2,%r1),3
+e622100b380a|	gnu	vstebrg %v18,11(%r2,%r1),3
+e622100b380e|	gnu	vstbrg %v18,11(%r2,%r1)
+e722100b3809|	gnu	vsteh %v18,11(%r2,%r1),3
+e722100b380b|	gnu	vstef %v18,11(%r2,%r1),3
+e722100b380a|	gnu	vsteg %v18,11(%r2,%r1),3
+e722100b3808|	gnu	vsteb %v18,11(%r2,%r1),3
+e622100b380f|	gnu	vsterg %v18,11(%r2,%r1)
+e725100b183e|	gnu	vstm %v18,%v5,11(%r1),1
+e609100b213d|	gnu	vstrl %v18,11(%r1),9
+e600100b213f|	gnu	vstrlr %v18,%r0,11(%r1)
+e720100b083f|	gnu	vstl %v18,%r0,11(%r1)
+e72359b0888a|	gnu	vstrc %v18,%v3,%v5,%v8,9,11
+e72359b0888b|	gnu	vstrs %v18,%v3,%v5,%v8,9,11
+e723500018f7|	gnu	vsh %v18,%v3,%v5
+e723500018f5|	gnu	vscbih %v18,%v3,%v5
+e62350969873|	gnu	vsp %v18,%v3,%v5,105,9
+e723590088bd|	gnu	vsbcbi %v18,%v3,%v5,%v8,9
+e723590088bf|	gnu	vsbi %v18,%v3,%v5,%v8,9
+e72350001865|	gnu	vsumgh %v18,%v3,%v5
+e72350001867|	gnu	vsumq %v18,%v3,%v5,1
+e72350001864|	gnu	vsumh %v18,%v3,%v5
+e6020000045f|	gnu	vtp %v18
+e723000008d8|	gnu	vtm %v18,%v3
+e723000038d7|	gnu	vuph %v18,%v3,3
+e723000038d5|	gnu	vuplh %v18,%v3,3
+e723000038d4|	gnu	vupll %v18,%v3,3
+e723000038d6|	gnu	vupl %v18,%v3,3
+e609100b213c|	gnu	vupkz %v18,11(%r1),9
+e62300300854|	gnu	vupkzh %v18,%v3,3
+e6230030085c|	gnu	vupkzl %v18,%v3,3
+f8332006100b|	gnu	zap 6(4,%r2),11(4,%r1)
