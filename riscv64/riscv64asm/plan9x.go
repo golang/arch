@@ -117,6 +117,15 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 			args[i], args[j] = args[j], args[i]
 		}
 
+	case CSRRW:
+		switch inst.Args[1].(Csr) {
+		case CYCLE:
+			if inst.Args[0].(Reg) == X0 && inst.Args[2].(Reg) == X0 {
+				op = "UNIMP"
+				args = nil
+			}
+		}
+
 	case CSRRS:
 		if inst.Args[2].(Reg) == X0 {
 			switch inst.Args[1].(Csr) {
@@ -262,13 +271,26 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 			op = "JMP"
 			args[0] = args[1]
 			args = args[:len(args)-1]
+		} else if inst.Args[0].(Reg) == X1 {
+			op = "CALL"
+			args[0] = args[1]
+			args = args[:len(args)-1]
 		} else {
 			args[0], args[1] = args[1], args[0]
 		}
 
 	case JALR:
 		if inst.Args[0].(Reg) == X0 {
+			if inst.Args[1].(RegOffset).OfsReg == X1 && inst.Args[1].(RegOffset).Ofs.Imm == 0 {
+				op = "RET"
+				args = args[:0]
+				break
+			}
 			op = "JMP"
+			args[0] = args[1]
+			args = args[:len(args)-1]
+		} else if inst.Args[0].(Reg) == X1 {
+			op = "CALL"
 			args[0] = args[1]
 			args = args[:len(args)-1]
 		} else {
@@ -324,10 +346,10 @@ func plan9Arg(inst *Inst, pc uint64, symname func(uint64) (string, uint64), arg 
 		}
 
 	case RegOffset:
-		if a.ofs.Imm == 0 {
-			return fmt.Sprintf("(X%d)", a.reg)
+		if a.Ofs.Imm == 0 {
+			return fmt.Sprintf("(X%d)", a.OfsReg)
 		} else {
-			return fmt.Sprintf("%s(X%d)", a.ofs.String(), a.reg)
+			return fmt.Sprintf("%s(X%d)", a.Ofs.String(), a.OfsReg)
 		}
 
 	case AmoReg:

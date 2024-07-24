@@ -23,7 +23,7 @@ import (
 )
 
 // Reference: RISC-V ISA Maunal Volume 1 Chapter 27, RV32/64G Instruction Set Listings.
-var extentions = []string{"rv_i", "rv64_i", "rv_zifencei", "rv_zicsr", "rv_m", "rv64_m", "rv_a", "rv64_a", "rv_f", "rv64_f", "rv_d", "rv64_d", "rv_q", "rv64_q", "rv_zfh", "rv64_zfh"}
+var extentions = []string{"rv_i", "rv64_i", "rv_c", "rv_c_d", "rv64_c", "rv_zifencei", "rv_zicsr", "rv_m", "rv64_m", "rv_a", "rv64_a", "rv_f", "rv64_f", "rv_d", "rv64_d", "rv_q", "rv64_q", "rv_zfh", "rv64_zfh"}
 
 var fileNames = []string{"prolugue.tmp", "op.tmp", "opstr.tmp", "instFormats.tmp"}
 
@@ -77,6 +77,10 @@ func main() {
 		}
 	}
 
+	// c.unimp wasn't in riscv-opcodes, so add it there
+	c_unimp := "c.unimp 15..0=0"
+	getInst(strings.Split(c_unimp, " "))
+
 	sort.Strings(ops)
 
 	for _, op := range ops {
@@ -115,9 +119,12 @@ func getInst(words []string) (string, string, string) {
 	var instArgs []string
 
 	for i := 1; i < len(words); i++ {
-		if strings.Contains(words[i], "..") {
+		if strings.Contains(words[i], "=") {
 			val := strings.Split(words[i], "=")
 			sec := strings.Split(val[0], "..")
+			if len(sec) < 2 {
+				sec[0] = val[0]
+			}
 			subval, submsk := genValueAndMask(val, sec)
 			value |= subval
 			mask |= submsk
@@ -214,7 +221,7 @@ func deferFormats(instArgs []string, op string) string {
 func decodeArgs(arg string, op string) string {
 	switch {
 	case strings.Contains("arg_rd", arg):
-		if isFloatReg(op, "rd") {
+		if isFloatReg(op, "rd") || strings.Contains(op, "C_FLDSP") {
 			return "arg_fd"
 		} else {
 			return "arg_rd"
@@ -261,6 +268,90 @@ func decodeArgs(arg string, op string) string {
 
 	case arg == "shamtd":
 		return "arg_shamt6"
+
+	case arg == "rd_p":
+		if strings.Contains(op, "C_FLD") {
+			return "arg_fd_p"
+		}
+		return "arg_rd_p"
+
+	case arg == "rs1_p":
+		return "arg_rs1_p"
+
+	case arg == "rd_rs1_p":
+		return "arg_rd_rs1_p"
+
+	case arg == "rs2_p":
+		if strings.Contains(op, "C_FSD") {
+			return "arg_fs2_p"
+		}
+		return "arg_rs2_p"
+
+	case arg == "rd_n0":
+		return "arg_rd_n0"
+
+	case arg == "rs1_n0":
+		return "arg_rs1_n0"
+
+	case arg == "rd_rs1_n0":
+		return "arg_rd_rs1_n0"
+
+	case arg == "c_rs1_n0":
+		return "arg_c_rs1_n0"
+
+	case arg == "c_rs2_n0":
+		return "arg_c_rs2_n0"
+
+	case arg == "c_rs2":
+		if strings.Contains(op, "C_FSDSP") {
+			return "arg_c_fs2"
+		}
+		return "arg_c_rs2"
+
+	case arg == "rd_n2":
+		return "arg_rd_n2"
+
+	case arg == "c_imm6lo":
+		return "arg_c_imm6"
+
+	case arg == "c_nzimm6lo":
+		return "arg_c_nzimm6"
+
+	case arg == "c_nzuimm6lo":
+		return "arg_c_nzuimm6"
+
+	case arg == "c_uimm7lo":
+		return "arg_c_uimm7"
+
+	case arg == "c_uimm8lo":
+		return "arg_c_uimm8"
+
+	case arg == "c_uimm8sp_s":
+		return "arg_c_uimm8sp_s"
+
+	case arg == "c_uimm8splo":
+		return "arg_c_uimm8sp"
+
+	case arg == "c_uimm9sp_s":
+		return "arg_c_uimm9sp_s"
+
+	case arg == "c_uimm9splo":
+		return "arg_c_uimm9sp"
+
+	case arg == "c_bimm9lo":
+		return "arg_c_bimm9"
+
+	case arg == "c_nzimm10lo":
+		return "arg_c_nzimm10"
+
+	case arg == "c_nzuimm10":
+		return "arg_c_nzuimm10"
+
+	case arg == "c_imm12":
+		return "arg_c_imm12"
+
+	case arg == "c_nzimm18lo":
+		return "arg_c_nzimm18"
 	}
 	return ""
 }
@@ -272,12 +363,20 @@ func genValueAndMask(valStr []string, secStr []string) (uint32, uint32) {
 	if strings.Contains(valStr[1], "0x") {
 		hexStr := strings.Replace(valStr[1], "0x", "", -1)
 		val, _ = strconv.ParseInt(hexStr, 16, 32)
+	} else if strings.Contains(valStr[1], "0b") {
+		hexStr := strings.Replace(valStr[1], "0b", "", -1)
+		val, _ = strconv.ParseInt(hexStr, 2, 32)
 	} else {
 		val, _ = strconv.ParseInt(valStr[1], 10, 32)
 	}
 
 	l, _ := strconv.Atoi(secStr[0])
-	r, _ := strconv.Atoi(secStr[1])
+	var r int
+	if len(secStr) == 1 {
+		r = l
+	} else {
+		r, _ = strconv.Atoi(secStr[1])
+	}
 
 	var subval uint32
 	var submsk uint32

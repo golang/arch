@@ -100,6 +100,44 @@ const (
 	CSRRSI
 	CSRRW
 	CSRRWI
+	C_ADD
+	C_ADDI
+	C_ADDI16SP
+	C_ADDI4SPN
+	C_ADDIW
+	C_ADDW
+	C_AND
+	C_ANDI
+	C_BEQZ
+	C_BNEZ
+	C_EBREAK
+	C_FLD
+	C_FLDSP
+	C_FSD
+	C_FSDSP
+	C_J
+	C_JALR
+	C_JR
+	C_LD
+	C_LDSP
+	C_LI
+	C_LUI
+	C_LW
+	C_LWSP
+	C_MV
+	C_NOP
+	C_OR
+	C_SD
+	C_SDSP
+	C_SLLI
+	C_SRAI
+	C_SRLI
+	C_SUB
+	C_SUBW
+	C_SW
+	C_SWSP
+	C_UNIMP
+	C_XOR
 	DIV
 	DIVU
 	DIVUW
@@ -389,6 +427,44 @@ var opstr = [...]string{
 	CSRRSI:	"CSRRSI",
 	CSRRW:	"CSRRW",
 	CSRRWI:	"CSRRWI",
+	C_ADD:	"C.ADD",
+	C_ADDI:	"C.ADDI",
+	C_ADDI16SP:	"C.ADDI16SP",
+	C_ADDI4SPN:	"C.ADDI4SPN",
+	C_ADDIW:	"C.ADDIW",
+	C_ADDW:	"C.ADDW",
+	C_AND:	"C.AND",
+	C_ANDI:	"C.ANDI",
+	C_BEQZ:	"C.BEQZ",
+	C_BNEZ:	"C.BNEZ",
+	C_EBREAK:	"C.EBREAK",
+	C_FLD:	"C.FLD",
+	C_FLDSP:	"C.FLDSP",
+	C_FSD:	"C.FSD",
+	C_FSDSP:	"C.FSDSP",
+	C_J:	"C.J",
+	C_JALR:	"C.JALR",
+	C_JR:	"C.JR",
+	C_LD:	"C.LD",
+	C_LDSP:	"C.LDSP",
+	C_LI:	"C.LI",
+	C_LUI:	"C.LUI",
+	C_LW:	"C.LW",
+	C_LWSP:	"C.LWSP",
+	C_MV:	"C.MV",
+	C_NOP:	"C.NOP",
+	C_OR:	"C.OR",
+	C_SD:	"C.SD",
+	C_SDSP:	"C.SDSP",
+	C_SLLI:	"C.SLLI",
+	C_SRAI:	"C.SRAI",
+	C_SRLI:	"C.SRLI",
+	C_SUB:	"C.SUB",
+	C_SUBW:	"C.SUBW",
+	C_SW:	"C.SW",
+	C_SWSP:	"C.SWSP",
+	C_UNIMP:	"C.UNIMP",
+	C_XOR:	"C.XOR",
 	DIV:	"DIV",
 	DIVU:	"DIVU",
 	DIVUW:	"DIVUW",
@@ -769,6 +845,82 @@ var instFormats = [...]instFormat{
 	{mask: 0x0000707f, value: 0x00001073, op: CSRRW, args: instArgs{arg_rd, arg_csr, arg_rs1}},
 	// CSRRWI rd, csr, zimm
 	{mask: 0x0000707f, value: 0x00005073, op: CSRRWI, args: instArgs{arg_rd, arg_csr, arg_zimm}},
+	// C.ADD rd_rs1_n0, c_rs2_n0
+	{mask: 0x0000f003, value: 0x00009002, op: C_ADD, args: instArgs{arg_rd_rs1_n0, arg_c_rs2_n0}},
+	// C.ADDI rd_rs1_n0, c_nzimm6
+	{mask: 0x0000e003, value: 0x00000001, op: C_ADDI, args: instArgs{arg_rd_rs1_n0, arg_c_nzimm6}},
+	// C.ADDI16SP c_nzimm10
+	{mask: 0x0000ef83, value: 0x00006101, op: C_ADDI16SP, args: instArgs{arg_c_nzimm10}},
+	// C.ADDI4SPN rd_p, c_nzuimm10
+	{mask: 0x0000e003, value: 0x00000000, op: C_ADDI4SPN, args: instArgs{arg_rd_p, arg_c_nzuimm10}},
+	// C.ADDIW rd_rs1_n0, c_imm6
+	{mask: 0x0000e003, value: 0x00002001, op: C_ADDIW, args: instArgs{arg_rd_rs1_n0, arg_c_imm6}},
+	// C.ADDW rd_rs1_p, rs2_p
+	{mask: 0x0000fc63, value: 0x00009c21, op: C_ADDW, args: instArgs{arg_rd_rs1_p, arg_rs2_p}},
+	// C.AND rd_rs1_p, rs2_p
+	{mask: 0x0000fc63, value: 0x00008c61, op: C_AND, args: instArgs{arg_rd_rs1_p, arg_rs2_p}},
+	// C.ANDI rd_rs1_p, c_imm6
+	{mask: 0x0000ec03, value: 0x00008801, op: C_ANDI, args: instArgs{arg_rd_rs1_p, arg_c_imm6}},
+	// C.BEQZ rs1_p, c_bimm9
+	{mask: 0x0000e003, value: 0x0000c001, op: C_BEQZ, args: instArgs{arg_rs1_p, arg_c_bimm9}},
+	// C.BNEZ rs1_p, c_bimm9
+	{mask: 0x0000e003, value: 0x0000e001, op: C_BNEZ, args: instArgs{arg_rs1_p, arg_c_bimm9}},
+	// C.EBREAK 
+	{mask: 0x0000ffff, value: 0x00009002, op: C_EBREAK, args: instArgs{}},
+	// C.FLD fd_p, rs1_p, c_uimm8
+	{mask: 0x0000e003, value: 0x00002000, op: C_FLD, args: instArgs{arg_fd_p, arg_rs1_p, arg_c_uimm8}},
+	// C.FLDSP fd, c_uimm9sp
+	{mask: 0x0000e003, value: 0x00002002, op: C_FLDSP, args: instArgs{arg_fd, arg_c_uimm9sp}},
+	// C.FSD rs1_p, fs2_p, c_uimm8
+	{mask: 0x0000e003, value: 0x0000a000, op: C_FSD, args: instArgs{arg_rs1_p, arg_fs2_p, arg_c_uimm8}},
+	// C.FSDSP c_fs2, c_uimm9sp_s
+	{mask: 0x0000e003, value: 0x0000a002, op: C_FSDSP, args: instArgs{arg_c_fs2, arg_c_uimm9sp_s}},
+	// C.J c_imm12
+	{mask: 0x0000e003, value: 0x0000a001, op: C_J, args: instArgs{arg_c_imm12}},
+	// C.JALR c_rs1_n0
+	{mask: 0x0000f07f, value: 0x00009002, op: C_JALR, args: instArgs{arg_c_rs1_n0}},
+	// C.JR rs1_n0
+	{mask: 0x0000f07f, value: 0x00008002, op: C_JR, args: instArgs{arg_rs1_n0}},
+	// C.LD rd_p, rs1_p, c_uimm8
+	{mask: 0x0000e003, value: 0x00006000, op: C_LD, args: instArgs{arg_rd_p, arg_rs1_p, arg_c_uimm8}},
+	// C.LDSP rd_n0, c_uimm9sp
+	{mask: 0x0000e003, value: 0x00006002, op: C_LDSP, args: instArgs{arg_rd_n0, arg_c_uimm9sp}},
+	// C.LI rd_n0, c_imm6
+	{mask: 0x0000e003, value: 0x00004001, op: C_LI, args: instArgs{arg_rd_n0, arg_c_imm6}},
+	// C.LUI rd_n2, c_nzimm18
+	{mask: 0x0000e003, value: 0x00006001, op: C_LUI, args: instArgs{arg_rd_n2, arg_c_nzimm18}},
+	// C.LW rd_p, rs1_p, c_uimm7
+	{mask: 0x0000e003, value: 0x00004000, op: C_LW, args: instArgs{arg_rd_p, arg_rs1_p, arg_c_uimm7}},
+	// C.LWSP rd_n0, c_uimm8sp
+	{mask: 0x0000e003, value: 0x00004002, op: C_LWSP, args: instArgs{arg_rd_n0, arg_c_uimm8sp}},
+	// C.MV rd_n0, c_rs2_n0
+	{mask: 0x0000f003, value: 0x00008002, op: C_MV, args: instArgs{arg_rd_n0, arg_c_rs2_n0}},
+	// C.NOP c_nzimm6
+	{mask: 0x0000ef83, value: 0x00000001, op: C_NOP, args: instArgs{arg_c_nzimm6}},
+	// C.OR rd_rs1_p, rs2_p
+	{mask: 0x0000fc63, value: 0x00008c41, op: C_OR, args: instArgs{arg_rd_rs1_p, arg_rs2_p}},
+	// C.SD rs1_p, rs2_p, c_uimm8
+	{mask: 0x0000e003, value: 0x0000e000, op: C_SD, args: instArgs{arg_rs1_p, arg_rs2_p, arg_c_uimm8}},
+	// C.SDSP c_rs2, c_uimm9sp_s
+	{mask: 0x0000e003, value: 0x0000e002, op: C_SDSP, args: instArgs{arg_c_rs2, arg_c_uimm9sp_s}},
+	// C.SLLI rd_rs1_n0, c_nzuimm6
+	{mask: 0x0000e003, value: 0x00000002, op: C_SLLI, args: instArgs{arg_rd_rs1_n0, arg_c_nzuimm6}},
+	// C.SRAI rd_rs1_p, c_nzuimm6
+	{mask: 0x0000ec03, value: 0x00008401, op: C_SRAI, args: instArgs{arg_rd_rs1_p, arg_c_nzuimm6}},
+	// C.SRLI rd_rs1_p, c_nzuimm6
+	{mask: 0x0000ec03, value: 0x00008001, op: C_SRLI, args: instArgs{arg_rd_rs1_p, arg_c_nzuimm6}},
+	// C.SUB rd_rs1_p, rs2_p
+	{mask: 0x0000fc63, value: 0x00008c01, op: C_SUB, args: instArgs{arg_rd_rs1_p, arg_rs2_p}},
+	// C.SUBW rd_rs1_p, rs2_p
+	{mask: 0x0000fc63, value: 0x00009c01, op: C_SUBW, args: instArgs{arg_rd_rs1_p, arg_rs2_p}},
+	// C.SW rs1_p, rs2_p, c_uimm7
+	{mask: 0x0000e003, value: 0x0000c000, op: C_SW, args: instArgs{arg_rs1_p, arg_rs2_p, arg_c_uimm7}},
+	// C.SWSP c_rs2, c_uimm8sp_s
+	{mask: 0x0000e003, value: 0x0000c002, op: C_SWSP, args: instArgs{arg_c_rs2, arg_c_uimm8sp_s}},
+	// C.UNIMP 
+	{mask: 0x0000ffff, value: 0x00000000, op: C_UNIMP, args: instArgs{}},
+	// C.XOR rd_rs1_p, rs2_p
+	{mask: 0x0000fc63, value: 0x00008c21, op: C_XOR, args: instArgs{arg_rd_rs1_p, arg_rs2_p}},
 	// DIV rd, rs1, rs2
 	{mask: 0xfe00707f, value: 0x02004033, op: DIV, args: instArgs{arg_rd, arg_rs1, arg_rs2}},
 	// DIVU rd, rs1, rs2

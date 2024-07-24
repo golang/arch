@@ -42,14 +42,24 @@ func GNUSyntax(inst Inst) string {
 
 	switch inst.Op {
 	case ADDI, ADDIW, ANDI, ORI, SLLI, SLLIW, SRAI, SRAIW, SRLI, SRLIW, XORI:
-		op = immOpcodes[inst.Op].String()
-		if inst.Op == ADDI && inst.Args[2].(Simm).Imm == 0 {
-			if inst.Args[0].(Reg) == X0 && inst.Args[1].(Reg) == X0 {
-				op = "nop"
-				args = nil
-			} else {
-				op = "mv"
+		// Binutils 2.42 reverts this change
+		// op = immOpcodes[inst.Op].String()
+		if inst.Op == ADDI {
+			if inst.Args[1].(Reg) == X0 && inst.Args[0].(Reg) != X0 {
+				op = "li"
+				args[1] = args[2]
 				args = args[:len(args)-1]
+				break
+			}
+
+			if inst.Args[2].(Simm).Imm == 0 {
+				if inst.Args[0].(Reg) == X0 && inst.Args[1].(Reg) == X0 {
+					op = "nop"
+					args = nil
+				} else {
+					op = "mv"
+					args = args[:len(args)-1]
+				}
 			}
 		}
 
@@ -60,6 +70,13 @@ func GNUSyntax(inst Inst) string {
 
 		if inst.Op == XORI && inst.Args[2].(Simm).String() == "-1" {
 			op = "not"
+			args = args[:len(args)-1]
+		}
+
+	case ADD:
+		if inst.Args[1].(Reg) == X0 {
+			op = "mv"
+			args[1] = args[2]
 			args = args[:len(args)-1]
 		}
 
@@ -180,6 +197,12 @@ func GNUSyntax(inst Inst) string {
 			args[1] = args[2]
 			args = args[:len(args)-1]
 
+		case CYCLE:
+			if inst.Args[0].(Reg) == X0 && inst.Args[2].(Reg) == X0 {
+				op = "unimp"
+				args = nil
+			}
+
 		default:
 			if inst.Args[0].(Reg) == X0 {
 				op = "csrw"
@@ -252,13 +275,18 @@ func GNUSyntax(inst Inst) string {
 		}
 
 	case JALR:
-		if inst.Args[0].(Reg) == X0 && inst.Args[1].(RegOffset).ofs.Imm == 0 {
-			if inst.Args[1].(RegOffset).reg == X1 {
+		if inst.Args[0].(Reg) == X1 && inst.Args[1].(RegOffset).Ofs.Imm == 0 {
+			args[0] = inst.Args[1].(RegOffset).OfsReg.String()
+			args = args[:len(args)-1]
+		}
+
+		if inst.Args[0].(Reg) == X0 && inst.Args[1].(RegOffset).Ofs.Imm == 0 {
+			if inst.Args[1].(RegOffset).OfsReg == X1 {
 				op = "ret"
 				args = nil
 			} else {
 				op = "jr"
-				args[0] = inst.Args[1].(RegOffset).reg.String()
+				args[0] = inst.Args[1].(RegOffset).OfsReg.String()
 				args = args[:len(args)-1]
 			}
 		}

@@ -77,7 +77,7 @@ func allowedMismatchObjdump(text string, inst *Inst, dec ExtInst) bool {
 			return true
 		}
 	case JALR:
-		if inst.Args[1].(RegOffset).ofs.String() != decsp[len(decsp)-1] {
+		if inst.Args[1].(RegOffset).Ofs.String() != decsp[len(decsp)-1] {
 			return true
 		}
 	}

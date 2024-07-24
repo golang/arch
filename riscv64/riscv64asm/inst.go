@@ -36,6 +36,7 @@ type Inst struct {
 	Op   Op     // Opcode mnemonic.
 	Enc  uint32 // Raw encoding bits.
 	Args Args   // Instruction arguments, in RISC-V mamual order.
+	Len  int    // Length of encoded instruction in bytes
 }
 
 func (i Inst) String() string {
@@ -149,7 +150,7 @@ func (r Reg) String() string {
 		return fmt.Sprintf("t%d", int(r-X5))
 
 	case r == X8:
-		return "fp"
+		return "s0"
 
 	case r == X9:
 		return "s1"
@@ -480,21 +481,16 @@ func (ui Uimm) String() string {
 }
 
 type Simm struct {
-	Imm     uint32
+	Imm     int32
 	Decimal bool
 	Width   uint8
 }
 
 func (si Simm) String() string {
-	// Sign-extend
-	if si.Imm>>uint32(si.Width-1) == 1 {
-		si.Imm |= 0xffffffff << si.Width
-	}
-
-	if si.Decimal == true {
-		return fmt.Sprintf("%d", int32(si.Imm))
+	if si.Decimal {
+		return fmt.Sprintf("%d", si.Imm)
 	} else {
-		return fmt.Sprintf("%#x", int32(si.Imm))
+		return fmt.Sprintf("%#x", si.Imm)
 	}
 }
 
@@ -508,12 +504,12 @@ func (amoReg AmoReg) String() string {
 }
 
 type RegOffset struct {
-	reg Reg
-	ofs Simm
+	OfsReg Reg
+	Ofs    Simm
 }
 
 func (regofs RegOffset) String() string {
-	return fmt.Sprintf("%s(%s)", regofs.ofs, regofs.reg)
+	return fmt.Sprintf("%s(%s)", regofs.Ofs, regofs.OfsReg)
 }
 
 type MemOrder uint8

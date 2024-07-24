@@ -82,4 +82,35 @@ const (
 	arg_jimm20
 	arg_shamt5
 	arg_shamt6
+
+	// RISC-V Compressed Extension Args
+	arg_rd_p
+	arg_fd_p
+	arg_rs1_p
+	arg_rd_rs1_p
+	arg_fs2_p
+	arg_rs2_p
+	arg_rd_n0
+	arg_rs1_n0
+	arg_rd_rs1_n0
+	arg_c_rs1_n0
+	arg_c_rs2_n0
+	arg_c_fs2
+	arg_c_rs2
+	arg_rd_n2
+
+	arg_c_imm6
+	arg_c_nzimm6
+	arg_c_nzuimm6
+	arg_c_uimm7
+	arg_c_uimm8
+	arg_c_uimm8sp_s
+	arg_c_uimm8sp
+	arg_c_uimm9sp_s
+	arg_c_uimm9sp
+	arg_c_bimm9
+	arg_c_nzimm10
+	arg_c_nzuimm10
+	arg_c_imm12
+	arg_c_nzimm18
 )
