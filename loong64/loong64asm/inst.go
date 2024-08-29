@@ -40,7 +40,9 @@ func (i Inst) String() string {
 		}
 
 	case JIRL:
-		if i.Args[0].(Reg) == R0 && i.Args[2].(OffsetSimm).Imm == 0 {
+		if i.Args[0].(Reg) == R0 && i.Args[1].(Reg) == R1 && i.Args[2].(OffsetSimm).Imm == 0 {
+			return "ret"
+		} else if i.Args[0].(Reg) == R0 && i.Args[2].(OffsetSimm).Imm == 0 {
 			return "jr " + args[1]
 		}
 

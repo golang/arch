@@ -96,8 +96,13 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) strin
 		rd := inst.Args[0].(Reg)
 		rj := inst.Args[1].(Reg)
 		regno := uint16(rj) & 31
-		if rd == R0 {
+		off := inst.Args[2].(OffsetSimm).Imm
+		if rd == R0 && rj == R1 && off == 0 {
+			return fmt.Sprintf("RET")
+		} else if rd == R0 && off == 0 {
 			return fmt.Sprintf("JMP (R%d)", regno)
+		} else if rd == R0 {
+			return fmt.Sprintf("JMP %d(R%d)", off, regno)
 		}
 		return fmt.Sprintf("CALL (R%d)", regno)
 

@@ -253,6 +253,8 @@ ac154806|	iocsrwr.h $t0, $t1
 ac194806|	iocsrwr.w $t0, $t1
 ac1d4806|	iocsrwr.d $t0, $t1
 82b54906|	invtlb 0x2, $t0, $t1
+2000004c|	ret
+2008004c|	jirl $zero, $ra, 8
 ac11004c|	jirl $t0, $t1, 16
 ac410028|	ld.b $t0, $t1, 16
 ac41002a|	ld.bu $t0, $t1, 16
