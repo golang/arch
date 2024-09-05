@@ -47,7 +47,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) strin
 			op = "MOVHU"
 			args = append(args[1:2], args[0:1]...)
 		} else {
-			args[0], args[1], args[2], args[3] = args[2], args[1], args[3], args[0]
+			args[0], args[2], args[3] = args[2], args[3], args[0]
 		}
 
 	case BCNEZ, BCEQZ:
