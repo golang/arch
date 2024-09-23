@@ -31,7 +31,6 @@ import (
 var (
 	dumpTest = flag.Bool("dump", false, "dump all encodings")
 	mismatch = flag.Bool("mismatch", false, "log allowed mismatches")
-	longTest = flag.Bool("long", false, "long test")
 	keep     = flag.Bool("keep", false, "keep object files around")
 	debug    = false
 )
@@ -164,7 +163,7 @@ func testExtDis(
 
 		totalTests++
 		if *dumpTest {
-			fmt.Printf("%x -> %s [%d]\n", enc[:len(enc)], dec.text, dec.nenc)
+			fmt.Printf("%x -> %s [%d]\n", enc, dec.text, dec.nenc)
 		}
 		if text != dec.text && !strings.Contains(dec.text, "unknown") && syntax == "gnu" {
 			suffix := ""
@@ -256,7 +255,6 @@ func disasm(syntax string, src []byte) (inst Inst, text string) {
 		text = "error: " + err.Error()
 		return
 	}
-	text = inst.String()
 	switch syntax {
 	case "gnu":
 		text = GNUSyntax(inst)
@@ -518,11 +516,8 @@ func JSONCases(t *testing.T) func(func([]byte)) {
 			t.Fatal(err)
 		}
 		// Append instructions to get more test cases.
-		for i := 0; i < N; {
-			for _, inst := range insts {
-				instsN = append(instsN, inst)
-			}
-			i++
+		for i := 0; i < N; i++ {
+			instsN = append(instsN, insts...)
 		}
 		Round = 0
 		for i := range instsN {
