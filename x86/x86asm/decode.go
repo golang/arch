@@ -124,12 +124,17 @@ const (
 	xArgR16          // arg r16
 	xArgR16op        // arg r16 with +rw in opcode
 	xArgR32          // arg r32
+	xArgR32M32       // arg r32/m32
 	xArgR32M16       // arg r32/m16
 	xArgR32M8        // arg r32/m8
 	xArgR32op        // arg r32 with +rd in opcode
+	xArgR32a         // arg r32 but force addr32
+	xArgR32b         // arg r32 but force addr32
 	xArgR64          // arg r64
+	xArgR64M64       // arg r64/m64
 	xArgR64M16       // arg r64/m16
 	xArgR64op        // arg r64 with +rd in opcode
+	xArgR64b         // arg r64 but force addr64
 	xArgR8           // arg r8
 	xArgR8op         // arg r8 with +rb in opcode
 	xArgRAX          // arg RAX
@@ -153,17 +158,32 @@ const (
 	xArgTR0dashTR7   // arg TR0-TR7
 	xArgXmm          // arg xmm
 	xArgXMM0         // arg <XMM0>
+	xArgXmm0         // arg xmm0
 	xArgXmm1         // arg xmm1
+	xArgXmm1M32      // arg xmm1/m32
+	xArgXmm1M64      // arg xmm1/m64
+	xArgXmm1M128     // arg xmm1/m128
 	xArgXmm2         // arg xmm2
+	xArgXmm2M8       // arg xmm2/m8
 	xArgXmm2M128     // arg xmm2/m128
-	xArgYmm2M256     // arg ymm2/m256
+	xArgXmm3         // arg xmm3
+	xArgXmm3M32      // arg xmm3/m32
+	xArgXmm3M64      // arg xmm3/m64
+	xArgXmm3M128     // arg xmm3/m128
+	xArgXmm4         // arg xmm4
 	xArgXmm2M16      // arg xmm2/m16
 	xArgXmm2M32      // arg xmm2/m32
 	xArgXmm2M64      // arg xmm2/m64
 	xArgXmmM128      // arg xmm/m128
 	xArgXmmM32       // arg xmm/m32
 	xArgXmmM64       // arg xmm/m64
+	xArgYmm0         // arg ymm0
 	xArgYmm1         // arg ymm1
+	xArgYmm2         // arg ymm2
+	xArgYmm2M256     // arg ymm2/m256
+	xArgYmm3         // arg ymm3
+	xArgYmm3M256     // arg ymm3/m256
+	xArgYmm4         // arg ymm4
 	xArgRmf16        // arg r/m16 but force mod=3
 	xArgRmf32        // arg r/m32 but force mod=3
 	xArgRmf64        // arg r/m64 but force mod=3
@@ -457,6 +477,25 @@ ReadPrefixes:
 		}
 	}
 
+	vexEscapeSeq := make([]byte, 0, 2)
+	switch vex {
+	case 0xC5:
+		vexEscapeSeq = append(vexEscapeSeq, 0x0f)
+	case 0xC4:
+		vexM := inst.Prefix[vexIndex+1] & 0x1f
+		switch vexM {
+		case 0x01:
+			vexEscapeSeq = append(vexEscapeSeq, 0x0f)
+		case 0x02:
+			vexEscapeSeq = append(vexEscapeSeq, 0x0f, 0x38)
+		case 0x03:
+			vexEscapeSeq = append(vexEscapeSeq, 0x0f, 0x3a)
+		default:
+			println("unknown vex opcode map", vexM)
+			return Inst{Len: pos}, errInternal
+		}
+	}
+
 	// Decode instruction stream, interpreting decoding instructions.
 	// opshift gives the shift to use when saving the next
 	// opcode byte into inst.Opcode.
@@ -471,14 +510,14 @@ Decode:
 		if trace {
 			println("run", pc)
 		}
-		x := decoder[pc]
+		x := decodeOp(decoder[pc])
 		if decoderCover != nil {
 			decoderCover[pc] = true
 		}
 		pc++
 
 		// Read and decode ModR/M if needed by opcode.
-		switch decodeOp(x) {
+		switch x {
 		case xCondSlashR, xReadSlashR:
 			if haveModrm {
 				return Inst{Len: pos}, errInternal
@@ -617,7 +656,7 @@ Decode:
 		}
 
 		// Execute single opcode.
-		switch decodeOp(x) {
+		switch x {
 		default:
 			println("bad op", x, "at", pc-1, "from", oldPC)
 			return Inst{Len: pos}, errInternal
@@ -638,20 +677,41 @@ Decode:
 			if pos >= len(src) {
 				return truncated(src, mode)
 			}
-			b := src[pos]
+
 			n := int(decoder[pc])
 			pc++
-			for i := 0; i < n; i++ {
-				xb, xpc := decoder[pc], int(decoder[pc+1])
-				pc += 2
-				if b == byte(xb) {
-					pc = xpc
-					pos++
-					if opshift >= 0 {
-						inst.Opcode |= uint32(b) << uint(opshift)
-						opshift -= 8
+
+			// if we have an injected vex escape sequence, use it
+			if len(vexEscapeSeq) > 0 {
+				b := vexEscapeSeq[0]
+
+				for i := 0; i < n; i++ {
+					xb, xpc := decoder[pc], int(decoder[pc+1])
+					pc += 2
+					if b == byte(xb) {
+						pc = xpc
+						vexEscapeSeq = vexEscapeSeq[1:]
+						if opshift >= 0 {
+							inst.Opcode |= uint32(b) << uint(opshift)
+							opshift -= 8
+						}
+						continue Decode
 					}
-					continue Decode
+				}
+			} else {
+				b := src[pos]
+				for i := 0; i < n; i++ {
+					xb, xpc := decoder[pc], int(decoder[pc+1])
+					pc += 2
+					if b == byte(xb) {
+						pc = xpc
+						pos++
+						if opshift >= 0 {
+							inst.Opcode |= uint32(b) << uint(opshift)
+							opshift -= 8
+						}
+						continue Decode
+					}
 				}
 			}
 			// xCondByte is the only conditional with a fall through,
@@ -702,6 +762,10 @@ Decode:
 			case 64:
 				rexUsed |= PrefixREXW
 				pc = int(decoder[pc+2])
+			case 128:
+				pc = int(decoder[pc+3])
+			case 256:
+				pc = int(decoder[pc+4])
 			}
 
 		case xCondAddrSize:
@@ -811,12 +875,23 @@ Decode:
 					if rex&prefix == prefix {
 						ok = true
 					}
-				} else if prefix == 0xC5 || prefix == 0xC4 {
+				} else if prefix.IsVEX() {
 					if vex == prefix {
+						var vexL Prefix
+						if vex == 0xC5 {
+							vexL = inst.Prefix[vexIndex+1]
+						} else {
+							vexL = inst.Prefix[vexIndex+2]
+						}
+
+						if vexL&4 == 0 {
+							dataMode = 128
+						} else {
+							dataMode = 256
+						}
 						ok = true
 					}
-				} else if vex != 0 && (prefix == 0x0F || prefix == 0x0F38 || prefix == 0x0F3A ||
-					prefix == 0x66 || prefix == 0xF2 || prefix == 0xF3) {
+				} else if dataMode >= 128 && (prefix == 0x66 || prefix == 0xF2 || prefix == 0xF3) {
 					var vexM, vexP Prefix
 					if vex == 0xC5 {
 						vexM = 1 // 2 byte vex always implies 0F
@@ -825,6 +900,8 @@ Decode:
 						vexM = inst.Prefix[vexIndex+1]
 						vexP = inst.Prefix[vexIndex+2]
 					}
+					_ = vexM
+
 					switch prefix {
 					case 0x66:
 						ok = vexP&3 == 1
@@ -832,12 +909,6 @@ Decode:
 						ok = vexP&3 == 2
 					case 0xF2:
 						ok = vexP&3 == 3
-					case 0x0F:
-						ok = vexM&3 == 1
-					case 0x0F38:
-						ok = vexM&3 == 2
-					case 0x0F3A:
-						ok = vexM&3 == 3
 					}
 				} else {
 					if prefix == 0xF3 {
@@ -1083,7 +1154,7 @@ Decode:
 				break Decode
 			}
 			inst.Args[narg] = mem
-			inst.MemBytes = int(memBytes[decodeOp(x)])
+			inst.MemBytes = int(memBytes[x])
 			if mem.Base == RIP {
 				inst.PCRel = displen
 				inst.PCRelOff = dispoff
@@ -1108,14 +1179,14 @@ Decode:
 				inst.Prefix[segIndex] |= PrefixImplicit
 			}
 			inst.Args[narg] = mem
-			inst.MemBytes = int(memBytes[decodeOp(x)])
+			inst.MemBytes = int(memBytes[x])
 			if mem.Base == RIP {
 				inst.PCRel = displen
 				inst.PCRelOff = dispoff
 			}
 			narg++
 
-		case xArgYmm1:
+		case xArgYmm0, xArgYmm1:
 			base := baseReg[x]
 			index := Reg(regop)
 			if inst.Prefix[vexIndex+1]&0x80 == 0 {
@@ -1174,7 +1245,7 @@ Decode:
 			n := inst.Opcode >> uint(opshift+8) & 07
 			base := baseReg[x]
 			index := Reg(n)
-			if rex&PrefixREXB != 0 && decodeOp(x) != xArgSTi {
+			if rex&PrefixREXB != 0 && x != xArgSTi {
 				rexUsed |= PrefixREXB
 				index += 8
 			}
@@ -1188,10 +1259,11 @@ Decode:
 		case xArgRM8, xArgRM16, xArgRM32, xArgRM64, xArgR32M16, xArgR32M8, xArgR64M16,
 			xArgMmM32, xArgMmM64, xArgMm2M64,
 			xArgXmm2M16, xArgXmm2M32, xArgXmm2M64, xArgXmmM64, xArgXmmM128, xArgXmmM32, xArgXmm2M128,
-			xArgYmm2M256:
+			xArgXmm3M32, xArgXmm3M64, xArgXmm3M128,
+			xArgYmm2M256, xArgYmm3M256:
 			if haveMem {
 				inst.Args[narg] = mem
-				inst.MemBytes = int(memBytes[decodeOp(x)])
+				inst.MemBytes = int(memBytes[x])
 				if mem.Base == RIP {
 					inst.PCRel = displen
 					inst.PCRelOff = dispoff
@@ -1199,7 +1271,7 @@ Decode:
 			} else {
 				base := baseReg[x]
 				index := Reg(rm)
-				switch decodeOp(x) {
+				switch x {
 				case xArgMmM32, xArgMmM64, xArgMm2M64:
 					// There are only 8 MMX registers, so these ignore the REX.X bit.
 					index &= 7
@@ -1209,7 +1281,7 @@ Decode:
 						index -= 4
 						base = SPB
 					}
-				case xArgYmm2M256:
+				case xArgYmm2M256, xArgYmm3M256:
 					if vex == 0xC4 && inst.Prefix[vexIndex+1]&0x40 == 0x40 {
 						index += 8
 					}
@@ -1226,7 +1298,7 @@ Decode:
 			inst.Args[narg] = baseReg[x] + Reg(rm&7)
 			narg++
 
-		case xArgXmm2: // register only; TODO(rsc): Handle with tag modrm_regonly tag
+		case xArgXmm2, xArgYmm2: // register only; TODO(rsc): Handle with tag modrm_regonly tag
 			if haveMem {
 				inst.Op = 0
 				break Decode
@@ -1596,17 +1668,26 @@ var baseReg = [...]Reg{
 	xArgSTi:        F0,
 	xArgTR0dashTR7: TR0,
 	xArgXmm1:       X0,
-	xArgYmm1:       X0,
 	xArgXmm2:       X0,
 	xArgXmm2M128:   X0,
-	xArgYmm2M256:   X0,
 	xArgXmm2M16:    X0,
 	xArgXmm2M32:    X0,
 	xArgXmm2M64:    X0,
+	xArgXmm3:       X0,
+	xArgXmm3M128:   X0,
+	xArgXmm3M64:    X0,
+	xArgXmm3M32:    X0,
 	xArgXmm:        X0,
 	xArgXmmM128:    X0,
 	xArgXmmM32:     X0,
 	xArgXmmM64:     X0,
+	xArgYmm0:       Y0,
+	xArgYmm1:       Y0,
+	xArgYmm2:       Y0,
+	xArgYmm2M256:   Y0,
+	xArgYmm3:       Y0,
+	xArgYmm3M256:   Y0,
+	xArgYmm4:       Y0,
 }
 
 // prefixToSegment returns the segment register

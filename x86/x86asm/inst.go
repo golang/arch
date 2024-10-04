@@ -269,6 +269,24 @@ const (
 	X14
 	X15
 
+	// YMM registers.
+	Y0
+	Y1
+	Y2
+	Y3
+	Y4
+	Y5
+	Y6
+	Y7
+	Y8
+	Y9
+	Y10
+	Y11
+	Y12
+	Y13
+	Y14
+	Y15
+
 	// Segment registers.
 	ES
 	CS
@@ -595,6 +613,22 @@ var regNames = [...]string{
 	X13:  "X13",
 	X14:  "X14",
 	X15:  "X15",
+	Y0:   "Y0",
+	Y1:   "Y1",
+	Y2:   "Y2",
+	Y3:   "Y3",
+	Y4:   "Y4",
+	Y5:   "Y5",
+	Y6:   "Y6",
+	Y7:   "Y7",
+	Y8:   "Y8",
+	Y9:   "Y9",
+	Y10:  "Y10",
+	Y11:  "Y11",
+	Y12:  "Y12",
+	Y13:  "Y13",
+	Y14:  "Y14",
+	Y15:  "Y15",
 	CS:   "CS",
 	SS:   "SS",
 	DS:   "DS",

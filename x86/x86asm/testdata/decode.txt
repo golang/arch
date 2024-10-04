@@ -6755,6 +6755,8 @@ c4227d2a0c36|6677885f5f5f5f5f5f5f	64	gnu	vmovntdqa (%rsi,%r14,1),%ymm9
 c57d7ff7|44556677885f5f5f5f5f5f5f	64	intel	vmovdqa ymm7, ymm14
 c57d7ff7|44556677885f5f5f5f5f5f5f	64	plan9	VMOVDQA X14, X7
 c57d7ff7|44556677885f5f5f5f5f5f5f	64	gnu	vmovdqa %ymm14,%ymm7
+c5f877|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	plan9	VZEROUPPER
+c4a17e6f1c17|5f5f5f5f5f5f5f5f5f5f	64	plan9	VMOVDQU 0(DI)(R10*1), X3
 66f3ab|223344556677885f5f5f5f5f5f	64	gnu	rep stos %ax,%es:(%rdi)
 66f3ab|223344556677885f5f5f5f5f5f	64	intel	rep stosw word ptr [rdi]
 66f3ab|223344556677885f5f5f5f5f5f	64	plan9	REP; STOSW AX, ES:0(DI)

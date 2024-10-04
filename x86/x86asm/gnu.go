@@ -534,8 +534,6 @@ func gnuArg(inst *Inst, pc uint64, symname SymLookup, x Arg, usedPrefixes *bool)
 			if x == DX {
 				return "(%dx)"
 			}
-		case VMOVDQA, VMOVDQU, VMOVNTDQA, VMOVNTDQ:
-			return strings.Replace(gccRegName[x], "xmm", "ymm", -1)
 		}
 		return gccRegName[x]
 	case Mem:
@@ -787,6 +785,22 @@ var gccRegName = [...]string{
 	X13:  "%xmm13",
 	X14:  "%xmm14",
 	X15:  "%xmm15",
+	Y0:   "%ymm0",
+	Y1:   "%ymm1",
+	Y2:   "%ymm2",
+	Y3:   "%ymm3",
+	Y4:   "%ymm4",
+	Y5:   "%ymm5",
+	Y6:   "%ymm6",
+	Y7:   "%ymm7",
+	Y8:   "%ymm8",
+	Y9:   "%ymm9",
+	Y10:  "%ymm10",
+	Y11:  "%ymm11",
+	Y12:  "%ymm12",
+	Y13:  "%ymm13",
+	Y14:  "%ymm14",
+	Y15:  "%ymm15",
 	CS:   "%cs",
 	SS:   "%ss",
 	DS:   "%ds",
