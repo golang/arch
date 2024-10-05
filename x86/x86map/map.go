@@ -282,28 +282,30 @@ func add(root *Prog, text, opcode, valid32, valid64, cpuid, tags string) {
 		p = p.walk(action, item, text, opcode)
 	}
 
-	var vexPrefix, rex, prefix string
+	var rex, prefix string
 	encoding := strings.Fields(opcode)
 
 	if strings.HasPrefix(opcode, "VEX") {
-		if strings.Contains(text, "GATHER") {
-			// we don't support vm32/64
+		if strings.Contains(opcode, "/is4") {
+			// not supported yet
 			return
 		}
 
-		var vexOpcodeMap string
-		vexPrefix = "C4"
+		var vexPrefix, vexOpcodeMap string
+		// We'll mark the VEX instructions with a non-zero high byte in the prefix
+		// 0 (00): no VEX
+		// 1 (01): VEX with WIG (W=1 or W=0)
+		// 2 (10): VEX with W=0
+		// 3 (11): VEX with W=1
+		// This means the decoder will have to ensure the prefix is C4 or C5, but
+		// must be C4 if the value is 3.
 
-		if strings.Contains(tags, "VEXC5") {
-			vexPrefix = "C5"
-		} else if strings.Contains(opcode, ".0F.WIG") || strings.Contains(opcode, ".0F.W0") {
-			// these instructions can also be encoded with VEX2 (C5)
-			add(root, text, opcode, valid32, valid64, cpuid, addTag(tags, "VEXC5"))
-		}
-
-		// not supported yet
-		if strings.Contains(encoding[0], ".W1") || strings.Contains(opcode, "/is4") {
-			return
+		if strings.Contains(opcode, ".WIG") {
+			vexPrefix = "1"
+		} else if strings.Contains(opcode, ".W0") {
+			vexPrefix = "2"
+		} else if strings.Contains(opcode, ".W1") {
+			vexPrefix = "3"
 		}
 
 		for _, val := range strings.Split(encoding[0], ".") {
@@ -312,6 +314,12 @@ func add(root *Prog, text, opcode, valid32, valid64, cpuid, tags string) {
 			} else if isVexOpcodeMap[val] {
 				vexOpcodeMap = val
 			}
+		}
+
+		if prefix == "" {
+			prefix = vexPrefix + "00"
+		} else {
+			prefix = vexPrefix + prefix
 		}
 
 		switch vexOpcodeMap {
@@ -380,10 +388,6 @@ func add(root *Prog, text, opcode, valid32, valid64, cpuid, tags string) {
 		walk("is64", "0")
 	} else {
 		walk("is64", "any")
-	}
-
-	if vexPrefix != "" {
-		walk("prefix", vexPrefix)
 	}
 
 	if prefix == "" {

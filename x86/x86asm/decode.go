@@ -418,12 +418,10 @@ ReadPrefixes:
 				vexIndex = pos
 				inst.Prefix[pos] = p
 				inst.Prefix[pos+1] = Prefix(src[pos+1])
-				pos += 1
-				continue
-			} else {
-				nprefix = pos
-				break ReadPrefixes
+				pos += 2
 			}
+			nprefix = pos
+			break ReadPrefixes
 		case 0xC4:
 			if pos == 0 && pos+2 < len(src) && (mode == 64 || (mode == 32 && src[pos+1]&0xc0 == 0xc0)) {
 				vex = p
@@ -431,12 +429,10 @@ ReadPrefixes:
 				inst.Prefix[pos] = p
 				inst.Prefix[pos+1] = Prefix(src[pos+1])
 				inst.Prefix[pos+2] = Prefix(src[pos+2])
-				pos += 2
-				continue
-			} else {
-				nprefix = pos
-				break ReadPrefixes
+				pos += 3
 			}
+			nprefix = pos
+			break ReadPrefixes
 		}
 
 		if pos >= len(inst.Prefix) {
@@ -855,48 +851,71 @@ Decode:
 					}
 					continue
 				}
+
+				vexFlag := (prefix & 0xf00) >> 8
 				ok := false
+
+				if vexFlag != 0 {
+					if vex == 0 {
+						continue
+					}
+
+					var vexW, vexL, vexP Prefix
+					if vex == 0xC4 {
+						vexW = inst.Prefix[vexIndex+2] & 0x80
+						vexL = inst.Prefix[vexIndex+2] & 0x04
+						vexP = inst.Prefix[vexIndex+2] & 0x03
+					} else {
+						vexL = inst.Prefix[vexIndex+1] & 0x04
+						vexP = inst.Prefix[vexIndex+1] & 0x03
+					}
+
+					switch vexFlag {
+					case 1:
+						// all good (any vex prefix, any W)
+					case 2:
+						// check for W0
+						if vexW != 0 {
+							continue
+						}
+					case 3:
+						// check for W1 (only valid with 0xC4)
+						if vexW == 0 {
+							continue
+						}
+					default:
+						println("unknown vex prefix flag", vexFlag)
+						return Inst{Len: pos}, errInternal
+					}
+
+					// this is looking good, check the prefix
+					switch prefix & 0xFF {
+					case 0:
+						ok = true
+					case 0x66:
+						ok = vexP == 1
+					case 0xF3:
+						ok = vexP == 2
+					case 0xF2:
+						ok = vexP == 3
+					}
+
+					if ok {
+						// TODO: bit of a hack, some instructions ignore the L bit
+						if vexL&4 == 0 {
+							dataMode = 128
+						} else {
+							dataMode = 256
+						}
+					}
+				}
+
 				if prefix == 0 {
 					ok = true
 				} else if prefix.IsREX() {
 					rexUsed |= prefix
 					if rex&prefix == prefix {
 						ok = true
-					}
-				} else if prefix.IsVEX() {
-					if vex == prefix {
-						var vexL Prefix
-						if vex == 0xC5 {
-							vexL = inst.Prefix[vexIndex+1]
-						} else {
-							vexL = inst.Prefix[vexIndex+2]
-						}
-
-						if vexL&4 == 0 {
-							dataMode = 128
-						} else {
-							dataMode = 256
-						}
-						ok = true
-					}
-				} else if dataMode >= 128 && (prefix == 0x66 || prefix == 0xF2 || prefix == 0xF3) {
-					var vexM, vexP Prefix
-					if vex == 0xC5 {
-						vexM = 1 // 2 byte vex always implies 0F
-						vexP = inst.Prefix[vexIndex+1]
-					} else {
-						vexM = inst.Prefix[vexIndex+1]
-						vexP = inst.Prefix[vexIndex+2]
-					}
-					_ = vexM
-
-					switch prefix {
-					case 0x66:
-						ok = vexP&3 == 1
-					case 0xF3:
-						ok = vexP&3 == 2
-					case 0xF2:
-						ok = vexP&3 == 3
 					}
 				} else {
 					if prefix == 0xF3 {

@@ -6767,7 +6767,15 @@ c5f5efe2|44556677885f5f5f5f5f5f5f	64	gnu	vpxor %ymm2,%ymm1,%ymm4
 c4412d68da|556677885f5f5f5f5f5f5f	64	intel	vpunpckhbw ymm11, ymm10, ymm10
 c4412d68da|556677885f5f5f5f5f5f5f	64	plan9	VPUNPCKHBW Y10, Y10, Y11
 c4412d68da|556677885f5f5f5f5f5f5f	64	gnu	vpunpckhbw %ymm10,%ymm10,%ymm11
+c4c16567d9|556677885f5f5f5f5f5f5f	64	intel	vpackuswb ymm3, ymm3, ymm9
+c4c16567d9|556677885f5f5f5f5f5f5f	64	plan9	VPACKUSWB Y9, Y3, Y3
+c4c16567d9|556677885f5f5f5f5f5f5f	64	gnu	vpackuswb %ymm9,%ymm3,%ymm3
+c4e2e199e5|556677885f5f5f5f5f5f5f	64	intel	vfmadd132sd xmm4, xmm3, xmm5
+c4e2e199e5|556677885f5f5f5f5f5f5f	64	plan9	VFMADD132SD X5, X3, X4
+c4e2e199e5|556677885f5f5f5f5f5f5f	64	gnu	vfmadd132sd %xmm5,%xmm3,%xmm4
+c5f877|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	intel	vzeroupper
 c5f877|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	plan9	VZEROUPPER
+c5f877|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	gnu	vzeroupper
 66f3ab|223344556677885f5f5f5f5f5f	64	gnu	rep stos %ax,%es:(%rdi)
 66f3ab|223344556677885f5f5f5f5f5f	64	intel	rep stosw word ptr [rdi]
 66f3ab|223344556677885f5f5f5f5f5f	64	plan9	REP; STOSW AX, ES:0(DI)
