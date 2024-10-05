@@ -1276,7 +1276,8 @@ Decode:
 			narg++
 		case xArgRM8, xArgRM16, xArgRM32, xArgRM64, xArgR32M16, xArgR32M8, xArgR64M16,
 			xArgMmM32, xArgMmM64, xArgMm2M64,
-			xArgXmm2M16, xArgXmm2M32, xArgXmm2M64, xArgXmm2M128, xArgXmmM32, xArgXmmM64, xArgXmmM128,
+			xArgXmmM32, xArgXmmM64, xArgXmmM128,
+			xArgXmm2M8, xArgXmm2M16, xArgXmm2M32, xArgXmm2M64, xArgXmm2M128,
 			xArgYmm2M256:
 			if haveMem {
 				inst.Args[narg] = mem
@@ -1298,8 +1299,8 @@ Decode:
 						index -= 4
 						base = SPB
 					}
-				case xArgYmm2M256:
-					if vex == 0xC4 && inst.Prefix[vexIndex+1]&0x40 == 0x40 {
+				case xArgXmm2M8, xArgXmm2M16, xArgXmm2M32, xArgXmm2M64, xArgXmm2M128, xArgYmm2M256:
+					if vex == 0xC4 && inst.Prefix[vexIndex+1]&0x20 == 0 {
 						index += 8
 					}
 				}
@@ -1692,6 +1693,7 @@ var baseReg = [...]Reg{
 	xArgXmm2M16:    X0,
 	xArgXmm2M32:    X0,
 	xArgXmm2M64:    X0,
+	xArgXmm2M8:     X0,
 	xArgXmm:        X0,
 	xArgXmmV:       X0,
 	xArgXmmM128:    X0,

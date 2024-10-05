@@ -6761,6 +6761,15 @@ c4227d2a0c36|6677885f5f5f5f5f5f5f	64	gnu	vmovntdqa (%rsi,%r14,1),%ymm9
 c57d7ff7|44556677885f5f5f5f5f5f5f	64	intel	vmovdqa ymm7, ymm14
 c57d7ff7|44556677885f5f5f5f5f5f5f	64	plan9	VMOVDQA Y14, Y7
 c57d7ff7|44556677885f5f5f5f5f5f5f	64	gnu	vmovdqa %ymm14,%ymm7
+c4e27d791500000000|5f5f5f5f5f5f5f	64	intel	vpbroadcastw ymm2, word ptr [rip]
+c4e27d791500000000|5f5f5f5f5f5f5f	64	plan9	VPBROADCASTW 0(IP), Y2
+c4e27d791500000000|5f5f5f5f5f5f5f	64	gnu	vpbroadcastww (%rip),%ymm2
+c4e27d78c8|556677885f5f5f5f5f5f5f	64	intel	vpbroadcastb ymm1, xmm0
+c4e27d78c8|556677885f5f5f5f5f5f5f	64	plan9	VPBROADCASTB X0, Y1
+c4e27d78c8|556677885f5f5f5f5f5f5f	64	gnu	vpbroadcastb %xmm0,%ymm1
+c441305ec2|556677885f5f5f5f5f5f5f	64	intel	vdivps xmm8, xmm9, xmm10
+c441305ec2|556677885f5f5f5f5f5f5f	64	plan9	VDIVPS X10, X9, X8
+c441305ec2|556677885f5f5f5f5f5f5f	64	gnu	vdivps %xmm10,%xmm9,%xmm8
 c5f5efe2|44556677885f5f5f5f5f5f5f	64	intel	vpxor ymm4, ymm1, ymm2
 c5f5efe2|44556677885f5f5f5f5f5f5f	64	plan9	VPXOR Y2, Y1, Y4
 c5f5efe2|44556677885f5f5f5f5f5f5f	64	gnu	vpxor %ymm2,%ymm1,%ymm4
