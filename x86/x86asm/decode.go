@@ -461,10 +461,10 @@ ReadPrefixes:
 
 	vexEscapeSeq := make([]byte, 0, 2)
 	switch vex {
-	case 0xC5:
+	case PrefixVEX2:
 		vexEscapeSeq = append(vexEscapeSeq, 0x0f)
-	case 0xC4:
-		vexM := inst.Prefix[vexIndex+1] & 0x1f
+	case PrefixVEX3:
+		vexM := inst.Prefix[vexIndex+1] & PrefixVEXM
 		switch vexM {
 		case 0x01:
 			vexEscapeSeq = append(vexEscapeSeq, 0x0f)
@@ -520,7 +520,7 @@ Decode:
 			if rex&PrefixREXR != 0 {
 				rexUsed |= PrefixREXR
 				regop |= 8
-			} else if vex != 0 && inst.Prefix[vexIndex+1]&0x80 == 0 {
+			} else if vex != 0 && inst.Prefix[vexIndex+1]&PrefixVEXnotR == 0 {
 				regop |= 8
 			}
 			if addrMode == 16 {
@@ -569,11 +569,11 @@ Decode:
 					scale = sib >> 6
 					index = (sib >> 3) & 07
 					base = sib & 07
-					if rex&PrefixREXB != 0 || vex == 0xC4 && inst.Prefix[vexIndex+1]&0x20 == 0 {
+					if rex&PrefixREXB != 0 || vex == PrefixVEX3 && inst.Prefix[vexIndex+1]&PrefixVEXnotB == 0 {
 						rexUsed |= PrefixREXB
 						base |= 8
 					}
-					if rex&PrefixREXX != 0 || vex == 0xC4 && inst.Prefix[vexIndex+1]&0x40 == 0 {
+					if rex&PrefixREXX != 0 || vex == PrefixVEX3 && inst.Prefix[vexIndex+1]&PrefixVEXnotX == 0 {
 						rexUsed |= PrefixREXX
 						index |= 8
 					}
@@ -593,7 +593,10 @@ Decode:
 					if rex&PrefixREXB != 0 {
 						rexUsed |= PrefixREXB
 						rm |= 8
+					} else if vex == PrefixVEX3 && inst.Prefix[vexIndex+1]&PrefixVEXnotB == 0 {
+						rm |= 8
 					}
+
 					if mod == 0 && rm&7 == 5 || rm&7 == 4 {
 						// base omitted
 					} else if mod != 3 {
@@ -861,13 +864,13 @@ Decode:
 					}
 
 					var vexW, vexL, vexP Prefix
-					if vex == 0xC4 {
-						vexW = inst.Prefix[vexIndex+2] & 0x80
-						vexL = inst.Prefix[vexIndex+2] & 0x04
-						vexP = inst.Prefix[vexIndex+2] & 0x03
+					if vex == PrefixVEX3 {
+						vexW = inst.Prefix[vexIndex+2] & PrefixVEXW
+						vexL = inst.Prefix[vexIndex+2] & PrefixVEXL
+						vexP = inst.Prefix[vexIndex+2] & PrefixVEXP
 					} else {
-						vexL = inst.Prefix[vexIndex+1] & 0x04
-						vexP = inst.Prefix[vexIndex+1] & 0x03
+						vexL = inst.Prefix[vexIndex+1] & PrefixVEXL
+						vexP = inst.Prefix[vexIndex+1] & PrefixVEXP
 					}
 
 					switch vexFlag {
@@ -902,7 +905,7 @@ Decode:
 
 					if ok {
 						// TODO: bit of a hack, some instructions ignore the L bit
-						if vexL&4 == 0 {
+						if vexL == 0 {
 							dataMode = 128
 						} else {
 							dataMode = 256
@@ -1197,18 +1200,17 @@ Decode:
 			base := baseReg[x]
 
 			var vexV Prefix
-			if vex == 0xC5 {
-				vexV = inst.Prefix[vexIndex+1]
-			} else if vex == 0xC4 {
-				vexV = inst.Prefix[vexIndex+2]
-			} else {
+			switch vex {
+			case PrefixVEX2:
+				vexV = (inst.Prefix[vexIndex+1] & PrefixVEXnotV) >> 3
+			case PrefixVEX3:
+				vexV = (inst.Prefix[vexIndex+2] & PrefixVEXnotV) >> 3
+			default:
 				println("bad vex", vex)
 				return Inst{Len: pos}, errInternal
 			}
 
-			vexV = (vexV & 0x78) >> 3
-			vexV ^= 0xF
-			index := Reg(vexV)
+			index := Reg(vexV ^ 0xf)
 
 			inst.Args[narg] = base + index
 			narg++
@@ -1298,10 +1300,6 @@ Decode:
 						rexUsed |= PrefixREX
 						index -= 4
 						base = SPB
-					}
-				case xArgXmm2M8, xArgXmm2M16, xArgXmm2M32, xArgXmm2M64, xArgXmm2M128, xArgYmm2M256:
-					if vex == 0xC4 && inst.Prefix[vexIndex+1]&0x20 == 0 {
-						index += 8
 					}
 				}
 				inst.Args[narg] = base + index

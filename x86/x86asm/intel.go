@@ -93,7 +93,7 @@ func IntelSyntax(inst Inst, pc uint64, symname SymLookup) string {
 				inst.Prefix[i] |= PrefixImplicit
 			}
 			if p.IsVEX() {
-				if p == PrefixVEX3Bytes {
+				if p == PrefixVEX3 {
 					inst.Prefix[i+2] |= PrefixImplicit
 				}
 				inst.Prefix[i] |= PrefixImplicit

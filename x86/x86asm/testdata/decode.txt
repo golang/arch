@@ -6770,6 +6770,9 @@ c4e27d78c8|556677885f5f5f5f5f5f5f	64	gnu	vpbroadcastb %xmm0,%ymm1
 c441305ec2|556677885f5f5f5f5f5f5f	64	intel	vdivps xmm8, xmm9, xmm10
 c441305ec2|556677885f5f5f5f5f5f5f	64	plan9	VDIVPS X10, X9, X8
 c441305ec2|556677885f5f5f5f5f5f5f	64	gnu	vdivps %xmm10,%xmm9,%xmm8
+c4c17a1009|556677885f5f5f5f5f5f5f	64	intel	vmovss xmm1, dword ptr [r9]
+c4c17a1009|556677885f5f5f5f5f5f5f	64	plan9	VMOVSS 0(R9), X1
+c4c17a1009|556677885f5f5f5f5f5f5f	64	gnu	vmovss (%r9),%xmm1
 c5f5efe2|44556677885f5f5f5f5f5f5f	64	intel	vpxor ymm4, ymm1, ymm2
 c5f5efe2|44556677885f5f5f5f5f5f5f	64	plan9	VPXOR Y2, Y1, Y4
 c5f5efe2|44556677885f5f5f5f5f5f5f	64	gnu	vpxor %ymm2,%ymm1,%ymm4
