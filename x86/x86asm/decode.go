@@ -124,17 +124,14 @@ const (
 	xArgR16          // arg r16
 	xArgR16op        // arg r16 with +rw in opcode
 	xArgR32          // arg r32
-	xArgR32M32       // arg r32/m32
 	xArgR32M16       // arg r32/m16
 	xArgR32M8        // arg r32/m8
 	xArgR32op        // arg r32 with +rd in opcode
-	xArgR32a         // arg r32 but force addr32
-	xArgR32b         // arg r32 but force addr32
+	xArgR32V         // arg r32 read from VEX.vvvv
 	xArgR64          // arg r64
-	xArgR64M64       // arg r64/m64
 	xArgR64M16       // arg r64/m16
 	xArgR64op        // arg r64 with +rd in opcode
-	xArgR64b         // arg r64 but force addr64
+	xArgR64V         // arg r64 read from VEX.vvvv
 	xArgR8           // arg r8
 	xArgR8op         // arg r8 with +rb in opcode
 	xArgRAX          // arg RAX
@@ -158,32 +155,21 @@ const (
 	xArgTR0dashTR7   // arg TR0-TR7
 	xArgXmm          // arg xmm
 	xArgXMM0         // arg <XMM0>
-	xArgXmm0         // arg xmm0
 	xArgXmm1         // arg xmm1
-	xArgXmm1M32      // arg xmm1/m32
-	xArgXmm1M64      // arg xmm1/m64
-	xArgXmm1M128     // arg xmm1/m128
 	xArgXmm2         // arg xmm2
 	xArgXmm2M8       // arg xmm2/m8
-	xArgXmm2M128     // arg xmm2/m128
-	xArgXmm3         // arg xmm3
-	xArgXmm3M32      // arg xmm3/m32
-	xArgXmm3M64      // arg xmm3/m64
-	xArgXmm3M128     // arg xmm3/m128
-	xArgXmm4         // arg xmm4
 	xArgXmm2M16      // arg xmm2/m16
 	xArgXmm2M32      // arg xmm2/m32
 	xArgXmm2M64      // arg xmm2/m64
-	xArgXmmM128      // arg xmm/m128
+	xArgXmm2M128     // arg xmm2/m128
 	xArgXmmM32       // arg xmm/m32
 	xArgXmmM64       // arg xmm/m64
-	xArgYmm0         // arg ymm0
+	xArgXmmM128      // arg xmm/m128
 	xArgYmm1         // arg ymm1
 	xArgYmm2         // arg ymm2
 	xArgYmm2M256     // arg ymm2/m256
-	xArgYmm3         // arg ymm3
-	xArgYmm3M256     // arg ymm3/m256
-	xArgYmm4         // arg ymm4
+	xArgXmmV         // arg xmmV
+	xArgYmmV         // arg ymmV
 	xArgRmf16        // arg r/m16 but force mod=3
 	xArgRmf32        // arg r/m32 but force mod=3
 	xArgRmf64        // arg r/m64 but force mod=3
@@ -537,6 +523,8 @@ Decode:
 			rm = modrm & 07
 			if rex&PrefixREXR != 0 {
 				rexUsed |= PrefixREXR
+				regop |= 8
+			} else if vex != 0 && inst.Prefix[vexIndex+1]&0x80 == 0 {
 				regop |= 8
 			}
 			if addrMode == 16 {
@@ -1186,16 +1174,27 @@ Decode:
 			}
 			narg++
 
-		case xArgYmm0, xArgYmm1:
+		case xArgXmmV, xArgYmmV, xArgR32V, xArgR64V:
 			base := baseReg[x]
-			index := Reg(regop)
-			if inst.Prefix[vexIndex+1]&0x80 == 0 {
-				index += 8
+
+			var vexV Prefix
+			if vex == 0xC5 {
+				vexV = inst.Prefix[vexIndex+1]
+			} else if vex == 0xC4 {
+				vexV = inst.Prefix[vexIndex+2]
+			} else {
+				println("bad vex", vex)
+				return Inst{Len: pos}, errInternal
 			}
+
+			vexV = (vexV & 0x78) >> 3
+			vexV ^= 0xF
+			index := Reg(vexV)
+
 			inst.Args[narg] = base + index
 			narg++
 
-		case xArgR8, xArgR16, xArgR32, xArgR64, xArgXmm, xArgXmm1, xArgDR0dashDR7:
+		case xArgR8, xArgR16, xArgR32, xArgR64, xArgXmm, xArgXmm1, xArgYmm1, xArgDR0dashDR7:
 			base := baseReg[x]
 			index := Reg(regop)
 			if rex != 0 && base == AL && index >= 4 {
@@ -1258,9 +1257,8 @@ Decode:
 			narg++
 		case xArgRM8, xArgRM16, xArgRM32, xArgRM64, xArgR32M16, xArgR32M8, xArgR64M16,
 			xArgMmM32, xArgMmM64, xArgMm2M64,
-			xArgXmm2M16, xArgXmm2M32, xArgXmm2M64, xArgXmmM64, xArgXmmM128, xArgXmmM32, xArgXmm2M128,
-			xArgXmm3M32, xArgXmm3M64, xArgXmm3M128,
-			xArgYmm2M256, xArgYmm3M256:
+			xArgXmm2M16, xArgXmm2M32, xArgXmm2M64, xArgXmm2M128, xArgXmmM32, xArgXmmM64, xArgXmmM128,
+			xArgYmm2M256:
 			if haveMem {
 				inst.Args[narg] = mem
 				inst.MemBytes = int(memBytes[x])
@@ -1281,7 +1279,7 @@ Decode:
 						index -= 4
 						base = SPB
 					}
-				case xArgYmm2M256, xArgYmm3M256:
+				case xArgYmm2M256:
 					if vex == 0xC4 && inst.Prefix[vexIndex+1]&0x40 == 0x40 {
 						index += 8
 					}
@@ -1662,6 +1660,8 @@ var baseReg = [...]Reg{
 	xArgRM32:       EAX,
 	xArgRM64:       RAX,
 	xArgRM8:        AL,
+	xArgR32V:       EAX,
+	xArgR64V:       RAX,
 	xArgRmf16:      AX,
 	xArgRmf32:      EAX,
 	xArgRmf64:      RAX,
@@ -1673,21 +1673,15 @@ var baseReg = [...]Reg{
 	xArgXmm2M16:    X0,
 	xArgXmm2M32:    X0,
 	xArgXmm2M64:    X0,
-	xArgXmm3:       X0,
-	xArgXmm3M128:   X0,
-	xArgXmm3M64:    X0,
-	xArgXmm3M32:    X0,
 	xArgXmm:        X0,
+	xArgXmmV:       X0,
 	xArgXmmM128:    X0,
 	xArgXmmM32:     X0,
 	xArgXmmM64:     X0,
-	xArgYmm0:       Y0,
 	xArgYmm1:       Y0,
 	xArgYmm2:       Y0,
 	xArgYmm2M256:   Y0,
-	xArgYmm3:       Y0,
-	xArgYmm3M256:   Y0,
-	xArgYmm4:       Y0,
+	xArgYmmV:       Y0,
 }
 
 // prefixToSegment returns the segment register
