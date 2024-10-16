@@ -75,6 +75,8 @@ func decode(data []byte, t *testing.T, filename string) {
 			switch syntax {
 			case "gnu":
 				out = GNUSyntax(inst, pc)
+			case "plan9":
+				out = GoSyntax(inst, pc, nil)
 			default:
 				t.Errorf("unknown syntax %q", syntax)
 				continue
