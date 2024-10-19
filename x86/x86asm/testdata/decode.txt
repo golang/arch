@@ -4417,6 +4417,9 @@
 668d11|223344556677885f5f5f5f5f5f	64	gnu	lea (%rcx),%dx
 668d11|223344556677885f5f5f5f5f5f	64	intel	lea dx, ptr [rcx]
 668d11|223344556677885f5f5f5f5f5f	64	plan9	LEAW 0(CX), DX
+8d8f0f00ffff|556677885f5f5f5f5f5f	64	intel	lea ecx, ptr [rdi-0xfff1]
+8d8f0f00ffff|556677885f5f5f5f5f5f	64	plan9	LEAL -0xfff1(DI), CX
+8d8f0f00ffff|556677885f5f5f5f5f5f	64	gnu	lea -0xfff1(%rdi),%ecx
 668ec0|11223344556677885f5f5f5f5f	32	intel	mov es, ax
 668ec0|11223344556677885f5f5f5f5f	32	plan9	MOVW AX, ES
 668ec0|11223344556677885f5f5f5f5f	64	gnu	mov %ax,%es
@@ -6746,15 +6749,51 @@ ff30|11223344556677885f5f5f5f5f5f	32	plan9	PUSHL 0(AX)
 ff30|11223344556677885f5f5f5f5f5f	64	gnu	pushq (%rax)
 ff30|11223344556677885f5f5f5f5f5f	64	intel	push qword ptr [rax]
 ff30|11223344556677885f5f5f5f5f5f	64	plan9	PUSHQ 0(AX)
+c4e271f7d3|556677885f5f5f5f5f5f5f	32	intel	shlx edx, ebx, ecx
+c4e271f7d3|556677885f5f5f5f5f5f5f	32	plan9	SHLX CX, BX, DX
+c4e271f7d3|556677885f5f5f5f5f5f5f	32	gnu	shlx %ecx,%ebx,%edx
 c5fe6f06|44556677885f5f5f5f5f5f5f	32	intel	vmovdqu ymm0, ymmword ptr [esi]
-c5fe6f06|44556677885f5f5f5f5f5f5f	32	plan9	VMOVDQU 0(SI), X0
+c5fe6f06|44556677885f5f5f5f5f5f5f	32	plan9	VMOVDQU 0(SI), Y0
 c5fe6f06|44556677885f5f5f5f5f5f5f	32	gnu	vmovdqu (%esi),%ymm0
+c4a17e6f1c17|5f5f5f5f5f5f5f5f5f5f	64	intel	vmovdqu ymm3, ymmword ptr [rdi+r10*1]
+c4a17e6f1c17|5f5f5f5f5f5f5f5f5f5f	64	plan9	VMOVDQU 0(DI)(R10*1), Y3
+c4a17e6f1c17|5f5f5f5f5f5f5f5f5f5f	64	gnu	vmovdqu (%rdi,%r10,1),%ymm3
 c4227d2a0c36|6677885f5f5f5f5f5f5f	64	intel	vmovntdqa ymm9, ymmword ptr [rsi+r14*1]
-c4227d2a0c36|6677885f5f5f5f5f5f5f	64	plan9	VMOVNTDQA 0(SI)(R14*1), X9
+c4227d2a0c36|6677885f5f5f5f5f5f5f	64	plan9	VMOVNTDQA 0(SI)(R14*1), Y9
 c4227d2a0c36|6677885f5f5f5f5f5f5f	64	gnu	vmovntdqa (%rsi,%r14,1),%ymm9
 c57d7ff7|44556677885f5f5f5f5f5f5f	64	intel	vmovdqa ymm7, ymm14
-c57d7ff7|44556677885f5f5f5f5f5f5f	64	plan9	VMOVDQA X14, X7
+c57d7ff7|44556677885f5f5f5f5f5f5f	64	plan9	VMOVDQA Y14, Y7
 c57d7ff7|44556677885f5f5f5f5f5f5f	64	gnu	vmovdqa %ymm14,%ymm7
+c4e27d791500000000|5f5f5f5f5f5f5f	64	intel	vpbroadcastw ymm2, word ptr [rip]
+c4e27d791500000000|5f5f5f5f5f5f5f	64	plan9	VPBROADCASTW 0(IP), Y2
+c4e27d791500000000|5f5f5f5f5f5f5f	64	gnu	vpbroadcastww (%rip),%ymm2
+c4e27d78c8|556677885f5f5f5f5f5f5f	64	intel	vpbroadcastb ymm1, xmm0
+c4e27d78c8|556677885f5f5f5f5f5f5f	64	plan9	VPBROADCASTB X0, Y1
+c4e27d78c8|556677885f5f5f5f5f5f5f	64	gnu	vpbroadcastb %xmm0,%ymm1
+c441305ec2|556677885f5f5f5f5f5f5f	64	intel	vdivps xmm8, xmm9, xmm10
+c441305ec2|556677885f5f5f5f5f5f5f	64	plan9	VDIVPS X10, X9, X8
+c441305ec2|556677885f5f5f5f5f5f5f	64	gnu	vdivps %xmm10,%xmm9,%xmm8
+c4c17a1009|556677885f5f5f5f5f5f5f	64	intel	vmovss xmm1, dword ptr [r9]
+c4c17a1009|556677885f5f5f5f5f5f5f	64	plan9	VMOVSS 0(R9), X1
+c4c17a1009|556677885f5f5f5f5f5f5f	64	gnu	vmovss (%r9),%xmm1
+c4817a11048a|6677885f5f5f5f5f5f5f	64	intel	vmovss dword ptr [r10+r9*4], xmm0
+c4817a11048a|6677885f5f5f5f5f5f5f	64	plan9	VMOVSS X0, 0(R10)(R9*4)
+c4817a11048a|6677885f5f5f5f5f5f5f	64	gnu	vmovss %xmm0,(%r10,%r9,4)
+c5f5efe2|44556677885f5f5f5f5f5f5f	64	intel	vpxor ymm4, ymm1, ymm2
+c5f5efe2|44556677885f5f5f5f5f5f5f	64	plan9	VPXOR Y2, Y1, Y4
+c5f5efe2|44556677885f5f5f5f5f5f5f	64	gnu	vpxor %ymm2,%ymm1,%ymm4
+c4412d68da|556677885f5f5f5f5f5f5f	64	intel	vpunpckhbw ymm11, ymm10, ymm10
+c4412d68da|556677885f5f5f5f5f5f5f	64	plan9	VPUNPCKHBW Y10, Y10, Y11
+c4412d68da|556677885f5f5f5f5f5f5f	64	gnu	vpunpckhbw %ymm10,%ymm10,%ymm11
+c4c16567d9|556677885f5f5f5f5f5f5f	64	intel	vpackuswb ymm3, ymm3, ymm9
+c4c16567d9|556677885f5f5f5f5f5f5f	64	plan9	VPACKUSWB Y9, Y3, Y3
+c4c16567d9|556677885f5f5f5f5f5f5f	64	gnu	vpackuswb %ymm9,%ymm3,%ymm3
+c4e2e199e5|556677885f5f5f5f5f5f5f	64	intel	vfmadd132sd xmm4, xmm3, xmm5
+c4e2e199e5|556677885f5f5f5f5f5f5f	64	plan9	VFMADD132SD X5, X3, X4
+c4e2e199e5|556677885f5f5f5f5f5f5f	64	gnu	vfmadd132sd %xmm5,%xmm3,%xmm4
+c5f877|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	intel	vzeroupper
+c5f877|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	plan9	VZEROUPPER
+c5f877|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	gnu	vzeroupper
 66f3ab|223344556677885f5f5f5f5f5f	64	gnu	rep stos %ax,%es:(%rdi)
 66f3ab|223344556677885f5f5f5f5f5f	64	intel	rep stosw word ptr [rdi]
 66f3ab|223344556677885f5f5f5f5f5f	64	plan9	REP; STOSW AX, ES:0(DI)
