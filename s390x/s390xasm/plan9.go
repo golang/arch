@@ -244,7 +244,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) strin
 			args[0], args[1] = args[2], args[0]
 			args = args[:2]
 		} else {
-			args[0], args[1], args[2] = args[2], args[1], args[0]
+			args[0], args[2] = args[2], args[0]
 		}
 	case AGHIK, AHIK, ALGHSIK:
 		num, err := strconv.ParseInt(args[2][1:], 10, 32)
@@ -269,7 +269,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) strin
 				op = "ADDC"
 			}
 		}
-		args[0], args[1], args[2] = args[2], args[1], args[0]
+		args[0], args[2] = args[2], args[0]
 	case AGHI, AHI, AGFI, AFI, AR, ALCGR:
 		num, err := strconv.ParseInt(args[1][1:], 10, 32)
 		if err != nil {
@@ -344,7 +344,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) strin
 			args[0], args[1] = args[2], args[0]
 			args = args[:2]
 		} else {
-			args[0], args[1], args[2] = args[2], args[1], args[0]
+			args[0], args[2] = args[2], args[0]
 		}
 	case SLBGR:
 		op = "SUBE"
@@ -399,7 +399,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) strin
 		case SRAG:
 			op = "SRAD"
 		}
-		args[0], args[1], args[2] = args[2], args[1], args[0]
+		args[0], args[2] = args[2], args[0]
 	case TRAP2, SVC:
 		op = "SYSALL"
 	case CR, CLR, CGR, CLGR, KDBR, CDBR, CEBR, CGHI, CHI, CGFI, CLGFI, CFI, CLFI:
@@ -481,7 +481,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) strin
 			args = args[:3]
 		}
 	case CLRJ, CRJ, CIJ, CLIJ:
-		args[0], args[1], args[2], args[3] = args[2], args[0], args[1], args[3]
+		args[0], args[1], args[2] = args[2], args[0], args[1]
 	case BRC, BRCL:
 		mask, err := strconv.Atoi(args[0][1:])
 		if err != nil {
@@ -541,7 +541,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) strin
 			args[0], args[1] = args[1], args[0]
 			args = args[:2]
 		} else {
-			args[0], args[1], args[2] = args[2], args[1], args[0]
+			args[0], args[2] = args[2], args[0]
 		}
 	case BRASL:
 		op = "CALL" // BL
@@ -679,7 +679,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) strin
 		case VREP, VERLLV, VESLV:
 			if val >= 0 && val < 4 {
 				op = op + vectorSize[val]
-				args[0], args[1], args[2] = args[2], args[1], args[0]
+				args[0], args[2] = args[2], args[0]
 				args = args[:3]
 			} else {
 				return fmt.Sprintf("specification exception is recognized for %q with mask value: %v \n", op, mask)
@@ -910,7 +910,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) strin
 		} else {
 			return fmt.Sprintf("specification exception is recognized for %q with mask(m5) value: %v \n", op, m5)
 		}
-		args[0], args[1], args[2] = args[2], args[1], args[0]
+		args[0], args[2] = args[2], args[0]
 		args = args[:3]
 	case VAC, VACCC:
 		mask, err := strconv.Atoi(args[4][1:])
@@ -985,7 +985,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) strin
 				args = args[:3]
 			default:
 				if args[0] == args[1] {
-					args[0], args[1] = args[2], args[1]
+					args[0] = args[2]
 					args = args[:2]
 					break
 				}
