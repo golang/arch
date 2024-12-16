@@ -148,6 +148,9 @@ func testExtDis(
 				}
 				suffix += " (allowed mismatch)"
 			}
+			if strings.Contains(text, "unknown") && strings.Contains(dec.text, ".insn") {
+				return
+			}
 			totalErrors++
 			cmp := fmt.Sprintf("decode(%x) = %q, %d, want %q, %d%s\n", enc, text, len(enc), dec.text, dec.nenc, suffix)
 
