@@ -242,7 +242,7 @@ func disasm(syntax string, src []byte) (inst Inst, text string) {
 	return
 }
 
-// decodecoverage returns a floating point number denoting the
+// decodeCoverage returns a floating point number denoting the
 // decoder coverage.
 func decodeCoverage() float64 {
 	n := 0
