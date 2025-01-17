@@ -358,7 +358,14 @@ func findWords(chars []pdf.Text) (words []pdf.Text) {
 				break
 			}
 			f := ck.Font
-			words = append(words, pdf.Text{f, ck.FontSize, ck.X, ck.Y, end - ck.X, s})
+			words = append(words, pdf.Text{
+				Font:     f,
+				FontSize: ck.FontSize,
+				X:        ck.X,
+				Y:        ck.Y,
+				W:        end - ck.X,
+				S:        s,
+			})
 			k = l
 		}
 		i = j

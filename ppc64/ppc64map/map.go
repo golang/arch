@@ -24,7 +24,6 @@ import (
 	"flag"
 	"fmt"
 	gofmt "go/format"
-	asm "golang.org/x/arch/ppc64/ppc64asm"
 	"log"
 	"math/bits"
 	"os"
@@ -33,6 +32,8 @@ import (
 	"strconv"
 	"strings"
 	"text/template"
+
+	asm "golang.org/x/arch/ppc64/ppc64asm"
 )
 
 var format = flag.String("fmt", "text", "output format: text, decoder, asm")
@@ -287,7 +288,6 @@ func parseFields(encoding, text string, word int8) Args {
 			if j < 0 {
 				fmt.Fprintf(os.Stderr, "%s: wrong %d-th encoding field: %q\n", text, i, f)
 				panic("Invalid encoding entry.")
-				continue
 			}
 			k := strings.Index(f[j+1:], " ")
 			if k >= 0 {
