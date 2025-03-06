@@ -23,6 +23,9 @@
 // where appropriate, x86csv names are provided
 // as an alternative.
 //
+// Suppose $XED is the path of a checkout of the
+// https://github.com/intelxed/xed repo.
+//
 // "$XED/foo/bar.txt" notation is used to specify a path to "foo/bar.txt"
 // file under local XED source repository folder.
 //
@@ -32,14 +35,20 @@
 //  3. Operate on XED objects.
 //
 // See example_test.go for complete examples.
+// See testdata/xed_objects.txt for examples of "XED objects".
+//
+// # Obtain XED datafiles
 //
 // It is required to build Intel XED before attempting to use
-// its datafiles, as this package expects "all" versions that
+// its datafiles, as this package expects the "all" versions that
 // are a concatenated final versions of datafiles.
+// To build it, follow the instruction on https://github.com/intelxed/xed.
+//
+// Once built, the "all" versions of data files are in "$XED/obj/dgen/".
 // If "$XED/obj/dgen/" does not contain relevant files,
 // then either this documentation is stale or your XED is not built.
-//
-// To see examples of "XED objects" see "testdata/xed_objects.txt".
+// Pass $XED/obj/dgen (or a copy of it) as the "xedPath" to [NewDatabase]
+// or to x86avxgen -xedPath.
 //
 // Intel XED https://github.com/intelxed/xed provides all documentation
 // that can be required to understand datafiles.
