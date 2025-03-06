@@ -113,6 +113,7 @@ func (r *Reader) parseLines(lines []string) (*Object, error) {
 	)
 
 	for _, l := range lines {
+		l = strings.TrimLeft(l, " ")
 		if l[0] == '#' { // Skip comment lines.
 			continue
 		}
