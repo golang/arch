@@ -69,6 +69,12 @@ var (
 		"mem80real": {xtype: "f80", sizes: [3]string{"10", "10", "10"}},
 		"mfpxenv":   {xtype: "struct", sizes: [3]string{"512", "512", "512"}},
 	}
+
+	extraWidthsMap = map[string]string{
+		"AGEN":        "pseudo",
+		"XED_REG_EAX": "d",
+		"GPR32_R()":   "d",
+	}
 )
 
 // newStatesSource returns a reader that mocks "all-state.txt" file.
@@ -118,6 +124,22 @@ func newWidthsSource() io.Reader {
 	return &buf
 }
 
+func newExtraWidthsSource() io.Reader {
+	var buf bytes.Buffer
+	for name, width := range extraWidthsMap {
+		buf.WriteString("# Line comment\n")
+		buf.WriteString("#\n\n\n")
+		if reg, ok := strings.CutPrefix(name, "XED_REG_"); ok {
+			fmt.Fprintf(&buf, "reg %s %s\n", reg, width)
+		} else if nt, ok := strings.CutSuffix(name, "()"); ok {
+			fmt.Fprintf(&buf, "nt %s %s\n", nt, width)
+		} else {
+			fmt.Fprintf(&buf, "imm_const %s %s\n", name, width)
+		}
+	}
+	return &buf
+}
+
 // newXtypesSource returns a reader that mocks "all-element-types.txt" file.
 // Input content is generated based on xtypesMap.
 func newXtypesSource() io.Reader {
@@ -147,6 +169,10 @@ func newTestDatabase(t *testing.T) *Database {
 		t.Fatal(err)
 	}
 	err = db.LoadWidths(newWidthsSource())
+	if err != nil {
+		t.Fatal(err)
+	}
+	db.extraWidths, err = parseExtraWidths(newExtraWidthsSource())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -258,7 +284,7 @@ func TestNewOperand(t *testing.T) {
 		},
 		{
 			"MEM0:rw:q",
-			Operand{Name: "MEM0", Action: "rw", Width: "q"},
+			Operand{Name: "MEM0", Action: "rw", Width: "q", Xtype: "i64"},
 		},
 		{
 			"REG0=XMM_R():rcw:ps:f32",
@@ -266,11 +292,25 @@ func TestNewOperand(t *testing.T) {
 		},
 		{
 			"IMM0:r:z",
-			Operand{Name: "IMM0", Action: "r", Width: "z"},
+			Operand{Name: "IMM0", Action: "r", Width: "z", Xtype: "int"},
 		},
 		{
 			"IMM1:cw:b:i8",
 			Operand{Name: "IMM1", Action: "cw", Width: "b", Xtype: "i8"},
+		},
+
+		// Implied width code
+		{
+			"AGEN:r",
+			Operand{Name: "AGEN", Action: "r", Width: "pseudo"},
+		},
+		{
+			"REG0=XED_REG_EAX:r",
+			Operand{Name: "REG0=XED_REG_EAX", Action: "r", Width: "d", Xtype: "i32"},
+		},
+		{
+			"REG0=GPR32_R():r",
+			Operand{Name: "REG0=GPR32_R()", Action: "r", Width: "d", Xtype: "i32"},
 		},
 
 		// Optional fields and visibility.
@@ -280,19 +320,19 @@ func TestNewOperand(t *testing.T) {
 		},
 		{
 			"MEM1:w:d:IMPL",
-			Operand{Name: "MEM1", Action: "w", Width: "d", Visibility: VisImplicit},
+			Operand{Name: "MEM1", Action: "w", Width: "d", Xtype: "i32", Visibility: VisImplicit},
 		},
 		{
 			"MEM1:w:IMPL:d",
-			Operand{Name: "MEM1", Action: "w", Width: "d", Visibility: VisImplicit},
+			Operand{Name: "MEM1", Action: "w", Width: "d", Xtype: "i32", Visibility: VisImplicit},
 		},
 		{
-			"MEM1:w:d:SUPP:i32",
-			Operand{Name: "MEM1", Action: "w", Width: "d", Visibility: VisSuppressed, Xtype: "i32"},
+			"MEM1:w:d:SUPP:f32",
+			Operand{Name: "MEM1", Action: "w", Width: "d", Visibility: VisSuppressed, Xtype: "f32"},
 		},
 		{
-			"MEM1:w:SUPP:d:i32",
-			Operand{Name: "MEM1", Action: "w", Width: "d", Visibility: VisSuppressed, Xtype: "i32"},
+			"MEM1:w:SUPP:d:f32",
+			Operand{Name: "MEM1", Action: "w", Width: "d", Visibility: VisSuppressed, Xtype: "f32"},
 		},
 
 		// Ambiguity: xtypes that look like widths.
@@ -304,7 +344,7 @@ func TestNewOperand(t *testing.T) {
 		// TXT=X field.
 		{
 			"REG1=MASK1():r:mskw:TXT=ZEROSTR",
-			Operand{Name: "REG1=MASK1()", Action: "r", Width: "mskw",
+			Operand{Name: "REG1=MASK1()", Action: "r", Width: "mskw", Xtype: "i1",
 				Attributes: map[string]bool{"TXT=ZEROSTR": true}},
 		},
 		{
@@ -314,26 +354,26 @@ func TestNewOperand(t *testing.T) {
 		},
 		{
 			"REG0=ZMM_R3():w:zf32:TXT=SAESTR",
-			Operand{Name: "REG0=ZMM_R3()", Action: "w", Width: "zf32",
+			Operand{Name: "REG0=ZMM_R3()", Action: "w", Width: "zf32", Xtype: "f32",
 				Attributes: map[string]bool{"TXT=SAESTR": true}},
 		},
 		{
 			"REG0=ZMM_R3():w:zf64:TXT=ROUNDC",
-			Operand{Name: "REG0=ZMM_R3()", Action: "w", Width: "zf64",
+			Operand{Name: "REG0=ZMM_R3()", Action: "w", Width: "zf64", Xtype: "f64",
 				Attributes: map[string]bool{"TXT=ROUNDC": true}},
 		},
 
 		// Multi-source.
 		{
 			"REG2=ZMM_N3():r:zf32:MULTISOURCE4",
-			Operand{Name: "REG2=ZMM_N3()", Action: "r", Width: "zf32",
+			Operand{Name: "REG2=ZMM_N3()", Action: "r", Width: "zf32", Xtype: "f32",
 				Attributes: map[string]bool{"MULTISOURCE4": true}},
 		},
 
 		// Multi-source + EVEX.b context.
 		{
 			"REG2=ZMM_N3():r:zf32:MULTISOURCE4:TXT=SAESTR",
-			Operand{Name: "REG2=ZMM_N3()", Action: "r", Width: "zf32",
+			Operand{Name: "REG2=ZMM_N3()", Action: "r", Width: "zf32", Xtype: "f32",
 				Attributes: map[string]bool{"MULTISOURCE4": true, "TXT=SAESTR": true}},
 		},
 	}

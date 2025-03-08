@@ -51,6 +51,11 @@ type Operand struct {
 	// Width descriptor. It can express simple width like "w" (word, 16bit)
 	// or meta-width like "v", which corresponds to {16, 32, 64} bits.
 	//
+	// The first column in all-widths.txt lists all possible widths.
+	//
+	// To deterine the size given a width string and a mode, use
+	// [Database.WidthSize].
+	//
 	// Possible values: "", "q", "ds", "dq", ...
 	// Optional.
 	Width string
@@ -91,10 +96,13 @@ var xedVisibilities = map[string]OperandVisibility{
 // See "$XED/pysrc/opnds.py" to learn about fields format
 // and valid combinations.
 //
-// Requires database with xtypes and widths info.
+// Requires database with xtypes, widths, and extraWidths info.
 func NewOperand(db *Database, s string) (*Operand, error) {
 	if db.widths == nil {
 		return nil, errors.New("Database.widths is nil")
+	}
+	if db.extraWidths == nil {
+		return nil, errors.New("Database.extraWidths is nil")
 	}
 
 	fields := strings.Split(s, ":")
@@ -111,9 +119,10 @@ func NewOperand(db *Database, s string) (*Operand, error) {
 	op.Action = fields[1]
 
 	// Optional fields.
+	var w string
 	for _, f := range fields[2:] {
-		if db.widths[f] != nil && op.Width == "" {
-			op.Width = f
+		if db.widths[f] != nil && w == "" {
+			w = f
 		} else if vis, ok := xedVisibilities[f]; ok {
 			op.Visibility = vis
 		} else if xtype := db.xtypes[f]; xtype != nil {
@@ -123,6 +132,33 @@ func NewOperand(db *Database, s string) (*Operand, error) {
 				op.Attributes = make(map[string]bool)
 			}
 			op.Attributes[f] = true
+		}
+	}
+
+	// Get default width from operand type.
+	if w == "" {
+		if op.NonterminalName() {
+			if strings.HasPrefix(op.NameLHS(), "REG") {
+				rhs := op.NameRHS()
+				if strings.HasPrefix(rhs, "XED_REG_") {
+					// Register
+					w = db.extraWidths[rhs]
+				} else if strings.HasSuffix(rhs, "()") {
+					// Non-terminal
+					w = db.extraWidths[rhs]
+				}
+			}
+		} else {
+			// Try as an immediate.
+			w = db.extraWidths[op.Name]
+		}
+	}
+
+	if w != "" {
+		op.Width = w
+		// If operand did not specify an xtype, get the default from the width
+		if op.Xtype == "" && db.widths[w] != nil {
+			op.Xtype = db.widths[w].xtype
 		}
 	}
 

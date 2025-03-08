@@ -74,9 +74,19 @@ type Database struct {
 	widths map[string]*width // all-widths.txt
 	states map[string]string // all-state.txt
 	xtypes map[string]*xtype // all-element-types.txt
+
+	// extraWidth is a "all-extra-widths.txt" record.
+	//
+	// It provides a default mapping from an operand type to a width code.
+	//
+	// The key is one of three things:
+	// - "XED_REG_<name>" for a register (e.g., "XED_REG_EAX")
+	// - "<name>()" for a non-terminal (e.g., "GPR32_R()"")
+	// - "<name>" for an immediate const (e.g., "AGEN")
+	extraWidths map[string]string // all-extra-widths.txt
 }
 
-// width is a "all-width.txt" record.
+// width is a "all-widths.txt" record.
 type width struct {
 	// Default xtype name (examples: int, i8, f32).
 	xtype string
@@ -140,6 +150,14 @@ func NewDatabase(xedPath string) (*Database, error) {
 		}
 	}
 
+	extraWidths, err := os.Open(filepath.Join(xedPath, "all-extra-widths.txt"))
+	if err == nil {
+		db.extraWidths, err = parseExtraWidths(extraWidths)
+		if err != nil {
+			return &db, err
+		}
+	}
+
 	xtypes, err := os.Open(filepath.Join(xedPath, "all-element-types.txt"))
 	if err == nil {
 		err = db.LoadXtypes(xtypes)
@@ -181,6 +199,10 @@ func (db *Database) LoadXtypes(r io.Reader) error {
 
 // WidthSize translates width string to size string using desired
 // SizeMode m. For some widths output is the same for any valid value of m.
+//
+// The size string may be a decimal number of bytes, like "8". It may of the
+// form "%dbits" to indicate a bit width. Or in some cases it's "0" for
+// "unusual" registers.
 func (db *Database) WidthSize(width string, m OperandSizeMode) string {
 	info := db.widths[width]
 	if info == nil {
@@ -233,6 +255,30 @@ func parseWidths(r io.Reader) (map[string]*width, error) {
 	}
 
 	return widths, nil
+}
+
+func parseExtraWidths(r io.Reader) (map[string]string, error) {
+	extraWidths := make(map[string]string)
+	for line, err := range readLines(r) {
+		if err != nil {
+			return nil, err
+		}
+		f := bytes.Fields(line.data)
+		if len(f) != 3 {
+			return nil, fmt.Errorf("want 3 fields, got %d", len(f))
+		}
+		switch string(f[0]) {
+		default:
+			return nil, fmt.Errorf("unknown extra width type %s", f[0])
+		case "imm_const":
+			extraWidths[string(f[1])] = string(f[2])
+		case "reg":
+			extraWidths["XED_REG_"+string(f[1])] = string(f[2])
+		case "nt":
+			extraWidths[string(f[1])+"()"] = string(f[2])
+		}
+	}
+	return extraWidths, nil
 }
 
 func parseStates(r io.Reader) (map[string]string, error) {
