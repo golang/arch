@@ -141,13 +141,15 @@ func (op *Operand) NonterminalName() bool {
 // NameLHS returns left hand side part of the non-terminal name.
 // Example: NameLHS("REG0=GPRv()") => "REG0".
 func (op *Operand) NameLHS() string {
-	return strings.Split(op.Name, "=")[0]
+	lhs, _, _ := strings.Cut(op.Name, "=")
+	return lhs
 }
 
 // NameRHS returns right hand side part of the non-terminal name.
 // Example: NameLHS("REG0=GPRv()") => "GPRv()".
 func (op *Operand) NameRHS() string {
-	return strings.Split(op.Name, "=")[1]
+	_, rhs, _ := strings.Cut(op.Name, "=")
+	return rhs
 }
 
 // IsVisible returns true for operands that are usually
