@@ -5,7 +5,6 @@
 package xeddata
 
 import (
-	"io"
 	"os"
 	"path/filepath"
 )
@@ -16,17 +15,13 @@ func WalkInsts(xedPath string, visit func(*Inst)) error {
 	if err != nil {
 		return err
 	}
-	r := NewReader(f)
-	for {
-		o, err := r.Read()
-		if err == io.EOF {
-			return nil
-		}
+	for obj, err := range readObjects(f) {
 		if err != nil {
 			return err
 		}
-		for _, inst := range o.Insts {
+		for _, inst := range obj.Insts {
 			visit(inst)
 		}
 	}
+	return nil
 }

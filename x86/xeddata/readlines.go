@@ -48,8 +48,6 @@ func (p Pos) ShortString() string {
 // The returned lineInfo.data buffer may be reused between yields.
 //
 // If r has a Name() string method, this is used to populate lineInfo.Path.
-//
-// TODO: Rewrite Reader to use this.
 func readLines(r io.Reader) iter.Seq2[lineInfo, error] {
 	type Named interface {
 		Name() string // Matches os.File

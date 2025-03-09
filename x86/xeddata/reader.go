@@ -5,47 +5,27 @@
 package xeddata
 
 import (
-	"bufio"
 	"errors"
 	"fmt"
 	"io"
+	"iter"
 	"regexp"
 	"strings"
 )
 
 // Reader reads enc/dec-instruction objects from XED datafile.
 type Reader struct {
-	scanner *bufio.Scanner
+	r io.Reader
 
-	lines []string // Re-used between Read calls
-
-	// True if last line ends with newline escape (backslash).
-	joinLines bool
+	// Initialized on first call to Read
+	next func() (*Object, error, bool)
+	stop func()
+	err  error
 }
 
 // NewReader returns a new Reader that reads from r.
 func NewReader(r io.Reader) *Reader {
-	return newReader(bufio.NewScanner(r))
-}
-
-func newReader(scanner *bufio.Scanner) *Reader {
-	r := &Reader{
-		lines:   make([]string, 0, 64),
-		scanner: scanner,
-	}
-	scanner.Split(r.split)
-	return r
-}
-
-// split implements bufio.SplitFunc for Reader.
-func (r *Reader) split(data []byte, atEOF bool) (int, []byte, error) {
-	// Wrapping bufio.ScanLines to handle \-style newline escapes.
-	// joinLines flag affects Reader.scanLine behavior.
-	advance, tok, err := bufio.ScanLines(data, atEOF)
-	if err == nil && len(tok) >= 1 {
-		r.joinLines = tok[len(tok)-1] == '\\'
-	}
-	return advance, tok, err
+	return &Reader{r: r}
 }
 
 // Read reads single XED instruction object from
@@ -54,37 +34,65 @@ func (r *Reader) split(data []byte, atEOF bool) (int, []byte, error) {
 // If there is no data left to be read,
 // returned error is io.EOF.
 func (r *Reader) Read() (*Object, error) {
-	for line := r.scanLine(); line != ""; line = r.scanLine() {
-		if line[0] != '{' {
-			continue
-		}
-		lines := r.lines[:0] // Object lines
-		for line := r.scanLine(); line != ""; line = r.scanLine() {
-			if line[0] == '}' {
-				return r.parseLines(lines)
-			}
-			lines = append(lines, line)
-		}
-		return nil, errors.New("no matching '}' found")
+	if r.err != nil {
+		return nil, r.err
 	}
-
-	return nil, io.EOF
+	if r.next == nil {
+		r.next, r.stop = iter.Pull2(readObjects(r.r))
+	}
+	obj, err, end := r.next()
+	if end {
+		err = io.EOF
+	}
+	if err != nil {
+		r.stop()
+		r.err, r.next, r.stop = err, nil, nil
+		return nil, err
+	}
+	return obj, nil
 }
 
 // ReadAll reads all the remaining objects from r.
 // A successful call returns err == nil, not err == io.EOF,
 // just like csv.Reader.ReadAll().
 func (r *Reader) ReadAll() ([]*Object, error) {
-	objects := []*Object{}
-	for {
-		o, err := r.Read()
-		if err == io.EOF {
-			return objects, nil
-		}
+	var objects []*Object
+	for obj, err := range readObjects(r.r) {
 		if err != nil {
 			return objects, err
 		}
-		objects = append(objects, o)
+		objects = append(objects, obj)
+	}
+	return objects, nil
+}
+
+// readObjects yields all of the objects from r.
+func readObjects(r io.Reader) iter.Seq2[*Object, error] {
+	iterLines := readLines(r)
+	return func(yield func(*Object, error) bool) {
+		var block []string // Reused on each iteration
+		inBlock := false
+		for line, err := range iterLines {
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+			if !inBlock {
+				inBlock = line.data[0] == '{'
+			} else if line.data[0] == '}' {
+				inBlock = false
+				obj, err := parseObjectLines(block)
+				if !yield(obj, err) {
+					return
+				}
+				block = block[:0]
+			} else {
+				block = append(block, string(line.data))
+			}
+		}
+		if inBlock {
+			yield(nil, errors.New("no matching '}' found"))
+		}
 	}
 }
 
@@ -96,11 +104,10 @@ func (r *Reader) ReadAll() ([]*Object, error) {
 //	unquoted field name "[A-Z_]+" (captured)
 //	field value delimiter ":"
 //	field value string (captured)
-//	optional trailing comment that is ignored "[^#]*"
-var instLineRE = regexp.MustCompile(`^([A-Z_]+)\s*:\s*([^#]*)`)
+var instLineRE = regexp.MustCompile(`^([A-Z_]+)\s*:\s*(.*)`)
 
 // parseLines turns collected object lines into Object.
-func (r *Reader) parseLines(lines []string) (*Object, error) {
+func parseObjectLines(lines []string) (*Object, error) {
 	o := &Object{}
 
 	// Repeatable tokens.
@@ -191,22 +198,4 @@ func (r *Reader) parseLines(lines []string) (*Object, error) {
 	o.Insts = insts
 
 	return o, nil
-}
-
-// scanLine tries to fetch non-empty line from scanner.
-//
-// Returns empty line when scanner.Scan() returns false
-// before non-empty line is found.
-func (r *Reader) scanLine() string {
-	for r.scanner.Scan() {
-		line := r.scanner.Text()
-		if line == "" {
-			continue
-		}
-		if r.joinLines {
-			return line[:len(line)-len("\\")] + r.scanLine()
-		}
-		return line
-	}
-	return ""
 }
