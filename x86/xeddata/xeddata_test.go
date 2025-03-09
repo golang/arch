@@ -470,6 +470,42 @@ func TestReader(t *testing.T) {
 	}
 }
 
+func TestReaderPos(t *testing.T) {
+	const data = `# Comment
+{
+ICLASS: iclass1
+DISASM: disasm1
+
+PATTERN: pat1 pat1
+OPERANDS: ops1 ops1
+}`
+	r := NewReader(namedReader{strings.NewReader(data), "test"})
+	objects, err := r.ReadAll()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if want := "test:2"; objects[0].Pos.String() != want {
+		t.Errorf("object Pos: got %q, want %q", objects[0].Pos, want)
+	}
+	if want := "test:6"; objects[0].Insts[0].Pos.String() != want {
+		t.Errorf("inst Pos: got %q, want %q", objects[0].Insts[0].Pos, want)
+	}
+}
+
+type namedReader struct {
+	r    io.Reader
+	name string
+}
+
+func (n namedReader) Read(p []byte) (int, error) {
+	return n.r.Read(p)
+}
+
+func (n namedReader) Name() string {
+	return n.name
+}
+
 func TestMacroExpand(t *testing.T) {
 	tests := [...]struct {
 		input  string

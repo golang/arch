@@ -21,6 +21,9 @@ import (
 // Object contains multiple Inst elements that represent concrete
 // instruction with encoding pattern and operands description.
 type Object struct {
+	// Pos is the file position of the start of this object.
+	Pos Pos
+
 	// Iclass is instruction class name (opcode).
 	// Iclass alone is not enough to uniquely identify machine instructions.
 	// Example: "PSRLW".
@@ -127,6 +130,9 @@ type Inst struct {
 	// Object that contains properties that are shared with multiple
 	// Inst objects.
 	*Object
+
+	// Pos is the file position of this Inst's PATTERN.
+	Pos Pos
 
 	// Index is the position inside XED object.
 	// Object.Insts[Index] returns this inst.

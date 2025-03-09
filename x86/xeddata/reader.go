@@ -70,7 +70,9 @@ func (r *Reader) ReadAll() ([]*Object, error) {
 func readObjects(r io.Reader) iter.Seq2[*Object, error] {
 	iterLines := readLines(r)
 	return func(yield func(*Object, error) bool) {
+		var blockPos Pos
 		var block []string // Reused on each iteration
+		var linePos []Pos
 		inBlock := false
 		for line, err := range iterLines {
 			if err != nil {
@@ -79,15 +81,17 @@ func readObjects(r io.Reader) iter.Seq2[*Object, error] {
 			}
 			if !inBlock {
 				inBlock = line.data[0] == '{'
+				blockPos = line.Pos
 			} else if line.data[0] == '}' {
 				inBlock = false
-				obj, err := parseObjectLines(block)
+				obj, err := parseObjectLines(blockPos, block, linePos)
 				if !yield(obj, err) {
 					return
 				}
-				block = block[:0]
+				block, linePos = block[:0], linePos[:0]
 			} else {
 				block = append(block, string(line.data))
+				linePos = append(linePos, line.Pos)
 			}
 		}
 		if inBlock {
@@ -107,8 +111,9 @@ func readObjects(r io.Reader) iter.Seq2[*Object, error] {
 var instLineRE = regexp.MustCompile(`^([A-Z_]+)\s*:\s*(.*)`)
 
 // parseLines turns collected object lines into Object.
-func parseObjectLines(lines []string) (*Object, error) {
+func parseObjectLines(blockPos Pos, lines []string, linePos []Pos) (*Object, error) {
 	o := &Object{}
+	o.Pos = blockPos
 
 	// Repeatable tokens.
 	// We can not assign them eagerly, because these fields
@@ -117,9 +122,10 @@ func parseObjectLines(lines []string) (*Object, error) {
 		operands []string
 		iforms   []string
 		patterns []string
+		poses    []Pos
 	)
 
-	for _, l := range lines {
+	for i, l := range lines {
 		l = strings.TrimLeft(l, " ")
 		if l[0] == '#' { // Skip comment lines.
 			continue
@@ -167,6 +173,7 @@ func parseObjectLines(lines []string) (*Object, error) {
 			operands = append(operands, val)
 		case "PATTERN":
 			patterns = append(patterns, val)
+			poses = append(poses, linePos[i])
 		case "IFORM":
 			iforms = append(iforms, val)
 
@@ -188,6 +195,7 @@ func parseObjectLines(lines []string) (*Object, error) {
 			Object:   o,
 			Index:    i,
 			Pattern:  patterns[i],
+			Pos:      poses[i],
 			Operands: operands[i],
 		}
 		// There can be less IFORMs than insts.
