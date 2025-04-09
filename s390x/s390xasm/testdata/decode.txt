@@ -14,6 +14,7 @@
     b9e24098|	plan9	MOVDLT R8, R9
     b9e270ba|	plan9	MOVDNE R10, R11
     b9f23012|	plan9	LOCR $3, R2, R1
+    b3130020|	plan9	LCDBR F0, F2
     b9e27065|	plan9	MOVDNE R5, R6
 e310f0000004|	plan9	MOVD (R15), R1
 e320f0000014|	plan9	MOVW (R15), R2
@@ -122,6 +123,13 @@ c017fffffffe|	plan9	XORW $-2, R1
     b93a0008|	plan9	KDSA R0, R8
     b9296024|	plan9	KMA R2, R6, R4
     b92d6024|	plan9	KMCTR R2, R6, R4
+    b31e0042|	plan9	FMADD F4, F2, F0
+e748a00830e7|	plan9	WFMDB V8, V10, V4
+e743000830e2|	plan9	WFSDB V0, V3, V4
+    b3cd0026|	plan9	LGDR F6, R2
+    a7f4008c|	plan9	BR 70(PC)
+    a7140005|	plan9	BVS 2(PC)
+        07fe|	plan9	RET
 e743400000f3|	plan9	VAB V3, V4
 e743600000f3|	plan9	VAB V3, V6, V4
 e743400010f3|	plan9	VAH V3, V4
