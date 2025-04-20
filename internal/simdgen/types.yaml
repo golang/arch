@@ -1,0 +1,41 @@
+# This file defines the possible types of each operand and result.
+#
+# In general, we're able to narrow this down on some attributes directly from
+# the machine instruction descriptions, but the Go mappings need to further
+# constrain them and how they relate. For example, on x86 we can't distinguish
+# int and uint, though we can distinguish these from float.
+
+in: !repeat
+- !sum &types
+  - {go: Int8x16,    base: "int",   bits: 8,  w: 128}
+  - {go: Uint8x16,   base: "uint",  bits: 8,  w: 128}
+  - {go: Int16x8,    base: "int",   bits: 16, w: 128}
+  - {go: Uint16x8,   base: "uint",  bits: 16, w: 128}
+  - {go: Int32x4,    base: "int",   bits: 32, w: 128}
+  - {go: Uint32x4,   base: "uint",  bits: 32, w: 128}
+  - {go: Int64x2,    base: "int",   bits: 64, w: 128}
+  - {go: Uint64x2,   base: "uint",  bits: 64, w: 128}
+  - {go: Float32x4,  base: "float", bits: 32, w: 128}
+  - {go: Float64x2,  base: "float", bits: 64, w: 128}
+  - {go: Int8x32,    base: "int",   bits: 8,  w: 256}
+  - {go: Uint8x32,   base: "uint",  bits: 8,  w: 256}
+  - {go: Int16x16,   base: "int",   bits: 16, w: 256}
+  - {go: Uint16x16,  base: "uint",  bits: 16, w: 256}
+  - {go: Int32x8,    base: "int",   bits: 32, w: 256}
+  - {go: Uint32x8,   base: "uint",  bits: 32, w: 256}
+  - {go: Int64x4,    base: "int",   bits: 64, w: 256}
+  - {go: Uint64x4,   base: "uint",  bits: 64, w: 256}
+  - {go: Float32x8,  base: "float", bits: 32, w: 256}
+  - {go: Float64x4,  base: "float", bits: 64, w: 256}
+  - {go: Int8x64,    base: "int",   bits: 8,  w: 512}
+  - {go: Uint8x64,   base: "uint",  bits: 8,  w: 512}
+  - {go: Int16x32,   base: "int",   bits: 16, w: 512}
+  - {go: Uint16x32,  base: "uint",  bits: 16, w: 512}
+  - {go: Int32x16,   base: "int",   bits: 32, w: 512}
+  - {go: Uint32x16,  base: "uint",  bits: 32, w: 512}
+  - {go: Int64x8,    base: "int",   bits: 64, w: 512}
+  - {go: Uint64x8,   base: "uint",  bits: 64, w: 512}
+  - {go: Float32x16, base: "float", bits: 32, w: 512}
+  - {go: Float64x8,  base: "float", bits: 64, w: 512}
+out: !repeat
+- *types
