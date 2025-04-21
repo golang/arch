@@ -1,0 +1,101 @@
+!sum
+# Add
+- go: Add
+  asm: "VPADD[BWDQ]|VADDP[SD]"
+  in:
+  - &any
+    go: $t
+  - *any
+  out:
+  - *any
+- go: MaskedAdd
+  asm: "VPADD[BWDQ]|VADDP[SD]"
+  in:
+  - class: mask
+  - *any
+  - *any
+  out:
+  - *any
+# Saturated Add
+- go: SaturatedAdd
+  asm: "VPADDS[BWDQ]"
+  in:
+  - &int
+    go: $t
+    base: int
+  - *int
+  out:
+  - *int
+- go: SaturatedAdd
+  asm: "VPADDS[BWDQ]"
+  in:
+  - &uint
+    go: $t
+    base: uint
+  - *uint
+  out:
+  - *uint
+- go: MaskedSaturatedAdd
+  asm: "VPADDS[BWDQ]"
+  in:
+  - class: mask
+  - *int
+  - *int
+  out:
+  - *int
+- go: MaskedSaturatedAdd
+  asm: "VPADDS[BWDQ]"
+  in:
+  - class: mask
+  - *uint
+  - *uint
+  out:
+  - *uint
+
+# Sub
+- go: Sub
+  asm: "VPSUB[BWDQ]|VADDP[SD]"
+  in:
+  - *any
+  - *any
+  out:
+  - *any
+- go: MaskedSub
+  asm: "VPSUB[BWDQ]|VADDP[SD]"
+  in:
+  - class: mask
+  - *any
+  - *any
+  out:
+  - *any
+# Saturated Sub
+- go: SaturatedSub
+  asm: "VPSUBS[BWDQ]"
+  in:
+  - *int
+  - *int
+  out:
+  - *int
+- go: SaturatedSub
+  asm: "VPSUBS[BWDQ]"
+  in:
+  - *uint
+  - *uint
+  out:
+  - *uint
+- go: MaskedSaturatedSub
+  asm: "VPSUBS[BWDQ]"
+  in:
+  - class: mask
+  - *int
+  - *int
+  out:
+  - *int
+- go: MaskedSaturatedSub
+  asm: "VPSUBS[BWDQ]"
+  in:
+  - class: mask
+  - *uint
+  - *uint
+  out:
+  - *uint

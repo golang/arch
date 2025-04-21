@@ -47,12 +47,17 @@ func loadXED(xedPath string) []*unify.Value {
 			return
 		}
 		// TODO: "feature"
-		fields := []string{"goarch", "asm", "in", "out"}
+		fields := []string{"goarch", "asm", "in", "out", "extension"}
 		values := []*unify.Value{
 			unify.NewValue(unify.NewStringExact("amd64")),
 			unify.NewValue(unify.NewStringExact(inst.Opcode())),
 			unify.NewValue(ins),
 			unify.NewValue(outs),
+			unify.NewValue(unify.NewStringExact(inst.Extension)),
+		}
+		if strings.Contains(inst.Pattern, "ZEROING=0") {
+			fields = append(fields, "zeroing")
+			values = append(values, unify.NewValue(unify.NewStringExact("false")))
 		}
 		pos := unify.Pos{Path: inst.Pos.Path, Line: inst.Pos.Line}
 		defs = append(defs, unify.NewValuePos(unify.NewDef(fields, values), pos))
@@ -107,6 +112,8 @@ type operandVReg struct { // Vector register
 type operandMask struct {
 	operandCommon
 	vecShape
+	// Bits in the mask is w/bits.
+	allMasks bool
 }
 
 type operandImm struct {
@@ -137,15 +144,23 @@ func (o operandVReg) toValue() (fields []string, vals []*unify.Value) {
 	if err != nil {
 		panic("parsing baseRe: " + err.Error())
 	}
-	return []string{"class", "elemBits", "bits", "base"}, []*unify.Value{
+	fields, vals = []string{"class", "bits", "base"}, []*unify.Value{
 		strVal("vreg"),
-		strVal(o.elemBits),
 		strVal(o.bits),
 		unify.NewValue(baseDomain)}
+	if o.elemBits != o.bits {
+		fields, vals = append(fields, "elemBits"), append(vals, strVal(o.elemBits))
+	}
+	// otherwise it means the vector could be any shape.
+	return
 }
 
 func (o operandMask) toValue() (fields []string, vals []*unify.Value) {
 	return []string{"class", "elemBits", "bits"}, []*unify.Value{strVal("mask"), strVal(o.elemBits), strVal(o.bits)}
+}
+
+func (o operandMask) zeroMaskValue() (fields []string, vals []*unify.Value) {
+	return []string{"class"}, []*unify.Value{strVal("mask")}
 }
 
 func (o operandImm) toValue() (fields []string, vals []*unify.Value) {
@@ -256,6 +271,7 @@ func decodeOperands(db *xeddata.Database, operands []string) (ins, outs unify.Tu
 	inferMask := func(r, w bool) error {
 		var masks []int
 		var rSizes, wSizes, sizes []vecShape
+		allMasks := true
 		for i, op := range ops {
 			action := op.common().action
 			if _, ok := op.(operandMask); ok {
@@ -265,12 +281,15 @@ func decodeOperands(db *xeddata.Database, operands []string) (ins, outs unify.Tu
 				if action.r == r || action.w == w {
 					masks = append(masks, i)
 				}
-			} else if reg, ok := op.(operandVReg); ok {
-				if action.r {
-					rSizes = append(rSizes, reg.vecShape)
-				}
-				if action.w {
-					wSizes = append(wSizes, reg.vecShape)
+			} else {
+				allMasks = false
+				if reg, ok := op.(operandVReg); ok {
+					if action.r {
+						rSizes = append(rSizes, reg.vecShape)
+					}
+					if action.w {
+						wSizes = append(wSizes, reg.vecShape)
+					}
 				}
 			}
 		}
@@ -292,6 +311,15 @@ func decodeOperands(db *xeddata.Database, operands []string) (ins, outs unify.Tu
 		}
 
 		if len(sizes) == 0 {
+			// If all operands are masks, leave the mask inferrence to the users.
+			if allMasks {
+				for _, i := range masks {
+					m := ops[i].(operandMask)
+					m.allMasks = true
+					ops[i] = m
+				}
+				return nil
+			}
 			return fmt.Errorf("cannot infer mask size: no register operands")
 		}
 		shape, ok := singular(sizes)
@@ -315,6 +343,12 @@ func decodeOperands(db *xeddata.Database, operands []string) (ins, outs unify.Tu
 	var inVals, outVals []*unify.Value
 	for asmPos, op := range ops {
 		fields, values := op.toValue()
+		if opm, ok := op.(operandMask); ok {
+			if opm.allMasks {
+				// If all operands are masks, leave the mask inferrence to the users.
+				fields, values = opm.zeroMaskValue()
+			}
+		}
 
 		fields = append(fields, "asmPos")
 		values = append(values, unify.NewValue(unify.NewStringExact(fmt.Sprint(asmPos))))

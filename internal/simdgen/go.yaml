@@ -1,223 +1,437 @@
 !sum
-# For binary operations, we constrain their two inputs and one output to the
-# same Go type using a variable.
+# Add
 - go: Add
-  asm: "V?PADD[BWDQ]|V?ADDP[SD]"
+  asm: "VPADD[BWDQ]|VADDP[SD]"
   in:
-  - go: $t
-  - go: $t
+  - &any
+    go: $t
+  - *any
   out:
-  - go: $t
+  - *any
+- go: MaskedAdd
+  asm: "VPADD[BWDQ]|VADDP[SD]"
+  in:
+  - class: mask
+  - *any
+  - *any
+  out:
+  - *any
+# Saturated Add
+- go: SaturatedAdd
+  asm: "VPADDS[BWDQ]"
+  in:
+  - &int
+    go: $t
+    base: int
+  - *int
+  out:
+  - *int
+- go: SaturatedAdd
+  asm: "VPADDS[BWDQ]"
+  in:
+  - &uint
+    go: $t
+    base: uint
+  - *uint
+  out:
+  - *uint
+- go: MaskedSaturatedAdd
+  asm: "VPADDS[BWDQ]"
+  in:
+  - class: mask
+  - *int
+  - *int
+  out:
+  - *int
+- go: MaskedSaturatedAdd
+  asm: "VPADDS[BWDQ]"
+  in:
+  - class: mask
+  - *uint
+  - *uint
+  out:
+  - *uint
 
+# Sub
 - go: Sub
-  goarch: amd64
-  asm: "V?PSUB[BWDQ]|V?SUBP[SD]"
+  asm: "VPSUB[BWDQ]|VADDP[SD]"
   in:
-  - go: $t
-  - go: $t
+  - *any
+  - *any
   out:
-  - go: $t
+  - *any
+- go: MaskedSub
+  asm: "VPSUB[BWDQ]|VADDP[SD]"
+  in:
+  - class: mask
+  - *any
+  - *any
+  out:
+  - *any
+# Saturated Sub
+- go: SaturatedSub
+  asm: "VPSUBS[BWDQ]"
+  in:
+  - *int
+  - *int
+  out:
+  - *int
+- go: SaturatedSub
+  asm: "VPSUBS[BWDQ]"
+  in:
+  - *uint
+  - *uint
+  out:
+  - *uint
+- go: MaskedSaturatedSub
+  asm: "VPSUBS[BWDQ]"
+  in:
+  - class: mask
+  - *int
+  - *int
+  out:
+  - *int
+- go: MaskedSaturatedSub
+  asm: "VPSUBS[BWDQ]"
+  in:
+  - class: mask
+  - *uint
+  - *uint
+  out:
+  - *uint
+# In the XED data, *all* floating point bitwise logic operation has their
+# operand type marked as uint. We are not trying to understand why Intel
+# decided that they want FP bit-wise logic operations, but this irregularity
+# has to be dealed with in separate rules with some overwrites.
 
-#
-# AVX-512 Comparisons
-#
+# Int/Uint operations.
+# Non-masked for 128/256-bit vectors
+# For binary operations, we constrain their two inputs and one output to the
+# same Go type using a variable. This will map to instructions before AVX512.
+- go: And
+  asm: "VPAND"
+  in:
+  - &any
+    go: $t
+  - *any
+  out:
+  - *any
+# Masked
+# Looks like VPAND$xi works only for 2 shapes for integer:
+# Dword and Qword.
+# TODO: should we wildcard other smaller elemBits to VPANDQ or
+# VPANDD? Looks like elemBits doesn't really matter afterall in bitwise operations.
+- go: MaskedAnd
+  asm: "VPAND[DQ]"
+  in:
+  - class: mask
+  - *any
+  - *any
+  out:
+  - *any
 
-# TODO(austin): I'm not happy with how much copy-pasting this requires. We could
-# do a functional abstraction, but that feels bolted on. Unification is *almost*
-# capable of collapsing all of this.
-#
-# One thing that might work is having a !let node that lets you extend the
-# nonDetEnv with explicit values:
-#
-#     !let
-#     - {$go: Equal,       $imm: 0, $mask: K0}
-#     - {$go: EqualMasked, $imm: 0, $mask: _}
-#     - {$go: Less,        $imm: 1, $mask: K0}
-#     - {$go: LessMasked,  $imm: 1, $mask: _}
-#     - !let
-#       - {$asm: "VPCMP[BWDQ]",  $base: int}
-#       - {$asm: "VPCMPU[BWDQ]", $base: uint}
-#       - go: $go
-#         asm: $asm
-#         in:
-#         - const: $mask
-#         - base: $base
-#           go: $t
-#         - base: $base
-#           go: $t
-#         - class: immediate
-#           const: $imm
-#         out:
-#         - class: mask
-#
-# That's not bad, but it's very hierachical. CUE has a "mixin" approach to this.
-#
-#     - !unify
-#       # All AVX-512 comparisons have the same basic operand shape
-#       - {in: [_, {go: $t}, {go: $t}, _], out: [{class: mask}]}
-#       # There are signed and unsigned variants
-#       - !sum
-#         - {asm: "VPCMP[BWDQ]", in: [_, {base: int}, {base: int}, _]}
-#         - {asm: "VPCMPU[BWDQ]", in: [_, {base: uint}, {base: uint}, _]}
-#       # Finally, list out the operations.
-#       - !let
-#         - $equal:    {in: [_, _, _, {class: immedate, const: 0}]}
-#           $less:     {in: [_, _, _, {class: immedate, const: 1}]}
-#           $masked:   _
-#           $unmasked: {in: [const: K0, _, _, _]}
-#         - !sum
-#           - !unify [go: Equal,       $equal, $unmasked]
-#           - !unify [go: EqualMasked, $equal, $masked]
-#           - !unify [go: Less,        $less, $unmasked]
-#           - !unify [go: LessMasked,  $less, $masked]
-#
-# Maybe !let is just a feature of !sum that introduces an environment factor for
-# all following branches? That would let me do the above in-line with the big
-# top-level !sum:
-#
-#     - !sum
-#       ...
-#       - !let # Adds a factor that is the sum of the following terms:
-#         - {$go: Equal,       $imm: 0, $mask: K0}
-#         - {$go: EqualMasked, $imm: 0, $mask: _}
-#         - {$go: Less,        $imm: 1, $mask: K0}
-#         - {$go: LessMasked,  $imm: 1, $mask: _}
-#       - !let # Adds another factor:
-#         - {$asm: "VPCMP[BWDQ]",  $base: int}
-#         - {$asm: "VPCMPU[BWDQ]", $base: uint}
-#       - go: $go
-#         asm: $asm
-#         in:
-#         - const: $mask
-#         - base: $base
-#           go: $t
-#         - base: $base
-#           go: $t
-#         - class: immediate
-#           const: $imm
-#         out:
-#         - class: mask
-#
-# I may need to choose names more carefully in that case. This is a general
-# problem with names being file-global. (This is less of a problem with the
-# mixin style because those names tend to be more specific anyway.) Or maybe it
-# makes sense for each !let to introduce fresh idents, even if the string names
-# are the same?
+- go: AndNot
+  asm: "VPANDN"
+  in:
+  - *any
+  - *any
+  out:
+  - *any
+- go: MaskedAndNot
+  asm: "VPANDN[DQ]"
+  in:
+  - class: mask
+  - *any
+  - *any
+  out:
+  - *any
 
+- go: Or
+  asm: "VPOR"
+  in:
+  - *any
+  - *any
+  out:
+  - *any
+- go: MaskedOr
+  asm: "VPOR[DQ]"
+  in:
+  - class: mask
+  - *any
+  - *any
+  out:
+  - *any
+
+- go: Xor
+  asm: "VPXOR"
+  in:
+  - *any
+  - *any
+  out:
+  - *any
+- go: MaskedXor
+  asm: "VPXOR[DQ]"
+  in:
+  - class: mask
+  - *any
+  - *any
+  out:
+  - *any
+
+# FP operations.
+# Set the [base] to be "int" to not include duplicates(excluding "uint").
+# [base] is not used when [overwriteBase] is present.
+- go: And
+  asm: "VANDP[SD]"
+  in:
+  - &intToFloat
+    go: $t
+    base: int
+    overwriteBase: float
+  - *intToFloat
+  out:
+  - *intToFloat
+- go: MaskedAnd
+  asm: "VANDP[SD]"
+  in:
+  - class: mask
+  - *intToFloat
+  - *intToFloat
+  out:
+  - *intToFloat
+
+- go: AndNot
+  asm: "VANDNP[SD]"
+  in:
+  - *intToFloat
+  - *intToFloat
+  out:
+  - *intToFloat
+- go: MaskedAndNot
+  asm: "VANDNP[SD]"
+  in:
+  - class: mask
+  - *intToFloat
+  - *intToFloat
+  out:
+  - *intToFloat
+
+- go: Or
+  asm: "VORP[SD]"
+  in:
+  - *intToFloat
+  - *intToFloat
+  out:
+  - *intToFloat
+- go: MaskedOr
+  asm: "VORP[SD]"
+  in:
+  - class: mask
+  - *intToFloat
+  - *intToFloat
+  out:
+  - *intToFloat
+
+- go: Xor
+  asm: "VXORP[SD]"
+  in:
+  - *intToFloat
+  - *intToFloat
+  out:
+  - *intToFloat
+- go: MaskedXor
+  asm: "VXORP[SD]"
+  in:
+  - class: mask
+  - *intToFloat
+  - *intToFloat
+  out:
+  - *intToFloat
 - go: Equal
-  goarch: amd64
-  asm: "VPCMP[BWDQ]"  # Signed comparison
+  asm: "V?PCMPEQ[BWDQ]"
+  in: &int2
+  - &int
+    go: $t
+    base: int # Looks like PCMP is on signed integers - but for equals does it really matters?
+  - *int
+  out:
+  - &anyvregToMask
+    go: $t # We still need the output to be the same shape as inputs.
+    overwriteBase: uint
+    overwriteClass: mask
+- go: Greater
+  asm: "V?PCMPGT[BWDQ]"
+  in: *int2
+  out:
+  - *anyvregToMask
+- go: MaskedEqual
+  asm: "V?PCMPEQ[BWDQ]"
+  in: &maskint2
+  - class: mask
+  - *int
+  - *int
+  out:
+  - class: mask
+- go: MaskedGreater
+  asm: "V?PCMPGT[BWDQ]"
+  in: *maskint2
+  out:
+  - class: mask
+# The const imm predicated compares after AVX512, please see categories.yaml
+# for const imm specification.
+- go: Masked(Equal|Greater)
+  asm: "VPCMP[BWDQ]"
   in:
-  - const: K0
-  - base: int
+  - class: mask
+  - &int
     go: $t
-  - base: int
+    base: int
+  - *int
+  - class: immediate
+    const: 0 # Just a placeholder, will be overwritten by const imm porting.
+  out:
+  - class: mask
+- go: Masked(Equal|Greater)
+  asm: "VPCMPU[BWDQ]"
+  in:
+  - class: mask
+  - &uint
     go: $t
+    base: uint
+  - *uint
   - class: immediate
     const: 0
   out:
   - class: mask
-
-- go: EqualMasked
-  goarch: amd64
-  asm: "VPCMP[BWDQ]"  # Signed comparison
+- go: Div
+  asm: "V?DIVP[SD]"
   in:
-  - _
-  - base: int
+  - &fp
     go: $t
-  - base: int
-    go: $t
-  - class: immediate
-    const: 0
+    base: float
+  - *fp
   out:
-  - class: mask
-
-- go: Equal
-  goarch: amd64
-  asm: "VPCMPU[BWDQ]"  # Unsigned comparison
+  - *fp
+- go: MaskedDiv
+  asm: "V?DIVP[SD]"
   in:
-  - const: K0
-  - base: uint
-    go: $t
-  - base: uint
-    go: $t
-  - class: immediate
-    const: 0
-  out:
   - class: mask
-
-- go: EqualMasked
-  goarch: amd64
-  asm: "VPCMPU[BWDQ]"  # Unsigned comparison
+  - *fp
+  - *fp
+  out:
+  - *fp
+# "Normal" multiplication is only available for floats.
+# This only covers the single and double precision.
+- go: Mul
+  asm: "VMULP[SD]"
   in:
-  - _
-  - base: uint
+  - &fp
     go: $t
-  - base: uint
-    go: $t
-  - class: immediate
-    const: 0
+    base: float
+  - *fp
   out:
-  - class: mask
-
-- go: Less
-  goarch: amd64
-  asm: "VPCMP[BWDQ]"  # Signed comparison
+  - *fp
+- go: MaskedMul
+  asm: "VMULP[SD]"
   in:
-  - const: K0
-  - base: int
-    go: $t
-  - base: int
-    go: $t
-  - class: immediate
-    const: 1
-  out:
   - class: mask
+  - *fp
+  - *fp
+  out:
+  - *fp
 
-- go: LessMasked
-  goarch: amd64
-  asm: "VPCMP[BWDQ]"  # Signed comparison
+# Integer multiplications.
+
+# MulEvenWiden
+# Dword only.
+- go: MulEvenWiden
+  asm: "VPMULDQ"
   in:
-  - _
-  - base: int
+  - &int
     go: $t
-  - base: int
-    go: $t
-  - class: immediate
-    const: 1
+    base: int
+  - *int
   out:
-  - class: mask
-
-- go: Less
-  goarch: amd64
-  asm: "VPCMPU[BWDQ]"  # Unsigned comparison
+  - &int2
+    go: $t2
+    base: int
+- go: MulEvenWiden
+  asm: "VPMULUDQ"
   in:
-  - const: K0
-  - base: uint
+  - &uint
     go: $t
-  - base: uint
-    go: $t
-  - class: immediate
-    const: 1
+    base: uint
+  - *uint
   out:
-  - class: mask
-
-- go: LessMasked
-  goarch: amd64
-  asm: "VPCMPU[BWDQ]"  # Unsigned comparison
+  - &uint2
+    go: $t2
+    base: uint
+- go: MaskedMulEvenWiden
+  asm: "VPMULDQ"
   in:
-  - _
-  - base: uint
-    go: $t
-  - base: uint
-    go: $t
-  - class: immediate
-    const: 1
-  out:
   - class: mask
+  - *int
+  - *int
+  out:
+  - *int2
+- go: MaskedMulEvenWiden
+  asm: "VPMULUDQ"
+  in:
+  - class: mask
+  - *uint
+  - *uint
+  out:
+  - *uint2
 
-# TODO:
-# 2: OP := LE;
-# 4: OP := NEQ;
-# 5: OP := NLT;
-# 6: OP := NLE;
+# MulHigh
+# Word only.
+# Non-masked
+- go: MulHigh
+  asm: "VPMULHW"
+  in:
+  - *int
+  - *int
+  out:
+  - *int2
+- go: MulHigh
+  asm: "VPMULHUW"
+  in:
+  - *uint
+  - *uint
+  out:
+  - *uint2
+- go: MaskedMulHigh
+  asm: "VPMULHW"
+  in:
+  - class: mask
+  - *int
+  - *int
+  out:
+  - *int2
+- go: MaskedMulHigh
+  asm: "VPMULHUW"
+  in:
+  - class: mask
+  - *uint
+  - *uint
+  out:
+  - *uint2
+
+# MulLow
+# Signed int only.
+# Non-masked
+- go: MulLow
+  asm: "VPMULL[WDQ]"
+  in:
+  - *int
+  - *int
+  out:
+  - *int2
+- go: MaskedMulLow
+  asm: "VPMULL[WDQ]"
+  in:
+  - class: mask
+  - *int
+  - *int
+  out:
+  - *int2

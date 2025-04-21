@@ -1,0 +1,116 @@
+!sum
+# "Normal" multiplication is only available for floats.
+# This only covers the single and double precision.
+- go: Mul
+  asm: "VMULP[SD]"
+  in:
+  - &fp
+    go: $t
+    base: float
+  - *fp
+  out:
+  - *fp
+- go: MaskedMul
+  asm: "VMULP[SD]"
+  in:
+  - class: mask
+  - *fp
+  - *fp
+  out:
+  - *fp
+
+# Integer multiplications.
+
+# MulEvenWiden
+# Dword only.
+- go: MulEvenWiden
+  asm: "VPMULDQ"
+  in:
+  - &int
+    go: $t
+    base: int
+  - *int
+  out:
+  - &int2
+    go: $t2
+    base: int
+- go: MulEvenWiden
+  asm: "VPMULUDQ"
+  in:
+  - &uint
+    go: $t
+    base: uint
+  - *uint
+  out:
+  - &uint2
+    go: $t2
+    base: uint
+- go: MaskedMulEvenWiden
+  asm: "VPMULDQ"
+  in:
+  - class: mask
+  - *int
+  - *int
+  out:
+  - *int2
+- go: MaskedMulEvenWiden
+  asm: "VPMULUDQ"
+  in:
+  - class: mask
+  - *uint
+  - *uint
+  out:
+  - *uint2
+
+# MulHigh
+# Word only.
+# Non-masked
+- go: MulHigh
+  asm: "VPMULHW"
+  in:
+  - *int
+  - *int
+  out:
+  - *int2
+- go: MulHigh
+  asm: "VPMULHUW"
+  in:
+  - *uint
+  - *uint
+  out:
+  - *uint2
+- go: MaskedMulHigh
+  asm: "VPMULHW"
+  in:
+  - class: mask
+  - *int
+  - *int
+  out:
+  - *int2
+- go: MaskedMulHigh
+  asm: "VPMULHUW"
+  in:
+  - class: mask
+  - *uint
+  - *uint
+  out:
+  - *uint2
+
+# MulLow
+# Signed int only.
+# Non-masked
+- go: MulLow
+  asm: "VPMULL[WDQ]"
+  in:
+  - *int
+  - *int
+  out:
+  - *int2
+- go: MaskedMulLow
+  asm: "VPMULL[WDQ]"
+  in:
+  - class: mask
+  - *int
+  - *int
+  out:
+  - *int2

@@ -1,0 +1,57 @@
+!sum
+- go: Equal
+  asm: "V?PCMPEQ[BWDQ]"
+  in: &int2
+  - &int
+    go: $t
+    base: int # Looks like PCMP is on signed integers - but for equals does it really matters?
+  - *int
+  out:
+  - &anyvregToMask
+    go: $t # We still need the output to be the same shape as inputs.
+    overwriteBase: uint
+    overwriteClass: mask
+- go: Greater
+  asm: "V?PCMPGT[BWDQ]"
+  in: *int2
+  out:
+  - *anyvregToMask
+- go: MaskedEqual
+  asm: "V?PCMPEQ[BWDQ]"
+  in: &maskint2
+  - class: mask
+  - *int
+  - *int
+  out:
+  - class: mask
+- go: MaskedGreater
+  asm: "V?PCMPGT[BWDQ]"
+  in: *maskint2
+  out:
+  - class: mask
+# The const imm predicated compares after AVX512, please see categories.yaml
+# for const imm specification.
+- go: Masked(Equal|Greater)
+  asm: "VPCMP[BWDQ]"
+  in:
+  - class: mask
+  - &int
+    go: $t
+    base: int
+  - *int
+  - class: immediate
+    const: 0 # Just a placeholder, will be overwritten by const imm porting.
+  out:
+  - class: mask
+- go: Masked(Equal|Greater)
+  asm: "VPCMPU[BWDQ]"
+  in:
+  - class: mask
+  - &uint
+    go: $t
+    base: uint
+  - *uint
+  - class: immediate
+    const: 0
+  out:
+  - class: mask

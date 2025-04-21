@@ -1,0 +1,18 @@
+!sum
+- go: Div
+  asm: "V?DIVP[SD]"
+  in:
+  - &fp
+    go: $t
+    base: float
+  - *fp
+  out:
+  - *fp
+- go: MaskedDiv
+  asm: "V?DIVP[SD]"
+  in:
+  - class: mask
+  - *fp
+  - *fp
+  out:
+  - *fp
