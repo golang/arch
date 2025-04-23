@@ -44,8 +44,8 @@ type Operand struct {
 
 	// Action describes argument types.
 	//
-	// Possible values: "r", "w", "rw", "cr", "cw", "crw".
-	// Optional "c" prefix represents conditional access.
+	// Possible values: "r", "w", "rw", "cr", "cw", "crw", "rcw".
+	// The "c" prefix before "r" or "w" represents conditional read or write.
 	Action string
 
 	// Width descriptor. It can express simple width like "w" (word, 16bit)

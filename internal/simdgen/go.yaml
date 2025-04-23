@@ -17,3 +17,207 @@
   - go: $t
   out:
   - go: $t
+
+#
+# AVX-512 Comparisons
+#
+
+# TODO(austin): I'm not happy with how much copy-pasting this requires. We could
+# do a functional abstraction, but that feels bolted on. Unification is *almost*
+# capable of collapsing all of this.
+#
+# One thing that might work is having a !let node that lets you extend the
+# nonDetEnv with explicit values:
+#
+#     !let
+#     - {$go: Equal,       $imm: 0, $mask: K0}
+#     - {$go: EqualMasked, $imm: 0, $mask: _}
+#     - {$go: Less,        $imm: 1, $mask: K0}
+#     - {$go: LessMasked,  $imm: 1, $mask: _}
+#     - !let
+#       - {$asm: "VPCMP[BWDQ]",  $base: int}
+#       - {$asm: "VPCMPU[BWDQ]", $base: uint}
+#       - go: $go
+#         asm: $asm
+#         in:
+#         - const: $mask
+#         - base: $base
+#           go: $t
+#         - base: $base
+#           go: $t
+#         - class: immediate
+#           const: $imm
+#         out:
+#         - class: mask
+#
+# That's not bad, but it's very hierachical. CUE has a "mixin" approach to this.
+#
+#     - !unify
+#       # All AVX-512 comparisons have the same basic operand shape
+#       - {in: [_, {go: $t}, {go: $t}, _], out: [{class: mask}]}
+#       # There are signed and unsigned variants
+#       - !sum
+#         - {asm: "VPCMP[BWDQ]", in: [_, {base: int}, {base: int}, _]}
+#         - {asm: "VPCMPU[BWDQ]", in: [_, {base: uint}, {base: uint}, _]}
+#       # Finally, list out the operations.
+#       - !let
+#         - $equal:    {in: [_, _, _, {class: immedate, const: 0}]}
+#           $less:     {in: [_, _, _, {class: immedate, const: 1}]}
+#           $masked:   _
+#           $unmasked: {in: [const: K0, _, _, _]}
+#         - !sum
+#           - !unify [go: Equal,       $equal, $unmasked]
+#           - !unify [go: EqualMasked, $equal, $masked]
+#           - !unify [go: Less,        $less, $unmasked]
+#           - !unify [go: LessMasked,  $less, $masked]
+#
+# Maybe !let is just a feature of !sum that introduces an environment factor for
+# all following branches? That would let me do the above in-line with the big
+# top-level !sum:
+#
+#     - !sum
+#       ...
+#       - !let # Adds a factor that is the sum of the following terms:
+#         - {$go: Equal,       $imm: 0, $mask: K0}
+#         - {$go: EqualMasked, $imm: 0, $mask: _}
+#         - {$go: Less,        $imm: 1, $mask: K0}
+#         - {$go: LessMasked,  $imm: 1, $mask: _}
+#       - !let # Adds another factor:
+#         - {$asm: "VPCMP[BWDQ]",  $base: int}
+#         - {$asm: "VPCMPU[BWDQ]", $base: uint}
+#       - go: $go
+#         asm: $asm
+#         in:
+#         - const: $mask
+#         - base: $base
+#           go: $t
+#         - base: $base
+#           go: $t
+#         - class: immediate
+#           const: $imm
+#         out:
+#         - class: mask
+#
+# I may need to choose names more carefully in that case. This is a general
+# problem with names being file-global. (This is less of a problem with the
+# mixin style because those names tend to be more specific anyway.) Or maybe it
+# makes sense for each !let to introduce fresh idents, even if the string names
+# are the same?
+
+- go: Equal
+  goarch: amd64
+  asm: "VPCMP[BWDQ]"  # Signed comparison
+  in:
+  - const: K0
+  - base: int
+    go: $t
+  - base: int
+    go: $t
+  - class: immediate
+    const: 0
+  out:
+  - class: mask
+
+- go: EqualMasked
+  goarch: amd64
+  asm: "VPCMP[BWDQ]"  # Signed comparison
+  in:
+  - _
+  - base: int
+    go: $t
+  - base: int
+    go: $t
+  - class: immediate
+    const: 0
+  out:
+  - class: mask
+
+- go: Equal
+  goarch: amd64
+  asm: "VPCMPU[BWDQ]"  # Unsigned comparison
+  in:
+  - const: K0
+  - base: uint
+    go: $t
+  - base: uint
+    go: $t
+  - class: immediate
+    const: 0
+  out:
+  - class: mask
+
+- go: EqualMasked
+  goarch: amd64
+  asm: "VPCMPU[BWDQ]"  # Unsigned comparison
+  in:
+  - _
+  - base: uint
+    go: $t
+  - base: uint
+    go: $t
+  - class: immediate
+    const: 0
+  out:
+  - class: mask
+
+- go: Less
+  goarch: amd64
+  asm: "VPCMP[BWDQ]"  # Signed comparison
+  in:
+  - const: K0
+  - base: int
+    go: $t
+  - base: int
+    go: $t
+  - class: immediate
+    const: 1
+  out:
+  - class: mask
+
+- go: LessMasked
+  goarch: amd64
+  asm: "VPCMP[BWDQ]"  # Signed comparison
+  in:
+  - _
+  - base: int
+    go: $t
+  - base: int
+    go: $t
+  - class: immediate
+    const: 1
+  out:
+  - class: mask
+
+- go: Less
+  goarch: amd64
+  asm: "VPCMPU[BWDQ]"  # Unsigned comparison
+  in:
+  - const: K0
+  - base: uint
+    go: $t
+  - base: uint
+    go: $t
+  - class: immediate
+    const: 1
+  out:
+  - class: mask
+
+- go: LessMasked
+  goarch: amd64
+  asm: "VPCMPU[BWDQ]"  # Unsigned comparison
+  in:
+  - _
+  - base: uint
+    go: $t
+  - base: uint
+    go: $t
+  - class: immediate
+    const: 1
+  out:
+  - class: mask
+
+# TODO:
+# 2: OP := LE;
+# 4: OP := NEQ;
+# 5: OP := NLT;
+# 6: OP := NLE;

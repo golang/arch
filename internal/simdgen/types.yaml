@@ -7,35 +7,48 @@
 
 in: !repeat
 - !sum &types
-  - {go: Int8x16,    base: "int",   bits: 8,  w: 128}
-  - {go: Uint8x16,   base: "uint",  bits: 8,  w: 128}
-  - {go: Int16x8,    base: "int",   bits: 16, w: 128}
-  - {go: Uint16x8,   base: "uint",  bits: 16, w: 128}
-  - {go: Int32x4,    base: "int",   bits: 32, w: 128}
-  - {go: Uint32x4,   base: "uint",  bits: 32, w: 128}
-  - {go: Int64x2,    base: "int",   bits: 64, w: 128}
-  - {go: Uint64x2,   base: "uint",  bits: 64, w: 128}
-  - {go: Float32x4,  base: "float", bits: 32, w: 128}
-  - {go: Float64x2,  base: "float", bits: 64, w: 128}
-  - {go: Int8x32,    base: "int",   bits: 8,  w: 256}
-  - {go: Uint8x32,   base: "uint",  bits: 8,  w: 256}
-  - {go: Int16x16,   base: "int",   bits: 16, w: 256}
-  - {go: Uint16x16,  base: "uint",  bits: 16, w: 256}
-  - {go: Int32x8,    base: "int",   bits: 32, w: 256}
-  - {go: Uint32x8,   base: "uint",  bits: 32, w: 256}
-  - {go: Int64x4,    base: "int",   bits: 64, w: 256}
-  - {go: Uint64x4,   base: "uint",  bits: 64, w: 256}
-  - {go: Float32x8,  base: "float", bits: 32, w: 256}
-  - {go: Float64x4,  base: "float", bits: 64, w: 256}
-  - {go: Int8x64,    base: "int",   bits: 8,  w: 512}
-  - {go: Uint8x64,   base: "uint",  bits: 8,  w: 512}
-  - {go: Int16x32,   base: "int",   bits: 16, w: 512}
-  - {go: Uint16x32,  base: "uint",  bits: 16, w: 512}
-  - {go: Int32x16,   base: "int",   bits: 32, w: 512}
-  - {go: Uint32x16,  base: "uint",  bits: 32, w: 512}
-  - {go: Int64x8,    base: "int",   bits: 64, w: 512}
-  - {go: Uint64x8,   base: "uint",  bits: 64, w: 512}
-  - {go: Float32x16, base: "float", bits: 32, w: 512}
-  - {go: Float64x8,  base: "float", bits: 64, w: 512}
+  - {class: vreg, go: Int8x16,    base: "int",   elemBits: 8,  bits: 128}
+  - {class: vreg, go: Uint8x16,   base: "uint",  elemBits: 8,  bits: 128}
+  - {class: vreg, go: Int16x8,    base: "int",   elemBits: 16, bits: 128}
+  - {class: vreg, go: Uint16x8,   base: "uint",  elemBits: 16, bits: 128}
+  - {class: vreg, go: Int32x4,    base: "int",   elemBits: 32, bits: 128}
+  - {class: vreg, go: Uint32x4,   base: "uint",  elemBits: 32, bits: 128}
+  - {class: vreg, go: Int64x2,    base: "int",   elemBits: 64, bits: 128}
+  - {class: vreg, go: Uint64x2,   base: "uint",  elemBits: 64, bits: 128}
+  - {class: vreg, go: Float32x4,  base: "float", elemBits: 32, bits: 128}
+  - {class: vreg, go: Float64x2,  base: "float", elemBits: 64, bits: 128}
+  - {class: vreg, go: Int8x32,    base: "int",   elemBits: 8,  bits: 256}
+  - {class: vreg, go: Uint8x32,   base: "uint",  elemBits: 8,  bits: 256}
+  - {class: vreg, go: Int16x16,   base: "int",   elemBits: 16, bits: 256}
+  - {class: vreg, go: Uint16x16,  base: "uint",  elemBits: 16, bits: 256}
+  - {class: vreg, go: Int32x8,    base: "int",   elemBits: 32, bits: 256}
+  - {class: vreg, go: Uint32x8,   base: "uint",  elemBits: 32, bits: 256}
+  - {class: vreg, go: Int64x4,    base: "int",   elemBits: 64, bits: 256}
+  - {class: vreg, go: Uint64x4,   base: "uint",  elemBits: 64, bits: 256}
+  - {class: vreg, go: Float32x8,  base: "float", elemBits: 32, bits: 256}
+  - {class: vreg, go: Float64x4,  base: "float", elemBits: 64, bits: 256}
+  - {class: vreg, go: Int8x64,    base: "int",   elemBits: 8,  bits: 512}
+  - {class: vreg, go: Uint8x64,   base: "uint",  elemBits: 8,  bits: 512}
+  - {class: vreg, go: Int16x32,   base: "int",   elemBits: 16, bits: 512}
+  - {class: vreg, go: Uint16x32,  base: "uint",  elemBits: 16, bits: 512}
+  - {class: vreg, go: Int32x16,   base: "int",   elemBits: 32, bits: 512}
+  - {class: vreg, go: Uint32x16,  base: "uint",  elemBits: 32, bits: 512}
+  - {class: vreg, go: Int64x8,    base: "int",   elemBits: 64, bits: 512}
+  - {class: vreg, go: Uint64x8,   base: "uint",  elemBits: 64, bits: 512}
+  - {class: vreg, go: Float32x16, base: "float", elemBits: 32, bits: 512}
+  - {class: vreg, go: Float64x8,  base: "float", elemBits: 64, bits: 512}
+  - {class: mask, go: Mask8x16,  elemBits: 8,  bits: 128}
+  - {class: mask, go: Mask16x8,  elemBits: 16, bits: 128}
+  - {class: mask, go: Mask32x4,  elemBits: 32, bits: 128}
+  - {class: mask, go: Mask64x2,  elemBits: 64, bits: 128}
+  - {class: mask, go: Mask8x32,  elemBits: 8,  bits: 256}
+  - {class: mask, go: Mask16x16, elemBits: 16, bits: 256}
+  - {class: mask, go: Mask32x8,  elemBits: 32, bits: 256}
+  - {class: mask, go: Mask64x4,  elemBits: 64, bits: 256}
+  - {class: mask, go: Mask8x64,  elemBits: 8,  bits: 512}
+  - {class: mask, go: Mask16x32, elemBits: 16, bits: 512}
+  - {class: mask, go: Mask32x16, elemBits: 32, bits: 512}
+  - {class: mask, go: Mask64x8,  elemBits: 64, bits: 512}
+  - {class: immediate} # TODO
 out: !repeat
 - *types
