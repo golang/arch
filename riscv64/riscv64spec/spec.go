@@ -68,11 +68,10 @@ func main() {
 	log.SetFlags(0)
 	log.SetPrefix("riscv64spec: ")
 
-	var repoPath string
 	if len(os.Args) < 1 {
 		log.Fatal("usage: go run spec.go <opcodes-repo-path>")
 	}
-	repoPath = os.Args[1]
+	extensionsPath := filepath.Join(os.Args[1], "extensions")
 
 	fileTables, err := os.Create("tables.go")
 	if err != nil {
@@ -86,7 +85,7 @@ func main() {
 	}
 
 	for _, ext := range extensions {
-		f, err := os.Open(filepath.Join(repoPath, ext))
+		f, err := os.Open(filepath.Join(extensionsPath, ext))
 		if err != nil {
 			log.Fatal(err)
 		}
