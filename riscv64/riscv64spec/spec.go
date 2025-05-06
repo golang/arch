@@ -31,6 +31,7 @@ var extensions = []string{
 	"rv_i",
 	"rv_m",
 	"rv_q",
+	"rv_v",
 	"rv_zba",
 	"rv_zbb",
 	"rv_zbs",
@@ -175,6 +176,7 @@ func genInst(words []string) {
 	var value uint32
 	var mask uint32
 	var argTypeList []string
+	nf := len(words) >= 2 && words[1] == "nf"
 
 	for i := 1; i < len(words); i++ {
 		if strings.Contains(words[i], "=") {
@@ -189,6 +191,10 @@ func genInst(words []string) {
 		} else if len(words[i]) > 0 {
 			argTypeList = append(argTypeList, words[i])
 		}
+	}
+
+	if nf {
+		mask |= 0xe0000000
 	}
 
 	instArgsStr := inferFormats(argTypeList, op)
@@ -211,12 +217,61 @@ func genInst(words []string) {
 			instFormats[aop] = ainstFormat
 			instFormatComments[aop] = ainstFormatComment
 		}
-	} else {
-		ops = append(ops, op)
-		opstrs[op] = opstr
-		instFormats[op] = instFormat
-		instFormatComments[op] = instFormatComment
+
+		return
 	}
+
+	ops = append(ops, op)
+	opstrs[op] = opstr
+	instFormats[op] = instFormat
+	instFormatComments[op] = instFormatComment
+
+	if !nf {
+		return
+	}
+
+	idx := strings.LastIndexByte(words[0], 'e')
+	if idx < 1 {
+		return
+	}
+
+	// Segmented versions of this instruction exists. Let's generate them.
+
+	segOpPrefix := words[0][:idx]
+	segOpSuffix := words[0][idx:]
+
+	for i := uint32(2); i <= 8; i++ {
+		segName := strings.ToUpper(fmt.Sprintf("%sSEG%d%s", segOpPrefix, i, segOpSuffix))
+		segOp := strings.Replace(segName, ".", "_", -1)
+		segOpStr := fmt.Sprintf("%s:\t\"%s\",", segOp, segName)
+		segValue := value | (i-1)<<29
+		instFormatComment := "// " + segName + " " + strings.Replace(instArgsStr, "arg_", "", -1)
+		instFormat := fmt.Sprintf("{mask: %#08x, value: %#08x, op: %s, args: argTypeList{%s}},", mask, segValue, segOp, instArgsStr)
+		ops = append(ops, segOp)
+		opstrs[segOp] = segOpStr
+		instFormats[segOp] = instFormat
+		instFormatComments[segOp] = instFormatComment
+	}
+}
+
+func isVectorLoadStore(op string) bool {
+	if op == "VSM_V" || op == "VLM_V" {
+		return true
+	}
+
+	if !strings.HasSuffix(op, "_V") {
+		return false
+	}
+
+	for _, p := range []string{
+		"VLE", "VSE", "VLSE", "VSSE", "VLUXEI", "VLOXEI", "VSUXEI", "VSOXEI",
+		"VL1R", "VL2R", "VL4R", "VL8R", "VS1R", "VS2R", "VS4R", "VS8R"} {
+		if strings.HasPrefix(op, p) {
+			return true
+		}
+	}
+
+	return false
 }
 
 // inferFormats identifies inst format:
@@ -229,10 +284,10 @@ func genInst(words []string) {
 func inferFormats(argTypeList []string, op string) string {
 	switch {
 	case strings.Contains(op, "AMO") || strings.Contains(op, "SC_"):
-		return "arg_rd, arg_rs2, arg_rs1_amo"
+		return "arg_rd, arg_rs2, arg_rs1_ptr"
 
 	case strings.Contains(op, "LR_"):
-		return "arg_rd, arg_rs1_amo"
+		return "arg_rd, arg_rs1_ptr"
 
 	case op == "LB" || op == "LBU" || op == "LD" ||
 		op == "LH" || op == "LHU" || op == "LW" || op == "LWU":
@@ -262,6 +317,12 @@ func inferFormats(argTypeList []string, op string) string {
 	case op == "FENCE":
 		return "arg_pred, arg_succ"
 
+	case op == "VSLL_VI" || op == "VSRL_VI" || op == "VSRA_VI" || op == "VNSRL_WI" ||
+		op == "VNSRA_WI" || op == "VSSRL_VI" || op == "VSSRA_VI" || op == "VNCLIPU_WI" ||
+		op == "VNCLIP_WI" || op == "VSLIDEUP_VI" || op == "VSLIDEDOWN_VI" ||
+		op == "VRGATHER_VI":
+		return "arg_vm, arg_vs2, arg_zimm5, arg_vd"
+
 	default:
 		var instStr []string
 		for _, arg := range argTypeList {
@@ -286,6 +347,9 @@ func decodeArgs(arg string, op string) string {
 		if isFloatReg(op, "rs") {
 			return "arg_fs1"
 		}
+		if isVectorLoadStore(op) {
+			return "arg_rs1_ptr"
+		}
 		return "arg_rs1"
 
 	case strings.Contains("arg_rs2", arg):
@@ -299,6 +363,21 @@ func decodeArgs(arg string, op string) string {
 			return "arg_fs3"
 		}
 		return "arg_rs3"
+
+	case arg == "vd":
+		return "arg_vd"
+
+	case arg == "vm":
+		return "arg_vm"
+
+	case arg == "vs1":
+		return "arg_vs1"
+
+	case arg == "vs2":
+		return "arg_vs2"
+
+	case arg == "vs3":
+		return "arg_vs3"
 
 	case arg == "imm12":
 		return "arg_imm12"
@@ -317,6 +396,18 @@ func decodeArgs(arg string, op string) string {
 
 	case arg == "shamtw":
 		return "arg_shamt5"
+
+	case arg == "simm5":
+		return "arg_simm5"
+
+	case arg == "zimm5":
+		return "arg_zimm"
+
+	case arg == "zimm10":
+		return "arg_vtype_zimm10"
+
+	case arg == "zimm11":
+		return "arg_vtype_zimm11"
 
 	case arg == "shamtd":
 		return "arg_shamt6"
@@ -453,7 +544,17 @@ func isFloatReg(op string, reg string) bool {
 		strings.Contains(op, "FCVT_S_Q") || strings.Contains(op, "FCVT_Q_S") ||
 		strings.Contains(op, "FCVT_H_S") || strings.Contains(op, "FCVT_S_H") ||
 		strings.Contains(op, "FNM") || strings.Contains(op, "FNEG") ||
-		strings.Contains(op, "FSQRT") || strings.Contains(op, "FSGNJ"):
+		strings.Contains(op, "FSQRT") || strings.Contains(op, "FSGNJ") ||
+		strings.Contains(op, "VFRSUB") || strings.Contains(op, "VFRSUB") ||
+		strings.Contains(op, "VFWADD") || strings.Contains(op, "VFWSUB") ||
+		strings.Contains(op, "VFRDIV") || strings.Contains(op, "VFWMUL") ||
+		strings.Contains(op, "VFMACC") || strings.Contains(op, "VFMSAC") ||
+		strings.Contains(op, "VFWMACC") || strings.Contains(op, "VFWNMACC") ||
+		strings.Contains(op, "VFWMSAC") || strings.Contains(op, "VFWNMSAC") ||
+		strings.Contains(op, "VMFNE") || strings.Contains(op, "VMFGT") ||
+		strings.Contains(op, "VMFGE") || strings.Contains(op, "VFMERGE") ||
+		strings.Contains(op, "VFMV") || strings.Contains(op, "VFSLIDE1UP") ||
+		strings.Contains(op, "VFSLIDE1DOWN"):
 		return true
 
 	case strings.Contains(op, "FCLASS") || strings.Contains(op, "FCVT_L") ||
