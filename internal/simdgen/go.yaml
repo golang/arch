@@ -2,7 +2,7 @@
 # For binary operations, we constrain their two inputs and one output to the
 # same Go type using a variable.
 - go: Add
-  asm: "V?PADD$xi|V?ADDP$xf"
+  asm: "V?PADD[BWDQ]|V?ADDP[SD]"
   in:
   - go: $t
   - go: $t
@@ -11,7 +11,7 @@
 
 - go: Sub
   goarch: amd64
-  asm: "V?PSUB$xi|V?SUBP$xf"
+  asm: "V?PSUB[BWDQ]|V?SUBP[SD]"
   in:
   - go: $t
   - go: $t

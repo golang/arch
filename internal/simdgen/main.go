@@ -72,11 +72,6 @@ var (
 	flagDebugHTML  = flag.String("debug-html", "", "write unification trace to `file.html`")
 )
 
-var yamlSubs = strings.NewReplacer(
-	"$xi", "[BWDQ]", // x86 integer suffixes
-	"$xf", "[SD]", // x86 float suffixes
-)
-
 func main() {
 	flag.Parse()
 
@@ -92,7 +87,7 @@ func main() {
 	if *flagQ != "" {
 		r := strings.NewReader(*flagQ)
 		var def unify.Closure
-		if err := def.Unmarshal(r, unify.UnmarshalOpts{Path: "<query>", StringReplacer: yamlSubs.Replace}); err != nil {
+		if err := def.Unmarshal(r, unify.UnmarshalOpts{Path: "<query>"}); err != nil {
 			log.Fatalf("parsing -q: %s", err)
 		}
 		inputs = append(inputs, def)
@@ -171,7 +166,7 @@ func loadValue(path string) (unify.Closure, error) {
 	defer f.Close()
 
 	var c unify.Closure
-	if err := c.Unmarshal(f, unify.UnmarshalOpts{StringReplacer: yamlSubs.Replace}); err != nil {
+	if err := c.Unmarshal(f, unify.UnmarshalOpts{}); err != nil {
 		return unify.Closure{}, fmt.Errorf("%s: %v", path, err)
 	}
 	return c, nil
