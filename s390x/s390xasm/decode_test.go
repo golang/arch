@@ -30,15 +30,6 @@ func TestDecode(t *testing.T) {
 	}
 }
 
-// Provide a fake symbol to verify PCrel argument decoding.
-func symlookup(pc uint64) (string, uint64) {
-	foopc := uint64(0x100000)
-	if pc >= foopc && pc < foopc+0x10 {
-		return "foo", foopc
-	}
-	return "", 0
-}
-
 func decode(data []byte, t *testing.T, filename string) {
 	all := string(data)
 	// Simulate PC based on number of instructions found in the test file.
