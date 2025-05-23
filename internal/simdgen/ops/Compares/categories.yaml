@@ -1,0 +1,19 @@
+!sum
+- go: Equal
+  constImm: 0
+  commutative: "true"
+  extension: "AVX.*"
+- go: Greater
+  constImm: 6
+  commutative: "false"
+  extension: "AVX.*"
+- go: MaskedEqual
+  constImm: 0
+  masked: "true"
+  commutative: "true"
+  extension: "AVX.*"
+- go: MaskedGreater
+  constImm: 6
+  masked: "true"
+  commutative: "false"
+  extension: "AVX.*"

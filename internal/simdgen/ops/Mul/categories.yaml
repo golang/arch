@@ -1,0 +1,35 @@
+!sum
+- go: Mul
+  commutative: "true"
+  extension: "AVX.*"
+- go: MulEvenWiden
+  commutative: "true"
+  extension: "AVX.*"
+  documentation: "Multiplies the even index elements from the two sources of size X at index i, store the result of size 2X at index i/2"
+- go: MulHigh
+  commutative: "true"
+  extension: "AVX.*"
+  documentation: "Multiplies the elements from the two sources of size X at index i, store the high X bits of the result of size 2X at index i"
+- go: MulLow
+  commutative: "true"
+  extension: "AVX.*"
+  documentation: "Multiplies the elements from the two sources of size X at index i, store the low X bits of the result of size 2X at index i"
+- go: MaskedMul
+  masked: "true"
+  commutative: "true"
+  extension: "AVX.*"
+- go: MaskedMulEvenWiden
+  masked: "true"
+  commutative: "true"
+  extension: "AVX.*"
+  documentation: "Multiplies the even index elements from the two sources of size X at index i, store the result of size 2X at index i/2"
+- go: MaskedMulHigh
+  masked: "true"
+  commutative: "true"
+  extension: "AVX.*"
+  documentation: "Multiplies the elements from the two sources of size X at index i, store the high X bits of the result of size 2X at index i"
+- go: MaskedMulLow
+  masked: "true"
+  commutative: "true"
+  extension: "AVX.*"
+  documentation: "Multiplies the elements from the two sources of size X at index i, store the low X bits of the result of size 2X at index i"

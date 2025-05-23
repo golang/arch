@@ -1,0 +1,31 @@
+!sum
+- go: And
+  commutative: "true"
+  extension: "AVX.*"
+- go: MaskedAnd
+  masked: "true"
+  commutative: "true"
+  extension: "AVX.*"
+- go: Or
+  commutative: "true"
+  extension: "AVX.*"
+- go: MaskedOr
+  masked: "true"
+  commutative: "true"
+  extension: "AVX.*"
+- go: AndNot
+  commutative: "true"
+  extension: "AVX.*"
+- go: MaskedAndNot
+  masked: "true"
+  commutative: "true"
+  extension: "AVX.*"
+- go: Xor
+  commutative: "true"
+  extension: "AVX.*"
+- go: MaskedXor
+  masked: "true"
+  commutative: "true"
+  extension: "AVX.*"
+# We also have PTEST and VPTERNLOG, those should be hidden from the users
+# and only appear in rewrite rules.

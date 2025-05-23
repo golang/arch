@@ -1,0 +1,8 @@
+!sum
+- go: Div
+  commutative: "true"
+  extension: "AVX.*"
+- go: MaskedDiv
+  commutative: "true"
+  masked: "true"
+  extension: "AVX.*"
