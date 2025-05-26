@@ -430,9 +430,6 @@ func overwrite(ops []Operation) error {
 			if op[idx].Class != "vreg" {
 				return fmt.Errorf("simdgen: [Class] overwrite must be overwriting [Class] from vreg: %s", op[idx])
 			}
-			if *op[idx].Base != "uint" && *op[idx].Base != "int" {
-				return fmt.Errorf("simdgen: [Class] overwrite must be overwriting [Base] from int|uint: %s", op[idx])
-			}
 			hasClassOverwrite = true
 			*op[idx].Base = oBase
 			op[idx].Class = oClass

@@ -1,4 +1,5 @@
 !sum
+# Ints
 - go: Equal
   asm: "V?PCMPEQ[BWDQ]"
   in: &int2
@@ -31,7 +32,7 @@
   - class: mask
 # The const imm predicated compares after AVX512, please see categories.yaml
 # for const imm specification.
-- go: Masked(Equal|Greater)
+- go: Masked(Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual)
   asm: "VPCMP[BWDQ]"
   in:
   - class: mask
@@ -43,7 +44,7 @@
     const: 0 # Just a placeholder, will be overwritten by const imm porting.
   out:
   - class: mask
-- go: Masked(Equal|Greater)
+- go: Masked(Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual)
   asm: "VPCMPU[BWDQ]"
   in:
   - class: mask
@@ -51,6 +52,31 @@
     go: $t
     base: uint
   - *uint
+  - class: immediate
+    const: 0
+  out:
+  - class: mask
+
+# Floats
+- go: Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual|IsNan
+  asm: "VCMPP[SD]"
+  in:
+  - &float
+    go: $t
+    base: float
+  - *float
+  - class: immediate
+    const: 0
+  out:
+  - go: $t # We still need the output to be the same shape as inputs.
+    overwriteBase: uint
+    overwriteClass: mask
+- go: Masked(Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual|IsNan)
+  asm: "VCMPP[SD]"
+  in:
+  - class: mask
+  - *float
+  - *float
   - class: immediate
     const: 0
   out:
