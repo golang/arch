@@ -23,18 +23,18 @@ import (
 func ssaGenSIMDValue(s *ssagen.State, v *ssa.Value) bool {
 	p := s.Prog(v.Op.Asm())
 	// First arg
-	switch v.Op {{"{"}}{{if gt (len .ImmFirst) 0}}
-	// Imm
-	case {{.ImmFirst}}:
+	switch v.Op {{"{"}}{{if gt (len .Imms) 0}}
+	// Immediates
+	case {{.Imms}}:
 		imm := v.AuxInt
 		if imm < 0 || imm > 255 {
 			v.Fatalf("Invalid source selection immediate")
 		}
 		p.From.Offset = imm
 		p.From.Type = obj.TYPE_CONST
-{{end}}{{if gt (len .VregFirst) 0}}
-	// vreg
-	case {{.VregFirst}}:
+{{end}}{{if gt (len .Reg0) 0}}
+	// Registers
+	case {{.Reg0}}:
 		p.From.Type = obj.TYPE_REG
 		p.From.Reg = simdReg(v.Args[0])
 {{end}}
@@ -44,9 +44,9 @@ func ssaGenSIMDValue(s *ssagen.State, v *ssa.Value) bool {
 	}
 
 	// Second arg
-	switch v.Op {{"{"}}{{if gt (len .VregSecond) 0}}
-	// vreg
-	case {{.VregSecond}}:
+	switch v.Op {{"{"}}{{if gt (len .Reg1) 0}}
+	// Registers
+	case {{.Reg1}}:
 		if p.From.Type == obj.TYPE_CONST {
 			p.AddRestSourceReg(simdReg(v.Args[0]))
 		} else {
@@ -55,43 +55,31 @@ func ssaGenSIMDValue(s *ssagen.State, v *ssa.Value) bool {
 	}
 
 	// Third arg
-	switch v.Op {{"{"}}{{if gt (len .VregThird) 0}}
-	// vreg
-	case {{.VregThird}}:
+	switch v.Op {{"{"}}{{if gt (len .Reg2) 0}}
+	// Registers
+	case {{.Reg2}}:
 		if p.From.Type == obj.TYPE_CONST {
 			p.AddRestSourceReg(simdReg(v.Args[1]))
 		} else {
 			p.AddRestSourceReg(simdReg(v.Args[2]))
-		}
-{{end}}{{if gt (len .MaskThird) 0}}
-	// k mask
-	case {{.MaskThird}}:
-		if p.From.Type == obj.TYPE_CONST {
-			p.AddRestSourceReg(v.Args[1].Reg())
-		} else {
-			p.AddRestSourceReg(v.Args[2].Reg())
 		}{{end}}
 	}
 
 	// Fourth arg
-	switch v.Op {{"{"}}{{if gt (len .MaskFourth) 0}}
-	case {{.MaskFourth}}:
+	switch v.Op {{"{"}}{{if gt (len .Reg3) 0}}
+	case {{.Reg3}}:
 		if p.From.Type == obj.TYPE_CONST {
-			p.AddRestSourceReg(v.Args[2].Reg())
+			p.AddRestSourceReg(simdReg(v.Args[2]))
 		} else {
-			p.AddRestSourceReg(v.Args[3].Reg())
+			p.AddRestSourceReg(simdReg(v.Args[3]))
 		}{{end}}
 	}
 
 	// Output
-	switch v.Op {{"{"}}{{if gt (len .VregOut) 0}}
-	case {{.VregOut}}:
+	switch v.Op {{"{"}}{{if gt (len .All) 0}}
+	case {{.All}}:
 		p.To.Type = obj.TYPE_REG
 		p.To.Reg = simdReg(v)
-{{end}}{{if gt (len .MaskOut) 0}}
-	case {{.MaskOut}}:
-		p.To.Type = obj.TYPE_REG
-		p.To.Reg = v.Reg()
 {{end}}
 	default:
 		// One result is required.
@@ -111,20 +99,15 @@ func ssaGenSIMDValue(s *ssagen.State, v *ssa.Value) bool {
 // writeSIMDSSA generates the ssa to prog lowering codes and writes it to simdssa.go
 // within the specified directory.
 func writeSIMDSSA(directory string, ops []Operation) error {
-	var ImmFirst []string
-	var VregFirst []string
-	var VregSecond []string
-	var MaskThird []string
-	var VregThird []string
-	var MaskFourth []string
-	var VregOut []string
-	var MaskOut []string
+	var Imms []string
+	var All []string
 	var ZeroingMask []string
+	Regs := map[int][]string{}
 
 	seen := map[string]struct{}{}
 	for _, op := range ops {
 		asm := op.Asm
-		shapeIn, shapeOut, maskType, _, _, gOp, err := op.shape()
+		shapeIn, _, maskType, _, _, gOp, err := op.shape()
 		if err != nil {
 			return err
 		}
@@ -137,61 +120,40 @@ func writeSIMDSSA(directory string, ops []Operation) error {
 		}
 		seen[asm] = struct{}{}
 		caseStr := fmt.Sprintf("ssa.OpAMD64%s", asm)
-		if shapeIn == PureVregIn || shapeIn == PureKmaskIn {
-			// Masks and vreg are handled together by simdReg()
-			VregFirst = append(VregFirst, caseStr)
-			if len(gOp.In) > 1 {
-				VregSecond = append(VregSecond, caseStr)
-			}
-		} else if shapeIn == OneKmaskIn {
-			VregFirst = append(VregFirst, caseStr)
-			VregSecond = append(VregSecond, caseStr)
-			MaskThird = append(MaskThird, caseStr)
-			if gOp.Zeroing == nil {
-				ZeroingMask = append(ZeroingMask, caseStr)
-			}
-		} else if shapeIn == OneConstImmIn {
-			ImmFirst = append(ImmFirst, caseStr)
-			VregSecond = append(VregSecond, caseStr)
-			VregThird = append(VregThird, caseStr)
-		} else {
-			// OneKmaskConstImmIn case
-			ImmFirst = append(ImmFirst, caseStr)
-			VregSecond = append(VregSecond, caseStr)
-			VregThird = append(VregThird, caseStr)
-			MaskFourth = append(MaskFourth, caseStr)
+		if shapeIn == OneKmaskIn || shapeIn == OneKmaskConstImmIn {
 			if gOp.Zeroing == nil {
 				ZeroingMask = append(ZeroingMask, caseStr)
 			}
 		}
-		if shapeOut == OneVregOut || gOp.Out[0].OverwriteClass != nil {
-			// If class overwrite is happening, that's not really a mask but a vreg.
-			VregOut = append(VregOut, caseStr)
-		} else {
-			// OneKmaskOut case
-			MaskOut = append(MaskOut, caseStr)
+		immCount := 0
+		if shapeIn == OneConstImmIn || shapeIn == OneKmaskConstImmIn {
+			immCount++
+			Imms = append(Imms, caseStr)
 		}
+		for i := range len(gOp.In) {
+			if i > 2 {
+				return fmt.Errorf("simdgen does not recognize more than 3 registers: %s", gOp)
+			}
+			Regs[i+immCount] = append(Regs[i+immCount], caseStr)
+		}
+		All = append(All, caseStr)
 	}
 
 	data := struct {
-		ImmFirst    string
-		VregFirst   string
-		VregSecond  string
-		MaskThird   string
-		VregThird   string
-		MaskFourth  string
-		VregOut     string
-		MaskOut     string
+		Imms        string
+		Reg0        string
+		Reg1        string
+		Reg2        string
+		Reg3        string
+		All         string
 		ZeroingMask string
 	}{
-		strings.Join(ImmFirst, ", "),
-		strings.Join(VregFirst, ", "),
-		strings.Join(VregSecond, ", "),
-		strings.Join(MaskThird, ", "),
-		strings.Join(VregThird, ", "),
-		strings.Join(MaskFourth, ", "),
-		strings.Join(VregOut, ", "),
-		strings.Join(MaskOut, ", "),
+		strings.Join(Imms, ", "),
+		strings.Join(Regs[0], ", "),
+		strings.Join(Regs[1], ", "),
+		strings.Join(Regs[2], ", "),
+		strings.Join(Regs[3], ", "),
+		strings.Join(All, ", "),
 		strings.Join(ZeroingMask, ", "),
 	}
 

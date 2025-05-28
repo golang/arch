@@ -1,8 +1,33 @@
 !sum
 - go: Div
-  commutative: "true"
+  commutative: "false"
   extension: "AVX.*"
 - go: MaskedDiv
-  commutative: "true"
+  commutative: "false"
+  masked: "true"
+  extension: "AVX.*"
+- go: Sqrt
+  commutative: "false"
+  extension: "AVX.*"
+- go: MaskedSqrt
+  commutative: "false"
+  masked: "true"
+  extension: "AVX.*"
+- go: ApproximateReciprocal
+  commutative: "false"
+  extension: "AVX.*"
+- go: MaskedApproximateReciprocal
+  commutative: "false"
+  masked: "true"
+  extension: "AVX.*"
+- go: ApproximateReciprocalOfSqrt
+  commutative: "false"
+  extension: "AVX.*"
+- go: MaskedApproximateReciprocalOfSqrt
+  commutative: "false"
+  masked: "true"
+  extension: "AVX.*"
+- go: MaskedMulByPowOf2 # This operation is all after AVX512, the unmasked version will be generated.
+  commutative: "false"
   masked: "true"
   extension: "AVX.*"

@@ -91,7 +91,9 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType int, opNoConstImm Oper
 		err = fmt.Errorf("simdgen only supports 1 output: %s", op)
 		return
 	}
+	var outputReg int
 	if len(op.Out) == 1 {
+		outputReg = op.Out[0].AsmPos
 		if op.Out[0].Class == "vreg" {
 			shapeOut = OneVregOut
 		} else if op.Out[0].Class == "mask" {
@@ -112,6 +114,10 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType int, opNoConstImm Oper
 	iConstMask := -1
 	hasVreg := false
 	for i, in := range op.In {
+		if in.AsmPos == outputReg {
+			err = fmt.Errorf("simdgen doesn't support output and input sharing the same position: %s", op)
+			return
+		}
 		if in.Class == "immediate" {
 			// A manual check on XED data found that AMD64 SIMD instructions at most
 			// have 1 immediates. So we don't need to check this here.
@@ -205,31 +211,6 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType int, opNoConstImm Oper
 			shapeIn = OneKmaskConstImmIn
 		} else {
 			checkPureMask()
-			return
-		}
-	}
-	// Exclude some shape combination that are not yet supported in simdssa.go
-	if shapeIn == PureVregIn {
-		if len(opNoConstImmMask.In) > 2 {
-			err = fmt.Errorf("simdgen doesn't support more than 2 vreg args: %s", op)
-			return
-		}
-	}
-	if shapeIn == OneKmaskIn || shapeIn == OneKmaskConstImmIn {
-		if len(opNoConstImmMask.In) != 3 {
-			err = fmt.Errorf("simdgen only supports mask operations with 2 vreg args: %s", op)
-			return
-		}
-	}
-	if shapeIn == OneConstImmIn {
-		if len(opNoConstImmMask.In) != 2 {
-			err = fmt.Errorf("simdgen only supports immediate operations with 2 vreg args: %s", op)
-			return
-		}
-	}
-	if shapeIn == PureKmaskIn {
-		if len(opNoConstImmMask.In) != 2 {
-			err = fmt.Errorf("simdgen only supports pure k mask operations with 2 vreg args: %s", op)
 			return
 		}
 	}

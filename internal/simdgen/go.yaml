@@ -331,21 +331,46 @@
   - class: mask
 - go: Div
   asm: "V?DIVP[SD]"
-  in:
+  in: &2fp
   - &fp
     go: $t
     base: float
   - *fp
-  out:
+  out: &1fp
   - *fp
 - go: MaskedDiv
   asm: "V?DIVP[SD]"
-  in:
+  in: &1mask2fp
   - class: mask
   - *fp
   - *fp
-  out:
+  out: *1fp
+- go: Sqrt
+  asm: "V?SQRTP[SD]"
+  in: *1fp
+  out: *1fp
+- go: MaskedSqrt
+  asm: "V?SQRTP[SD]"
+  in: &1mask1fp
+  - class: mask
   - *fp
+  out: *1fp
+- go: MaskedApproximateReciprocal
+  asm: "VRCP14P[SD]"
+  in: *1mask1fp
+  out: *1fp
+- go: ApproximateReciprocalOfSqrt
+  asm: "V?RSQRTPS"
+  in: *1fp
+  out: *1fp
+- go: MaskedApproximateReciprocalOfSqrt
+  asm: "VRSQRT14P[SD]"
+  in: *1mask1fp
+  out: *1fp
+- go: MaskedMulByPowOf2
+  asm: "VSCALEFP[SD]"
+  in: *1mask2fp
+  out: *1fp
 # "Normal" multiplication is only available for floats.
 # This only covers the single and double precision.
 - go: Mul
