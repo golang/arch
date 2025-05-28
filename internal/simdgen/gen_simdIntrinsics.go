@@ -18,32 +18,33 @@ import (
 	"cmd/internal/sys"
 )
 
+const simdPackage = "` + simdPackage + `"
 func simdIntrinsics(addF func(pkg, fn string, b intrinsicBuilder, archFamilies ...sys.ArchFamily)) {
 {{- range .OpsLen1}}
-	addF("internal/simd", "{{(index .In 0).Go}}.{{.Go}}", opLen1(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.GoArch}}), sys.AMD64)
+	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen1(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.GoArch}}), sys.AMD64)
 {{- end}}
 {{- range .OpsLen2}}
-	addF("internal/simd", "{{(index .In 0).Go}}.{{.Go}}", opLen2(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.GoArch}}), sys.AMD64)
+	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen2(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.GoArch}}), sys.AMD64)
 {{- end}}
 {{- range .OpsLen3}}
-	addF("internal/simd", "{{(index .In 0).Go}}.{{.Go}}", opLen3(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.GoArch}}), sys.AMD64)
+	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen3(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.GoArch}}), sys.AMD64)
 {{- end}}
 
 {{- range .VectorConversions }}
-	addF("internal/simd", "{{.Tsrc.Name}}.As{{.Tdst.Name}}", func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value { return args[0] }, sys.AMD64)
+	addF(simdPackage, "{{.Tsrc.Name}}.As{{.Tdst.Name}}", func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value { return args[0] }, sys.AMD64)
 {{- end}}
 
 {{- range $size, $ts := .TypeMap }}
 {{- range $t := $ts }}
-	addF("internal/simd", "Load{{$t.Name}}", simdLoad(), sys.AMD64)
-	addF("internal/simd", "{{$t.Name}}.Store", simdStore(), sys.AMD64)
+	addF(simdPackage, "Load{{$t.Name}}", simdLoad(), sys.AMD64)
+	addF(simdPackage, "{{$t.Name}}.Store", simdStore(), sys.AMD64)
 {{- end}}
 {{- end}}
 {{- range .Masks }}
-	addF("internal/simd", "{{.Name}}.As{{.VectorCounterpart}}", func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value { return args[0] }, sys.AMD64)
-	addF("internal/simd", "{{.VectorCounterpart}}.As{{.Name}}", func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value { return args[0] }, sys.AMD64)
-	addF("internal/simd", "{{.Name}}.And", opLen2(ssa.OpAnd{{.ReshapedVectorWithAndOr}}, types.TypeVec{{.Size}}), sys.AMD64)
-	addF("internal/simd", "{{.Name}}.Or", opLen2(ssa.OpOr{{.ReshapedVectorWithAndOr}}, types.TypeVec{{.Size}}), sys.AMD64)
+	addF(simdPackage, "{{.Name}}.As{{.VectorCounterpart}}", func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value { return args[0] }, sys.AMD64)
+	addF(simdPackage, "{{.VectorCounterpart}}.As{{.Name}}", func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value { return args[0] }, sys.AMD64)
+	addF(simdPackage, "{{.Name}}.And", opLen2(ssa.OpAnd{{.ReshapedVectorWithAndOr}}, types.TypeVec{{.Size}}), sys.AMD64)
+	addF(simdPackage, "{{.Name}}.Or", opLen2(ssa.OpOr{{.ReshapedVectorWithAndOr}}, types.TypeVec{{.Size}}), sys.AMD64)
 {{- end}}
 }
 

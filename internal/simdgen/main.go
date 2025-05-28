@@ -117,6 +117,8 @@ var (
 	FlagReportDup  = flag.Bool("reportdup", false, "report the duplicate godefs")
 )
 
+const simdPackage = "simd"
+
 func main() {
 	flag.Parse()
 

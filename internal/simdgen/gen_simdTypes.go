@@ -179,7 +179,7 @@ func masksFromTypeMap(typeMap simdTypeMap) []simdType {
 // writeSIMDTypes generates the simd vector type and writes it to types_amd64.go
 // within the specified directory.
 func writeSIMDTypes(directory string, typeMap simdTypeMap) error {
-	file, t, err := openFileAndPrepareTemplate(directory, "src/internal/simd/types_amd64.go", simdTypesTmpl)
+	file, t, err := openFileAndPrepareTemplate(directory, "src/"+simdPackage+"/types_amd64.go", simdTypesTmpl)
 	if err != nil {
 		return err
 	}
@@ -200,7 +200,7 @@ func writeSIMDTypes(directory string, typeMap simdTypeMap) error {
 // writeSIMDStubs generates the simd vector intrinsic stubs and writes it to stubs_amd64.go
 // within the specified directory.
 func writeSIMDStubs(directory string, ops []Operation, typeMap simdTypeMap) error {
-	file, t, err := openFileAndPrepareTemplate(directory, "src/internal/simd/stubs_amd64.go", simdStubsTmpl)
+	file, t, err := openFileAndPrepareTemplate(directory, "src/"+simdPackage+"/stubs_amd64.go", simdStubsTmpl)
 	if err != nil {
 		return err
 	}
