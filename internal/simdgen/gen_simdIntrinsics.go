@@ -19,6 +19,7 @@ import (
 )
 
 const simdPackage = "` + simdPackage + `"
+
 func simdIntrinsics(addF func(pkg, fn string, b intrinsicBuilder, archFamilies ...sys.ArchFamily)) {
 {{- range .OpsLen1}}
 	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen1(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.GoArch}}), sys.AMD64)
