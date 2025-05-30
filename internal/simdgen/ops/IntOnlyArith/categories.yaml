@@ -1,0 +1,28 @@
+!sum
+- go: Average
+  commutative: "true"
+  extension: "AVX.*" # VPAVGB/W are available across various AVX versions
+- go: MaskedAverage
+  commutative: "true"
+  masked: "true"
+  extension: "AVX512.*" # Masked operations are typically AVX512
+
+- go: Absolute
+  commutative: "false"
+  # Unary operation, not commutative
+  extension: "AVX.*" # VPABSB/W/D are AVX, VPABSQ is AVX512
+- go: MaskedAbsolute
+  commutative: "false"
+  masked: "true"
+  extension: "AVX512.*"
+
+- go: Sign
+  # Applies sign of second operand to first: sign(val, sign_src)
+  commutative: "false"
+  extension: "AVX.*"
+  # Sign does not have masked version
+
+- go: MaskedPopCount
+  commutative: "false"
+  masked: "true"
+  extension: "AVX512.*" # VPOPCNT instructions are AVX512 (BITALG or VPOPCNTDQ)

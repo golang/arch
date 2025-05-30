@@ -1,0 +1,61 @@
+!sum
+# Average (unsigned byte, unsigned word)
+# Instructions: VPAVGB, VPAVGW
+- go: Average
+  asm: "VPAVG[BW]" # Matches VPAVGB (byte) and VPAVGW (word)
+  in:
+  - &uint_t # $t will be Uint8xN for VPAVGB, Uint16xN for VPAVGW
+    go: $t
+    base: uint
+  - *uint_t
+  out:
+  - *uint_t
+- go: MaskedAverage
+  asm: "VPAVG[BW]"
+  in:
+  - class: mask
+  - *uint_t
+  - *uint_t
+  out:
+  - *uint_t
+
+# Absolute Value (signed byte, word, dword, qword)
+# Instructions: VPABSB, VPABSW, VPABSD, VPABSQ
+- go: Absolute
+  asm: "VPABS[BWDQ]" # Matches VPABSB, VPABSW, VPABSD, VPABSQ
+  in:
+  - &int_t # $t will be Int8xN, Int16xN, Int32xN, Int64xN
+    go: $t
+    base: int
+  out:
+  - *int_t # Output is magnitude, fits in the same signed type
+- go: MaskedAbsolute
+  asm: "VPABS[BWDQ]"
+  in:
+  - class: mask
+  - *int_t
+  out:
+  - *int_t
+
+# Sign Operation (signed byte, word, dword)
+# Applies sign of second operand to the first.
+# Instructions: VPSIGNB, VPSIGNW, VPSIGND
+- go: Sign
+  asm: "VPSIGN[BWD]" # Matches VPSIGNB, VPSIGNW, VPSIGND
+  in:
+  - *int_t # value to apply sign to
+  - *int_t # value from which to take the sign
+  out:
+  - *int_t
+
+# Population Count (count set bits in each element)
+# Instructions: VPOPCNTB, VPOPCNTW (AVX512_BITALG)
+#               VPOPCNTD, VPOPCNTQ (AVX512_VPOPCNTDQ)
+- go: MaskedPopCount
+  asm: "VPOPCNT[BWDQ]"
+  in:
+  - class: mask
+  - &any
+    go: $t
+  out:
+  - *any
