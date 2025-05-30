@@ -10,7 +10,7 @@
   out:
   - &anyvregToMask
     go: $t # We still need the output to be the same shape as inputs.
-    overwriteBase: uint
+    overwriteBase: int
     overwriteClass: mask
 - go: Greater
   asm: "V?PCMPGT[BWDQ]"
@@ -69,7 +69,7 @@
     const: 0
   out:
   - go: $t # We still need the output to be the same shape as inputs.
-    overwriteBase: uint
+    overwriteBase: int
     overwriteClass: mask
 - go: Masked(Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual|IsNan)
   asm: "VCMPP[SD]"

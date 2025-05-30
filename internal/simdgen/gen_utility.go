@@ -405,8 +405,8 @@ func overwrite(ops []Operation) error {
 			if oClass != "mask" {
 				return fmt.Errorf("simdgen: [Class] overwrite only supports overwritting to mask: %s", op[idx])
 			}
-			if oBase != "uint" {
-				return fmt.Errorf("simdgen: [Class] overwrite must set [OverwriteBase] to uint: %s", op[idx])
+			if oBase != "int" {
+				return fmt.Errorf("simdgen: [Class] overwrite must set [OverwriteBase] to int: %s", op[idx])
 			}
 			if op[idx].Class != "vreg" {
 				return fmt.Errorf("simdgen: [Class] overwrite must be overwriting [Class] from vreg: %s", op[idx])
