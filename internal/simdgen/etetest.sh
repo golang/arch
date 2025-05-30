@@ -18,4 +18,16 @@ go run . -xedPath xeddata  -o godefs -goroot ./go-test  go.yaml types.yaml categ
 (cd go-test/src/cmd/compile/internal/ssa/_gen ; go run *.go )
 (cd go-test/src ; GOEXPERIMENT=simd  ./make.bash )
 (cd go-test/bin; b=`pwd` ; cd ../src/simd/testdata; GOARCH=amd64 $b/go run .)
+(cd go-test/bin; b=`pwd` ; cd ../src ;
+GOEXPERIMENT=simd $b/go test go/doc
+GOEXPERIMENT=simd $b/go test go/build
+GOEXPERIMENT=simd $b/go test cmd/api -v -check
+$b/go test go/doc
+$b/go test go/build
+$b/go test cmd/api -v -check
+
+$b/go test cmd/compile/internal/ssagen -simd=0
+GOEXPERIMENT=simd $b/go test cmd/compile/internal/ssagen -simd=0
+)
+
 # next, add some tests of SIMD itself
