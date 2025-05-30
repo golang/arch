@@ -1,0 +1,15 @@
+!sum
+- go: Max
+  commutative: "true"
+  extension: "AVX.*"
+- go: MaskedMax
+  commutative: "true"
+  masked: "true"
+  extension: "AVX.*"
+- go: Min
+  commutative: "true"
+  extension: "AVX.*"
+- go: MaskedMin
+  commutative: "true"
+  masked: "true"
+  extension: "AVX.*"
