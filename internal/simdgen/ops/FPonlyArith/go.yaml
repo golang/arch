@@ -41,3 +41,38 @@
   asm: "VSCALEFP[SD]"
   in: *1mask2fp
   out: *1fp
+
+- go: "Round|Ceil|Floor|Trunc"
+  asm: "VROUNDP[SD]"
+  in:
+  - *fp
+  - class: immediate
+    const: 0 # place holder
+  out: *1fp
+
+- go: "Masked(Round|Ceil|Floor|Trunc)(SuppressException)?WithPrecision"
+  asm: "VRNDSCALEP[SD]"
+  in:
+  - class: mask
+  - *fp
+  - class: immediate
+    const: 0 # place holder
+    immOffset: 4 # "M", round to numbers with M digits after dot(by means of binary number).
+  out: *1fp
+- go: "MaskedDiffWith(Round|Ceil|Floor|Trunc)(SuppressException)?WithPrecision"
+  asm: "VREDUCEP[SD]"
+  in:
+  - class: mask
+  - *fp
+  - class: immediate
+    const: 0 # place holder
+    immOffset: 4 # "M", round to numbers with M digits after dot(by means of binary number).
+  out: *1fp
+
+- go: "AddSub"
+  asm: "VADDSUBP[SD]"
+  in:
+  - *fp
+  - *fp
+  out:
+  - *fp
