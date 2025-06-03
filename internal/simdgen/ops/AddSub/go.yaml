@@ -55,10 +55,10 @@
 # Sub
 - go: Sub
   asm: "VPSUB[BWDQ]|VADDP[SD]"
-  in:
+  in: &2any
   - *any
   - *any
-  out:
+  out: &1any
   - *any
 - go: MaskedSub
   asm: "VPSUB[BWDQ]|VADDP[SD]"
@@ -71,10 +71,10 @@
 # Saturated Sub
 - go: SaturatedSub
   asm: "VPSUBS[BWDQ]"
-  in:
+  in: &2int
   - *int
   - *int
-  out:
+  out: &1int
   - *int
 - go: SaturatedSub
   asm: "VPSUBS[BWDQ]"
@@ -99,3 +99,27 @@
   - *uint
   out:
   - *uint
+- go: PairwiseAdd
+  asm: "VPHADD[DW]"
+  in: *2any
+  out: *1any
+- go: PairwiseSub
+  asm: "VPHSUB[DW]"
+  in: *2any
+  out: *1any
+- go: PairwiseAdd
+  asm: "VHADDP[SD]" # floats
+  in: *2any
+  out: *1any
+- go: PairwiseSub
+  asm: "VHSUBP[SD]"  # floats
+  in: *2any
+  out: *1any
+- go: SaturatedPairwiseAdd
+  asm: "VPHADDS[DW]"
+  in: *2int
+  out: *1int
+- go: SaturatedPairwiseSub
+  asm: "VPHSUBS[DW]"
+  in: *2int
+  out: *1int

@@ -27,3 +27,19 @@
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
+- go: PairwiseAdd
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: "Add pairs of elements in vector x and store them in higher half of the target; Add pairs of elements in vector y and store them in lower half of the target"
+- go: PairwiseSub
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: "Sub pairs of elements in vector x and store them in higher half of the target; Sub pairs of elements in vector y and store them in lower half of the target"
+- go: SaturatedPairwiseAdd
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: "Add pairs of elements in vector x and store them in higher half of the target; Add pairs of elements in vector y and store them in lower half of the target; With saturation"
+- go: SaturatedPairwiseSub
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: "Sub pairs of elements in vector x and store them in higher half of the target; Sub pairs of elements in vector y and store them in lower half of the target; With saturation"
