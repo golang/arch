@@ -1,0 +1,50 @@
+!sum
+- go: PairDotProd
+  asm: VPMADDWD
+  in:
+  - &int
+    go: $t
+    base: int
+  - *int
+  out:
+  - &int2 # The elemBits are different
+    go: $t2
+    base: int
+- go: MaskedPairDotProd
+  asm: VPMADDWD
+  in:
+  - class: mask
+  - *int
+  - *int
+  out:
+  - *int2
+- go: SaturatedUnsignedSignedPairDotProd
+  asm: VPMADDUBSW
+  in:
+  - &uint
+    go: $t
+    base: uint
+  - &int3
+    go: $t3
+    base: int
+  out:
+  - *int2
+- go: MaskedSaturatedUnsignedSignedPairDotProd
+  asm: VPMADDUBSW
+  in:
+  - class: mask
+  - *uint
+  - *int3
+  out:
+  - *int2
+- go: DotProdBroadcast
+  asm: VDPPD
+  in:
+  - &float
+    go: $t
+    base: float
+  - *float
+  - class: immediate
+    const: 127 # make sure the control bits [4:5] are all 1
+  out:
+  - *float

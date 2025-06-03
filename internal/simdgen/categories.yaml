@@ -321,6 +321,30 @@
   commutative: "false"
   masked: "true"
   extension: "AVX512.*" # VPOPCNT instructions are AVX512 (BITALG or VPOPCNTDQ)
+- go: PairDotProd
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: "// Multiply the elements and add the pairs together, yielding a vector of half as many elements with twice the input element size"
+- go: MaskedPairDotProd
+  masked: "true"
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: "// Multiply the elements and add the pairs together, yielding a vector of half as many elements with twice the input element size"
+- go: SaturatedUnsignedSignedPairDotProd
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: "// Multiply the elements and add the pairs together with saturation, yielding a vector of half as many elements with twice the input element size"
+- go: MaskedSaturatedUnsignedSignedPairDotProd
+  masked: "true"
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: "// Multiply the elements and add the pairs together with saturation, yielding a vector of half as many elements with twice the input element size"
+
+# QuadDotProd, i.e. VPDPBUSD(S) are operations with src/dst on the same register, we are not supporting this as of now.
+- go: DotProdBroadcast
+  commutative: "true"
+  extension: "AVX.*"
+  documentation: "// Multiply all the elements and add them together; the result is a broadcast of the dot product"
 - go: Max
   commutative: "true"
   extension: "AVX.*"
