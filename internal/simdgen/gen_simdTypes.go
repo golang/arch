@@ -47,6 +47,8 @@ type {{$tsrc.Name}} struct {
 {{$tsrc.Fields}}
 }
 
+{{- if ne $tsrc.Type "mask"}}
+
 // Len returns the number of elements in a {{$tsrc.Name}}
 func (x {{$tsrc.Name}}) Len() int { return {{$tsrc.Lanes}} }
 
@@ -60,6 +62,7 @@ func Load{{$tsrc.Name}}(y *[{{$tsrc.Lanes}}]{{$tsrc.Base}}) {{$tsrc.Name}}
 //go:noescape
 func (x {{$tsrc.Name}}) Store(y *[{{$tsrc.Lanes}}]{{$tsrc.Base}})
 
+{{- end}}
 {{- end}}
 {{- end}}
 `

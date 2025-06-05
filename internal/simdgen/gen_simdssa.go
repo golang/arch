@@ -148,13 +148,13 @@ func writeSIMDSSA(directory string, ops []Operation) error {
 		All         string
 		ZeroingMask string
 	}{
-		strings.Join(Imms, ", "),
-		strings.Join(Regs[0], ", "),
-		strings.Join(Regs[1], ", "),
-		strings.Join(Regs[2], ", "),
-		strings.Join(Regs[3], ", "),
-		strings.Join(All, ", "),
-		strings.Join(ZeroingMask, ", "),
+		strings.Join(Imms, ",\n\t\t"),
+		strings.Join(Regs[0], ",\n\t\t"),
+		strings.Join(Regs[1], ",\n\t\t"),
+		strings.Join(Regs[2], ",\n\t\t"),
+		strings.Join(Regs[3], ",\n\t\t"),
+		strings.Join(All, ",\n\t\t"),
+		strings.Join(ZeroingMask, ",\n\t\t"),
 	}
 
 	file, t, err := openFileAndPrepareTemplate(directory, "src/cmd/compile/internal/amd64/simdssa.go", simdssaTmpl)

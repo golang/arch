@@ -14,18 +14,18 @@
   commutative: "true"
   extension: "AVX.*"
 - go: Sub
-  commutative: "true"
+  commutative: "false"
   extension: "AVX.*"
 - go: SaturatedSub
-  commutative: "true"
+  commutative: "false"
   extension: "AVX.*"
 - go: MaskedSub
   masked: "true"
-  commutative: "true"
+  commutative: "false"
   extension: "AVX.*"
 - go: MaskedSaturatedSub
   masked: "true"
-  commutative: "true"
+  commutative: "false"
   extension: "AVX.*"
 - go: PairwiseAdd
   commutative: "false"
