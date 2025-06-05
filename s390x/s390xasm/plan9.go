@@ -358,7 +358,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64)) strin
 		args = args[0:3]
 	case VFS:
 		op = "WFSDB"
-		args[0], args[1], args[2] = args[2], args[1], args[0]
+		args[0], args[2] = args[2], args[0]
 		args = args[0:3]
 	case MSGFR, MHI, MSFI, MSGFI:
 		switch inst.Op {
