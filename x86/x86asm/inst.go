@@ -72,13 +72,22 @@ const (
 
 	// The REX prefixes must be in the range [PrefixREX, PrefixREX+0x10).
 	// the other bits are set or not according to the intended use.
-	PrefixREX       Prefix = 0x40 // REX 64-bit extension prefix
-	PrefixREXW      Prefix = 0x08 // extension bit W (64-bit instruction width)
-	PrefixREXR      Prefix = 0x04 // extension bit R (r field in modrm)
-	PrefixREXX      Prefix = 0x02 // extension bit X (index field in sib)
-	PrefixREXB      Prefix = 0x01 // extension bit B (r/m field in modrm or base field in sib)
-	PrefixVEX2Bytes Prefix = 0xC5 // Short form of vex prefix
-	PrefixVEX3Bytes Prefix = 0xC4 // Long form of vex prefix
+	PrefixREX  Prefix = 0x40 // REX 64-bit extension prefix
+	PrefixREXW Prefix = 0x08 // extension bit W (64-bit instruction width)
+	PrefixREXR Prefix = 0x04 // extension bit R (r field in modrm)
+	PrefixREXX Prefix = 0x02 // extension bit X (index field in sib)
+	PrefixREXB Prefix = 0x01 // extension bit B (r/m field in modrm or base field in sib)
+
+	PrefixVEX2    Prefix = 0xC5 // Short form of VEX prefix
+	PrefixVEX3    Prefix = 0xC4 // Long form of VEX prefix
+	PrefixVEXnotR Prefix = 0x80 // VEX not R
+	PrefixVEXnotX Prefix = 0x40 // VEX not X
+	PrefixVEXnotB Prefix = 0x20 // VEX not B
+	PrefixVEXM    Prefix = 0x1f // VEX M
+	PrefixVEXW    Prefix = 0x80 // VEX W
+	PrefixVEXnotV Prefix = 0x78 // VEX not vvvv
+	PrefixVEXL    Prefix = 0x04 // VEX L
+	PrefixVEXP    Prefix = 0x03 // VEX PP
 )
 
 // IsREX reports whether p is a REX prefix byte.
@@ -87,7 +96,7 @@ func (p Prefix) IsREX() bool {
 }
 
 func (p Prefix) IsVEX() bool {
-	return p&0xFF == PrefixVEX2Bytes || p&0xFF == PrefixVEX3Bytes
+	return p&0xFF == PrefixVEX2 || p&0xFF == PrefixVEX3
 }
 
 func (p Prefix) String() string {
@@ -268,6 +277,24 @@ const (
 	X13
 	X14
 	X15
+
+	// YMM registers.
+	Y0
+	Y1
+	Y2
+	Y3
+	Y4
+	Y5
+	Y6
+	Y7
+	Y8
+	Y9
+	Y10
+	Y11
+	Y12
+	Y13
+	Y14
+	Y15
 
 	// Segment registers.
 	ES
@@ -595,6 +622,22 @@ var regNames = [...]string{
 	X13:  "X13",
 	X14:  "X14",
 	X15:  "X15",
+	Y0:   "Y0",
+	Y1:   "Y1",
+	Y2:   "Y2",
+	Y3:   "Y3",
+	Y4:   "Y4",
+	Y5:   "Y5",
+	Y6:   "Y6",
+	Y7:   "Y7",
+	Y8:   "Y8",
+	Y9:   "Y9",
+	Y10:  "Y10",
+	Y11:  "Y11",
+	Y12:  "Y12",
+	Y13:  "Y13",
+	Y14:  "Y14",
+	Y15:  "Y15",
 	CS:   "CS",
 	SS:   "SS",
 	DS:   "DS",
