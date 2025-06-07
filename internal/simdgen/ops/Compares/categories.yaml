@@ -10,77 +10,108 @@
   constImm: 0
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 0 if it has;"
+  documentation: !string |-
+    // Equal compares for equality.
+    // Const Immediate = 0.
 - go: Less
   constImm: 1
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 1 if it has;"
+  documentation: !string |-
+    // Less compares for less than.
+    // Const Immediate = 1.
 - go: LessEqual
   constImm: 2
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 2 if it has;"
+  documentation: !string |-
+    // LessEqual compares for less than or equal.
+    // Const Immediate = 2.
 - go: IsNan # For float only.
   constImm: 3
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 3 if it has; Returns mask element True if either one of the input\\'s element is Nan; Please use this method as x\\.IsNan\\(x\\) to check x only;"
+  documentation: !string |-
+    // IsNan checks if elements are NaN. Use as x.IsNan(x).
+    // Const Immediate = 3.
 - go: NotEqual
   constImm: 4
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 4 if it has;"
+  documentation: !string |-
+    // NotEqual compares for inequality.
+    // Const Immediate = 4.
 - go: GreaterEqual
   constImm: 5
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 5 if it has;"
+  documentation: !string |-
+    // GreaterEqual compares for greater than or equal.
+    // Const Immediate = 5.
 - go: Greater
   constImm: 6
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 6 if it has;"
+  documentation: !string |-
+    // Greater compares for greater than.
+    // Const Immediate = 6.
 
 - go: MaskedEqual
   constImm: 0
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 0 if it has;"
+  documentation: !string |-
+    // MaskedEqual compares for equality, masked.
+    // Const Immediate = 0.
+  docUnmasked: !string |-
+    // Equal compares for equality.
+    // Const Immediate = 0.
 - go: MaskedLess
   constImm: 1
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 1 if it has;"
+  documentation: !string |-
+    // MaskedLess compares for less than.
+    // Const Immediate = 1.
 - go: MaskedLessEqual
   constImm: 2
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 2 if it has;"
+  documentation: !string |-
+    // MaskedLessEqual compares for less than or equal.
+    // Const Immediate = 2.
 - go: MaskedIsNan # For float only.
   constImm: 3
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 3 if it has; Returns mask element True if either one of the input\\'s element is Nan; Please use this method as x\\.IsNan\\(x\\) to check x only;"
+  documentation: !string |-
+    // MaskedIsNan checks if elements are NaN. Use as x.IsNan(x).
+    // Const Immediate = 3.
 - go: MaskedNotEqual
   constImm: 4
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 4 if it has;"
+  documentation: !string |-
+    // MaskedNotEqual compares for inequality.
+    // Const Immediate = 4.
 - go: MaskedGreaterEqual
   constImm: 5
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 5 if it has;"
+  documentation: !string |-
+    // MaskedGreaterEqual compares for greater than or equal.
+    // Const Immediate = 5.
 - go: MaskedGreater
   constImm: 6
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 6 if it has;"
+  documentation: !string |-
+    // MaskedGreater compares for greater than.
+    // Const Immediate = 6.

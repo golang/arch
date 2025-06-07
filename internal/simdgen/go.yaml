@@ -1,4 +1,5 @@
 !sum
+# TODO: remove the "Const Immediate" from the documentation field, it's there only for debug purposes.
 # Add
 - go: Add
   asm: "VPADD[BWDQ]|VADDP[SD]"

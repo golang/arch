@@ -1,76 +1,117 @@
 !sum
+# TODO: remove the "Const Immediate" from the documentation field, it's there only for debug purposes.
 - go: Add
   commutative: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // Add adds corresponding elements of two vectors.
 - go: SaturatedAdd
   commutative: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // SaturatedAdd adds corresponding elements of two vectors with saturation.
 - go: MaskedAdd
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // MaskedAdd adds corresponding elements of two vectors.
 - go: MaskedSaturatedAdd
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // MaskedSaturatedAdd adds corresponding elements of two vectors with saturation.
 - go: Sub
   commutative: "false"
   extension: "AVX.*"
+  documentation: !string |-
+    // Sub subtracts corresponding elements of two vectors.
 - go: SaturatedSub
   commutative: "false"
   extension: "AVX.*"
+  documentation: !string |-
+    // SaturatedSub subtracts corresponding elements of two vectors with saturation.
 - go: MaskedSub
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
+  documentation: !string |-
+    // MaskedSub subtracts corresponding elements of two vectors.
 - go: MaskedSaturatedSub
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
+  documentation: !string |-
+    // MaskedSaturatedSub subtracts corresponding elements of two vectors with saturation.
 - go: PairwiseAdd
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Add pairs of elements in vector x and store them in higher half of the target; Add pairs of elements in vector y and store them in lower half of the target"
+  documentation: !string |-
+    // PairwiseAdd horizontally adds adjacent pairs of elements.
+    // For x = [x0, x1, x2, x3, ...] and y = [y0, y1, y2, y3, ...], the result is [y0+y1, y2+y3, ..., x0+x1, x2+x3, ...].
 - go: PairwiseSub
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Sub pairs of elements in vector x and store them in higher half of the target; Sub pairs of elements in vector y and store them in lower half of the target"
+  documentation: !string |-
+    // PairwiseSub horizontally subtracts adjacent pairs of elements.
+    // For x = [x0, x1, x2, x3, ...] and y = [y0, y1, y2, y3, ...], the result is [y0-y1, y2-y3, ..., x0-x1, x2-x3, ...].
 - go: SaturatedPairwiseAdd
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Add pairs of elements in vector x and store them in higher half of the target; Add pairs of elements in vector y and store them in lower half of the target; With saturation"
+  documentation: !string |-
+    // SaturatedPairwiseAdd horizontally adds adjacent pairs of elements with saturation.
+    // For x = [x0, x1, x2, x3, ...] and y = [y0, y1, y2, y3, ...], the result is [y0+y1, y2+y3, ..., x0+x1, x2+x3, ...].
 - go: SaturatedPairwiseSub
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Sub pairs of elements in vector x and store them in higher half of the target; Sub pairs of elements in vector y and store them in lower half of the target; With saturation"
+  documentation: !string |-
+    // SaturatedPairwiseSub horizontally subtracts adjacent pairs of elements with saturation.
+    // For x = [x0, x1, x2, x3, ...] and y = [y0, y1, y2, y3, ...], the result is [y0-y1, y2-y3, ..., x0-x1, x2-x3, ...].
 - go: And
   commutative: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // And performs a bitwise AND operation between two vectors.
 - go: MaskedAnd
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // MaskedAnd performs a masked bitwise AND operation between two vectors.
 - go: Or
   commutative: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // Or performs a bitwise OR operation between two vectors.
 - go: MaskedOr
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // MaskedOr performs a masked bitwise OR operation between two vectors.
 - go: AndNot
   commutative: "false"
   extension: "AVX.*"
+  documentation: !string |-
+    // AndNot performs a bitwise AND NOT operation between two vectors.
 - go: MaskedAndNot
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
+  documentation: !string |-
+    // MaskedAndNot performs a masked bitwise AND NOT operation between two vectors.
 - go: Xor
   commutative: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // Xor performs a bitwise XOR operation between two vectors.
 - go: MaskedXor
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // MaskedXor performs a masked bitwise XOR operation between two vectors.
 # We also have PTEST and VPTERNLOG, those should be hidden from the users
 # and only appear in rewrite rules.
 # const imm predicate(holds for both float and int|uint):
@@ -84,312 +125,483 @@
   constImm: 0
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 0 if it has;"
+  documentation: !string |-
+    // Equal compares for equality.
+    // Const Immediate = 0.
 - go: Less
   constImm: 1
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 1 if it has;"
+  documentation: !string |-
+    // Less compares for less than.
+    // Const Immediate = 1.
 - go: LessEqual
   constImm: 2
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 2 if it has;"
+  documentation: !string |-
+    // LessEqual compares for less than or equal.
+    // Const Immediate = 2.
 - go: IsNan # For float only.
   constImm: 3
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 3 if it has; Returns mask element True if either one of the input\\'s element is Nan; Please use this method as x\\.IsNan\\(x\\) to check x only;"
+  documentation: !string |-
+    // IsNan checks if elements are NaN. Use as x.IsNan(x).
+    // Const Immediate = 3.
 - go: NotEqual
   constImm: 4
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 4 if it has;"
+  documentation: !string |-
+    // NotEqual compares for inequality.
+    // Const Immediate = 4.
 - go: GreaterEqual
   constImm: 5
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 5 if it has;"
+  documentation: !string |-
+    // GreaterEqual compares for greater than or equal.
+    // Const Immediate = 5.
 - go: Greater
   constImm: 6
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 6 if it has;"
+  documentation: !string |-
+    // Greater compares for greater than.
+    // Const Immediate = 6.
 
 - go: MaskedEqual
   constImm: 0
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 0 if it has;"
+  documentation: !string |-
+    // MaskedEqual compares for equality, masked.
+    // Const Immediate = 0.
+  docUnmasked: !string |-
+    // Equal compares for equality.
+    // Const Immediate = 0.
 - go: MaskedLess
   constImm: 1
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 1 if it has;"
+  documentation: !string |-
+    // MaskedLess compares for less than.
+    // Const Immediate = 1.
 - go: MaskedLessEqual
   constImm: 2
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 2 if it has;"
+  documentation: !string |-
+    // MaskedLessEqual compares for less than or equal.
+    // Const Immediate = 2.
 - go: MaskedIsNan # For float only.
   constImm: 3
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 3 if it has; Returns mask element True if either one of the input\\'s element is Nan; Please use this method as x\\.IsNan\\(x\\) to check x only;"
+  documentation: !string |-
+    // MaskedIsNan checks if elements are NaN. Use as x.IsNan(x).
+    // Const Immediate = 3.
 - go: MaskedNotEqual
   constImm: 4
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 4 if it has;"
+  documentation: !string |-
+    // MaskedNotEqual compares for inequality.
+    // Const Immediate = 4.
 - go: MaskedGreaterEqual
   constImm: 5
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 5 if it has;"
+  documentation: !string |-
+    // MaskedGreaterEqual compares for greater than or equal.
+    // Const Immediate = 5.
 - go: MaskedGreater
   constImm: 6
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Predicate immediate is 6 if it has;"
+  documentation: !string |-
+    // MaskedGreater compares for greater than.
+    // Const Immediate = 6.
 - go: Div
   commutative: "false"
   extension: "AVX.*"
+  documentation: !string |-
+    // Div divides elements of two vectors.
 - go: MaskedDiv
   commutative: "false"
   masked: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // MaskedDiv divides elements of two vectors.
 - go: Sqrt
   commutative: "false"
   extension: "AVX.*"
+  documentation: !string |-
+    // Sqrt computes the square root of each element.
 - go: MaskedSqrt
   commutative: "false"
   masked: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // MaskedSqrt computes the square root of each element.
 - go: ApproximateReciprocal
   commutative: "false"
   extension: "AVX.*"
+  documentation: !string |-
+    // ApproximateReciprocal computes an approximate reciprocal of each element.
 - go: MaskedApproximateReciprocal
   commutative: "false"
   masked: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // MaskedApproximateReciprocal computes an approximate reciprocal of each element.
 - go: ApproximateReciprocalOfSqrt
   commutative: "false"
   extension: "AVX.*"
+  documentation: !string |-
+    // ApproximateReciprocalOfSqrt computes an approximate reciprocal of the square root of each element.
 - go: MaskedApproximateReciprocalOfSqrt
   commutative: "false"
   masked: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // MaskedApproximateReciprocalOfSqrt computes an approximate reciprocal of the square root of each element.
 - go: MaskedMulByPowOf2 # This operation is all after AVX512, the unmasked version will be generated.
   commutative: "false"
   masked: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // MaskedMulByPowOf2 multiplies elements by a power of 2.
 
 - go: Round
   commutative: "false"
   extension: "AVX.*"
   constImm: 0
+  documentation: !string |-
+    // Round rounds elements to the nearest integer.
+    // Const Immediate = 0.
 - go: MaskedRoundWithPrecision
   commutative: "false"
   extension: "AVX.*"
   constImm: 0
   masked: "true"
+  documentation: !string |-
+    // MaskedRoundWithPrecision rounds elements with specified precision.
+    // Const Immediate = 0.
 - go: MaskedRoundSuppressExceptionWithPrecision
   commutative: "false"
   extension: "AVX.*"
   constImm: 8
   masked: "true"
+  documentation: !string |-
+    // MaskedRoundSuppressExceptionWithPrecision rounds elements with specified precision, suppressing exceptions.
+    // Const Immediate = 8.
 - go: MaskedDiffWithRoundWithPrecision
   commutative: "false"
   extension: "AVX.*"
   constImm: 0
   masked: "true"
+  documentation: !string |-
+    // MaskedDiffWithRoundWithPrecision computes the difference after rounding with specified precision.
+    // Const Immediate = 0.
 - go: MaskedDiffWithRoundSuppressExceptionWithPrecision
   commutative: "false"
   extension: "AVX.*"
   constImm: 8
   masked: "true"
+  documentation: !string |-
+    // MaskedDiffWithRoundSuppressExceptionWithPrecision computes the difference after rounding with specified precision, suppressing exceptions.
+    // Const Immediate = 8.
 
 - go: Floor
   commutative: "false"
   extension: "AVX.*"
   constImm: 1
+  documentation: !string |-
+    // Floor rounds elements down to the nearest integer.
+    // Const Immediate = 1.
 - go: MaskedFloorWithPrecision
   commutative: "false"
   extension: "AVX.*"
   constImm: 1
   masked: "true"
+  documentation: !string |-
+    // MaskedFloorWithPrecision rounds elements down with specified precision, masked.
+    // Const Immediate = 1.
+  docUnmasked: !string |-
+    // FloorWithPrecision rounds elements down with specified precision.
+    // Const Immediate = 1.
 - go: MaskedFloorSuppressExceptionWithPrecision
   commutative: "false"
   extension: "AVX.*"
   constImm: 9
   masked: "true"
+  documentation: !string |-
+    // MaskedFloorSuppressExceptionWithPrecision rounds elements down with specified precision, suppressing exceptions, masked.
+    // Const Immediate = 9.
+  docUnmasked: !string |-
+    // FloorSuppressExceptionWithPrecision rounds elements down with specified precision, suppressing exceptions.
+    // Const Immediate = 9.
 - go: MaskedDiffWithFloorWithPrecision
   commutative: "false"
   extension: "AVX.*"
   constImm: 1
   masked: "true"
+  documentation: !string |-
+    // MaskedDiffWithFloorWithPrecision computes the difference after flooring with specified precision.
+    // Const Immediate = 1.
 - go: MaskedDiffWithFloorSuppressExceptionWithPrecision
   commutative: "false"
   extension: "AVX.*"
   constImm: 9
   masked: "true"
+  documentation: !string |-
+    // MaskedDiffWithFloorSuppressExceptionWithPrecision computes the difference after flooring with specified precision, suppressing exceptions.
+    // Const Immediate = 9.
 
 - go: Ceil
   commutative: "false"
   extension: "AVX.*"
   constImm: 2
+  documentation: !string |-
+    // Ceil rounds elements up to the nearest integer.
+    // Const Immediate = 2.
 - go: MaskedCeilWithPrecision
   commutative: "false"
   extension: "AVX.*"
   constImm: 2
   masked: "true"
+  documentation: !string |-
+    // MaskedCeilWithPrecision rounds elements up with specified precision, masked.
+    // Const Immediate = 2.
+  docUnmasked: !string |-
+    // CeilWithPrecision rounds elements up with specified precision.
+    // Const Immediate = 2.
 - go: MaskedCeilSuppressExceptionWithPrecision
   commutative: "false"
   extension: "AVX.*"
   constImm: 10
   masked: "true"
+  documentation: !string |-
+    // MaskedCeilSuppressExceptionWithPrecision rounds elements up with specified precision, suppressing exceptions.
+    // Const Immediate = 10.
 - go: MaskedDiffWithCeilWithPrecision
   commutative: "false"
   extension: "AVX.*"
   constImm: 2
   masked: "true"
+  documentation: !string |-
+    // MaskedDiffWithCeilWithPrecision computes the difference after ceiling with specified precision.
+    // Const Immediate = 2.
 - go: MaskedDiffWithCeilSuppressExceptionWithPrecision
   commutative: "false"
   extension: "AVX.*"
   constImm: 10
   masked: "true"
+  documentation: !string |-
+    // MaskedDiffWithCeilSuppressExceptionWithPrecision computes the difference after ceiling with specified precision, suppressing exceptions.
+    // Const Immediate = 10.
 
 - go: Trunc
   commutative: "false"
   extension: "AVX.*"
   constImm: 3
+  documentation: !string |-
+    // Trunc truncates elements towards zero.
+    // Const Immediate = 3.
 - go: MaskedTruncWithPrecision
   commutative: "false"
   extension: "AVX.*"
   constImm: 3
   masked: "true"
+  documentation: !string |-
+    // MaskedTruncWithPrecision truncates elements with specified precision.
+    // Const Immediate = 3.
 - go: MaskedTruncSuppressExceptionWithPrecision
   commutative: "false"
   extension: "AVX.*"
   constImm: 11
   masked: "true"
+  documentation: !string |-
+    // MaskedTruncSuppressExceptionWithPrecision truncates elements with specified precision, suppressing exceptions.
+    // Const Immediate = 11.
 - go: MaskedDiffWithTruncWithPrecision
   commutative: "false"
   extension: "AVX.*"
   constImm: 3
   masked: "true"
+  documentation: !string |-
+    // MaskedDiffWithTruncWithPrecision computes the difference after truncating with specified precision.
+    // Const Immediate = 3.
 - go: MaskedDiffWithTruncSuppressExceptionWithPrecision
   commutative: "false"
   extension: "AVX.*"
   constImm: 11
   masked: "true"
+  documentation: !string |-
+    // MaskedDiffWithTruncSuppressExceptionWithPrecision computes the difference after truncating with specified precision, suppressing exceptions.
+    // Const Immediate = 11.
 
 - go: AddSub
   commutative: "false"
   extension: "AVX.*"
+  documentation: !string |-
+    // AddSub subtracts even elements and adds odd elements of two vectors.
 - go: Average
   commutative: "true"
   extension: "AVX.*" # VPAVGB/W are available across various AVX versions
+  documentation: !string |-
+    // Average computes the rounded average of corresponding elements.
 - go: MaskedAverage
   commutative: "true"
   masked: "true"
   extension: "AVX512.*" # Masked operations are typically AVX512
+  documentation: !string |-
+    // MaskedAverage computes the rounded average of corresponding elements.
 
 - go: Absolute
   commutative: "false"
   # Unary operation, not commutative
   extension: "AVX.*" # VPABSB/W/D are AVX, VPABSQ is AVX512
+  documentation: !string |-
+    // Absolute computes the absolute value of each element.
 - go: MaskedAbsolute
   commutative: "false"
   masked: "true"
   extension: "AVX512.*"
+  documentation: !string |-
+    // MaskedAbsolute computes the absolute value of each element.
 
 - go: Sign
   # Applies sign of second operand to first: sign(val, sign_src)
   commutative: "false"
   extension: "AVX.*"
+  documentation: !string |-
+    // Sign returns the product of the first operand with -1, 0, or 1,
+    // whichever constant is nearest to the value of the second operand.
   # Sign does not have masked version
 
 - go: MaskedPopCount
   commutative: "false"
   masked: "true"
   extension: "AVX512.*" # VPOPCNT instructions are AVX512 (BITALG or VPOPCNTDQ)
+  documentation: !string |-
+    // MaskedPopCount counts the number of set bits in each element.
 - go: PairDotProd
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Multiply the elements and add the pairs together, yielding a vector of half as many elements with twice the input element size"
+  documentation: !string |-
+    // PairDotProd multiplies the elements and add the pairs together,
+    // yielding a vector of half as many elements with twice the input element size.
 - go: MaskedPairDotProd
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Multiply the elements and add the pairs together, yielding a vector of half as many elements with twice the input element size"
+  documentation: !string |-
+    // MaskedPairDotProd multiplies the elements and add the pairs together,
+    // yielding a vector of half as many elements with twice the input element size.
 - go: SaturatedUnsignedSignedPairDotProd
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Multiply the elements and add the pairs together with saturation, yielding a vector of half as many elements with twice the input element size"
+  documentation: !string |-
+    // SaturatedPairDotProd multiplies the elements and add the pairs together with saturation,
+    // yielding a vector of half as many elements with twice the input element size.
 - go: MaskedSaturatedUnsignedSignedPairDotProd
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
-  documentation: "// Multiply the elements and add the pairs together with saturation, yielding a vector of half as many elements with twice the input element size"
+  documentation: !string |-
+    // MaskedSaturatedPairDotProd multiplies the elements and add the pairs together with saturation,
+    // yielding a vector of half as many elements with twice the input element size.
 
 # QuadDotProd, i.e. VPDPBUSD(S) are operations with src/dst on the same register, we are not supporting this as of now.
 - go: DotProdBroadcast
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Multiply all the elements and add them together; the result is a broadcast of the dot product"
+  documentation: !string |-
+    // DotProdBroadcast multiplies all elements and broadcasts the sum.
 - go: Max
   commutative: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // Max computes the maximum of corresponding elements.
 - go: MaskedMax
   commutative: "true"
   masked: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // MaskedMax computes the maximum of corresponding elements.
 - go: Min
   commutative: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // Min computes the minimum of corresponding elements.
 - go: MaskedMin
   commutative: "true"
   masked: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // MaskedMin computes the minimum of corresponding elements.
 - go: Mul
   commutative: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // Mul multiplies corresponding elements of two vectors.
 - go: MulEvenWiden
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Multiplies the even index elements from the two sources of size X at index i, store the result of size 2X at index i/2"
+  documentation: !string |-
+    // MulEvenWiden multiplies even-indexed elements, widening the result.
+    // Result[i] = v1.Even[i] * v2.Even[i].
 - go: MulHigh
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Multiplies the elements from the two sources of size X at index i, store the high X bits of the result of size 2X at index i"
+  documentation: !string |-
+    // MulHigh multiplies elements and stores the high part of the result.
 - go: MulLow
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Multiplies the elements from the two sources of size X at index i, store the low X bits of the result of size 2X at index i"
+  documentation: !string |-
+    // MulLow multiplies elements and stores the low part of the result.
 - go: MaskedMul
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // MaskedMul multiplies corresponding elements of two vectors, masked.
+  docUnmasked: !string |-
+    // Mul multiplies corresponding elements of two vectors.
 - go: MaskedMulEvenWiden
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Multiplies the even index elements from the two sources of size X at index i, store the result of size 2X at index i/2"
+  documentation: !string |-
+    // MaskedMulEvenWiden multiplies even-indexed elements, widening the result, masked.
+    // Result[i] = v1.Even[i] * v2.Even[i].
+  docUnmasked: !string |-
+    // MulEvenWiden multiplies even-indexed elements, widening the result.
+    // Result[i] = v1.Even[i] * v2.Even[i].
 - go: MaskedMulHigh
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Multiplies the elements from the two sources of size X at index i, store the high X bits of the result of size 2X at index i"
+  documentation: !string |-
+    // MaskedMulHigh multiplies elements and stores the high part of the result, masked.
+  docUnmasked: !string |-
+    // MulHigh multiplies elements and stores the high part of the result.
 - go: MaskedMulLow
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Multiplies the elements from the two sources of size X at index i, store the low X bits of the result of size 2X at index i"
+  documentation: !string |-
+    // MaskedMulLow multiplies elements and stores the low part of the result, masked.
+  docUnmasked: !string |-
+    // MulLow multiplies elements and stores the low part of the result.

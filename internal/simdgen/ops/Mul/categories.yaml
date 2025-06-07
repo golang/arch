@@ -2,34 +2,55 @@
 - go: Mul
   commutative: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // Mul multiplies corresponding elements of two vectors.
 - go: MulEvenWiden
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Multiplies the even index elements from the two sources of size X at index i, store the result of size 2X at index i/2"
+  documentation: !string |-
+    // MulEvenWiden multiplies even-indexed elements, widening the result.
+    // Result[i] = v1.Even[i] * v2.Even[i].
 - go: MulHigh
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Multiplies the elements from the two sources of size X at index i, store the high X bits of the result of size 2X at index i"
+  documentation: !string |-
+    // MulHigh multiplies elements and stores the high part of the result.
 - go: MulLow
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Multiplies the elements from the two sources of size X at index i, store the low X bits of the result of size 2X at index i"
+  documentation: !string |-
+    // MulLow multiplies elements and stores the low part of the result.
 - go: MaskedMul
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
+  documentation: !string |-
+    // MaskedMul multiplies corresponding elements of two vectors, masked.
+  docUnmasked: !string |-
+    // Mul multiplies corresponding elements of two vectors.
 - go: MaskedMulEvenWiden
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Multiplies the even index elements from the two sources of size X at index i, store the result of size 2X at index i/2"
+  documentation: !string |-
+    // MaskedMulEvenWiden multiplies even-indexed elements, widening the result, masked.
+    // Result[i] = v1.Even[i] * v2.Even[i].
+  docUnmasked: !string |-
+    // MulEvenWiden multiplies even-indexed elements, widening the result.
+    // Result[i] = v1.Even[i] * v2.Even[i].
 - go: MaskedMulHigh
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Multiplies the elements from the two sources of size X at index i, store the high X bits of the result of size 2X at index i"
+  documentation: !string |-
+    // MaskedMulHigh multiplies elements and stores the high part of the result, masked.
+  docUnmasked: !string |-
+    // MulHigh multiplies elements and stores the high part of the result.
 - go: MaskedMulLow
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "// Multiplies the elements from the two sources of size X at index i, store the low X bits of the result of size 2X at index i"
+  documentation: !string |-
+    // MaskedMulLow multiplies elements and stores the low part of the result, masked.
+  docUnmasked: !string |-
+    // MulLow multiplies elements and stores the low part of the result.
