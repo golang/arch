@@ -525,21 +525,112 @@
   asm: VPMADDUBSW
   in:
   - class: mask
-  - *uint
-  - *int3
+  - go: $t1
+    base: uint
+    overwriteElemBits: 8
+  - go: $t2
+    base: int
+    overwriteElemBits: 8
   out:
-  - *int2
+  - *int3
 - go: DotProdBroadcast
   asm: VDPPD
   in:
-  - &float
+  - &dpb_src
     go: $t
     base: float
-  - *float
+    elemBits: 64
+    bits: $bits
+  - *dpb_src
   - class: immediate
-    const: 127 # make sure the control bits [4:5] are all 1
+    const: 127
   out:
-  - *float
+  - *dpb_src
+- go: UnsignedSignedQuadDotProdAccumulate
+  asm: "VPDPBUSD"
+  in:
+  - &qdpa_acc
+    go: $t_acc
+    elemBits: 32
+  - &qdpa_src1
+    go: $t_src1
+    base: uint
+    overwriteElemBits: 8
+  - &qdpa_src2
+    go: $t_src2
+    base: int
+    overwriteElemBits: 8
+  out:
+  - *qdpa_acc
+- go: MaskedUnsignedSignedQuadDotProdAccumulate
+  asm: "VPDPBUSD"
+  in:
+  - *qdpa_acc
+  - class: mask
+  - *qdpa_src1
+  - *qdpa_src2
+  out:
+  - *qdpa_acc
+- go: SaturatedUnsignedSignedQuadDotProdAccumulate
+  asm: "VPDPBUSDS"
+  in:
+  - *qdpa_acc
+  - *qdpa_src1
+  - *qdpa_src2
+  out:
+  - *qdpa_acc
+- go: MaskedSaturatedUnsignedSignedQuadDotProdAccumulate
+  asm: "VPDPBUSDS"
+  in:
+  - *qdpa_acc
+  - class: mask
+  - *qdpa_src1
+  - *qdpa_src2
+  out:
+  - *qdpa_acc
+- go: PairDotProdAccumulate
+  asm: "VPDPWSSD"
+  in:
+  - &pdpa_acc
+    go: $t_acc
+    base: int
+    elemBits: 32
+  - &pdpa_src1
+    go: $t_src1
+    base: int
+    overwriteElemBits: 16
+  - &pdpa_src2
+    go: $t_src2
+    base: int
+    overwriteElemBits: 16
+  out:
+  - *pdpa_acc
+- go: MaskedPairDotProdAccumulate
+  asm: "VPDPWSSD"
+  in:
+  - *pdpa_acc
+  - class: mask
+  - *pdpa_src1
+  - *pdpa_src2
+  out:
+  - *pdpa_acc
+- go: SaturatedPairDotProdAccumulate
+  asm: "VPDPWSSDS"
+  in:
+  - *pdpa_acc
+  - *pdpa_src1
+  - *pdpa_src2
+  out:
+  - *pdpa_acc
+- go: MaskedSaturatedPairDotProdAccumulate
+  asm: "VPDPWSSDS"
+  in:
+  - *pdpa_acc
+  - class: mask
+  - *pdpa_src1
+  - *pdpa_src2
+  out:
+  - *pdpa_acc
 - go: Max
   asm: "V?PMAXS[BWDQ]"
   in: &2int

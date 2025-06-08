@@ -528,6 +528,51 @@
   extension: "AVX.*"
   documentation: !string |-
     // DotProdBroadcast multiplies all elements and broadcasts the sum.
+    // Const Immediate = 127.
+- go: UnsignedSignedQuadDotProdAccumulate
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: !string |-
+    // UnsignedSignedQuadDotProdAccumulate performs dot products on groups of 4 elements of y and z and accumulates the results to x.
+- go: MaskedUnsignedSignedQuadDotProdAccumulate
+  masked: "true"
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: !string |-
+    // MaskedUnsignedSignedQuadDotProdAccumulate performs dot products on groups of 4 elements of y and z and accumulates the results to x.
+- go: SaturatedUnsignedSignedQuadDotProdAccumulate
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: !string |-
+    // SaturatedUnsignedSignedQuadDotProdAccumulate multiplies performs dot products on groups of 4 elements of y and z and accumulates the results to x.
+- go: MaskedSaturatedUnsignedSignedQuadDotProdAccumulate
+  masked: "true"
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: !string |-
+    // SaturatedUnsignedSignedQuadDotProdAccumulate multiplies performs dot products on groups of 4 elements of y and z and accumulates the results to x.
+- go: PairDotProdAccumulate
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: !string |-
+    // PairDotProdAccumulate performs dot products on pairs of elements of y and z and accumulates the results to x.
+- go: MaskedPairDotProdAccumulate
+  masked: "true"
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: !string |-
+    // MaskedPairDotProdAccumulate performs dot products on pairs of elements of y and z and accumulates the results to x.
+- go: SaturatedPairDotProdAccumulate
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: !string |-
+    // SaturatedPairDotProdAccumulate performs dot products on pairs of elements of y and z and accumulates the results to x.
+- go: MaskedSaturatedPairDotProdAccumulate
+  masked: "true"
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: !string |-
+    // MaskedSaturatedPairDotProdAccumulate performs dot products on pairs of elements of y and z and accumulates the results to x.
 - go: Max
   commutative: "true"
   extension: "AVX.*"
