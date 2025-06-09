@@ -355,6 +355,7 @@ func dedupGodef(ops []Operation) ([]Operation, error) {
 		}
 		deduped = append(deduped, dup[0])
 	}
+	slices.SortFunc(deduped, compareOperations)
 	return deduped, nil
 }
 

@@ -6,6 +6,8 @@ package main
 
 import (
 	"log"
+	"slices"
+	"strings"
 
 	"golang.org/x/arch/internal/unify"
 )
@@ -28,6 +30,47 @@ type Operation struct {
 	// Masked indicates that this is a masked operation, this field has to be set for masked operations
 	// otherwise simdgen won't recognize it in [splitMask].
 	Masked *string
+}
+
+func compareStringPointers(x, y *string) int {
+	if x != nil && y != nil {
+		return strings.Compare(*x, *y)
+	}
+	if x == nil && y == nil {
+		return 0
+	}
+	if x == nil {
+		return -1
+	}
+	return 1
+}
+
+func compareOperations(x, y Operation) int {
+	if c := strings.Compare(x.Go, y.Go); c != 0 {
+		return c
+	}
+	if c := strings.Compare(x.GoArch, y.GoArch); c != 0 {
+		return c
+	}
+	if len(x.In) < len(y.In) {
+		return -1
+	}
+	if len(x.In) > len(y.In) {
+		return 1
+	}
+	if len(x.Out) < len(y.Out) {
+		return -1
+	}
+	if len(x.Out) > len(y.Out) {
+		return 1
+	}
+	for i := range x.In {
+		ox, oy := &x.In[i], y.In[i]
+		if c := compareStringPointers(ox.Go, oy.Go); c != 0 {
+			return c
+		}
+	}
+	return 0
 }
 
 type Operand struct {
@@ -68,6 +111,7 @@ func writeGoDefs(path string, cl unify.Closure) error {
 		op.sortOperand()
 		ops = append(ops, op)
 	}
+	slices.SortFunc(ops, compareOperations)
 	// The parsed XED data might contain duplicates, like
 	// 512 bits VPADDP.
 	deduped := dedup(ops)
