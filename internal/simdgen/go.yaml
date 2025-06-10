@@ -631,6 +631,170 @@
   - *pdpa_src2
   out:
   - *pdpa_acc
+- go: MaskedFusedMultiplyAdd132
+  asm: "VFMADD132PS|VFMADD132PD"
+  in:
+  - &fma_op
+    go: $t
+    base: float
+  - class: mask
+  - *fma_op
+  - *fma_op
+  out:
+  - *fma_op
+- go: MaskedFusedMultiplyAdd213
+  asm: "VFMADD213PS|VFMADD213PD"
+  in:
+  - *fma_op
+  - class: mask
+  - *fma_op
+  - *fma_op
+  out:
+  - *fma_op
+- go: MaskedFusedMultiplyAdd231
+  asm: "VFMADD231PS|VFMADD231PD"
+  in:
+  - *fma_op
+  - class: mask
+  - *fma_op
+  - *fma_op
+  out:
+  - *fma_op
+- go: MaskedFusedMultiplySub132
+  asm: "VFMSUB132PS|VFMSUB132PD"
+  in:
+  - *fma_op
+  - class: mask
+  - *fma_op
+  - *fma_op
+  out:
+  - *fma_op
+- go: MaskedFusedMultiplySub213
+  asm: "VFMSUB213PS|VFMSUB213PD"
+  in:
+  - *fma_op
+  - class: mask
+  - *fma_op
+  - *fma_op
+  out:
+  - *fma_op
+- go: MaskedFusedMultiplySub231
+  asm: "VFMSUB231PS|VFMSUB231PD"
+  in:
+  - *fma_op
+  - class: mask
+  - *fma_op
+  - *fma_op
+  out:
+  - *fma_op
+- go: MaskedFusedNegativeMultiplyAdd132
+  asm: "VFNMADD132PS|VFNMADD132PD"
+  in:
+  - *fma_op
+  - class: mask
+  - *fma_op
+  - *fma_op
+  out:
+  - *fma_op
+- go: MaskedFusedNegativeMultiplyAdd213
+  asm: "VFNMADD213PS|VFNMADD213PD"
+  in:
+  - *fma_op
+  - class: mask
+  - *fma_op
+  - *fma_op
+  out:
+  - *fma_op
+- go: MaskedFusedNegativeMultiplyAdd231
+  asm: "VFNMADD231PS|VFNMADD231PD"
+  in:
+  - *fma_op
+  - class: mask
+  - *fma_op
+  - *fma_op
+  out:
+  - *fma_op
+- go: MaskedFusedNegativeMultiplySub132
+  asm: "VFNMSUB132PS|VFNMSUB132PD"
+  in:
+  - *fma_op
+  - class: mask
+  - *fma_op
+  - *fma_op
+  out:
+  - *fma_op
+- go: MaskedFusedNegativeMultiplySub213
+  asm: "VFNMSUB213PS|VFNMSUB213PD"
+  in:
+  - *fma_op
+  - class: mask
+  - *fma_op
+  - *fma_op
+  out:
+  - *fma_op
+- go: MaskedFusedNegativeMultiplySub231
+  asm: "VFNMSUB231PS|VFNMSUB231PD"
+  in:
+  - *fma_op
+  - class: mask
+  - *fma_op
+  - *fma_op
+  out:
+  - *fma_op
+- go: MaskedFusedMultiplyAddSub132
+  asm: "VFMADDSUB132PS|VFMADDSUB132PD"
+  in:
+  - *fma_op
+  - class: mask
+  - *fma_op
+  - *fma_op
+  out:
+  - *fma_op
+- go: MaskedFusedMultiplyAddSub213
+  asm: "VFMADDSUB213PS|VFMADDSUB213PD"
+  in:
+  - *fma_op
+  - class: mask
+  - *fma_op
+  - *fma_op
+  out:
+  - *fma_op
+- go: MaskedFusedMultiplyAddSub231
+  asm: "VFMADDSUB231PS|VFMADDSUB231PD"
+  in:
+  - *fma_op
+  - class: mask
+  - *fma_op
+  - *fma_op
+  out:
+  - *fma_op
+- go: MaskedFusedMultiplySubAdd132
+  asm: "VFMSUBADD132PS|VFMSUBADD132PD"
+  in:
+  - *fma_op
+  - class: mask
+  - *fma_op
+  - *fma_op
+  out:
+  - *fma_op
+- go: MaskedFusedMultiplySubAdd213
+  asm: "VFMSUBADD213PS|VFMSUBADD213PD"
+  in:
+  - *fma_op
+  - class: mask
+  - *fma_op
+  - *fma_op
+  out:
+  - *fma_op
+- go: MaskedFusedMultiplySubAdd231
+  asm: "VFMSUBADD231PS|VFMSUBADD231PD"
+  in:
+  - *fma_op
+  - class: mask
+  - *fma_op
+  - *fma_op
+  out:
+  - *fma_op
 - go: Max
   asm: "V?PMAXS[BWDQ]"
   in: &2int
