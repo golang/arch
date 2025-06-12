@@ -83,14 +83,23 @@ type Operand struct {
 	ElemBits *int    // Element bit width
 	Bits     *int    // Total vector bit width
 
-	Const *string // Optional constant value
-	Lanes *int    // Lanes should equal Bits/ElemBits
+	Const *string // Optional constant value for immediates.
+	// Optional immediate arg offsets. If this field is non-nil,
+	// This operand will be an immediate operand:
+	// The compiler will right-shift the user-passed value by ImmOffset and set it as the AuxInt
+	// field of the operation.
+	ImmOffset *string
+	Lanes     *int // Lanes should equal Bits/ElemBits
 	// If non-nil, it means the [Class] field is overwritten here, right now this is used to
 	// overwrite the results of AVX2 compares to masks.
 	OverwriteClass *string
 	// If non-nil, it means the [Base] field is overwritten here. This field exist solely
 	// because Intel's XED data is inconsistent. e.g. VANDNP[SD] marks its operand int.
 	OverwriteBase *string
+	// If non-nil, it means the [ElementBits] field is overwritten. This field exist solely
+	// because Intel's XED data is inconsistent. e.g. AVX512 VPMADDUBSW marks its operand
+	// elemBits 16, which should be 8.
+	OverwriteElementBits *int
 }
 
 func writeGoDefs(path string, cl unify.Closure) error {

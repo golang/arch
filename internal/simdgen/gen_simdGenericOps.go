@@ -14,8 +14,11 @@ package main
 
 func simdGenericOps() []opData {
 	return []opData{
-{{- range . }}
+{{- range .Ops }}
 		{name: "{{.OpName}}", argLength: {{.OpInLen}}, commutative: {{.Comm}}},
+{{- end }}
+{{- range .OpsImm }}
+		{name: "{{.OpName}}", argLength: {{.OpInLen}}, commutative: {{.Comm}}, aux: "Int8"},
 {{- end }}
 	}
 }
@@ -35,17 +38,29 @@ func writeSIMDGenericOps(directory string, ops []Operation) error {
 		OpInLen int
 		Comm    string
 	}
-	opsData := make([]genericOpsData, 0)
+	type opData struct {
+		Ops    []genericOpsData
+		OpsImm []genericOpsData
+	}
+	var opsData opData
 	for _, op := range ops {
-		_, _, _, _, _, gOp, err := op.shape()
+		_, _, _, immType, _, _, gOp, err := op.shape()
 		if err != nil {
 			return err
 		}
 		genericNames := gOp.Go + *gOp.In[0].Go
-		opsData = append(opsData, genericOpsData{*gOp.In[0].Go + gOp.Go, genericNames, len(gOp.In), op.Commutative})
+		gOpData := genericOpsData{*gOp.In[0].Go + gOp.Go, genericNames, len(gOp.In), op.Commutative}
+		if immType == VarImm || immType == ConstVarImm {
+			opsData.OpsImm = append(opsData.OpsImm, gOpData)
+		} else {
+			opsData.Ops = append(opsData.Ops, gOpData)
+		}
 	}
-	sort.Slice(opsData, func(i, j int) bool {
-		return opsData[i].sortKey < opsData[j].sortKey
+	sort.Slice(opsData.Ops, func(i, j int) bool {
+		return opsData.Ops[i].sortKey < opsData.Ops[j].sortKey
+	})
+	sort.Slice(opsData.OpsImm, func(i, j int) bool {
+		return opsData.OpsImm[i].sortKey < opsData.OpsImm[j].sortKey
 	})
 
 	err = t.Execute(file, opsData)

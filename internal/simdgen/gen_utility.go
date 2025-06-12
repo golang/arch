@@ -40,8 +40,8 @@ const (
 	InvalidIn int = iota
 	PureVregIn
 	OneKmaskIn
-	OneConstImmIn
-	OneKmaskConstImmIn
+	OneImmIn
+	OneKmaskImmIn
 	PureKmaskIn
 )
 
@@ -50,6 +50,7 @@ const (
 	NoOut
 	OneVregOut
 	OneKmaskOut
+	OneVregOutAtIn
 )
 
 const (
@@ -60,33 +61,51 @@ const (
 	AllMasks
 )
 
+const (
+	InvalidImm int = iota
+	NoImm
+	ConstImm
+	VarImm
+	ConstVarImm
+)
+
 // opShape returns the an int denoting the shape of the operation:
 //
-//	shapeIn:
-//		InvalidIn: unknown, with err set to the error message
-//		PureVregIn: pure vreg operation
-//		OneKmaskIn: operation with one k mask input (TODO: verify if it's always opmask predicate)
-//		OneConstImmIn: operation with one const imm input
-//		OneKmaskConstImmIn: operation with one k mask input and one const imm input
-//		PureKmaskIn: it's a K mask instruction (which can use K0)
+//		shapeIn:
+//			InvalidIn: unknown, with err set to the error message
+//			PureVregIn: pure vreg operation
+//			OneKmaskIn: operation with one k mask input (TODO: verify if it's always opmask predicate)
+//			OneImmIn: operation with one imm input
+//			OneKmaskImmIn: operation with one k mask input and one imm input
+//			PureKmaskIn: it's a K mask instruction (which can use K0)
 //
-//	shapeOut:
-//	 	InvalidOut: unknown, with err set to the error message
-//		NoOut: no outputs, this is invalid now.
-//		OneVregOut: one vreg output
-//		OneKmaskOut: one mask output
+//		shapeOut:
+//		 	InvalidOut: unknown, with err set to the error message
+//			NoOut: no outputs, this is invalid now.
+//			OneVregOut: one vreg output
+//			OneKmaskOut: one mask output
+//			OneVregOutAtIn: one vreg output, it's at the same time the first input
 //
-//	maskType:
-//		InvalidMask: unknown, with err set to the error message
-//		NoMask: no mask
-//		OneMask: with mask (K1 to K7)
-//		OneConstMask: with const mask K0
-//		AllMasks: it's a K mask instruction
+//		maskType:
+//			InvalidMask: unknown, with err set to the error message
+//			NoMask: no mask
+//			OneMask: with mask (K1 to K7)
+//			OneConstMask: with const mask K0
+//			AllMasks: it's a K mask instruction
+//
+//	 	immType:
+//			InvalidImm: unrecognize immediate structure
+//			NoImm: no immediate
+//			ConstImm: const only immediate
+//			VarImm: pure imm argument provided by the users
+//			ConstVarImm: a combination of user arg and const
 //
 // opNoImm is op with its inputs excluding the const imm.
 // opNoConstMask is op with its inputs excluding the const mask.
 // opNoConstImmMask is op with its inputs excluding the const imm and mask.
-func (op *Operation) shape() (shapeIn, shapeOut, maskType int, opNoConstImm Operation, opNoConstMask Operation, opNoConstImmMask Operation, err error) {
+//
+// This function does not modify op.
+func (op *Operation) shape() (shapeIn, shapeOut, maskType, immTyppe int, opNoImm Operation, opNoConstMask Operation, opNoImmConstMask Operation, err error) {
 	if len(op.Out) > 1 {
 		err = fmt.Errorf("simdgen only supports 1 output: %s", op)
 		return
@@ -115,16 +134,16 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType int, opNoConstImm Oper
 	hasVreg := false
 	for i, in := range op.In {
 		if in.AsmPos == outputReg {
-			err = fmt.Errorf("simdgen doesn't support output and input sharing the same position: %s", op)
-			return
+			if shapeOut != OneVregOutAtIn && in.AsmPos == 0 && in.Class == "vreg" {
+				shapeOut = OneVregOutAtIn
+			} else {
+				err = fmt.Errorf("simdgen only support output and input sharing the same position case of \"the first input is vreg and the only output\": %s", op)
+				return
+			}
 		}
 		if in.Class == "immediate" {
 			// A manual check on XED data found that AMD64 SIMD instructions at most
 			// have 1 immediates. So we don't need to check this here.
-			if in.Const == nil {
-				err = fmt.Errorf("simdgen doesn't support non-const immediates: %s", op)
-				return
-			}
 			if *in.Bits != 8 {
 				err = fmt.Errorf("simdgen only supports immediates of 8 bits: %s", op)
 				return
@@ -151,22 +170,36 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType int, opNoConstImm Oper
 			hasVreg = true
 		}
 	}
-	opNoConstImm = *op
+	opNoImm = *op
 	opNoConstMask = *op
-	opNoConstImmMask = *op
+	opNoImmConstMask = *op
 	removeConstMask := func(o *Operation) {
 		o.In = append(o.In[:iConstMask], o.In[iConstMask+1:]...)
 	}
 	if iConstMask != -1 {
 		removeConstMask(&opNoConstMask)
-		removeConstMask(&opNoConstImmMask)
+		removeConstMask(&opNoImmConstMask)
 	}
-	removeConstImm := func(o *Operation) {
+	removeImm := func(o *Operation) {
 		o.In = o.In[1:]
 	}
 	if hasImm {
-		removeConstImm(&opNoConstImm)
-		removeConstImm(&opNoConstImmMask)
+		removeImm(&opNoImm)
+		removeImm(&opNoImmConstMask)
+		if op.In[0].Const != nil {
+			if op.In[0].ImmOffset != nil {
+				immTyppe = ConstVarImm
+			} else {
+				immTyppe = ConstImm
+			}
+		} else if op.In[0].ImmOffset != nil {
+			immTyppe = VarImm
+		} else {
+			err = fmt.Errorf("simdgen requires imm to have at least one of ImmOffset or Const set: %s", op)
+			return
+		}
+	} else {
+		immTyppe = NoImm
 	}
 	if maskCount == 0 {
 		if iConstMask == -1 {
@@ -205,16 +238,58 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType int, opNoConstImm Oper
 			maskType = AllMasks
 		}
 	} else if hasImm && maskCount == 0 {
-		shapeIn = OneConstImmIn
+		shapeIn = OneImmIn
 	} else {
 		if maskCount == 1 {
-			shapeIn = OneKmaskConstImmIn
+			shapeIn = OneKmaskImmIn
 		} else {
 			checkPureMask()
 			return
 		}
 	}
 	return
+}
+
+// regShape returns a string representation of the register shape.
+func (op *Operation) regShape() (string, error) {
+	_, _, _, _, _, _, gOp, _ := op.shape()
+	var regInfo string
+	var vRegInCnt, kMaskInCnt, vRegOutCnt, kMaskOutCnt int
+	for _, in := range gOp.In {
+		if in.Class == "vreg" {
+			vRegInCnt++
+		} else if in.Class == "mask" {
+			kMaskInCnt++
+		}
+	}
+	for _, out := range gOp.Out {
+		// If class overwrite is happening, that's not really a mask but a vreg.
+		if out.Class == "vreg" || out.OverwriteClass != nil {
+			vRegOutCnt++
+		} else if out.Class == "mask" {
+			kMaskOutCnt++
+		}
+	}
+	var vRegInS, kMaskInS, vRegOutS, kMaskOutS string
+	if vRegInCnt > 0 {
+		vRegInS = fmt.Sprintf("fp%d", vRegInCnt)
+	}
+	if kMaskInCnt > 0 {
+		kMaskInS = fmt.Sprintf("m%d", kMaskInCnt)
+	}
+	if vRegOutCnt > 0 {
+		vRegOutS = fmt.Sprintf("fp%d", vRegOutCnt)
+	}
+	if kMaskOutCnt > 0 {
+		kMaskOutS = fmt.Sprintf("m%d", kMaskOutCnt)
+	}
+	if kMaskInCnt == 0 && kMaskOutCnt == 0 {
+		// For pure fp we can abbreviate it as fp%d%d.
+		regInfo = fmt.Sprintf("fp%d%d", vRegInCnt, vRegOutCnt)
+	} else {
+		regInfo = fmt.Sprintf("%s%s%s%s", vRegInS, kMaskInS, vRegOutS, kMaskOutS)
+	}
+	return regInfo, nil
 }
 
 // sortOperand sorts op.In by putting immediates first, then vreg, and mask the last.
@@ -224,31 +299,66 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType int, opNoConstImm Oper
 func (op *Operation) sortOperand() {
 	priority := map[string]int{"immediate": 2, "vreg": 1, "mask": 0}
 	sort.SliceStable(op.In, func(i, j int) bool {
-		return priority[op.In[i].Class]-priority[op.In[j].Class] > 0
+		pi := priority[op.In[i].Class]
+		pj := priority[op.In[j].Class]
+		if pi != pj {
+			return pi > pj
+		}
+		return op.In[i].AsmPos < op.In[j].AsmPos
 	})
 }
 
-// genericOpsByLen returns the lists of generic ops aggregated by input length.
-func genericOpsByLen(ops []Operation) (opsLen1, opsLen2, opsLen3 []Operation, e error) {
+// opsByLen returns the lists of ops stripping the const masks away, aggregated by input length.
+// Ops with only const imms also has their immediates removed.
+func opsByLen(ops []Operation) (opsLen1, opsLen2, opsLen3, opsLen4, opsLen1Imm8, opsLen2Imm8, opsLen3Imm8, opsLen4Imm8 []Operation, e error) {
 	opsLen1 = make([]Operation, 0)
 	opsLen2 = make([]Operation, 0)
 	opsLen3 = make([]Operation, 0)
+	opsLen4 = make([]Operation, 0)
+	opsLen1Imm8 = make([]Operation, 0)
+	opsLen2Imm8 = make([]Operation, 0)
+	opsLen3Imm8 = make([]Operation, 0)
+	opsLen4Imm8 = make([]Operation, 0)
 	for _, op := range ops {
-		_, shapeOut, _, _, _, gOp, err := op.shape()
+		_, shapeOut, _, immType, _, opNoConstMask, gOp, err := op.shape()
 		if err != nil {
 			e = err
 			return
 		}
-		// Put the go ssa type in Class field, simd intrinsics need it.
-		if shapeOut == OneVregOut || shapeOut == OneKmaskOut {
+		// Put the go ssa type in GoArch field, simd intrinsics need it.
+		if shapeOut == OneVregOut || shapeOut == OneKmaskOut || shapeOut == OneVregOutAtIn {
+			opNoConstMask.GoArch = fmt.Sprintf("types.TypeVec%d", *opNoConstMask.Out[0].Bits)
 			gOp.GoArch = fmt.Sprintf("types.TypeVec%d", *gOp.Out[0].Bits)
 		}
-		if len(gOp.In) == 1 {
-			opsLen1 = append(opsLen1, gOp)
-		} else if len(gOp.In) == 2 {
-			opsLen2 = append(opsLen2, gOp)
-		} else if len(gOp.In) == 3 {
-			opsLen3 = append(opsLen3, gOp)
+		if immType == VarImm || immType == ConstVarImm {
+			switch len(opNoConstMask.In) {
+			case 1:
+				e = fmt.Errorf("simdgen does not recognize this operation of only immediate input: %s", op)
+				return
+			case 2:
+				opsLen1Imm8 = append(opsLen1Imm8, opNoConstMask)
+			case 3:
+				opsLen2Imm8 = append(opsLen2Imm8, opNoConstMask)
+			case 4:
+				opsLen3Imm8 = append(opsLen3Imm8, opNoConstMask)
+			case 5:
+				opsLen4Imm8 = append(opsLen4Imm8, opNoConstMask)
+			default:
+				e = fmt.Errorf("simdgen does not recognize this operation of input length %d: %s", len(opNoConstMask.In), op)
+			}
+		} else {
+			switch len(gOp.In) {
+			case 1:
+				opsLen1 = append(opsLen1, gOp)
+			case 2:
+				opsLen2 = append(opsLen2, gOp)
+			case 3:
+				opsLen3 = append(opsLen3, gOp)
+			case 4:
+				opsLen4 = append(opsLen4, gOp)
+			default:
+				e = fmt.Errorf("simdgen does not recognize this operation of input length %d: %s", len(opNoConstMask.In), op)
+			}
 		}
 	}
 	sortKey := func(op *Operation) string {
@@ -262,6 +372,11 @@ func genericOpsByLen(ops []Operation) (opsLen1, opsLen2, opsLen3 []Operation, e 
 	sortBySortKey(opsLen1)
 	sortBySortKey(opsLen2)
 	sortBySortKey(opsLen3)
+	sortBySortKey(opsLen4)
+	sortBySortKey(opsLen1Imm8)
+	sortBySortKey(opsLen2Imm8)
+	sortBySortKey(opsLen3Imm8)
+	sortBySortKey(opsLen4Imm8)
 	return
 }
 
@@ -291,11 +406,11 @@ func splitMask(ops []Operation) ([]Operation, error) {
 		if op.Masked == nil || *op.Masked != "true" {
 			continue
 		}
-		shapeIn, _, _, _, _, _, err := op.shape()
+		shapeIn, _, _, _, _, _, _, err := op.shape()
 		if err != nil {
 			return nil, err
 		}
-		if shapeIn == OneKmaskIn || shapeIn == OneKmaskConstImmIn {
+		if shapeIn == OneKmaskIn || shapeIn == OneKmaskImmIn {
 			op2 := op
 			op2.In = slices.Clone(op.In)
 			constMask := "K0"
@@ -305,6 +420,9 @@ func splitMask(ops []Operation) ([]Operation, error) {
 				return nil, fmt.Errorf("simdgen only recognizes masked operations with name starting with 'Masked': %s", op)
 			}
 			op2.Go = strings.ReplaceAll(op2.Go, "Masked", "")
+			if op2.Documentation != nil {
+				*op2.Documentation = strings.ReplaceAll(*op2.Documentation, "Masked", "")
+			}
 			splited = append(splited, op2)
 		} else {
 			return nil, fmt.Errorf("simdgen only recognizes masked operations with exactly one mask input: %s", op)
@@ -320,7 +438,7 @@ func splitMask(ops []Operation) ([]Operation, error) {
 func dedupGodef(ops []Operation) ([]Operation, error) {
 	seen := map[string][]Operation{}
 	for _, op := range ops {
-		_, _, _, _, _, gOp, err := op.shape()
+		_, _, _, _, _, _, gOp, err := op.shape()
 		if err != nil {
 			return nil, err
 		}
@@ -366,17 +484,27 @@ func copyConstImm(ops []Operation) error {
 		if op.ConstImm == nil {
 			continue
 		}
-		shapeIn, _, _, _, _, _, err := op.shape()
+		_, _, _, immType, _, _, _, err := op.shape()
 		if err != nil {
 			return err
 		}
-		if shapeIn == OneConstImmIn || shapeIn == OneKmaskConstImmIn {
+		if immType == ConstImm || immType == ConstVarImm {
 			op.In[0].Const = op.ConstImm
 		}
 		// Otherwise, just not port it - e.g. {VPCMP[BWDQ] imm=0} and {VPCMPEQ[BWDQ]} are
 		// the same operations "Equal", [dedupgodef] should be able to distinguish them.
 	}
 	return nil
+}
+
+func capitalizeFirst(s string) string {
+	if s == "" {
+		return ""
+	}
+	// Convert the string to a slice of runes to handle multi-byte characters correctly.
+	r := []rune(s)
+	r[0] = unicode.ToUpper(r[0])
+	return string(r)
 }
 
 // overwrite corrects some errors due to:
@@ -386,15 +514,6 @@ func copyConstImm(ops []Operation) error {
 //     These constraints are also explointed in [writeSIMDRules], [writeSIMDMachineOps]
 //     and [writeSIMDSSA], please be careful when updating these constraints.
 func overwrite(ops []Operation) error {
-	capitalizeFirst := func(s string) string {
-		if s == "" {
-			return ""
-		}
-		// Convert the string to a slice of runes to handle multi-byte characters correctly.
-		r := []rune(s)
-		r[0] = unicode.ToUpper(r[0])
-		return string(r)
-	}
 	hasClassOverwrite := false
 	overwrite := func(op []Operand, idx int) error {
 		if op[idx].OverwriteClass != nil {
@@ -420,6 +539,10 @@ func overwrite(ops []Operation) error {
 			oBase := *op[idx].OverwriteBase
 			*op[idx].Go = strings.ReplaceAll(*op[idx].Go, capitalizeFirst(*op[idx].Base), capitalizeFirst(oBase))
 			*op[idx].Base = oBase
+		}
+		if op[idx].OverwriteElementBits != nil {
+			*op[idx].ElemBits = *op[idx].OverwriteElementBits
+			*op[idx].Go = fmt.Sprintf("%s%dx%d", capitalizeFirst(*op[idx].Base), *op[idx].ElemBits, *op[idx].Bits / *op[idx].ElemBits)
 		}
 		return nil
 	}

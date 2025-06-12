@@ -30,6 +30,21 @@ func simdIntrinsics(addF func(pkg, fn string, b intrinsicBuilder, archFamilies .
 {{- range .OpsLen3}}
 	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen3(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.GoArch}}), sys.AMD64)
 {{- end}}
+{{- range .OpsLen4}}
+	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen4(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.GoArch}}), sys.AMD64)
+{{- end}}
+{{- range .OpsLen1Imm8}}
+	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen1Imm8(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.GoArch}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
+{{- end}}
+{{- range .OpsLen2Imm8}}
+	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen2Imm8(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.GoArch}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
+{{- end}}
+{{- range .OpsLen3Imm8}}
+	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen3Imm8(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.GoArch}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
+{{- end}}
+{{- range .OpsLen4Imm8}}
+	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen4Imm8(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.GoArch}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
+{{- end}}
 
 {{- range .VectorConversions }}
 	addF(simdPackage, "{{.Tsrc.Name}}.As{{.Tdst.Name}}", func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value { return args[0] }, sys.AMD64)
@@ -67,6 +82,76 @@ func opLen3(op ssa.Op, t *types.Type) func(s *state, n *ir.CallExpr, args []*ssa
 	}
 }
 
+func opLen4(op ssa.Op, t *types.Type) func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value {
+	return func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value {
+		return s.newValue4(op, t, args[0], args[1], args[2], args[3])
+	}
+}
+
+func plainPanicSimdImm(s *state) {
+	cmp := s.newValue0(ssa.OpConstBool, types.Types[types.TBOOL])
+	cmp.AuxInt = 1
+	// TODO: make this a standalone panic instead of reusing the overflow panic.
+	// Or maybe after we implement the switch table this will be obsolete anyway.
+	s.check(cmp, ir.Syms.Panicoverflow)
+}
+
+func opLen1Imm8(op ssa.Op, t *types.Type, offset int) func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value {
+	return func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value {
+		if args[1].Op == ssa.OpConst8 {
+			return s.newValue1I(op, t, args[1].AuxInt<<int64(offset), args[0])
+		}
+		plainPanicSimdImm(s)
+		// Even though this default call is unreachable semantically,
+		// it has to return something, otherwise the compiler will try to generate
+		// default codes which might lead to a FwdRef being put at the entry block
+		// triggering a compiler panic.
+		return s.newValue1I(op, t, 0, args[0])
+	}
+}
+
+func opLen2Imm8(op ssa.Op, t *types.Type, offset int) func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value {
+	return func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value {
+		if args[1].Op == ssa.OpConst8 {
+			return s.newValue2I(op, t, args[1].AuxInt<<int64(offset), args[0], args[2])
+		}
+		plainPanicSimdImm(s)
+		// Even though this default call is unreachable semantically,
+		// it has to return something, otherwise the compiler will try to generate
+		// default codes which might lead to a FwdRef being put at the entry block
+		// triggering a compiler panic.
+		return s.newValue2I(op, t, 0, args[0], args[2])
+	}
+}
+
+func opLen3Imm8(op ssa.Op, t *types.Type, offset int) func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value {
+	return func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value {
+		if args[1].Op == ssa.OpConst8 {
+			return s.newValue3I(op, t, args[1].AuxInt<<int64(offset), args[0], args[2], args[3])
+		}
+		plainPanicSimdImm(s)
+		// Even though this default call is unreachable semantically,
+		// it has to return something, otherwise the compiler will try to generate
+		// default codes which might lead to a FwdRef being put at the entry block
+		// triggering a compiler panic.
+		return s.newValue3I(op, t, 0, args[0], args[2], args[3])
+	}
+}
+
+func opLen4Imm8(op ssa.Op, t *types.Type, offset int) func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value {
+	return func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value {
+		if args[1].Op == ssa.OpConst8 {
+			return s.newValue4I(op, t, args[1].AuxInt<<int64(offset), args[0], args[2], args[3], args[4])
+		}
+		plainPanicSimdImm(s)
+		// Even though this default call is unreachable semantically,
+		// it has to return something, otherwise the compiler will try to generate
+		// default codes which might lead to a FwdRef being put at the entry block
+		// triggering a compiler panic.
+		return s.newValue4I(op, t, 0, args[0], args[2], args[3], args[4])
+	}
+}
+
 func simdLoad() func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value {
 	return func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value {
 		return s.newValue2(ssa.OpLoad, n.Type(), args[0], s.mem())
@@ -89,7 +174,7 @@ func writeSIMDIntrinsics(directory string, ops []Operation, typeMap simdTypeMap)
 		return err
 	}
 	defer file.Close()
-	opsLen1, opsLen2, opsLen3, err := genericOpsByLen(ops)
+	opsLen1, opsLen2, opsLen3, opsLen4, opsLen1Imm8, opsLen2Imm8, opsLen3Imm8, opsLen4Imm8, err := opsByLen(ops)
 	if err != nil {
 		return err
 	}
@@ -98,11 +183,16 @@ func writeSIMDIntrinsics(directory string, ops []Operation, typeMap simdTypeMap)
 		OpsLen1           []Operation
 		OpsLen2           []Operation
 		OpsLen3           []Operation
+		OpsLen4           []Operation
+		OpsLen1Imm8       []Operation
+		OpsLen2Imm8       []Operation
+		OpsLen3Imm8       []Operation
+		OpsLen4Imm8       []Operation
 		TypeMap           simdTypeMap
 		VectorConversions []simdTypePair
 		Masks             []simdType
 	}
-	err = t.Execute(file, templateData{opsLen1, opsLen2, opsLen3, typeMap, vConvertFromTypeMap(typeMap), masksFromTypeMap(typeMap)})
+	err = t.Execute(file, templateData{opsLen1, opsLen2, opsLen3, opsLen4, opsLen1Imm8, opsLen2Imm8, opsLen3Imm8, opsLen4Imm8, typeMap, vConvertFromTypeMap(typeMap), masksFromTypeMap(typeMap)})
 	if err != nil {
 		return fmt.Errorf("failed to execute template: %w", err)
 	}

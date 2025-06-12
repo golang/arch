@@ -30,19 +30,19 @@
 - go: PairwiseAdd
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Add pairs of elements in vector x and store them in higher half of the target; Add pairs of elements in vector y and store them in lower half of the target"
+  documentation: "// Add pairs of elements in vector x and store them in higher half of the target; Add pairs of elements in vector y and store them in lower half of the target"
 - go: PairwiseSub
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Sub pairs of elements in vector x and store them in higher half of the target; Sub pairs of elements in vector y and store them in lower half of the target"
+  documentation: "// Sub pairs of elements in vector x and store them in higher half of the target; Sub pairs of elements in vector y and store them in lower half of the target"
 - go: SaturatedPairwiseAdd
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Add pairs of elements in vector x and store them in higher half of the target; Add pairs of elements in vector y and store them in lower half of the target; With saturation"
+  documentation: "// Add pairs of elements in vector x and store them in higher half of the target; Add pairs of elements in vector y and store them in lower half of the target; With saturation"
 - go: SaturatedPairwiseSub
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Sub pairs of elements in vector x and store them in higher half of the target; Sub pairs of elements in vector y and store them in lower half of the target; With saturation"
+  documentation: "// Sub pairs of elements in vector x and store them in higher half of the target; Sub pairs of elements in vector y and store them in lower half of the target; With saturation"
 - go: And
   commutative: "true"
   extension: "AVX.*"
@@ -84,80 +84,80 @@
   constImm: 0
   commutative: "true"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 0 if it has;"
+  documentation: "// Predicate immediate is 0 if it has;"
 - go: Less
   constImm: 1
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 1 if it has;"
+  documentation: "// Predicate immediate is 1 if it has;"
 - go: LessEqual
   constImm: 2
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 2 if it has;"
+  documentation: "// Predicate immediate is 2 if it has;"
 - go: IsNan # For float only.
   constImm: 3
   commutative: "true"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 3 if it has; Returns mask element True if either one of the input\\'s element is Nan; Please use this method as x\\.IsNan\\(x\\) to check x only;"
+  documentation: "// Predicate immediate is 3 if it has; Returns mask element True if either one of the input\\'s element is Nan; Please use this method as x\\.IsNan\\(x\\) to check x only;"
 - go: NotEqual
   constImm: 4
   commutative: "true"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 4 if it has;"
+  documentation: "// Predicate immediate is 4 if it has;"
 - go: GreaterEqual
   constImm: 5
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 5 if it has;"
+  documentation: "// Predicate immediate is 5 if it has;"
 - go: Greater
   constImm: 6
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 6 if it has;"
+  documentation: "// Predicate immediate is 6 if it has;"
 
 - go: MaskedEqual
   constImm: 0
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 0 if it has;"
+  documentation: "// Predicate immediate is 0 if it has;"
 - go: MaskedLess
   constImm: 1
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 1 if it has;"
+  documentation: "// Predicate immediate is 1 if it has;"
 - go: MaskedLessEqual
   constImm: 2
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 2 if it has;"
+  documentation: "// Predicate immediate is 2 if it has;"
 - go: MaskedIsNan # For float only.
   constImm: 3
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 3 if it has; Returns mask element True if either one of the input\\'s element is Nan; Please use this method as x\\.IsNan\\(x\\) to check x only;"
+  documentation: "// Predicate immediate is 3 if it has; Returns mask element True if either one of the input\\'s element is Nan; Please use this method as x\\.IsNan\\(x\\) to check x only;"
 - go: MaskedNotEqual
   constImm: 4
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 4 if it has;"
+  documentation: "// Predicate immediate is 4 if it has;"
 - go: MaskedGreaterEqual
   constImm: 5
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 5 if it has;"
+  documentation: "// Predicate immediate is 5 if it has;"
 - go: MaskedGreater
   constImm: 6
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 6 if it has;"
+  documentation: "// Predicate immediate is 6 if it has;"
 - go: Div
   commutative: "false"
   extension: "AVX.*"
@@ -237,15 +237,15 @@
 - go: MulEvenWiden
   commutative: "true"
   extension: "AVX.*"
-  documentation: "Multiplies the even index elements from the two sources of size X at index i, store the result of size 2X at index i/2"
+  documentation: "// Multiplies the even index elements from the two sources of size X at index i, store the result of size 2X at index i/2"
 - go: MulHigh
   commutative: "true"
   extension: "AVX.*"
-  documentation: "Multiplies the elements from the two sources of size X at index i, store the high X bits of the result of size 2X at index i"
+  documentation: "// Multiplies the elements from the two sources of size X at index i, store the high X bits of the result of size 2X at index i"
 - go: MulLow
   commutative: "true"
   extension: "AVX.*"
-  documentation: "Multiplies the elements from the two sources of size X at index i, store the low X bits of the result of size 2X at index i"
+  documentation: "// Multiplies the elements from the two sources of size X at index i, store the low X bits of the result of size 2X at index i"
 - go: MaskedMul
   masked: "true"
   commutative: "true"
@@ -254,14 +254,14 @@
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "Multiplies the even index elements from the two sources of size X at index i, store the result of size 2X at index i/2"
+  documentation: "// Multiplies the even index elements from the two sources of size X at index i, store the result of size 2X at index i/2"
 - go: MaskedMulHigh
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "Multiplies the elements from the two sources of size X at index i, store the high X bits of the result of size 2X at index i"
+  documentation: "// Multiplies the elements from the two sources of size X at index i, store the high X bits of the result of size 2X at index i"
 - go: MaskedMulLow
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "Multiplies the elements from the two sources of size X at index i, store the low X bits of the result of size 2X at index i"
+  documentation: "// Multiplies the elements from the two sources of size X at index i, store the low X bits of the result of size 2X at index i"

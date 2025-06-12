@@ -10,77 +10,77 @@
   constImm: 0
   commutative: "true"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 0 if it has;"
+  documentation: "// Predicate immediate is 0 if it has;"
 - go: Less
   constImm: 1
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 1 if it has;"
+  documentation: "// Predicate immediate is 1 if it has;"
 - go: LessEqual
   constImm: 2
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 2 if it has;"
+  documentation: "// Predicate immediate is 2 if it has;"
 - go: IsNan # For float only.
   constImm: 3
   commutative: "true"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 3 if it has; Returns mask element True if either one of the input\\'s element is Nan; Please use this method as x\\.IsNan\\(x\\) to check x only;"
+  documentation: "// Predicate immediate is 3 if it has; Returns mask element True if either one of the input\\'s element is Nan; Please use this method as x\\.IsNan\\(x\\) to check x only;"
 - go: NotEqual
   constImm: 4
   commutative: "true"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 4 if it has;"
+  documentation: "// Predicate immediate is 4 if it has;"
 - go: GreaterEqual
   constImm: 5
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 5 if it has;"
+  documentation: "// Predicate immediate is 5 if it has;"
 - go: Greater
   constImm: 6
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 6 if it has;"
+  documentation: "// Predicate immediate is 6 if it has;"
 
 - go: MaskedEqual
   constImm: 0
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 0 if it has;"
+  documentation: "// Predicate immediate is 0 if it has;"
 - go: MaskedLess
   constImm: 1
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 1 if it has;"
+  documentation: "// Predicate immediate is 1 if it has;"
 - go: MaskedLessEqual
   constImm: 2
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 2 if it has;"
+  documentation: "// Predicate immediate is 2 if it has;"
 - go: MaskedIsNan # For float only.
   constImm: 3
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 3 if it has; Returns mask element True if either one of the input\\'s element is Nan; Please use this method as x\\.IsNan\\(x\\) to check x only;"
+  documentation: "// Predicate immediate is 3 if it has; Returns mask element True if either one of the input\\'s element is Nan; Please use this method as x\\.IsNan\\(x\\) to check x only;"
 - go: MaskedNotEqual
   constImm: 4
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 4 if it has;"
+  documentation: "// Predicate immediate is 4 if it has;"
 - go: MaskedGreaterEqual
   constImm: 5
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 5 if it has;"
+  documentation: "// Predicate immediate is 5 if it has;"
 - go: MaskedGreater
   constImm: 6
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
-  documentation: "Predicate immediate is 6 if it has;"
+  documentation: "// Predicate immediate is 6 if it has;"
