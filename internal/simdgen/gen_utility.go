@@ -275,13 +275,13 @@ func (op *Operation) regShape() (string, error) {
 		vRegInS = fmt.Sprintf("fp%d", vRegInCnt)
 	}
 	if kMaskInCnt > 0 {
-		kMaskInS = fmt.Sprintf("m%d", kMaskInCnt)
+		kMaskInS = fmt.Sprintf("k%d", kMaskInCnt)
 	}
 	if vRegOutCnt > 0 {
 		vRegOutS = fmt.Sprintf("fp%d", vRegOutCnt)
 	}
 	if kMaskOutCnt > 0 {
-		kMaskOutS = fmt.Sprintf("m%d", kMaskOutCnt)
+		kMaskOutS = fmt.Sprintf("k%d", kMaskOutCnt)
 	}
 	if kMaskInCnt == 0 && kMaskOutCnt == 0 {
 		// For pure fp we can abbreviate it as fp%d%d.

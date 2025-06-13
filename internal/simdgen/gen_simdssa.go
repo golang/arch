@@ -61,19 +61,19 @@ func writeSIMDSSA(directory string, ops []Operation) error {
 	regInfoKeys := []string{
 		"fp11",
 		"fp21",
-		"fp2m1",
-		"fp2m1fp1",
-		"fp2m1m1",
-		"fp1m1fp1",
+		"fp2k1",
+		"fp2k1fp1",
+		"fp2k1k1",
+		"fp1k1fp1",
 		"fp31",
-		"fp3m1fp1",
+		"fp3k1fp1",
 		"fp11Imm8",
-		"fp1m1fp1Imm8",
+		"fp1k1fp1Imm8",
 		"fp21Imm8",
-		"fp2m1Imm8",
-		"fp2m1m1Imm8",
+		"fp2k1Imm8",
+		"fp2k1k1Imm8",
 		"fp31ResultInArg0",
-		"fp3m1fp1ResultInArg0",
+		"fp3k1fp1ResultInArg0",
 	}
 	regInfoSet := map[string][]string{}
 	for _, key := range regInfoKeys {
@@ -139,7 +139,7 @@ func writeSIMDSSA(directory string, ops []Operation) error {
 		}
 		data := tplSSAData{
 			Cases:  strings.Join(cases, ",\n\t\t"),
-			Helper: "simdGen" + capitalizeFirst(regShape),
+			Helper: "simd" + capitalizeFirst(regShape),
 		}
 		if err := ssaTemplates.ExecuteTemplate(file, "case", data); err != nil {
 			return fmt.Errorf("failed to execute case template for %s: %w", regShape, err)
