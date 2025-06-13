@@ -58,11 +58,11 @@
   commutative: "true"
   extension: "AVX.*"
 - go: AndNot
-  commutative: "true"
+  commutative: "false"
   extension: "AVX.*"
 - go: MaskedAndNot
   masked: "true"
-  commutative: "true"
+  commutative: "false"
   extension: "AVX.*"
 - go: Xor
   commutative: "true"
