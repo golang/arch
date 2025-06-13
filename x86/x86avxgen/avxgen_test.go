@@ -6,7 +6,7 @@ package main
 
 import (
 	"bytes"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -57,7 +57,7 @@ func TestOutput(t *testing.T) {
 	var testCases []testCase
 	{
 		opcodeRE := regexp.MustCompile(`as: ([A-Z][A-Z0-9]*)`)
-		data, err := ioutil.ReadFile(filepath.Join("testdata", "golden.txt"))
+		data, err := os.ReadFile(filepath.Join("testdata", "golden.txt"))
 		if err != nil {
 			t.Fatalf("read golden file: %v", err)
 		}
