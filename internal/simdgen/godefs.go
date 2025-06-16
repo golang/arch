@@ -52,10 +52,18 @@ func compareOperations(x, y Operation) int {
 	if c := strings.Compare(x.GoArch, y.GoArch); c != 0 {
 		return c
 	}
-	if len(x.In) < len(y.In) {
+	xIn, yIn := x.In, y.In
+
+	if len(xIn) > len(yIn) && xIn[len(xIn)-1].Class == "mask" {
+		xIn = xIn[:len(xIn)-1]
+	} else if len(xIn) < len(yIn) && yIn[len(yIn)-1].Class == "mask" {
+		yIn = yIn[:len(yIn)-1]
+	}
+
+	if len(xIn) < len(yIn) {
 		return -1
 	}
-	if len(x.In) > len(y.In) {
+	if len(xIn) > len(yIn) {
 		return 1
 	}
 	if len(x.Out) < len(y.Out) {
@@ -64,13 +72,30 @@ func compareOperations(x, y Operation) int {
 	if len(x.Out) > len(y.Out) {
 		return 1
 	}
-	for i := range x.In {
-		ox, oy := &x.In[i], y.In[i]
-		if c := compareStringPointers(ox.Go, oy.Go); c != 0 {
+	for i := range xIn {
+		ox, oy := &xIn[i], &yIn[i]
+		if c := compareOperands(ox, oy); c != 0 {
 			return c
 		}
 	}
 	return 0
+}
+
+func compareOperands(x, y *Operand) int {
+	if c := strings.Compare(x.Class, y.Class); c != 0 {
+		return c
+	}
+	if x.Class == "immediate" {
+		return compareStringPointers(x.ImmOffset, y.ImmOffset)
+	} else {
+		if c := strings.Compare(*x.Base, *y.Base); c != 0 {
+			return c
+		}
+		if c := *x.ElemBits - *y.ElemBits; c != 0 {
+			return c
+		}
+		return *x.Bits - *y.Bits
+	}
 }
 
 type Operand struct {

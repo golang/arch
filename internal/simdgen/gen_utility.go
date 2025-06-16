@@ -308,6 +308,47 @@ func (op *Operation) sortOperand() {
 	})
 }
 
+func classifyOp(op Operation) (string, Operation, error) {
+	_, shapeOut, _, immType, _, opNoConstMask, gOp, err := op.shape()
+	if err != nil {
+		return "", op, err
+	}
+	// Put the go ssa type in GoArch field, simd intrinsics need it.
+	if shapeOut == OneVregOut || shapeOut == OneKmaskOut || shapeOut == OneVregOutAtIn {
+		opNoConstMask.GoArch = fmt.Sprintf("types.TypeVec%d", *opNoConstMask.Out[0].Bits)
+		gOp.GoArch = fmt.Sprintf("types.TypeVec%d", *gOp.Out[0].Bits)
+	}
+	if immType == VarImm || immType == ConstVarImm {
+		switch len(opNoConstMask.In) {
+		case 1:
+			return "", op, fmt.Errorf("simdgen does not recognize this operation of only immediate input: %s", op)
+		case 2:
+			return "op1Imm8", opNoConstMask, nil
+		case 3:
+			return "op2Imm8", opNoConstMask, nil
+		case 4:
+			return "op3Imm8", opNoConstMask, nil
+		case 5:
+			return "op4Imm8", opNoConstMask, nil
+		default:
+			return "", op, fmt.Errorf("simdgen does not recognize this operation of input length %d: %s", len(opNoConstMask.In), op)
+		}
+	} else {
+		switch len(gOp.In) {
+		case 1:
+			return "op1", gOp, nil
+		case 2:
+			return "op2", gOp, nil
+		case 3:
+			return "op3", gOp, nil
+		case 4:
+			return "op4", gOp, nil
+		default:
+			return "", op, fmt.Errorf("simdgen does not recognize this operation of input length %d: %s", len(opNoConstMask.In), op)
+		}
+	}
+}
+
 // opsByLen returns the lists of ops stripping the const masks away, aggregated by input length.
 // Ops with only const imms also has their immediates removed.
 func opsByLen(ops []Operation) (opsLen1, opsLen2, opsLen3, opsLen4, opsLen1Imm8, opsLen2Imm8, opsLen3Imm8, opsLen4Imm8 []Operation, e error) {
