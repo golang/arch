@@ -308,6 +308,9 @@ func (op *Operation) sortOperand() {
 	})
 }
 
+// classifyOp returns a classification string, modified operation, and perhaps error based
+// on the stub and intrinsic shape for the operation.
+// The classification string is in the regular expression set "op[1234](Imm8)?"
 func classifyOp(op Operation) (string, Operation, error) {
 	_, shapeOut, _, immType, _, opNoConstMask, gOp, err := op.shape()
 	if err != nil {
@@ -347,78 +350,6 @@ func classifyOp(op Operation) (string, Operation, error) {
 			return "", op, fmt.Errorf("simdgen does not recognize this operation of input length %d: %s", len(opNoConstMask.In), op)
 		}
 	}
-}
-
-// opsByLen returns the lists of ops stripping the const masks away, aggregated by input length.
-// Ops with only const imms also has their immediates removed.
-func opsByLen(ops []Operation) (opsLen1, opsLen2, opsLen3, opsLen4, opsLen1Imm8, opsLen2Imm8, opsLen3Imm8, opsLen4Imm8 []Operation, e error) {
-	opsLen1 = make([]Operation, 0)
-	opsLen2 = make([]Operation, 0)
-	opsLen3 = make([]Operation, 0)
-	opsLen4 = make([]Operation, 0)
-	opsLen1Imm8 = make([]Operation, 0)
-	opsLen2Imm8 = make([]Operation, 0)
-	opsLen3Imm8 = make([]Operation, 0)
-	opsLen4Imm8 = make([]Operation, 0)
-	for _, op := range ops {
-		_, shapeOut, _, immType, _, opNoConstMask, gOp, err := op.shape()
-		if err != nil {
-			e = err
-			return
-		}
-		// Put the go ssa type in GoArch field, simd intrinsics need it.
-		if shapeOut == OneVregOut || shapeOut == OneKmaskOut || shapeOut == OneVregOutAtIn {
-			opNoConstMask.GoArch = fmt.Sprintf("types.TypeVec%d", *opNoConstMask.Out[0].Bits)
-			gOp.GoArch = fmt.Sprintf("types.TypeVec%d", *gOp.Out[0].Bits)
-		}
-		if immType == VarImm || immType == ConstVarImm {
-			switch len(opNoConstMask.In) {
-			case 1:
-				e = fmt.Errorf("simdgen does not recognize this operation of only immediate input: %s", op)
-				return
-			case 2:
-				opsLen1Imm8 = append(opsLen1Imm8, opNoConstMask)
-			case 3:
-				opsLen2Imm8 = append(opsLen2Imm8, opNoConstMask)
-			case 4:
-				opsLen3Imm8 = append(opsLen3Imm8, opNoConstMask)
-			case 5:
-				opsLen4Imm8 = append(opsLen4Imm8, opNoConstMask)
-			default:
-				e = fmt.Errorf("simdgen does not recognize this operation of input length %d: %s", len(opNoConstMask.In), op)
-			}
-		} else {
-			switch len(gOp.In) {
-			case 1:
-				opsLen1 = append(opsLen1, gOp)
-			case 2:
-				opsLen2 = append(opsLen2, gOp)
-			case 3:
-				opsLen3 = append(opsLen3, gOp)
-			case 4:
-				opsLen4 = append(opsLen4, gOp)
-			default:
-				e = fmt.Errorf("simdgen does not recognize this operation of input length %d: %s", len(opNoConstMask.In), op)
-			}
-		}
-	}
-	sortKey := func(op *Operation) string {
-		return *op.In[0].Go + op.Go
-	}
-	sortBySortKey := func(ops []Operation) {
-		sort.Slice(ops, func(i, j int) bool {
-			return sortKey(&ops[i]) < sortKey(&ops[j])
-		})
-	}
-	sortBySortKey(opsLen1)
-	sortBySortKey(opsLen2)
-	sortBySortKey(opsLen3)
-	sortBySortKey(opsLen4)
-	sortBySortKey(opsLen1Imm8)
-	sortBySortKey(opsLen2Imm8)
-	sortBySortKey(opsLen3Imm8)
-	sortBySortKey(opsLen4Imm8)
-	return
 }
 
 // dedup is deduping operations in the full structure level.
