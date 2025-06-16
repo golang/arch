@@ -54,14 +54,14 @@
 
 # Sub
 - go: Sub
-  asm: "VPSUB[BWDQ]|VADDP[SD]"
+  asm: "VPSUB[BWDQ]|VSUBP[SD]"
   in: &2any
   - *any
   - *any
   out: &1any
   - *any
 - go: MaskedSub
-  asm: "VPSUB[BWDQ]|VADDP[SD]"
+  asm: "VPSUB[BWDQ]|VSUBP[SD]"
   in:
   - class: mask
   - *any
