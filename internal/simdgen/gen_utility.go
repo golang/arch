@@ -650,6 +650,12 @@ func (op Operand) String() string {
 		sb.WriteString("    OverwriteBase: <nil>\n")
 	}
 
+	if op.OverwriteElementBits != nil {
+		sb.WriteString(fmt.Sprintf("    OverwriteElementBits: %d\n", *op.OverwriteElementBits))
+	} else {
+		sb.WriteString("    OverwriteElementBits: <nil>\n")
+	}
+
 	sb.WriteString("  }\n")
 	return sb.String()
 }

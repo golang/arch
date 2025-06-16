@@ -35,10 +35,10 @@
   - class: mask
   - go: $t1
     base: uint
-    overwriteElemBits: 8
+    overwriteElementBits: 8
   - go: $t2
     base: int
-    overwriteElemBits: 8
+    overwriteElementBits: 8
   out:
   - *int3
 - go: DotProdBroadcast
@@ -63,11 +63,11 @@
   - &qdpa_src1
     go: $t_src1
     base: uint
-    overwriteElemBits: 8
+    overwriteElementBits: 8
   - &qdpa_src2
     go: $t_src2
     base: int
-    overwriteElemBits: 8
+    overwriteElementBits: 8
   out:
   - *qdpa_acc
 - go: MaskedUnsignedSignedQuadDotProdAccumulate
@@ -106,11 +106,11 @@
   - &pdpa_src1
     go: $t_src1
     base: int
-    overwriteElemBits: 16
+    overwriteElementBits: 16
   - &pdpa_src2
     go: $t_src2
     base: int
-    overwriteElemBits: 16
+    overwriteElementBits: 16
   out:
   - *pdpa_acc
 - go: MaskedPairDotProdAccumulate
