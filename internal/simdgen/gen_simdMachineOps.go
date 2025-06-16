@@ -5,6 +5,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"sort"
 )
@@ -26,13 +27,10 @@ func simdAMD64Ops(fp11, fp21, fp2k1, fp1k1fp1, fp2k1fp1, fp2k1k1, fp31, fp3k1fp1
 
 // writeSIMDMachineOps generates the machine ops and writes it to simdAMD64ops.go
 // within the specified directory.
-func writeSIMDMachineOps(directory string, ops []Operation) error {
+func writeSIMDMachineOps(ops []Operation) *bytes.Buffer {
 	t := templateOf(simdMachineOpsTmpl, "simdAMD64Ops")
-	file, err := createPath(directory, "src/cmd/compile/internal/ssa/_gen/simdAMD64ops.go")
-	if err != nil {
-		return err
-	}
-	defer file.Close()
+	buffer := new(bytes.Buffer)
+
 	type opData struct {
 		sortKey      string
 		OpName       string
@@ -54,7 +52,7 @@ func writeSIMDMachineOps(directory string, ops []Operation) error {
 	for _, op := range ops {
 		shapeIn, shapeOut, maskType, _, _, _, gOp, err := op.shape()
 		if err != nil {
-			return err
+			panic(err)
 		}
 		asm := gOp.Asm
 		if maskType == OneMask {
@@ -69,10 +67,10 @@ func writeSIMDMachineOps(directory string, ops []Operation) error {
 		seen[asm] = struct{}{}
 		regInfo, err := op.regShape()
 		if err != nil {
-			return err
+			panic(err)
 		}
 		if _, ok := regInfoSet[regInfo]; !ok {
-			return fmt.Errorf("unsupported register constraint, please update the template and AMD64Ops.go: %s", regInfo)
+			panic(fmt.Errorf("unsupported register constraint, please update the template and AMD64Ops.go: %s", regInfo))
 		}
 		var outType string
 		if shapeOut == OneVregOut || shapeOut == OneVregOutAtIn || gOp.Out[0].OverwriteClass != nil {
@@ -81,7 +79,7 @@ func writeSIMDMachineOps(directory string, ops []Operation) error {
 		} else if shapeOut == OneKmaskOut {
 			outType = "Mask"
 		} else {
-			return fmt.Errorf("simdgen does not recognize this output shape: %d", shapeOut)
+			panic(fmt.Errorf("simdgen does not recognize this output shape: %d", shapeOut))
 		}
 		resultInArg0 := "false"
 		if shapeOut == OneVregOutAtIn {
@@ -99,10 +97,10 @@ func writeSIMDMachineOps(directory string, ops []Operation) error {
 	sort.Slice(opsDataImm, func(i, j int) bool {
 		return opsDataImm[i].sortKey < opsDataImm[j].sortKey
 	})
-	err = t.Execute(file, machineOpsData{opsData, opsDataImm})
+	err := t.Execute(buffer, machineOpsData{opsData, opsDataImm})
 	if err != nil {
-		return fmt.Errorf("failed to execute template: %w", err)
+		panic(fmt.Errorf("failed to execute template: %w", err))
 	}
 
-	return nil
+	return buffer
 }

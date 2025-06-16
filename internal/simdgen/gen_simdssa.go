@@ -5,6 +5,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"strings"
 	"text/template"
@@ -56,7 +57,7 @@ type tplSSAData struct {
 
 // writeSIMDSSA generates the ssa to prog lowering codes and writes it to simdssa.go
 // within the specified directory.
-func writeSIMDSSA(directory string, ops []Operation) error {
+func writeSIMDSSA(ops []Operation) *bytes.Buffer {
 	var ZeroingMask []string
 	regInfoKeys := []string{
 		"fp11",
@@ -86,7 +87,7 @@ func writeSIMDSSA(directory string, ops []Operation) error {
 		asm := op.Asm
 		shapeIn, shapeOut, maskType, _, _, _, gOp, err := op.shape()
 		if err != nil {
-			return err
+			panic(err)
 		}
 		if maskType == 2 {
 			asm += "Masked"
@@ -104,7 +105,7 @@ func writeSIMDSSA(directory string, ops []Operation) error {
 		}
 		regShape, err := op.regShape()
 		if err != nil {
-			return err
+			panic(err)
 		}
 		if shapeOut == OneVregOutAtIn {
 			regShape += "ResultInArg0"
@@ -118,17 +119,13 @@ func writeSIMDSSA(directory string, ops []Operation) error {
 		regInfoSet[regShape] = append(regInfoSet[regShape], caseStr)
 	}
 	if len(allUnseen) != 0 {
-		return fmt.Errorf("unsupported register constraint for prog, please update gen_simdssa.go and amd64/ssa.go: %+v", allUnseen)
+		panic(fmt.Errorf("unsupported register constraint for prog, please update gen_simdssa.go and amd64/ssa.go: %+v", allUnseen))
 	}
 
-	file, err := createPath(directory, "src/cmd/compile/internal/amd64/simdssa.go")
-	if err != nil {
-		return err
-	}
-	defer file.Close()
+	buffer := new(bytes.Buffer)
 
-	if err := ssaTemplates.ExecuteTemplate(file, "header", nil); err != nil {
-		return fmt.Errorf("failed to execute header template: %w", err)
+	if err := ssaTemplates.ExecuteTemplate(buffer, "header", nil); err != nil {
+		panic(fmt.Errorf("failed to execute header template: %w", err))
 	}
 
 	for _, regShape := range regInfoKeys {
@@ -141,24 +138,24 @@ func writeSIMDSSA(directory string, ops []Operation) error {
 			Cases:  strings.Join(cases, ",\n\t\t"),
 			Helper: "simd" + capitalizeFirst(regShape),
 		}
-		if err := ssaTemplates.ExecuteTemplate(file, "case", data); err != nil {
-			return fmt.Errorf("failed to execute case template for %s: %w", regShape, err)
+		if err := ssaTemplates.ExecuteTemplate(buffer, "case", data); err != nil {
+			panic(fmt.Errorf("failed to execute case template for %s: %w", regShape, err))
 		}
 	}
 
-	if err := ssaTemplates.ExecuteTemplate(file, "footer", nil); err != nil {
-		return fmt.Errorf("failed to execute footer template: %w", err)
+	if err := ssaTemplates.ExecuteTemplate(buffer, "footer", nil); err != nil {
+		panic(fmt.Errorf("failed to execute footer template: %w", err))
 	}
 
 	if len(ZeroingMask) != 0 {
-		if err := ssaTemplates.ExecuteTemplate(file, "zeroing", strings.Join(ZeroingMask, ",\n\t\t")); err != nil {
-			return fmt.Errorf("failed to execute footer template: %w", err)
+		if err := ssaTemplates.ExecuteTemplate(buffer, "zeroing", strings.Join(ZeroingMask, ",\n\t\t")); err != nil {
+			panic(fmt.Errorf("failed to execute footer template: %w", err))
 		}
 	}
 
-	if err := ssaTemplates.ExecuteTemplate(file, "ending", nil); err != nil {
-		return fmt.Errorf("failed to execute footer template: %w", err)
+	if err := ssaTemplates.ExecuteTemplate(buffer, "ending", nil); err != nil {
+		panic(fmt.Errorf("failed to execute footer template: %w", err))
 	}
 
-	return nil
+	return buffer
 }

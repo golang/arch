@@ -175,26 +175,13 @@ func writeGoDefs(path string, cl unify.Closure) error {
 	log.Printf("dedup len: %d\n", len(deduped))
 	typeMap := parseSIMDTypes(deduped)
 
-	if err = writeSIMDTypes(path, typeMap); err != nil {
-		return err
-	}
-	if err = writeSIMDStubs(path, deduped, typeMap); err != nil {
-		return err
-	}
-	if err = writeSIMDIntrinsics(path, deduped, typeMap); err != nil {
-		return err
-	}
-	if err = writeSIMDGenericOps(path, deduped); err != nil {
-		return err
-	}
-	if err = writeSIMDMachineOps(path, deduped); err != nil {
-		return err
-	}
-	if err = writeSIMDRules(path, deduped); err != nil {
-		return err
-	}
-	if err = writeSIMDSSA(path, deduped); err != nil {
-		return err
-	}
+	formatWriteAndClose(writeSIMDTypes(typeMap), path, "src/"+simdPackage+"/types_amd64.go")
+	formatWriteAndClose(writeSIMDStubs(deduped, typeMap), path, "src/"+simdPackage+"/stubs_amd64.go")
+	formatWriteAndClose(writeSIMDIntrinsics(deduped, typeMap), path, "src/cmd/compile/internal/ssagen/simdintrinsics.go")
+	formatWriteAndClose(writeSIMDGenericOps(deduped), path, "src/cmd/compile/internal/ssa/_gen/simdgenericOps.go")
+	formatWriteAndClose(writeSIMDMachineOps(deduped), path, "src/cmd/compile/internal/ssa/_gen/simdAMD64ops.go")
+	formatWriteAndClose(writeSIMDSSA(deduped), path, "src/cmd/compile/internal/amd64/simdssa.go")
+	writeAndClose(writeSIMDRules(deduped).Bytes(), path, "src/cmd/compile/internal/ssa/_gen/simdAMD64.rules")
+
 	return nil
 }

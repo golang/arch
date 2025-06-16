@@ -5,7 +5,9 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"go/format"
 	"log"
 	"os"
 	"path/filepath"
@@ -37,6 +39,24 @@ func createPath(goroot string, file string) (*os.File, error) {
 		return nil, fmt.Errorf("failed to create file %s: %w", fp, err)
 	}
 	return f, nil
+}
+
+func formatWriteAndClose(out *bytes.Buffer, goroot string, file string) {
+	b, err := format.Source(out.Bytes())
+	if err != nil {
+		panic(err)
+	} else {
+		writeAndClose(b, goroot, file)
+	}
+}
+
+func writeAndClose(b []byte, goroot string, file string) {
+	ofile, err := createPath(goroot, file)
+	if err != nil {
+		panic(err)
+	}
+	ofile.Write(b)
+	ofile.Close()
 }
 
 const (

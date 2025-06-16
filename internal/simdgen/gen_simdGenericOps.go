@@ -5,6 +5,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"sort"
 )
@@ -26,13 +27,10 @@ func simdGenericOps() []opData {
 
 // writeSIMDGenericOps generates the generic ops and writes it to simdAMD64ops.go
 // within the specified directory.
-func writeSIMDGenericOps(directory string, ops []Operation) error {
+func writeSIMDGenericOps(ops []Operation) *bytes.Buffer {
 	t := templateOf(simdGenericOpsTmpl, "simdgenericOps")
-	file, err := createPath(directory, "src/cmd/compile/internal/ssa/_gen/simdgenericOps.go")
-	if err != nil {
-		return err
-	}
-	defer file.Close()
+	buffer := new(bytes.Buffer)
+
 	type genericOpsData struct {
 		sortKey string
 		OpName  string
@@ -47,7 +45,7 @@ func writeSIMDGenericOps(directory string, ops []Operation) error {
 	for _, op := range ops {
 		_, _, _, immType, _, _, gOp, err := op.shape()
 		if err != nil {
-			return err
+			panic(err)
 		}
 		genericNames := gOp.Go + *gOp.In[0].Go
 		gOpData := genericOpsData{*gOp.In[0].Go + gOp.Go, genericNames, len(gOp.In), op.Commutative}
@@ -64,10 +62,10 @@ func writeSIMDGenericOps(directory string, ops []Operation) error {
 		return opsData.OpsImm[i].sortKey < opsData.OpsImm[j].sortKey
 	})
 
-	err = t.Execute(file, opsData)
+	err := t.Execute(buffer, opsData)
 	if err != nil {
-		return fmt.Errorf("failed to execute template: %w", err)
+		panic(fmt.Errorf("failed to execute template: %w", err))
 	}
 
-	return nil
+	return buffer
 }

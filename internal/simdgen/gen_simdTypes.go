@@ -5,6 +5,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"slices"
 	"sort"
@@ -260,18 +261,13 @@ func typesFromTypeMap(typeMap simdTypeMap) []simdType {
 	return m
 }
 
-// writeSIMDTypes generates the simd vector type and writes it to types_amd64.go
-// within the specified directory.
-func writeSIMDTypes(directory string, typeMap simdTypeMap) error {
+// writeSIMDTypes generates the simd vector types into a bytes.Buffer
+func writeSIMDTypes(typeMap simdTypeMap) *bytes.Buffer {
 	t := templateOf(simdTypesTemplates, "types_amd64")
-	file, err := createPath(directory, "src/"+simdPackage+"/types_amd64.go")
-	if err != nil {
-		return err
-	}
-	defer file.Close()
+	buffer := new(bytes.Buffer)
 
-	if err := t.ExecuteTemplate(file, "fileHeader", nil); err != nil {
-		return fmt.Errorf("failed to execute fileHeader template: %w", err)
+	if err := t.ExecuteTemplate(buffer, "fileHeader", nil); err != nil {
+		panic(fmt.Errorf("failed to execute fileHeader template: %w", err))
 	}
 
 	sizes := make([]int, 0, len(typeMap))
@@ -281,31 +277,27 @@ func writeSIMDTypes(directory string, typeMap simdTypeMap) error {
 	sort.Ints(sizes)
 
 	for _, size := range sizes {
-		if err := t.ExecuteTemplate(file, "sizeTmpl", size); err != nil {
-			return fmt.Errorf("failed to execute size template for size %d: %w", size, err)
+		if err := t.ExecuteTemplate(buffer, "sizeTmpl", size); err != nil {
+			panic(fmt.Errorf("failed to execute size template for size %d: %w", size, err))
 		}
 		for _, typeDef := range typeMap[size] {
-			if err := t.ExecuteTemplate(file, "typeTmpl", typeDef); err != nil {
-				return fmt.Errorf("failed to execute type template for type %s: %w", typeDef.Name, err)
+			if err := t.ExecuteTemplate(buffer, "typeTmpl", typeDef); err != nil {
+				panic(fmt.Errorf("failed to execute type template for type %s: %w", typeDef.Name, err))
 			}
 		}
 	}
 
-	return nil
+	return buffer
 }
 
 // writeSIMDStubs generates the simd vector intrinsic stubs and writes it to stubs_amd64.go
 // within the specified directory.
-func writeSIMDStubs(directory string, ops []Operation, typeMap simdTypeMap) error {
+func writeSIMDStubs(ops []Operation, typeMap simdTypeMap) *bytes.Buffer {
 	t := templateOf(simdStubsTmpl, "simdStubs")
-	file, err := createPath(directory, "src/"+simdPackage+"/stubs_amd64.go")
-	if err != nil {
-		return err
-	}
-	defer file.Close()
+	buffer := new(bytes.Buffer)
 
-	if err := t.ExecuteTemplate(file, "fileHeader", nil); err != nil {
-		return fmt.Errorf("failed to execute fileHeader template: %w", err)
+	if err := t.ExecuteTemplate(buffer, "fileHeader", nil); err != nil {
+		panic(fmt.Errorf("failed to execute fileHeader template: %w", err))
 	}
 
 	slices.SortFunc(ops, compareOperations)
@@ -313,30 +305,30 @@ func writeSIMDStubs(directory string, ops []Operation, typeMap simdTypeMap) erro
 	for i, op := range ops {
 		if s, op, err := classifyOp(op); err == nil {
 			if i == 0 || op.Go != ops[i-1].Go {
-				fmt.Fprintf(file, "\n/* %s */\n", op.Go)
+				fmt.Fprintf(buffer, "\n/* %s */\n", op.Go)
 			}
-			if err := t.ExecuteTemplate(file, s, op); err != nil {
-				return fmt.Errorf("failed to execute template %s for op %s: %w", s, op.Go, err)
+			if err := t.ExecuteTemplate(buffer, s, op); err != nil {
+				panic(fmt.Errorf("failed to execute template %s for op %s: %w", s, op.Go, err))
 			}
 
 		} else {
-			return fmt.Errorf("failed to classify op %v: %w", op.Go, err)
+			panic(fmt.Errorf("failed to classify op %v: %w", op.Go, err))
 		}
 	}
 
 	vectorConversions := vConvertFromTypeMap(typeMap)
 	for _, conv := range vectorConversions {
-		if err := t.ExecuteTemplate(file, "vectorConversion", conv); err != nil {
-			return fmt.Errorf("failed to execute vectorConversion template: %w", err)
+		if err := t.ExecuteTemplate(buffer, "vectorConversion", conv); err != nil {
+			panic(fmt.Errorf("failed to execute vectorConversion template: %w", err))
 		}
 	}
 
 	masks := masksFromTypeMap(typeMap)
 	for _, mask := range masks {
-		if err := t.ExecuteTemplate(file, "mask", mask); err != nil {
-			return fmt.Errorf("failed to execute mask template for mask %s: %w", mask.Name, err)
+		if err := t.ExecuteTemplate(buffer, "mask", mask); err != nil {
+			panic(fmt.Errorf("failed to execute mask template for mask %s: %w", mask.Name, err))
 		}
 	}
 
-	return nil
+	return buffer
 }

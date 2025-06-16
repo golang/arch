@@ -5,6 +5,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"slices"
 )
@@ -60,52 +61,48 @@ func simdIntrinsics(addF func(pkg, fn string, b intrinsicBuilder, archFamilies .
 
 // writeSIMDIntrinsics generates the intrinsic mappings and writes it to simdintrinsics.go
 // within the specified directory.
-func writeSIMDIntrinsics(directory string, ops []Operation, typeMap simdTypeMap) error {
+func writeSIMDIntrinsics(ops []Operation, typeMap simdTypeMap) *bytes.Buffer {
 	t := templateOf(simdIntrinsicsTmpl, "simdintrinsics")
-	file, err := createPath(directory, "src/cmd/compile/internal/ssagen/simdintrinsics.go")
-	if err != nil {
-		return err
-	}
-	defer file.Close()
+	buffer := new(bytes.Buffer)
 
-	if err := t.ExecuteTemplate(file, "header", nil); err != nil {
-		return fmt.Errorf("failed to execute header template: %w", err)
+	if err := t.ExecuteTemplate(buffer, "header", nil); err != nil {
+		panic(fmt.Errorf("failed to execute header template: %w", err))
 	}
 
 	slices.SortFunc(ops, compareOperations)
 
 	for _, op := range ops {
 		if s, op, err := classifyOp(op); err == nil {
-			if err := t.ExecuteTemplate(file, s, op); err != nil {
-				return fmt.Errorf("failed to execute template %s for op %s: %w", s, op.Go, err)
+			if err := t.ExecuteTemplate(buffer, s, op); err != nil {
+				panic(fmt.Errorf("failed to execute template %s for op %s: %w", s, op.Go, err))
 			}
 
 		} else {
-			return fmt.Errorf("failed to classify op %v: %w", op.Go, err)
+			panic(fmt.Errorf("failed to classify op %v: %w", op.Go, err))
 		}
 	}
 
 	for _, conv := range vConvertFromTypeMap(typeMap) {
-		if err := t.ExecuteTemplate(file, "vectorConversion", conv); err != nil {
-			return fmt.Errorf("failed to execute vectorConversion template: %w", err)
+		if err := t.ExecuteTemplate(buffer, "vectorConversion", conv); err != nil {
+			panic(fmt.Errorf("failed to execute vectorConversion template: %w", err))
 		}
 	}
 
 	for _, typ := range typesFromTypeMap(typeMap) {
-		if err := t.ExecuteTemplate(file, "typeMap", typ); err != nil {
-			return fmt.Errorf("failed to execute typeMap template: %w", err)
+		if err := t.ExecuteTemplate(buffer, "typeMap", typ); err != nil {
+			panic(fmt.Errorf("failed to execute typeMap template: %w", err))
 		}
 	}
 
 	for _, mask := range masksFromTypeMap(typeMap) {
-		if err := t.ExecuteTemplate(file, "mask", mask); err != nil {
-			return fmt.Errorf("failed to execute mask template: %w", err)
+		if err := t.ExecuteTemplate(buffer, "mask", mask); err != nil {
+			panic(fmt.Errorf("failed to execute mask template: %w", err))
 		}
 	}
 
-	if err := t.ExecuteTemplate(file, "footer", nil); err != nil {
-		return fmt.Errorf("failed to execute footer template: %w", err)
+	if err := t.ExecuteTemplate(buffer, "footer", nil); err != nil {
+		panic(fmt.Errorf("failed to execute footer template: %w", err))
 	}
 
-	return nil
+	return buffer
 }
