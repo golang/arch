@@ -19,6 +19,7 @@ go run . -xedPath xeddata  -o godefs -goroot ./go-test  go.yaml types.yaml categ
 (cd go-test/src ; GOEXPERIMENT=simd  ./make.bash )
 (cd go-test/bin; b=`pwd` ; cd ../src/simd/testdata; GOARCH=amd64 $b/go run .)
 (cd go-test/bin; b=`pwd` ; cd ../src ;
+GOEXPERIMENT=simd GOARCH=amd64 $b/go test -v simd
 GOEXPERIMENT=simd $b/go test go/doc
 GOEXPERIMENT=simd $b/go test go/build
 GOEXPERIMENT=simd $b/go test cmd/api -v -check
