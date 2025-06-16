@@ -174,6 +174,7 @@ func writeGoDefs(path string, cl unify.Closure) error {
 	}
 	log.Printf("dedup len: %d\n", len(deduped))
 	typeMap := parseSIMDTypes(deduped)
+
 	if err = writeSIMDTypes(path, typeMap); err != nil {
 		return err
 	}

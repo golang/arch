@@ -17,23 +17,26 @@ import (
 	"unicode"
 )
 
-func openFileAndPrepareTemplate(goroot string, file string, temp string) (*os.File, *template.Template, error) {
+func templateOf(temp, name string) *template.Template {
+	t, err := template.New(name).Parse(temp)
+	if err != nil {
+		panic(fmt.Errorf("failed to parse template %s: %w", name, err))
+	}
+	return t
+}
+
+func createPath(goroot string, file string) (*os.File, error) {
 	fp := filepath.Join(goroot, file)
 	dir := filepath.Dir(fp)
 	err := os.MkdirAll(dir, 0755)
 	if err != nil {
-		return nil, nil, fmt.Errorf("failed to create directory %s: %w", dir, err)
+		return nil, fmt.Errorf("failed to create directory %s: %w", dir, err)
 	}
 	f, err := os.Create(fp)
 	if err != nil {
-		return nil, nil, fmt.Errorf("failed to create file %s: %w", fp, err)
+		return nil, fmt.Errorf("failed to create file %s: %w", fp, err)
 	}
-	t, err := template.New(fp).Parse(temp)
-	if err != nil {
-		f.Close()
-		return nil, nil, fmt.Errorf("failed to parse template: %w", err)
-	}
-	return f, t, nil
+	return f, nil
 }
 
 const (

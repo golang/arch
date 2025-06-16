@@ -27,7 +27,8 @@ func simdAMD64Ops(fp11, fp21, fp2k1, fp1k1fp1, fp2k1fp1, fp2k1k1, fp31, fp3k1fp1
 // writeSIMDMachineOps generates the machine ops and writes it to simdAMD64ops.go
 // within the specified directory.
 func writeSIMDMachineOps(directory string, ops []Operation) error {
-	file, t, err := openFileAndPrepareTemplate(directory, "src/cmd/compile/internal/ssa/_gen/simdAMD64ops.go", simdMachineOpsTmpl)
+	t := templateOf(simdMachineOpsTmpl, "simdAMD64Ops")
+	file, err := createPath(directory, "src/cmd/compile/internal/ssa/_gen/simdAMD64ops.go")
 	if err != nil {
 		return err
 	}

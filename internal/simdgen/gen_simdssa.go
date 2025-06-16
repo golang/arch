@@ -121,7 +121,7 @@ func writeSIMDSSA(directory string, ops []Operation) error {
 		return fmt.Errorf("unsupported register constraint for prog, please update gen_simdssa.go and amd64/ssa.go: %+v", allUnseen)
 	}
 
-	file, _, err := openFileAndPrepareTemplate(directory, "src/cmd/compile/internal/amd64/simdssa.go", "")
+	file, err := createPath(directory, "src/cmd/compile/internal/amd64/simdssa.go")
 	if err != nil {
 		return err
 	}

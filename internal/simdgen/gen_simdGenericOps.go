@@ -27,7 +27,8 @@ func simdGenericOps() []opData {
 // writeSIMDGenericOps generates the generic ops and writes it to simdAMD64ops.go
 // within the specified directory.
 func writeSIMDGenericOps(directory string, ops []Operation) error {
-	file, t, err := openFileAndPrepareTemplate(directory, "src/cmd/compile/internal/ssa/_gen/simdgenericOps.go", simdGenericOpsTmpl)
+	t := templateOf(simdGenericOpsTmpl, "simdgenericOps")
+	file, err := createPath(directory, "src/cmd/compile/internal/ssa/_gen/simdgenericOps.go")
 	if err != nil {
 		return err
 	}

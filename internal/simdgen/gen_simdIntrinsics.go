@@ -61,7 +61,8 @@ func simdIntrinsics(addF func(pkg, fn string, b intrinsicBuilder, archFamilies .
 // writeSIMDIntrinsics generates the intrinsic mappings and writes it to simdintrinsics.go
 // within the specified directory.
 func writeSIMDIntrinsics(directory string, ops []Operation, typeMap simdTypeMap) error {
-	file, t, err := openFileAndPrepareTemplate(directory, "src/cmd/compile/internal/ssagen/simdintrinsics.go", simdIntrinsicsTmpl)
+	t := templateOf(simdIntrinsicsTmpl, "simdintrinsics")
+	file, err := createPath(directory, "src/cmd/compile/internal/ssagen/simdintrinsics.go")
 	if err != nil {
 		return err
 	}
