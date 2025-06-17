@@ -90,11 +90,9 @@ func writeSIMDIntrinsics(directory string, ops []Operation, typeMap simdTypeMap)
 		}
 	}
 
-	for _, ts := range typeMap {
-		for _, typ := range ts {
-			if err := t.ExecuteTemplate(file, "typeMap", typ); err != nil {
-				return fmt.Errorf("failed to execute typeMap template: %w", err)
-			}
+	for _, typ := range typesFromTypeMap(typeMap) {
+		if err := t.ExecuteTemplate(file, "typeMap", typ); err != nil {
+			return fmt.Errorf("failed to execute typeMap template: %w", err)
 		}
 	}
 

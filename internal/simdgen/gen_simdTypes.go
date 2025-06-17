@@ -23,11 +23,22 @@ type simdType struct {
 }
 
 func compareSimdTypes(x, y simdType) int {
-	c := strings.Compare(x.Name, y.Name)
-	if c != 0 {
+	// "mask" then "vreg"
+	if c := strings.Compare(x.Type, y.Type); c != 0 {
 		return c
 	}
-	return strings.Compare(x.Type, y.Type)
+	// want "flo" < "int" < "uin" (and then 8 < 16 < 32 < 64),
+	// not "int16" < "int32" < "int64" < "int8")
+	// so limit comparison to first 3 bytes in string.
+	if c := strings.Compare(x.Base[:3], y.Base[:3]); c != 0 {
+		return c
+	}
+	// base type size, 8 < 16 < 32 < 64
+	if c := x.Size/x.Lanes - y.Size/y.Lanes; c != 0 {
+		return c
+	}
+	// vector size last
+	return x.Size - y.Size
 }
 
 type simdTypeMap map[int][]simdType
@@ -232,6 +243,17 @@ func masksFromTypeMap(typeMap simdTypeMap) []simdType {
 			if tsrc.Type == "mask" {
 				m = append(m, tsrc)
 			}
+		}
+	}
+	slices.SortFunc(m, compareSimdTypes)
+	return m
+}
+
+func typesFromTypeMap(typeMap simdTypeMap) []simdType {
+	m := []simdType{}
+	for _, ts := range typeMap {
+		for _, tsrc := range ts {
+			m = append(m, tsrc)
 		}
 	}
 	slices.SortFunc(m, compareSimdTypes)
