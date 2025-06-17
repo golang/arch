@@ -573,114 +573,24 @@
   extension: "AVX.*"
   documentation: !string |-
     // MaskedSaturatedPairDotProdAccumulate performs dot products on pairs of elements of y and z and accumulates the results to x.
-- go: MaskedFusedMultiplyAdd132
+- go: MaskedFusedMultiplyAdd
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedFusedMultiplyAdd132 performs `(v1 * v3) + v2`.
-- go: MaskedFusedMultiplyAdd213
+    // MaskedFusedMultiplyAdd performs `(v1 * v2) + v3`.
+- go: MaskedFusedMultiplyAddSub
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedFusedMultiplyAdd213 performs `(v2 * v1) + v3`.
-- go: MaskedFusedMultiplyAdd231
+    // MaskedFusedMultiplyAddSub performs `(v1 * v2) - v3` for odd-indexed elements, and `(v1 * v2) + v3` for even-indexed elements.
+- go: MaskedFusedMultiplySubAdd
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedFusedMultiplyAdd231 performs `(v2 * v3) + v1`.
-- go: MaskedFusedMultiplySub132
-  masked: "true"
-  commutative: "false"
-  extension: "AVX.*"
-  documentation: !string |-
-    // MaskedFusedMultiplySub132 performs `(v1 * v3) - v2`.
-- go: MaskedFusedMultiplySub213
-  masked: "true"
-  commutative: "false"
-  extension: "AVX.*"
-  documentation: !string |-
-    // MaskedFusedMultiplySub213 performs `(v2 * v1) - v3`.
-- go: MaskedFusedMultiplySub231
-  masked: "true"
-  commutative: "false"
-  extension: "AVX.*"
-  documentation: !string |-
-    // MaskedFusedMultiplySub231 performs `(v2 * v3) - v1`.
-- go: MaskedFusedNegativeMultiplyAdd132
-  masked: "true"
-  commutative: "false"
-  extension: "AVX.*"
-  documentation: !string |-
-    // MaskedFusedNegativeMultiplyAdd132 performs `-(v1 * v3) + v2`.
-- go: MaskedFusedNegativeMultiplyAdd213
-  masked: "true"
-  commutative: "false"
-  extension: "AVX.*"
-  documentation: !string |-
-    // MaskedFusedNegativeMultiplyAdd213 performs `-(v2 * v1) + v3`.
-- go: MaskedFusedNegativeMultiplyAdd231
-  masked: "true"
-  commutative: "false"
-  extension: "AVX.*"
-  documentation: !string |-
-    // MaskedFusedNegativeMultiplyAdd231 performs `-(v2 * v3) + v1`.
-- go: MaskedFusedNegativeMultiplySub132
-  masked: "true"
-  commutative: "false"
-  extension: "AVX.*"
-  documentation: !string |-
-    // MaskedFusedNegativeMultiplySub132 performs `-(v1 * v3) - v2`.
-- go: MaskedFusedNegativeMultiplySub213
-  masked: "true"
-  commutative: "false"
-  extension: "AVX.*"
-  documentation: !string |-
-    // MaskedFusedNegativeMultiplySub213 performs `-(v2 * v1) - v3`.
-- go: MaskedFusedNegativeMultiplySub231
-  masked: "true"
-  commutative: "false"
-  extension: "AVX.*"
-  documentation: !string |-
-    // MaskedFusedNegativeMultiplySub231 performs `-(v2 * v3) - v1`.
-- go: MaskedFusedMultiplyAddSub132
-  masked: "true"
-  commutative: "false"
-  extension: "AVX.*"
-  documentation: !string |-
-    // MaskedFusedMultiplyAddSub132 performs `(v1 * v3) - v2` for odd-indexed elements, and `(v1 * v3) + v2` for even-indexed elements.
-- go: MaskedFusedMultiplyAddSub213
-  masked: "true"
-  commutative: "false"
-  extension: "AVX.*"
-  documentation: !string |-
-    // MaskedFusedMultiplyAddSub213 performs `(v2 * v1) - v3` for odd-indexed elements, and `(v2 * v1) + v3` for even-indexed elements.
-- go: MaskedFusedMultiplyAddSub231
-  masked: "true"
-  commutative: "false"
-  extension: "AVX.*"
-  documentation: !string |-
-    // MaskedFusedMultiplyAddSub231 performs `(v2 * v3) - v1` for odd-indexed elements, and `(v2 * v3) + v1` for even-indexed elements.
-- go: MaskedFusedMultiplySubAdd132
-  masked: "true"
-  commutative: "false"
-  extension: "AVX.*"
-  documentation: !string |-
-    // MaskedFusedMultiplySubAdd132 performs `(v1 * v3) + v2` for odd-indexed elements, and `(v1 * v3) - v2` for even-indexed elements.
-- go: MaskedFusedMultiplySubAdd213
-  masked: "true"
-  commutative: "false"
-  extension: "AVX.*"
-  documentation: !string |-
-    // MaskedFusedMultiplySubAdd213 performs `(v2 * v1) + v3` for odd-indexed elements, and `(v2 * v1) - v3` for even-indexed elements.
-- go: MaskedFusedMultiplySubAdd231
-  masked: "true"
-  commutative: "false"
-  extension: "AVX.*"
-  documentation: !string |-
-    // MaskedFusedMultiplySubAdd231 performs `(v2 * v3) + v1` for odd-indexed elements, and `(v2 * v3) - v1` for even-indexed elements.
+    // MaskedFusedMultiplySubAdd performs `(v1 * v2) + v3` for odd-indexed elements, and `(v1 * v2) - v3` for even-indexed elements.
 - go: Max
   commutative: "true"
   extension: "AVX.*"
