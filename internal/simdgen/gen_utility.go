@@ -510,7 +510,7 @@ func capitalizeFirst(s string) string {
 //     and [writeSIMDSSA], please be careful when updating these constraints.
 func overwrite(ops []Operation) error {
 	hasClassOverwrite := false
-	overwrite := func(op []Operand, idx int) error {
+	overwrite := func(op []Operand, idx int, o Operation) error {
 		if op[idx].OverwriteClass != nil {
 			if op[idx].OverwriteBase == nil {
 				return fmt.Errorf("simdgen: [OverwriteClass] must be set together with [OverwriteBase]: %s", op[idx])
@@ -536,15 +536,19 @@ func overwrite(ops []Operation) error {
 			*op[idx].Base = oBase
 		}
 		if op[idx].OverwriteElementBits != nil {
+			if op[idx].ElemBits == nil {
+				panic(fmt.Errorf("ElemBits is nil at operand %d of %v", idx, o))
+			}
 			*op[idx].ElemBits = *op[idx].OverwriteElementBits
 			*op[idx].Go = fmt.Sprintf("%s%dx%d", capitalizeFirst(*op[idx].Base), *op[idx].ElemBits, *op[idx].Bits / *op[idx].ElemBits)
+
 		}
 		return nil
 	}
-	for i := range ops {
+	for i, o := range ops {
 		hasClassOverwrite = false
 		for j := range ops[i].In {
-			if err := overwrite(ops[i].In, j); err != nil {
+			if err := overwrite(ops[i].In, j, o); err != nil {
 				return err
 			}
 			if hasClassOverwrite {
@@ -552,7 +556,7 @@ func overwrite(ops []Operation) error {
 			}
 		}
 		for j := range ops[i].Out {
-			if err := overwrite(ops[i].Out, j); err != nil {
+			if err := overwrite(ops[i].Out, j, o); err != nil {
 				return err
 			}
 		}

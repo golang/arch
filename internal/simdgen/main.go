@@ -260,6 +260,7 @@ func validate(cl unify.Closure, required map[*unify.Value]struct{}) {
 		// at least say "it doesn't unify with anything in x.yaml". That's a lot
 		// of work, but if we have trouble debugging unification failure it may
 		// be worth it.
-		fmt.Fprintf(os.Stderr, "%s: def required, but did not unify\n", def.PosString())
+		fmt.Fprintf(os.Stderr, "%s: def required, but did not unify (%v)\n",
+			def.PosString(), def)
 	}
 }
