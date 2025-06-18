@@ -9,7 +9,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -212,7 +211,7 @@ func (db *Database) WidthSize(width string, m OperandSizeMode) string {
 }
 
 func parseWidths(r io.Reader) (map[string]*width, error) {
-	data, err := ioutil.ReadAll(r)
+	data, err := io.ReadAll(r)
 	if err != nil {
 		return nil, fmt.Errorf("parse widths: %v", err)
 	}
@@ -282,7 +281,7 @@ func parseExtraWidths(r io.Reader) (map[string]string, error) {
 }
 
 func parseStates(r io.Reader) (map[string]string, error) {
-	data, err := ioutil.ReadAll(r)
+	data, err := io.ReadAll(r)
 	if err != nil {
 		return nil, fmt.Errorf("parse states: %v", err)
 	}
@@ -303,7 +302,7 @@ func parseStates(r io.Reader) (map[string]string, error) {
 }
 
 func parseXtypes(r io.Reader) (map[string]*xtype, error) {
-	data, err := ioutil.ReadAll(r)
+	data, err := io.ReadAll(r)
 	if err != nil {
 		return nil, fmt.Errorf("parse xtypes: %v", err)
 	}
