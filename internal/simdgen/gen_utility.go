@@ -331,19 +331,19 @@ func (op *Operation) sortOperand() {
 	})
 }
 
+func (op Operation) ResultType() string {
+	return fmt.Sprintf("types.TypeVec%d", *op.Out[0].Bits)
+}
+
 // classifyOp returns a classification string, modified operation, and perhaps error based
 // on the stub and intrinsic shape for the operation.
 // The classification string is in the regular expression set "op[1234](Imm8)?"
 func classifyOp(op Operation) (string, Operation, error) {
-	_, shapeOut, _, immType, _, opNoConstMask, gOp, err := op.shape()
+	_, _, _, immType, _, opNoConstMask, gOp, err := op.shape()
 	if err != nil {
 		return "", op, err
 	}
-	// Put the go ssa type in GoArch field, simd intrinsics need it.
-	if shapeOut == OneVregOut || shapeOut == OneKmaskOut || shapeOut == OneVregOutAtIn {
-		opNoConstMask.GoArch = fmt.Sprintf("types.TypeVec%d", *opNoConstMask.Out[0].Bits)
-		gOp.GoArch = fmt.Sprintf("types.TypeVec%d", *gOp.Out[0].Bits)
-	}
+
 	if immType == VarImm || immType == ConstVarImm {
 		switch len(opNoConstMask.In) {
 		case 1:

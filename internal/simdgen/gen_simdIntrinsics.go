@@ -25,27 +25,27 @@ const simdPackage = "` + simdPackage + `"
 func simdIntrinsics(addF func(pkg, fn string, b intrinsicBuilder, archFamilies ...sys.ArchFamily)) {
 {{end}}
 
-{{define "op1"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen1(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.GoArch}}), sys.AMD64)
+{{define "op1"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen1(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.ResultType}}), sys.AMD64)
 {{end}}
-{{define "op2"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen2(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.GoArch}}), sys.AMD64)
+{{define "op2"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen2(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.ResultType}}), sys.AMD64)
 {{end}}
-{{define "op3"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen3(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.GoArch}}), sys.AMD64)
+{{define "op3"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen3(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.ResultType}}), sys.AMD64)
 {{end}}
-{{define "op4"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen4(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.GoArch}}), sys.AMD64)
+{{define "op4"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen4(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.ResultType}}), sys.AMD64)
 {{end}}
-{{define "op1Imm8"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen1Imm8(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.GoArch}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
+{{define "op1Imm8"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen1Imm8(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.ResultType}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
 {{end}}
-{{define "op2Imm8"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen2Imm8(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.GoArch}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
+{{define "op2Imm8"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen2Imm8(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.ResultType}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
 {{end}}
-{{define "op3Imm8"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen3Imm8(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.GoArch}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
+{{define "op3Imm8"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen3Imm8(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.ResultType}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
 {{end}}
-{{define "op4Imm8"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen4Imm8(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.GoArch}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
+{{define "op4Imm8"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen4Imm8(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.ResultType}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
 {{end}}
 
 {{define "vectorConversion"}}	addF(simdPackage, "{{.Tsrc.Name}}.As{{.Tdst.Name}}", func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value { return args[0] }, sys.AMD64)
 {{end}}
 
-{{define "typeMap"}}	addF(simdPackage, "Load{{.Name}}", simdLoad(), sys.AMD64)
+{{define "loadStore"}}	addF(simdPackage, "Load{{.Name}}", simdLoad(), sys.AMD64)
 	addF(simdPackage, "{{.Name}}.Store", simdStore(), sys.AMD64)
 {{end}}
 
@@ -89,8 +89,8 @@ func writeSIMDIntrinsics(ops []Operation, typeMap simdTypeMap) *bytes.Buffer {
 	}
 
 	for _, typ := range typesFromTypeMap(typeMap) {
-		if err := t.ExecuteTemplate(buffer, "typeMap", typ); err != nil {
-			panic(fmt.Errorf("failed to execute typeMap template: %w", err))
+		if err := t.ExecuteTemplate(buffer, "loadStore", typ); err != nil {
+			panic(fmt.Errorf("failed to execute loadStore template: %w", err))
 		}
 	}
 

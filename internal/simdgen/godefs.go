@@ -45,11 +45,21 @@ func compareStringPointers(x, y *string) int {
 	return 1
 }
 
+func compareIntPointers(x, y *int) int {
+	if x != nil && y != nil {
+		return *x - *y
+	}
+	if x == nil && y == nil {
+		return 0
+	}
+	if x == nil {
+		return -1
+	}
+	return 1
+}
+
 func compareOperations(x, y Operation) int {
 	if c := strings.Compare(x.Go, y.Go); c != 0 {
-		return c
-	}
-	if c := strings.Compare(x.GoArch, y.GoArch); c != 0 {
 		return c
 	}
 	xIn, yIn := x.In, y.In
@@ -88,13 +98,13 @@ func compareOperands(x, y *Operand) int {
 	if x.Class == "immediate" {
 		return compareStringPointers(x.ImmOffset, y.ImmOffset)
 	} else {
-		if c := strings.Compare(*x.Base, *y.Base); c != 0 {
+		if c := compareStringPointers(x.Base, y.Base); c != 0 {
 			return c
 		}
-		if c := *x.ElemBits - *y.ElemBits; c != 0 {
+		if c := compareIntPointers(x.ElemBits, y.ElemBits); c != 0 {
 			return c
 		}
-		return *x.Bits - *y.Bits
+		return compareIntPointers(x.Bits, y.Bits)
 	}
 }
 
