@@ -124,7 +124,7 @@ type Operand struct {
 	// The compiler will right-shift the user-passed value by ImmOffset and set it as the AuxInt
 	// field of the operation.
 	ImmOffset *string
-	Lanes     *int // Lanes should equal Bits/ElemBits
+	Lanes     *int // *Lanes equals Bits/ElemBits except for scalars, when *Lanes == 1
 	// If non-nil, it means the [Class] field is overwritten here, right now this is used to
 	// overwrite the results of AVX2 compares to masks.
 	OverwriteClass *string

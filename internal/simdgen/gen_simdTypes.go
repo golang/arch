@@ -192,7 +192,8 @@ func parseSIMDTypes(ops []Operation) simdTypeMap {
 			return
 		}
 		seen[*arg.Go] = struct{}{}
-		lanes := *arg.Bits / *arg.ElemBits
+
+		lanes := *arg.Lanes
 		base := fmt.Sprintf("%s%d", *arg.Base, *arg.ElemBits)
 		tagFieldNameS := fmt.Sprintf("%sx%d", base, lanes)
 		tagFieldS := fmt.Sprintf("%s v%d", tagFieldNameS, *arg.Bits)
@@ -227,7 +228,8 @@ func vConvertFromTypeMap(typeMap simdTypeMap) []simdTypePair {
 	for _, ts := range typeMap {
 		for i, tsrc := range ts {
 			for j, tdst := range ts {
-				if i != j && tsrc.Type == tdst.Type && tsrc.Type == "vreg" {
+				if i != j && tsrc.Type == tdst.Type && tsrc.Type == "vreg" &&
+					tsrc.Lanes > 1 && tdst.Lanes > 1 {
 					v = append(v, simdTypePair{tsrc, tdst})
 				}
 			}
@@ -254,7 +256,9 @@ func typesFromTypeMap(typeMap simdTypeMap) []simdType {
 	m := []simdType{}
 	for _, ts := range typeMap {
 		for _, tsrc := range ts {
-			m = append(m, tsrc)
+			if tsrc.Lanes > 1 {
+				m = append(m, tsrc)
+			}
 		}
 	}
 	slices.SortFunc(m, compareSimdTypes)
@@ -277,10 +281,17 @@ func writeSIMDTypes(typeMap simdTypeMap) *bytes.Buffer {
 	sort.Ints(sizes)
 
 	for _, size := range sizes {
+		if size <= 64 {
+			// these are scalar
+			continue
+		}
 		if err := t.ExecuteTemplate(buffer, "sizeTmpl", size); err != nil {
 			panic(fmt.Errorf("failed to execute size template for size %d: %w", size, err))
 		}
 		for _, typeDef := range typeMap[size] {
+			if typeDef.Lanes == 1 {
+				continue
+			}
 			if err := t.ExecuteTemplate(buffer, "typeTmpl", typeDef); err != nil {
 				panic(fmt.Errorf("failed to execute type template for type %s: %w", typeDef.Name, err))
 			}

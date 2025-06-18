@@ -128,7 +128,7 @@ const (
 // opNoConstImmMask is op with its inputs excluding the const imm and mask.
 //
 // This function does not modify op.
-func (op *Operation) shape() (shapeIn, shapeOut, maskType, immTyppe int, opNoImm Operation, opNoConstMask Operation, opNoImmConstMask Operation, err error) {
+func (op *Operation) shape() (shapeIn, shapeOut, maskType, immType int, opNoImm Operation, opNoConstMask Operation, opNoImmConstMask Operation, err error) {
 	if len(op.Out) > 1 {
 		err = fmt.Errorf("simdgen only supports 1 output: %s", op)
 		return
@@ -211,18 +211,18 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType, immTyppe int, opNoImm
 		removeImm(&opNoImmConstMask)
 		if op.In[0].Const != nil {
 			if op.In[0].ImmOffset != nil {
-				immTyppe = ConstVarImm
+				immType = ConstVarImm
 			} else {
-				immTyppe = ConstImm
+				immType = ConstImm
 			}
 		} else if op.In[0].ImmOffset != nil {
-			immTyppe = VarImm
+			immType = VarImm
 		} else {
 			err = fmt.Errorf("simdgen requires imm to have at least one of ImmOffset or Const set: %s", op)
 			return
 		}
 	} else {
-		immTyppe = NoImm
+		immType = NoImm
 	}
 	if maskCount == 0 {
 		if iConstMask == -1 {
@@ -317,8 +317,8 @@ func (op *Operation) regShape() (string, error) {
 
 // sortOperand sorts op.In by putting immediates first, then vreg, and mask the last.
 // TODO: verify that this is a safe assumption of the prog strcture.
-// from my observation looks like in asm, imms are always the first, masks are always the last, with
-// vreg in betwee...
+// from my observation looks like in asm, imms are always the first,
+// masks are always the last, with vreg in between.
 func (op *Operation) sortOperand() {
 	priority := map[string]int{"immediate": 2, "vreg": 1, "mask": 0}
 	sort.SliceStable(op.In, func(i, j int) bool {
