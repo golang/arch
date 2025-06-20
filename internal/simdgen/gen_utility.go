@@ -302,24 +302,26 @@ func (op *Operation) regShape() (string, error) {
 		}
 	}
 	var inRegs, inMasks, outRegs, outMasks string
-	if vRegInCnt > 0 {
-		inRegs = fmt.Sprintf("fp%d", vRegInCnt)
+
+	rmAbbrev := func(s string, i int) string {
+		if i == 0 {
+			return ""
+		}
+		if i == 1 {
+			return s
+		}
+		return fmt.Sprintf("%s%d", s, i)
+
 	}
-	if gRegInCnt > 0 {
-		inRegs += fmt.Sprintf("gp%d", gRegInCnt)
-	}
-	if kMaskInCnt > 0 {
-		inMasks = fmt.Sprintf("k%d", kMaskInCnt)
-	}
-	if vRegOutCnt > 0 {
-		outRegs = fmt.Sprintf("fp%d", vRegOutCnt)
-	}
-	if gRegOutCnt > 0 {
-		outRegs += fmt.Sprintf("gp%d", gRegOutCnt)
-	}
-	if kMaskOutCnt > 0 {
-		outMasks = fmt.Sprintf("k%d", kMaskOutCnt)
-	}
+
+	inRegs = rmAbbrev("fp", vRegInCnt)
+	inRegs += rmAbbrev("gp", gRegInCnt)
+	inMasks = rmAbbrev("k", kMaskInCnt)
+
+	outRegs = rmAbbrev("fp", vRegOutCnt)
+	outRegs += rmAbbrev("gp", gRegOutCnt)
+	outMasks = rmAbbrev("k", kMaskOutCnt)
+
 	if kMaskInCnt == 0 && kMaskOutCnt == 0 && gRegInCnt == 0 && gRegOutCnt == 0 {
 		// For pure fp we can abbreviate it as fp%d%d.
 		regInfo = fmt.Sprintf("fp%d%d", vRegInCnt, vRegOutCnt)
