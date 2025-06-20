@@ -277,10 +277,14 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType, immType int, opNoImm 
 func (op *Operation) regShape() (string, error) {
 	_, _, _, _, _, _, gOp, _ := op.shape()
 	var regInfo string
-	var vRegInCnt, kMaskInCnt, vRegOutCnt, kMaskOutCnt int
+	var vRegInCnt, gRegInCnt, kMaskInCnt, vRegOutCnt, gRegOutCnt, kMaskOutCnt int
 	for _, in := range gOp.In {
 		if in.Class == "vreg" {
-			vRegInCnt++
+			if *in.Lanes == 1 {
+				gRegInCnt++
+			} else {
+				vRegInCnt++
+			}
 		} else if in.Class == "mask" {
 			kMaskInCnt++
 		}
@@ -288,29 +292,41 @@ func (op *Operation) regShape() (string, error) {
 	for _, out := range gOp.Out {
 		// If class overwrite is happening, that's not really a mask but a vreg.
 		if out.Class == "vreg" || out.OverwriteClass != nil {
-			vRegOutCnt++
+			if out.Lanes != nil && *out.Lanes == 1 {
+				gRegOutCnt++
+			} else {
+				vRegOutCnt++
+			}
 		} else if out.Class == "mask" {
 			kMaskOutCnt++
 		}
 	}
-	var vRegInS, kMaskInS, vRegOutS, kMaskOutS string
+	var inRegs, inMasks, outRegs, outMasks string
 	if vRegInCnt > 0 {
-		vRegInS = fmt.Sprintf("fp%d", vRegInCnt)
+		inRegs = fmt.Sprintf("fp%d", vRegInCnt)
+	}
+	if gRegInCnt > 0 {
+		inRegs += fmt.Sprintf("gp%d", gRegInCnt)
 	}
 	if kMaskInCnt > 0 {
-		kMaskInS = fmt.Sprintf("k%d", kMaskInCnt)
+		inMasks = fmt.Sprintf("k%d", kMaskInCnt)
 	}
 	if vRegOutCnt > 0 {
-		vRegOutS = fmt.Sprintf("fp%d", vRegOutCnt)
+		outRegs = fmt.Sprintf("fp%d", vRegOutCnt)
+	}
+	if gRegOutCnt > 0 {
+		outRegs += fmt.Sprintf("gp%d", gRegOutCnt)
 	}
 	if kMaskOutCnt > 0 {
-		kMaskOutS = fmt.Sprintf("k%d", kMaskOutCnt)
+		outMasks = fmt.Sprintf("k%d", kMaskOutCnt)
 	}
-	if kMaskInCnt == 0 && kMaskOutCnt == 0 {
+	if kMaskInCnt == 0 && kMaskOutCnt == 0 && gRegInCnt == 0 && gRegOutCnt == 0 {
 		// For pure fp we can abbreviate it as fp%d%d.
 		regInfo = fmt.Sprintf("fp%d%d", vRegInCnt, vRegOutCnt)
+	} else if kMaskInCnt == 0 && kMaskOutCnt == 0 {
+		regInfo = fmt.Sprintf("%s%s", inRegs, outRegs)
 	} else {
-		regInfo = fmt.Sprintf("%s%s%s%s", vRegInS, kMaskInS, vRegOutS, kMaskOutS)
+		regInfo = fmt.Sprintf("%s%s%s%s", inRegs, inMasks, outRegs, outMasks)
 	}
 	return regInfo, nil
 }

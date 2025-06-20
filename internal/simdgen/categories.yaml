@@ -613,6 +613,11 @@
   extension: "AVX.*"
   documentation: !string |-
     // MaskedMin computes the minimum of corresponding elements.
+- go: SetElem
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: !string |-
+    // SetElem sets a single constant-indexed element's value.
 - go: Mul
   commutative: "true"
   extension: "AVX.*"

@@ -1,0 +1,14 @@
+!sum
+- go: SetElem
+  asm: "VPINSR[BWDQ]"
+  in:
+  - &t
+    class: vreg
+    base: $b
+  - class: vreg
+    base: $b
+    lanes: 1 # Scalar, darn it!
+  - class: immediate
+    immOffset: 0
+  out:
+  - *t

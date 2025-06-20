@@ -75,6 +75,7 @@ func writeSIMDSSA(ops []Operation) *bytes.Buffer {
 		"fp2k1k1Imm8",
 		"fp31ResultInArg0",
 		"fp3k1fp1ResultInArg0",
+		"fp1gp1fp1Imm8",
 	}
 	regInfoSet := map[string][]string{}
 	for _, key := range regInfoKeys {
@@ -82,7 +83,7 @@ func writeSIMDSSA(ops []Operation) *bytes.Buffer {
 	}
 
 	seen := map[string]struct{}{}
-	allUnseen := map[string]struct{}{}
+	allUnseen := make(map[string][]Operation)
 	for _, op := range ops {
 		asm := op.Asm
 		shapeIn, shapeOut, maskType, _, _, _, gOp, err := op.shape()
@@ -114,7 +115,7 @@ func writeSIMDSSA(ops []Operation) *bytes.Buffer {
 			regShape += "Imm8"
 		}
 		if _, ok := regInfoSet[regShape]; !ok {
-			allUnseen[regShape] = struct{}{}
+			allUnseen[regShape] = append(allUnseen[regShape], op)
 		}
 		regInfoSet[regShape] = append(regInfoSet[regShape], caseStr)
 	}

@@ -70,7 +70,7 @@ func writeSIMDMachineOps(ops []Operation) *bytes.Buffer {
 			panic(err)
 		}
 		if _, ok := regInfoSet[regInfo]; !ok {
-			panic(fmt.Errorf("unsupported register constraint, please update the template and AMD64Ops.go: %s", regInfo))
+			panic(fmt.Errorf("unsupported register constraint, please update the template and AMD64Ops.go: %s.  Op is %s", regInfo, op))
 		}
 		var outType string
 		if shapeOut == OneVregOut || shapeOut == OneVregOutAtIn || gOp.Out[0].OverwriteClass != nil {
