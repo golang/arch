@@ -256,6 +256,8 @@ func decodeOperand(db *xeddata.Database, operand string) (operand, error) {
 				}, nil
 			}
 			// general register
+			m := min(shape.bits, shape.elemBits)
+			shape.bits, shape.elemBits = m, m
 			return operandGReg{
 				operandCommon: common,
 				vecShape:      shape,

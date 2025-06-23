@@ -369,7 +369,7 @@ func parseSIMDTypes(ops []Operation) simdTypeMap {
 	ret := map[int][]simdType{}
 	seen := map[string]struct{}{}
 	processArg := func(arg Operand) {
-		if arg.Class == "immediate" {
+		if arg.Class == "immediate" || arg.Class == "greg" {
 			// Immediates are not encoded as vector types.
 			return
 		}
