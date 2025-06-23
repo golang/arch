@@ -5,7 +5,7 @@
   - &t
     class: vreg
     base: $b
-  - class: vreg
+  - class: greg
     base: $b
     lanes: 1 # Scalar, darn it!
   - class: immediate

@@ -109,7 +109,7 @@ func compareOperands(x, y *Operand) int {
 }
 
 type Operand struct {
-	Class string // One of "mask", "immediate", "vreg" and "mem"
+	Class string // One of "mask", "immediate", "vreg", "greg", and "mem"
 
 	Go     *string // Go type of this operand
 	AsmPos int     // Position of this operand in the assembly instruction

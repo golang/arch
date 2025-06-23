@@ -16,6 +16,12 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+const (
+	NOT_REG_CLASS = 0 // not a register
+	VREG_CLASS    = 1 // classify as a vector register; see
+	GREG_CLASS    = 2 // classify as a general register
+)
+
 // TODO: Doc. Returns Values with Def domains.
 func loadXED(xedPath string) []*unify.Value {
 	// TODO: Obviously a bunch more to do here.
@@ -102,6 +108,12 @@ type operandVReg struct { // Vector register
 	elemBaseType scalarBaseType
 }
 
+type operandGReg struct { // Vector register
+	operandCommon
+	vecShape
+	elemBaseType scalarBaseType
+}
+
 // operandMask is a vector mask.
 //
 // Regardless of the actual mask representation, the [vecShape] of this operand
@@ -146,6 +158,22 @@ func (o operandVReg) toValue() (fields []string, vals []*unify.Value) {
 	}
 	fields, vals = []string{"class", "bits", "base"}, []*unify.Value{
 		strVal("vreg"),
+		strVal(o.bits),
+		unify.NewValue(baseDomain)}
+	if o.elemBits != o.bits {
+		fields, vals = append(fields, "elemBits"), append(vals, strVal(o.elemBits))
+	}
+	// otherwise it means the vector could be any shape.
+	return
+}
+
+func (o operandGReg) toValue() (fields []string, vals []*unify.Value) {
+	baseDomain, err := unify.NewStringRegex(o.elemBaseType.regex())
+	if err != nil {
+		panic("parsing baseRe: " + err.Error())
+	}
+	fields, vals = []string{"class", "bits", "base"}, []*unify.Value{
+		strVal("greg"),
 		strVal(o.bits),
 		unify.NewValue(baseDomain)}
 	if o.elemBits != o.bits {
@@ -211,8 +239,8 @@ func decodeOperand(db *xeddata.Database, operand string) (operand, error) {
 				operandCommon: common,
 			}, nil
 		} else {
-			regBits, ok := decodeReg(op)
-			if !ok {
+			class, regBits := decodeReg(op)
+			if class == NOT_REG_CLASS {
 				return nil, fmt.Errorf("failed to decode register %q", operand)
 			}
 			baseType, elemBits, ok := decodeType(op)
@@ -220,11 +248,20 @@ func decodeOperand(db *xeddata.Database, operand string) (operand, error) {
 				return nil, fmt.Errorf("failed to decode register width %q", operand)
 			}
 			shape := vecShape{elemBits: elemBits, bits: regBits}
-			return operandVReg{
+			if class == VREG_CLASS {
+				return operandVReg{
+					operandCommon: common,
+					vecShape:      shape,
+					elemBaseType:  baseType,
+				}, nil
+			}
+			// general register
+			return operandGReg{
 				operandCommon: common,
 				vecShape:      shape,
 				elemBaseType:  baseType,
 			}, nil
+
 		}
 	} else if strings.HasPrefix(lhs, "IMM") {
 		_, bits, ok := decodeType(op)
@@ -395,7 +432,10 @@ func singular[T comparable](xs []T) (T, bool) {
 	return xs[0], true
 }
 
-func decodeReg(op *xeddata.Operand) (w int, ok bool) {
+// decodeReg returns class (NOT_REG_CLASS, VREG_CLASS, GREG_CLASS),
+// and width in bits.  If the operand cannot be decided as a register,
+// then the clas is NOT_REG_CLASS.
+func decodeReg(op *xeddata.Operand) (class, width int) {
 	// op.Width tells us the total width, e.g.,:
 	//
 	//    dq => 128 bits (XMM)
@@ -408,27 +448,27 @@ func decodeReg(op *xeddata.Operand) (w int, ok bool) {
 	// Hence, we dig into the register sets themselves.
 
 	if !strings.HasPrefix(op.NameLHS(), "REG") {
-		return 0, false
+		return NOT_REG_CLASS, 0
 	}
 	// TODO: We shouldn't be relying on the macro naming conventions. We should
 	// use all-dec-patterns.txt, but xeddata doesn't support that table right now.
 	rhs := op.NameRHS()
 	if !strings.HasSuffix(rhs, "()") {
-		return 0, false
+		return NOT_REG_CLASS, 0
 	}
 	switch {
 	case strings.HasPrefix(rhs, "XMM_"):
-		return 128, true
+		return VREG_CLASS, 128
 	case strings.HasPrefix(rhs, "YMM_"):
-		return 256, true
+		return VREG_CLASS, 256
 	case strings.HasPrefix(rhs, "ZMM_"):
-		return 512, true
+		return VREG_CLASS, 512
 	case strings.HasPrefix(rhs, "GPR64_"), strings.HasPrefix(rhs, "VGPR64_"):
-		return 64, true
+		return GREG_CLASS, 64
 	case strings.HasPrefix(rhs, "GPR32_"), strings.HasPrefix(rhs, "VGPR32_"):
-		return 32, true
+		return GREG_CLASS, 32
 	}
-	return 0, false
+	return NOT_REG_CLASS, 0
 }
 
 var xtypeRe = regexp.MustCompile(`^([iuf])([0-9]+)$`)

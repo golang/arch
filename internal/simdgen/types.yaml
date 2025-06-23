@@ -50,16 +50,16 @@ in: !repeat
   - {class: mask, go: Mask32x16,  base: "int",   elemBits: 32, bits: 512, lanes: 16}
   - {class: mask, go: Mask64x8,   base: "int",   elemBits: 64, bits: 512, lanes:  8}
 
-  - {class: vreg, go: float64,    base: "float", elemBits: 64, bits:  64, lanes:  1}
-  - {class: vreg, go: float32,    base: "float", elemBits: 32, bits:  32, lanes:  1}
-  - {class: vreg, go: int64,      base: "int",   elemBits: 64, bits:  64, lanes:  1}
-  - {class: vreg, go: int32,      base: "int",   elemBits: 32, bits:  32, lanes:  1}
-  - {class: vreg, go: int16,      base: "int",   elemBits: 16, bits:  32, lanes:  1} # bits: 32 is from XED for at least one instruction
-  - {class: vreg, go: int8,       base: "int",   elemBits:  8, bits:  32, lanes:  1} # bits: 32 is from XED for at least one instruction
-  - {class: vreg, go: uint64,     base: "uint",  elemBits: 64, bits:  64, lanes:  1}
-  - {class: vreg, go: uint32,     base: "uint",  elemBits: 32, bits:  32, lanes:  1}
-  - {class: vreg, go: uint16,     base: "uint",  elemBits: 16, bits:  32, lanes:  1} # bits: 32 is from XED for at least one instruction
-  - {class: vreg, go: uint8,      base: "uint",  elemBits:  8, bits:  32, lanes:  1} # bits: 32 is from XED for at least one instruction
+  - {class: greg, go: float64,    base: "float", elemBits: 64, bits:  64, lanes:  1}
+  - {class: greg, go: float32,    base: "float", elemBits: 32, bits:  32, lanes:  1}
+  - {class: greg, go: int64,      base: "int",   elemBits: 64, bits:  64, lanes:  1}
+  - {class: greg, go: int32,      base: "int",   elemBits: 32, bits:  32, lanes:  1}
+  - {class: greg, go: int16,      base: "int",   elemBits: 16, bits:  32, lanes:  1} # bits: 32 is from XED for at least one instruction
+  - {class: greg, go: int8,       base: "int",   elemBits:  8, bits:  32, lanes:  1} # bits: 32 is from XED for at least one instruction
+  - {class: greg, go: uint64,     base: "uint",  elemBits: 64, bits:  64, lanes:  1}
+  - {class: greg, go: uint32,     base: "uint",  elemBits: 32, bits:  32, lanes:  1}
+  - {class: greg, go: uint16,     base: "uint",  elemBits: 16, bits:  32, lanes:  1} # bits: 32 is from XED for at least one instruction
+  - {class: greg, go: uint8,      base: "uint",  elemBits:  8, bits:  32, lanes:  1} # bits: 32 is from XED for at least one instruction
 
   - {class: immediate, go: Immediate} # TODO: we only support imms that are not used as value -- usually as instruction semantic predicate like VPCMP as of now.
 out: !repeat

@@ -280,11 +280,9 @@ func (op *Operation) regShape() (string, error) {
 	var vRegInCnt, gRegInCnt, kMaskInCnt, vRegOutCnt, gRegOutCnt, kMaskOutCnt int
 	for _, in := range gOp.In {
 		if in.Class == "vreg" {
-			if *in.Lanes == 1 {
-				gRegInCnt++
-			} else {
-				vRegInCnt++
-			}
+			vRegInCnt++
+		} else if in.Class == "greg" {
+			gRegInCnt++
 		} else if in.Class == "mask" {
 			kMaskInCnt++
 		}
@@ -292,11 +290,9 @@ func (op *Operation) regShape() (string, error) {
 	for _, out := range gOp.Out {
 		// If class overwrite is happening, that's not really a mask but a vreg.
 		if out.Class == "vreg" || out.OverwriteClass != nil {
-			if out.Lanes != nil && *out.Lanes == 1 {
-				gRegOutCnt++
-			} else {
-				vRegOutCnt++
-			}
+			vRegOutCnt++
+		} else if out.Class == "greg" {
+			gRegOutCnt++
 		} else if out.Class == "mask" {
 			kMaskOutCnt++
 		}
@@ -334,11 +330,11 @@ func (op *Operation) regShape() (string, error) {
 }
 
 // sortOperand sorts op.In by putting immediates first, then vreg, and mask the last.
-// TODO: verify that this is a safe assumption of the prog strcture.
+// TODO: verify that this is a safe assumption of the prog structure.
 // from my observation looks like in asm, imms are always the first,
 // masks are always the last, with vreg in between.
 func (op *Operation) sortOperand() {
-	priority := map[string]int{"immediate": 0, "vreg": 1, "mask": 2}
+	priority := map[string]int{"immediate": 0, "vreg": 1, "greg": 1, "mask": 2}
 	sort.SliceStable(op.In, func(i, j int) bool {
 		pi := priority[op.In[i].Class]
 		pj := priority[op.In[j].Class]
