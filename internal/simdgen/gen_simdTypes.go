@@ -251,6 +251,7 @@ func writeSIMDTestsWrapper(ops []Operation) *bytes.Buffer {
 		var vecArgList []string
 		var argVecTypes []string
 		var vec string
+		var vecOp Operand
 		allSameVec := true
 		masked := strings.HasPrefix(gOp.Go, "Masked")
 		skippedMaskCnt := 0
@@ -281,12 +282,24 @@ func writeSIMDTestsWrapper(ops []Operation) *bytes.Buffer {
 				}
 				vecCnt++
 				vec = *in.Go
+				vecOp = in
 			}
 			shape += *in.Go
 			argVecTypes = append(argVecTypes, strings.ReplaceAll(*in.Go, "Mask", "Int"))
 		}
-		if *gOp.Out[0].Go != vec {
-			allSameVec = false
+		isCompare := false
+		isWiden := false
+		outOp := gOp.Out[0]
+		if *outOp.Go != vec {
+			if allSameVec && outOp.Class == "mask" && *outOp.Bits == *vecOp.Bits && *outOp.Lanes == *vecOp.Lanes {
+				isCompare = true
+			}
+			if allSameVec && outOp.Class == "vreg" && *outOp.Bits == *vecOp.Bits && *outOp.Base == *vecOp.Base && *outOp.Lanes == *vecOp.Lanes/2 {
+				isWiden = true
+			}
+			if !isCompare && !isWiden {
+				allSameVec = false
+			}
 		}
 		shape += *gOp.Out[0].Go
 		if allSameVec {
@@ -296,7 +309,17 @@ func writeSIMDTestsWrapper(ops []Operation) *bytes.Buffer {
 			}
 			shape = vec + numToName[vecCnt]
 			if masked {
-				shape = "Masked" + shape
+				shape += "Masked"
+			}
+			if isCompare {
+				if vecCnt == 2 {
+					// Remove "Binary"
+					shape = strings.ReplaceAll(shape, "Binary", "")
+				}
+				shape += "Compare"
+			}
+			if isWiden {
+				shape += "Widen"
 			}
 		}
 		optionalMaskToInt := ""
