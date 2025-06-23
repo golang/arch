@@ -31,6 +31,8 @@ type Operation struct {
 	// Masked indicates that this is a masked operation, this field has to be set for masked operations
 	// otherwise simdgen won't recognize it in [splitMask].
 	Masked *string
+	// NameAndSizeCheck is used to check [BWDQ] maps to (8|16|32|64) elemBits.
+	NameAndSizeCheck *string
 }
 
 func (o *Operation) VectorWidth() int {
@@ -140,6 +142,10 @@ type Operand struct {
 	// field of the operation.
 	ImmOffset *string
 	Lanes     *int // *Lanes equals Bits/ElemBits except for scalars, when *Lanes == 1
+	// TreatLikeAScalarOfSize means only the lower $TreatLikeAScalarOfSize bits of the vector
+	// is used, so at the API level we can make it just a scalar value of this size; Then we
+	// can overwrite it to a vector of the right size during intrinsics stage.
+	TreatLikeAScalarOfSize *int
 	// If non-nil, it means the [Class] field is overwritten here, right now this is used to
 	// overwrite the results of AVX2 compares to masks.
 	OverwriteClass *string

@@ -862,3 +862,211 @@
   - *int
   out:
   - *int2
+# Integers
+# ShiftAll*
+- go: ShiftAllLeft
+  asm: "VPSLL[WDQ]"
+  in:
+  - &any
+    go: $t
+  - &vecAsScalar64
+    treatLikeAScalarOfSize: 64
+    go: Uint64x2
+  out:
+  - *any
+- go: MaskedShiftAllLeft
+  asm: "VPSLL[WDQ]"
+  in:
+  - class: mask
+  - *any
+  - *vecAsScalar64
+  out:
+  - *any
+- go: ShiftAllRight
+  asm: "VPSRL[WDQ]"
+  in:
+  - *any
+  - *vecAsScalar64
+  out:
+  - *any
+- go: MaskedShiftAllRight
+  asm: "VPSRL[WDQ]"
+  in:
+  - class: mask
+  - *any
+  - *vecAsScalar64
+  out:
+  - *any
+- go: ShiftAllRightSignExtended
+  asm: "VPSRA[WDQ]"
+  in:
+  - &int
+    go: $t
+    base: int
+  - *vecAsScalar64
+  out:
+  - *int
+- go: MaskedShiftAllRightSignExtended
+  asm: "VPSRA[WDQ]"
+  in:
+  - class: mask
+  - *int
+  - *vecAsScalar64
+  out:
+  - *int
+
+# Shift* (variable)
+- go: ShiftLeft
+  asm: "VPSLLV[WD]"
+  in:
+  - *any
+  - *any
+  out:
+  - *any
+- go: MaskedShiftLeft
+  asm: "VPSLLV[WD]"
+  in:
+  - class: mask
+  - *any
+  - *any
+  out:
+  - *any
+# XED data of VPSLLVQ marks the element bits 32 which is off to the actual semantic, we need to overwrite
+# it to 64.
+- go: ShiftLeft
+  asm: "VPSLLVQ"
+  in:
+  - &anyOverwriteElemBits
+    go: $t
+    overwriteElementBits: 64
+  - *anyOverwriteElemBits
+  out:
+  - *anyOverwriteElemBits
+- go: MaskedShiftLeft
+  asm: "VPSLLVQ"
+  in:
+  - class: mask
+  - *anyOverwriteElemBits
+  - *anyOverwriteElemBits
+  out:
+  - *anyOverwriteElemBits
+- go: ShiftRight
+  asm: "VPSRLV[WD]"
+  in:
+  - *any
+  - *any
+  out:
+  - *any
+- go: MaskedShiftRight
+  asm: "VPSRLV[WD]"
+  in:
+  - class: mask
+  - *any
+  - *any
+  out:
+  - *any
+# XED data of VPSRLVQ needs the same overwrite as VPSLLVQ.
+- go: ShiftRight
+  asm: "VPSRLVQ"
+  in:
+  - *anyOverwriteElemBits
+  - *anyOverwriteElemBits
+  out:
+  - *anyOverwriteElemBits
+- go: MaskedShiftRight
+  asm: "VPSRLVQ"
+  in:
+  - class: mask
+  - *anyOverwriteElemBits
+  - *anyOverwriteElemBits
+  out:
+  - *anyOverwriteElemBits
+- go: ShiftRightSignExtended
+  asm: "VPSRAV[WDQ]"
+  in:
+  - *any
+  - *any
+  out:
+  - *any
+- go: MaskedShiftRightSignExtended
+  asm: "VPSRAV[WDQ]"
+  in:
+  - class: mask
+  - *any
+  - *any
+  out:
+  - *any
+
+# Rotate
+- go: MaskedRotateAllLeft
+  asm: "VPROL[DQ]"
+  in:
+  - class: mask
+  - *any
+  - &pureImm
+    class: immediate
+    immOffset: 0
+  out:
+  - *any
+- go: MaskedRotateAllRight
+  asm: "VPROR[DQ]"
+  in:
+  - class: mask
+  - *any
+  - *pureImm
+  out:
+  - *any
+- go: MaskedRotateLeft
+  asm: "VPROLV[DQ]"
+  in:
+  - class: mask
+  - *any
+  - *any
+  out:
+  - *any
+- go: MaskedRotateRight
+  asm: "VPRORV[DQ]"
+  in:
+  - class: mask
+  - *any
+  - *any
+  out:
+  - *any
+
+# Bizzare shifts.
+- go: MaskedShiftAllLeftAndFillUpperFrom
+  asm: "VPSHLD[WDQ]"
+  in:
+  - class: mask
+  - *any
+  - *any
+  - *pureImm
+  out:
+  - *any
+- go: MaskedShiftAllRightAndFillUpperFrom
+  asm: "VPSHRD[WDQ]"
+  in:
+  - class: mask
+  - *any
+  - *any
+  - *pureImm
+  out:
+  - *any
+- go: MaskedShiftLeftAndFillUpperFrom
+  asm: "VPSHLDV[WDQ]"
+  in:
+  - *any
+  - class: mask
+  - *any
+  - *any
+  out:
+  - *any
+- go: MaskedShiftRightAndFillUpperFrom
+  asm: "VPSHRDV[WDQ]"
+  in:
+  - *any
+  - class: mask
+  - *any
+  - *any
+  out:
+  - *any

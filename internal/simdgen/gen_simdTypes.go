@@ -124,6 +124,20 @@ func (x {{(index .In 0).Go}}) {{.Go}}(y {{(index .In 1).Go}}) {{.GoType}}
 func (x {{(index .In 0).Go}}) {{.Go}}(y {{(index .In 1).Go}}, z {{(index .In 2).Go}}) {{.GoType}}
 {{end}}
 
+{{define "op2VecAsScalar"}}
+{{if .Documentation}}{{.Documentation}}
+//{{end}}
+// Asm: {{.Asm}}, CPU Feature: {{.Extension}}
+func (x {{(index .In 0).Go}}) {{.Go}}(y uint{{(index .In 1).TreatLikeAScalarOfSize}}) {{(index .Out 0).Go}}
+{{end}}
+
+{{define "op3VecAsScalar"}}
+{{if .Documentation}}{{.Documentation}}
+//{{end}}
+// Asm: {{.Asm}}, CPU Feature: {{.Extension}}
+func (x {{(index .In 0).Go}}) {{.Go}}(y uint{{(index .In 1).TreatLikeAScalarOfSize}}, z {{(index .In 2).Go}}) {{(index .Out 0).Go}}
+{{end}}
+
 {{define "op4"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
@@ -209,6 +223,11 @@ func test{{.OpShape}}(t *testing.T, {{.BaseArgDefList}}, want []{{.ResBaseType}}
     }
 }
 {{end}}
+{{define "untestedOpHeader"}}
+/* The operations below cannot be tested via wrappers, please test them directly */
+{{end}}
+{{define "untestedOp"}}
+// {{.}}{{end}}
 `
 
 // writeSIMDTestsWrapper generates the test wrappers and writes it to simd_amd64_testwrappers.go
@@ -235,15 +254,24 @@ func writeSIMDTestsWrapper(ops []Operation) *bytes.Buffer {
 	}
 
 	opsByShape := make(map[string]opData)
-
+	opsSkipped := map[string]struct{}{}
 	for _, o := range ops {
 		_, _, _, immType, _, _, gOp := o.shape()
 
 		if immType == VarImm || immType == ConstVarImm {
 			// Operations with variable immediates should be called directly
 			// instead of through wrappers.
+			opsSkipped[o.Go] = struct{}{}
 			continue
 		}
+		if vasIdx, err := checkVecAsScalar(o); err != nil {
+			panic(err)
+		} else if vasIdx != -1 {
+			// TODO: these could be tested via wrappers, implement this.
+			opsSkipped[o.Go] = struct{}{}
+			continue
+		}
+
 		var shape string
 		var baseArgDefList []string
 		var vecArgList []string
@@ -354,6 +382,22 @@ func writeSIMDTestsWrapper(ops []Operation) *bytes.Buffer {
 	for _, d := range data {
 		if err := t.ExecuteTemplate(buffer, "op", d); err != nil {
 			panic(fmt.Errorf("failed to execute op template for op shape %s: %w", d.OpShape, err))
+		}
+	}
+
+	if len(opsSkipped) != 0 {
+		if err := t.ExecuteTemplate(buffer, "untestedOpHeader", nil); err != nil {
+			panic(fmt.Errorf("failed to execute untestedOpHeader"))
+		}
+		opsK := []string{}
+		for k := range opsSkipped {
+			opsK = append(opsK, k)
+		}
+		slices.SortFunc(opsK, strings.Compare)
+		for _, k := range opsK {
+			if err := t.ExecuteTemplate(buffer, "untestedOp", k); err != nil {
+				panic(fmt.Errorf("failed to execute untestedOp"))
+			}
 		}
 	}
 
@@ -497,7 +541,18 @@ func writeSIMDStubs(ops []Operation, typeMap simdTypeMap) *bytes.Buffer {
 	slices.SortFunc(ops, compareOperations)
 
 	for i, op := range ops {
+		idxVecAsScalar, err := checkVecAsScalar(op)
+		if err != nil {
+			panic(err)
+		}
 		if s, op, err := classifyOp(op); err == nil {
+			if idxVecAsScalar != -1 {
+				if s == "op2" || s == "op3" {
+					s += "VecAsScalar"
+				} else {
+					panic(fmt.Errorf("simdgen only supports op2 or op3 with TreatLikeAScalarOfSize"))
+				}
+			}
 			if i == 0 || op.Go != ops[i-1].Go {
 				fmt.Fprintf(buffer, "\n/* %s */\n", op.Go)
 			}

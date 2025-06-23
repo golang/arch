@@ -75,8 +75,11 @@ func writeSIMDSSA(ops []Operation) *bytes.Buffer {
 		"fp2kkImm8",
 		"fp31ResultInArg0",
 		"fp3kfpResultInArg0",
+		"fpXfp",
+		"fpXkfp",
 		"fpgpfpImm8",
 		"fpgpImm8",
+		"fp2kfpImm8",
 	}
 	regInfoSet := map[string][]string{}
 	for _, key := range regInfoKeys {
@@ -112,6 +115,19 @@ func writeSIMDSSA(ops []Operation) *bytes.Buffer {
 		}
 		if shapeIn == OneImmIn || shapeIn == OneKmaskImmIn {
 			regShape += "Imm8"
+		}
+		idx, err := checkVecAsScalar(op)
+		if err != nil {
+			panic(err)
+		}
+		if idx != -1 {
+			if regShape == "fp21" {
+				regShape = "fpXfp"
+			} else if regShape == "fp2kfp" {
+				regShape = "fpXkfp"
+			} else {
+				panic(fmt.Errorf("simdgen does not recognize uses of treatLikeAScalarOfSize with op regShape %s in op: %s", regShape, op))
+			}
 		}
 		if _, ok := regInfoSet[regShape]; !ok {
 			allUnseen[regShape] = append(allUnseen[regShape], op)

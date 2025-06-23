@@ -417,6 +417,33 @@ func classifyOp(op Operation) (string, Operation, error) {
 	}
 }
 
+func checkVecAsScalar(op Operation) (idx int, err error) {
+	idx = -1
+	sSize := 0
+	for i, o := range op.In {
+		if o.TreatLikeAScalarOfSize != nil {
+			if idx == -1 {
+				idx = i
+				sSize = *o.TreatLikeAScalarOfSize
+			} else {
+				err = fmt.Errorf("simdgen only supports one TreatLikeAScalarOfSize in the arg list: %s", op)
+				return
+			}
+		}
+	}
+	if idx >= 0 {
+		if idx != 1 {
+			err = fmt.Errorf("simdgen only supports TreatLikeAScalarOfSize at the 2nd arg of the arg list: %s", op)
+			return
+		}
+		if sSize != 8 && sSize != 16 && sSize != 32 && sSize != 64 {
+			err = fmt.Errorf("simdgen does not recognize this uint size: %d, %s", sSize, op)
+			return
+		}
+	}
+	return
+}
+
 // dedup is deduping operations in the full structure level.
 func dedup(ops []Operation) (deduped []Operation) {
 	for _, op := range ops {
@@ -607,6 +634,51 @@ func overwrite(ops []Operation) error {
 	return nil
 }
 
+// reportXEDInconsistency reports potential XED inconsistencies.
+// We can add more fields to [Operation] to enable more checks and implement it here.
+// Supported checks:
+// [NameAndSizeCheck]: NAME[BWDQ] should set the elemBits accordingly.
+// This check is useful to find inconsistencies, then we can add overwrite fields to
+// those defs to correct them manually.
+func reportXEDInconsistency(ops []Operation) error {
+	for _, o := range ops {
+		if o.NameAndSizeCheck != nil {
+			suffixSizeMap := map[byte]int{'B': 8, 'W': 16, 'D': 32, 'Q': 64}
+			checkOperand := func(opr Operand) error {
+				if opr.ElemBits == nil {
+					return fmt.Errorf("simdgen expects elemBits to be set when performing NameAndSizeCheck")
+				}
+				if v, ok := suffixSizeMap[o.Asm[len(o.Asm)-1]]; !ok {
+					return fmt.Errorf("simdgen expects asm to end with [BWDQ] when performing NameAndSizeCheck")
+				} else {
+					if v != *opr.ElemBits {
+						return fmt.Errorf("simdgen finds NameAndSizeCheck inconsistency in def: %s", o)
+					}
+				}
+				return nil
+			}
+			for _, in := range o.In {
+				if in.Class != "vreg" && in.Class != "mask" {
+					continue
+				}
+				if in.TreatLikeAScalarOfSize != nil {
+					// This is an irregular operand, don't check it.
+					continue
+				}
+				if err := checkOperand(in); err != nil {
+					return err
+				}
+			}
+			for _, out := range o.Out {
+				if err := checkOperand(out); err != nil {
+					return err
+				}
+			}
+		}
+	}
+	return nil
+}
+
 func (o Operation) String() string {
 	var sb strings.Builder
 	sb.WriteString("Operation {\n")
@@ -717,6 +789,12 @@ func (op Operand) String() string {
 		sb.WriteString(fmt.Sprintf("    OverwriteElementBits: %d\n", *op.OverwriteElementBits))
 	} else {
 		sb.WriteString("    OverwriteElementBits: <nil>\n")
+	}
+
+	if op.TreatLikeAScalarOfSize != nil {
+		sb.WriteString(fmt.Sprintf("    TreatLikeAScalarOfSize: %d\n", *op.TreatLikeAScalarOfSize))
+	} else {
+		sb.WriteString("    TreatLikeAScalarOfSize: <nil>\n")
 	}
 
 	sb.WriteString("  }\n")
