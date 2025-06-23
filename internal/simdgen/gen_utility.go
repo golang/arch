@@ -338,12 +338,12 @@ func (op *Operation) regShape() (string, error) {
 // from my observation looks like in asm, imms are always the first,
 // masks are always the last, with vreg in between.
 func (op *Operation) sortOperand() {
-	priority := map[string]int{"immediate": 2, "vreg": 1, "mask": 0}
+	priority := map[string]int{"immediate": 0, "vreg": 1, "mask": 2}
 	sort.SliceStable(op.In, func(i, j int) bool {
 		pi := priority[op.In[i].Class]
 		pj := priority[op.In[j].Class]
 		if pi != pj {
-			return pi > pj
+			return pi < pj
 		}
 		return op.In[i].AsmPos < op.In[j].AsmPos
 	})
