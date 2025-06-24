@@ -159,30 +159,41 @@ func writeGoDefs(path string, cl unify.Closure) error {
 	// The parsed XED data might contain duplicates, like
 	// 512 bits VPADDP.
 	deduped := dedup(ops)
-	log.Printf("dedup len: %d\n", len(ops))
+
+	if *Verbose {
+		log.Printf("dedup len: %d\n", len(ops))
+	}
 	var err error
 	if err = overwrite(deduped); err != nil {
 		return err
 	}
-	log.Printf("dedup len: %d\n", len(deduped))
+	if *Verbose {
+		log.Printf("dedup len: %d\n", len(deduped))
+	}
 	if !*FlagNoSplitMask {
 		if deduped, err = splitMask(deduped); err != nil {
 			return err
 		}
 	}
-	log.Printf("dedup len: %d\n", len(deduped))
+	if *Verbose {
+		log.Printf("dedup len: %d\n", len(deduped))
+	}
 	if !*FlagNoDedup {
 		if deduped, err = dedupGodef(deduped); err != nil {
 			return err
 		}
 	}
-	log.Printf("dedup len: %d\n", len(deduped))
+	if *Verbose {
+		log.Printf("dedup len: %d\n", len(deduped))
+	}
 	if !*FlagNoConstImmPorting {
 		if err = copyConstImm(deduped); err != nil {
 			return err
 		}
 	}
-	log.Printf("dedup len: %d\n", len(deduped))
+	if *Verbose {
+		log.Printf("dedup len: %d\n", len(deduped))
+	}
 	typeMap := parseSIMDTypes(deduped)
 
 	formatWriteAndClose(writeSIMDTypes(typeMap), path, "src/"+simdPackage+"/types_amd64.go")

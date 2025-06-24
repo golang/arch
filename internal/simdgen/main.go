@@ -111,6 +111,8 @@ var (
 	FlagNoConstImmPorting = flag.Bool("noconstimmporting", false, "disable const immediate porting from op to imm operand")
 	FlagArch              = flag.String("arch", "amd64", "the target architecture")
 
+	Verbose = flag.Bool("v", false, "verbose")
+
 	flagDebugXED   = flag.Bool("debug-xed", false, "show XED instructions")
 	flagDebugUnify = flag.Bool("debug-unify", false, "print unification trace")
 	flagDebugHTML  = flag.String("debug-html", "", "write unification trace to `file.html`")
@@ -198,6 +200,14 @@ func main() {
 	case "godefs":
 		if err := writeGoDefs(*flagGoDefRoot, unified); err != nil {
 			log.Fatalf("Failed writing godefs: %+v", err)
+		}
+	}
+
+	if !*Verbose {
+		if operandRemarks == 0 {
+			fmt.Printf("XED decoding generated no errors, which is unusual.\n")
+		} else {
+			fmt.Printf("XED decoding generated %d \"errors\" which is not cause for alarm, use -v for details.\n", operandRemarks)
 		}
 	}
 

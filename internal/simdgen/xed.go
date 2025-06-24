@@ -22,6 +22,8 @@ const (
 	GREG_CLASS    = 2 // classify as a general register
 )
 
+var operandRemarks int
+
 // TODO: Doc. Returns Values with Def domains.
 func loadXED(xedPath string) []*unify.Value {
 	// TODO: Obviously a bunch more to do here.
@@ -49,7 +51,10 @@ func loadXED(xedPath string) []*unify.Value {
 
 		ins, outs, err := decodeOperands(db, strings.Fields(inst.Operands))
 		if err != nil {
-			log.Printf("%s: [%s] %s", inst.Pos, inst.Opcode(), err)
+			operandRemarks++
+			if *Verbose {
+				log.Printf("%s: [%s] %s", inst.Pos, inst.Opcode(), err)
+			}
 			return
 		}
 		// TODO: "feature"
