@@ -237,10 +237,8 @@ func writeSIMDTestsWrapper(ops []Operation) *bytes.Buffer {
 	opsByShape := make(map[string]opData)
 
 	for _, o := range ops {
-		_, _, _, immType, _, _, gOp, err := o.shape()
-		if err != nil {
-			panic(err)
-		}
+		_, _, _, immType, _, _, gOp := o.shape()
+
 		if immType == VarImm || immType == ConstVarImm {
 			// Operations with variable immediates should be called directly
 			// instead of through wrappers.
@@ -504,7 +502,7 @@ func writeSIMDStubs(ops []Operation, typeMap simdTypeMap) *bytes.Buffer {
 				fmt.Fprintf(buffer, "\n/* %s */\n", op.Go)
 			}
 			if err := t.ExecuteTemplate(buffer, s, op); err != nil {
-				panic(fmt.Errorf("failed to execute template %s for op %s: %w", s, op.Go, err))
+				panic(fmt.Errorf("failed to execute template %s for op %v: %w", s, op, err))
 			}
 
 		} else {

@@ -128,10 +128,9 @@ const (
 // opNoConstImmMask is op with its inputs excluding the const imm and mask.
 //
 // This function does not modify op.
-func (op *Operation) shape() (shapeIn, shapeOut, maskType, immType int, opNoImm Operation, opNoConstMask Operation, opNoImmConstMask Operation, err error) {
+func (op *Operation) shape() (shapeIn, shapeOut, maskType, immType int, opNoImm Operation, opNoConstMask Operation, opNoImmConstMask Operation) {
 	if len(op.Out) > 1 {
-		err = fmt.Errorf("simdgen only supports 1 output: %s", op)
-		return
+		panic(fmt.Errorf("simdgen only supports 1 output: %s", op))
 	}
 	var outputReg int
 	if len(op.Out) == 1 {
@@ -141,15 +140,13 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType, immType int, opNoImm 
 		} else if op.Out[0].Class == "mask" {
 			shapeOut = OneKmaskOut
 		} else {
-			err = fmt.Errorf("simdgen only supports output of class vreg or mask: %s", op)
-			return
+			panic(fmt.Errorf("simdgen only supports output of class vreg or mask: %s", op))
 		}
 	} else {
 		shapeOut = NoOut
 		// TODO: are these only Load/Stores?
 		// We manually supported two Load and Store, are those enough?
-		err = fmt.Errorf("simdgen only supports 1 output: %s", op)
-		return
+		panic(fmt.Errorf("simdgen only supports 1 output: %s", op))
 	}
 	hasImm := false
 	maskCount := 0
@@ -160,31 +157,28 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType, immType int, opNoImm 
 			if shapeOut != OneVregOutAtIn && in.AsmPos == 0 && in.Class == "vreg" {
 				shapeOut = OneVregOutAtIn
 			} else {
-				err = fmt.Errorf("simdgen only support output and input sharing the same position case of \"the first input is vreg and the only output\": %s", op)
-				return
+				panic(fmt.Errorf("simdgen only support output and input sharing the same position case of \"the first input is vreg and the only output\": %s", op))
 			}
 		}
 		if in.Class == "immediate" {
 			// A manual check on XED data found that AMD64 SIMD instructions at most
 			// have 1 immediates. So we don't need to check this here.
 			if *in.Bits != 8 {
-				err = fmt.Errorf("simdgen only supports immediates of 8 bits: %s", op)
-				return
+				panic(fmt.Errorf("simdgen only supports immediates of 8 bits: %s", op))
 			}
 			hasImm = true
 		} else if in.Class == "mask" {
 			if in.Const != nil {
 				if *in.Const == "K0" {
 					if iConstMask != -1 {
-						err = fmt.Errorf("simdgen only supports one const mask in inputs: %s", op)
-						return
+						panic(fmt.Errorf("simdgen only supports one const mask in inputs: %s", op))
 					}
 					iConstMask = i
 					// Const mask should be invisible in ssa and prog, so we don't treat it as a mask.
 					// More specifically in prog, it's optional: when missing the assembler will default it to K0).
 					// TODO: verify the above assumption is safe.
 				} else {
-					err = fmt.Errorf("simdgen only supports const mask K0 in inputs: %s", op)
+					panic(fmt.Errorf("simdgen only supports const mask K0 in inputs: %s", op))
 				}
 			} else {
 				maskCount++
@@ -218,8 +212,7 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType, immType int, opNoImm 
 		} else if op.In[0].ImmOffset != nil {
 			immType = VarImm
 		} else {
-			err = fmt.Errorf("simdgen requires imm to have at least one of ImmOffset or Const set: %s", op)
-			return
+			panic(fmt.Errorf("simdgen requires imm to have at least one of ImmOffset or Const set: %s", op))
 		}
 	} else {
 		immType = NoImm
@@ -235,16 +228,13 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType, immType int, opNoImm 
 	}
 	checkPureMask := func() bool {
 		if hasImm {
-			err = fmt.Errorf("simdgen does not support immediates in pure mask operations: %s", op)
-			return true
+			panic(fmt.Errorf("simdgen does not support immediates in pure mask operations: %s", op))
 		}
 		if iConstMask != -1 {
-			err = fmt.Errorf("simdgen does not support const mask in pure mask operations: %s", op)
-			return true
+			panic(fmt.Errorf("simdgen does not support const mask in pure mask operations: %s", op))
 		}
 		if hasVreg {
-			err = fmt.Errorf("simdgen does not support more than 1 masks in non-pure mask operations: %s", op)
-			return true
+			panic(fmt.Errorf("simdgen does not support more than 1 masks in non-pure mask operations: %s", op))
 		}
 		return false
 	}
@@ -275,7 +265,7 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType, immType int, opNoImm 
 
 // regShape returns a string representation of the register shape.
 func (op *Operation) regShape() (string, error) {
-	_, _, _, _, _, _, gOp, _ := op.shape()
+	_, _, _, _, _, _, gOp := op.shape()
 	var regInfo string
 	var vRegInCnt, gRegInCnt, kMaskInCnt, vRegOutCnt, gRegOutCnt, kMaskOutCnt int
 	for _, in := range gOp.In {
@@ -349,14 +339,27 @@ func (op Operation) ResultType() string {
 	return fmt.Sprintf("types.TypeVec%d", *op.Out[0].Bits)
 }
 
+// GoType returns the Go type returned by this operation (relative to the simd package),
+// for example "int32" or "Int8x16".  This is used in a template.
+func (op Operation) GoType() string {
+	if op.Out[0].Class == "greg" {
+		if op.Go == "GetElem" {
+			at := 0 // proper value of at depends on whether immediate was stripped or not
+			if op.In[at].Class == "immediate" {
+				at++
+			}
+			return fmt.Sprintf("%s%d", *op.Out[0].Base, *op.In[at].ElemBits)
+		}
+		panic(fmt.Errorf("Implement this case for %v", op))
+	}
+	return *op.Out[0].Go
+}
+
 // classifyOp returns a classification string, modified operation, and perhaps error based
 // on the stub and intrinsic shape for the operation.
 // The classification string is in the regular expression set "op[1234](Imm8)?"
 func classifyOp(op Operation) (string, Operation, error) {
-	_, _, _, immType, _, opNoConstMask, gOp, err := op.shape()
-	if err != nil {
-		return "", op, err
-	}
+	_, _, _, immType, _, opNoConstMask, gOp := op.shape()
 
 	if immType == VarImm || immType == ConstVarImm {
 		switch len(opNoConstMask.In) {
@@ -415,10 +418,8 @@ func splitMask(ops []Operation) ([]Operation, error) {
 		if op.Masked == nil || *op.Masked != "true" {
 			continue
 		}
-		shapeIn, _, _, _, _, _, _, err := op.shape()
-		if err != nil {
-			return nil, err
-		}
+		shapeIn, _, _, _, _, _, _ := op.shape()
+
 		if shapeIn == OneKmaskIn || shapeIn == OneKmaskImmIn {
 			op2 := op
 			op2.In = slices.Clone(op.In)
@@ -447,10 +448,8 @@ func splitMask(ops []Operation) ([]Operation, error) {
 func dedupGodef(ops []Operation) ([]Operation, error) {
 	seen := map[string][]Operation{}
 	for _, op := range ops {
-		_, _, _, _, _, _, gOp, err := op.shape()
-		if err != nil {
-			return nil, err
-		}
+		_, _, _, _, _, _, gOp := op.shape()
+
 		genericNames := gOp.Go + *gOp.In[0].Go
 		seen[genericNames] = append(seen[genericNames], op)
 	}
@@ -493,10 +492,8 @@ func copyConstImm(ops []Operation) error {
 		if op.ConstImm == nil {
 			continue
 		}
-		_, _, _, immType, _, _, _, err := op.shape()
-		if err != nil {
-			return err
-		}
+		_, _, _, immType, _, _, _ := op.shape()
+
 		if immType == ConstImm || immType == ConstVarImm {
 			op.In[0].Const = op.ConstImm
 		}
@@ -527,18 +524,18 @@ func overwrite(ops []Operation) error {
 	overwrite := func(op []Operand, idx int, o Operation) error {
 		if op[idx].OverwriteClass != nil {
 			if op[idx].OverwriteBase == nil {
-				return fmt.Errorf("simdgen: [OverwriteClass] must be set together with [OverwriteBase]: %s", op[idx])
+				panic(fmt.Errorf("simdgen: [OverwriteClass] must be set together with [OverwriteBase]: %s", op[idx]))
 			}
 			oBase := *op[idx].OverwriteBase
 			oClass := *op[idx].OverwriteClass
 			if oClass != "mask" {
-				return fmt.Errorf("simdgen: [Class] overwrite only supports overwritting to mask: %s", op[idx])
+				panic(fmt.Errorf("simdgen: [Class] overwrite only supports overwritting to mask: %s", op[idx]))
 			}
 			if oBase != "int" {
-				return fmt.Errorf("simdgen: [Class] overwrite must set [OverwriteBase] to int: %s", op[idx])
+				panic(fmt.Errorf("simdgen: [Class] overwrite must set [OverwriteBase] to int: %s", op[idx]))
 			}
 			if op[idx].Class != "vreg" {
-				return fmt.Errorf("simdgen: [Class] overwrite must be overwriting [Class] from vreg: %s", op[idx])
+				panic(fmt.Errorf("simdgen: [Class] overwrite must be overwriting [Class] from vreg: %s", op[idx]))
 			}
 			hasClassOverwrite = true
 			*op[idx].Base = oBase

@@ -50,15 +50,15 @@ func writeSIMDMachineOps(ops []Operation) *bytes.Buffer {
 	opsData := make([]opData, 0)
 	opsDataImm := make([]opData, 0)
 	for _, op := range ops {
-		shapeIn, shapeOut, maskType, _, _, _, gOp, err := op.shape()
-		if err != nil {
-			panic(err)
-		}
+		shapeIn, shapeOut, maskType, _, _, _, gOp := op.shape()
+
 		asm := gOp.Asm
 		if maskType == OneMask {
 			asm += "Masked"
 		}
+
 		asm = fmt.Sprintf("%s%d", asm, *gOp.Out[0].Bits)
+
 		// TODO: all our masked operations are now zeroing, we need to generate machine ops with merging masks, maybe copy
 		// one here with a name suffix "Merging". The rewrite rules will need them.
 		if _, ok := seen[asm]; ok {
