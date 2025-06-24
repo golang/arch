@@ -5,6 +5,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"slices"
 	"strings"
@@ -30,6 +31,20 @@ type Operation struct {
 	// Masked indicates that this is a masked operation, this field has to be set for masked operations
 	// otherwise simdgen won't recognize it in [splitMask].
 	Masked *string
+}
+
+func (o *Operation) VectorWidth() int {
+	out := o.Out[0]
+	if out.Class == "vreg" {
+		return *out.Bits
+	} else if out.Class == "greg" || out.Class == "mask" {
+		for i := range o.In {
+			if o.In[i].Class == "vreg" {
+				return *o.In[i].Bits
+			}
+		}
+	}
+	panic(fmt.Errorf("Figure out what the vector width is for %v and implement it", *o))
 }
 
 func compareStringPointers(x, y *string) int {

@@ -107,56 +107,56 @@ package simd
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
-func (x {{(index .In 0).Go}}) {{.Go}}() {{(index .Out 0).Go}}
+func (x {{(index .In 0).Go}}) {{.Go}}() {{.GoType}}
 {{end}}
 
 {{define "op2"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
-func (x {{(index .In 0).Go}}) {{.Go}}(y {{(index .In 1).Go}}) {{(index .Out 0).Go}}
+func (x {{(index .In 0).Go}}) {{.Go}}(y {{(index .In 1).Go}}) {{.GoType}}
 {{end}}
 
 {{define "op3"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
-func (x {{(index .In 0).Go}}) {{.Go}}(y {{(index .In 1).Go}}, z {{(index .In 2).Go}}) {{(index .Out 0).Go}}
+func (x {{(index .In 0).Go}}) {{.Go}}(y {{(index .In 1).Go}}, z {{(index .In 2).Go}}) {{.GoType}}
 {{end}}
 
 {{define "op4"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
-func (x {{(index .In 0).Go}}) {{.Go}}(y {{(index .In 1).Go}}, z {{(index .In 2).Go}}, u {{(index .In 3).Go}}) {{(index .Out 0).Go}}
+func (x {{(index .In 0).Go}}) {{.Go}}(y {{(index .In 1).Go}}, z {{(index .In 2).Go}}, u {{(index .In 3).Go}}) {{.GoType}}
 {{end}}
 
 {{define "op1Imm8"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
-func (x {{(index .In 1).Go}}) {{.Go}}(imm8 uint8) {{(index .Out 0).Go}}
+func (x {{(index .In 1).Go}}) {{.Go}}(imm8 uint8) {{.GoType}}
 {{end}}
 
 {{define "op2Imm8"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
-func (x {{(index .In 1).Go}}) {{.Go}}(imm uint8, y {{(index .In 2).Go}}) {{(index .Out 0).Go}}
+func (x {{(index .In 1).Go}}) {{.Go}}(imm uint8, y {{(index .In 2).Go}}) {{.GoType}}
 {{end}}
 
 {{define "op3Imm8"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
-func (x {{(index .In 1).Go}}) {{.Go}}(imm uint8, y {{(index .In 2).Go}}, z {{(index .In 3).Go}}) {{(index .Out 0).Go}}
+func (x {{(index .In 1).Go}}) {{.Go}}(imm uint8, y {{(index .In 2).Go}}, z {{(index .In 3).Go}}) {{.GoType}}
 {{end}}
 
 {{define "op4Imm8"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
-func (x {{(index .In 1).Go}}) {{.Go}}(imm uint8, y {{(index .In 2).Go}}, z {{(index .In 3).Go}}, u {{(index .In 4).Go}}) {{(index .Out 0).Go}}
+func (x {{(index .In 1).Go}}) {{.Go}}(imm uint8, y {{(index .In 2).Go}}, z {{(index .In 3).Go}}, u {{(index .In 4).Go}}) {{.GoType}}
 {{end}}
 
 {{define "vectorConversion"}}

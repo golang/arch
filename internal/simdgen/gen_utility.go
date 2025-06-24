@@ -72,6 +72,7 @@ const (
 	InvalidOut int = iota
 	NoOut
 	OneVregOut
+	OneGregOut
 	OneKmaskOut
 	OneVregOutAtIn
 )
@@ -137,6 +138,8 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType, immType int, opNoImm 
 		outputReg = op.Out[0].AsmPos
 		if op.Out[0].Class == "vreg" {
 			shapeOut = OneVregOut
+		} else if op.Out[0].Class == "greg" {
+			shapeOut = OneGregOut
 		} else if op.Out[0].Class == "mask" {
 			shapeOut = OneKmaskOut
 		} else {
@@ -335,7 +338,36 @@ func (op *Operation) sortOperand() {
 	})
 }
 
-func (op Operation) ResultType() string {
+// goNormalType returns the Go type name for the result of an Op that
+// does not return a vector, i.e., that returns a result in a general
+// register.  Currently there's only one family of Ops in Go's simd library
+// that does this (GetElem), and so this is specialized to work for that,
+// but the problem (mismatch betwen hardware register width and Go type
+// width) seems likely to recur if there are any other cases.
+func (op Operation) goNormalType() string {
+	if op.Go == "GetElem" {
+		// GetElem returns an element of the vector into a general register
+		// but as far as the hardware is concerned, that result is either 32
+		// or 64 bits wide, no matter what the vector element width is.
+		// This is not "wrong" but it is not the right answer for Go source code.
+		// To get the Go type right, combine the base type ("int", "uint", "float"),
+		// with the input vector element width in bits (8,16,32,64).
+
+		at := 0 // proper value of at depends on whether immediate was stripped or not
+		if op.In[at].Class == "immediate" {
+			at++
+		}
+		return fmt.Sprintf("%s%d", *op.Out[0].Base, *op.In[at].ElemBits)
+	}
+	panic(fmt.Errorf("Implement goNormalType for %v", op))
+}
+
+// SSAType returns the string for the type reference in SSA generation,
+// for example in the intrinsics generating template.
+func (op Operation) SSAType() string {
+	if op.Out[0].Class == "greg" {
+		return fmt.Sprintf("types.Types[types.T%s]", strings.ToUpper(op.goNormalType()))
+	}
 	return fmt.Sprintf("types.TypeVec%d", *op.Out[0].Bits)
 }
 
@@ -343,14 +375,7 @@ func (op Operation) ResultType() string {
 // for example "int32" or "Int8x16".  This is used in a template.
 func (op Operation) GoType() string {
 	if op.Out[0].Class == "greg" {
-		if op.Go == "GetElem" {
-			at := 0 // proper value of at depends on whether immediate was stripped or not
-			if op.In[at].Class == "immediate" {
-				at++
-			}
-			return fmt.Sprintf("%s%d", *op.Out[0].Base, *op.In[at].ElemBits)
-		}
-		panic(fmt.Errorf("Implement this case for %v", op))
+		return op.goNormalType()
 	}
 	return *op.Out[0].Go
 }

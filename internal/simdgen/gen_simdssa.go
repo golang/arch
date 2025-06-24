@@ -76,6 +76,7 @@ func writeSIMDSSA(ops []Operation) *bytes.Buffer {
 		"fp31ResultInArg0",
 		"fp3kfpResultInArg0",
 		"fpgpfpImm8",
+		"fpgpImm8",
 	}
 	regInfoSet := map[string][]string{}
 	for _, key := range regInfoKeys {
@@ -91,7 +92,7 @@ func writeSIMDSSA(ops []Operation) *bytes.Buffer {
 		if maskType == 2 {
 			asm += "Masked"
 		}
-		asm = fmt.Sprintf("%s%d", asm, *gOp.Out[0].Bits)
+		asm = fmt.Sprintf("%s%d", asm, gOp.VectorWidth())
 		if _, ok := seen[asm]; ok {
 			continue
 		}

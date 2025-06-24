@@ -46,7 +46,7 @@ func writeSIMDMachineOps(ops []Operation) *bytes.Buffer {
 		OpsDataImm []opData
 	}
 	seen := map[string]struct{}{}
-	regInfoSet := map[string]bool{"fp11": true, "fp21": true, "fp2k": true, "fp2kfp": true, "fp2kk": true, "fpkfp": true, "fp31": true, "fp3kfp": true, "fpgpfp": true}
+	regInfoSet := map[string]bool{"fp11": true, "fp21": true, "fp2k": true, "fp2kfp": true, "fp2kk": true, "fpkfp": true, "fp31": true, "fp3kfp": true, "fpgpfp": true, "fpgp": true}
 	opsData := make([]opData, 0)
 	opsDataImm := make([]opData, 0)
 	for _, op := range ops {
@@ -57,7 +57,7 @@ func writeSIMDMachineOps(ops []Operation) *bytes.Buffer {
 			asm += "Masked"
 		}
 
-		asm = fmt.Sprintf("%s%d", asm, *gOp.Out[0].Bits)
+		asm = fmt.Sprintf("%s%d", asm, gOp.VectorWidth())
 
 		// TODO: all our masked operations are now zeroing, we need to generate machine ops with merging masks, maybe copy
 		// one here with a name suffix "Merging". The rewrite rules will need them.
@@ -76,6 +76,8 @@ func writeSIMDMachineOps(ops []Operation) *bytes.Buffer {
 		if shapeOut == OneVregOut || shapeOut == OneVregOutAtIn || gOp.Out[0].OverwriteClass != nil {
 			// If class overwrite is happening, that's not really a mask but a vreg.
 			outType = fmt.Sprintf("Vec%d", *gOp.Out[0].Bits)
+		} else if shapeOut == OneGregOut {
+			outType = gOp.GoType() // this is a straight Go type, not a VecNNN type
 		} else if shapeOut == OneKmaskOut {
 			outType = "Mask"
 		} else {
