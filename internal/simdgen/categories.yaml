@@ -644,6 +644,12 @@
   extension: "AVX.*"
   documentation: !string |-
     // SetElem sets a single constant-indexed element's value.
+- go: GetElem
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: !string |-
+    // GetElem retrieves a single constant-indexed element's value.
+
 - go: Mul
   commutative: "true"
   extension: "AVX.*"

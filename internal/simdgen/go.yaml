@@ -777,6 +777,18 @@
     immOffset: 0
   out:
   - *t
+- go: GetElem
+  asm: "VPEXTR[BWDQ]"
+  in:
+  - class: vreg
+    base: $b
+    elemBits: $e
+  - class: immediate
+    immOffset: 0
+  out:
+  - class: greg
+    base: $b
+    bits: $e
 # "Normal" multiplication is only available for floats.
 # This only covers the single and double precision.
 - go: Mul
