@@ -123,7 +123,10 @@ func compareOperands(x, y *Operand) int {
 		if c := compareIntPointers(x.ElemBits, y.ElemBits); c != 0 {
 			return c
 		}
-		return compareIntPointers(x.Bits, y.Bits)
+		if c := compareIntPointers(x.Bits, y.Bits); c != 0 {
+			return c
+		}
+		return 0
 	}
 }
 

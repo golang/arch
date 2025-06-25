@@ -50,6 +50,7 @@ in: !repeat
   - {class: mask, go: Mask32x16,  base: "int",   elemBits: 32, bits: 512, lanes: 16}
   - {class: mask, go: Mask64x8,   base: "int",   elemBits: 64, bits: 512, lanes:  8}
 
+
   - {class: greg, go: float64,    base: "float", bits:  64, lanes:  1}
   - {class: greg, go: float32,    base: "float", bits:  32, lanes:  1}
   - {class: greg, go: int64,      base: "int",   bits:  64, lanes:  1}
@@ -60,6 +61,26 @@ in: !repeat
   - {class: greg, go: uint32,     base: "uint",  bits:  32, lanes:  1}
   - {class: greg, go: uint16,     base: "uint",  bits:  16, lanes:  1}
   - {class: greg, go: uint8,      base: "uint",  bits:   8, lanes:  1}
+
+# Special shapes just to make INSERT[IF]128 work.
+# The elemBits field of these shapes are wrong, it would be overwritten by overwriteElemBits.
+  - {class: vreg, go: Int8x16,    base: "int",   elemBits: 128, bits: 128, lanes: 16}
+  - {class: vreg, go: Uint8x16,   base: "uint",  elemBits: 128, bits: 128, lanes: 16}
+  - {class: vreg, go: Int16x8,    base: "int",   elemBits: 128, bits: 128, lanes: 8}
+  - {class: vreg, go: Uint16x8,   base: "uint",  elemBits: 128, bits: 128, lanes: 8}
+  - {class: vreg, go: Int32x4,    base: "int",   elemBits: 128, bits: 128, lanes: 4}
+  - {class: vreg, go: Uint32x4,   base: "uint",  elemBits: 128, bits: 128, lanes: 4}
+  - {class: vreg, go: Int64x2,    base: "int",   elemBits: 128, bits: 128, lanes: 2}
+  - {class: vreg, go: Uint64x2,   base: "uint",  elemBits: 128, bits: 128, lanes: 2}
+
+  - {class: vreg, go: Int8x32,    base: "int",   elemBits: 128, bits: 256, lanes: 32}
+  - {class: vreg, go: Uint8x32,   base: "uint",  elemBits: 128, bits: 256, lanes: 32}
+  - {class: vreg, go: Int16x16,   base: "int",   elemBits: 128, bits: 256, lanes: 16}
+  - {class: vreg, go: Uint16x16,  base: "uint",  elemBits: 128, bits: 256, lanes: 16}
+  - {class: vreg, go: Int32x8,    base: "int",   elemBits: 128, bits: 256, lanes: 8}
+  - {class: vreg, go: Uint32x8,   base: "uint",  elemBits: 128, bits: 256, lanes: 8}
+  - {class: vreg, go: Int64x4,    base: "int",   elemBits: 128, bits: 256, lanes: 4}
+  - {class: vreg, go: Uint64x4,   base: "uint",  elemBits: 128, bits: 256, lanes: 4}
 
   - {class: immediate, go: Immediate} # TODO: we only support imms that are not used as value -- usually as instruction semantic predicate like VPCMP as of now.
 out: !repeat

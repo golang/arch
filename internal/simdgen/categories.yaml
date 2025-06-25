@@ -545,7 +545,11 @@
   extension: "AVX.*"
   documentation: !string |-
     // GetElem retrieves a single constant-indexed element's value.
-
+- go: Set128
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: !string |-
+    // Set128 combines a 128-bit vector with a 256-bit vector, where the constant operand specifies whether the low (0) or high (1) half is receives the smaller vector.
 - go: Mul
   commutative: "true"
   extension: "AVX.*"

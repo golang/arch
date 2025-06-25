@@ -668,8 +668,8 @@ func overwrite(ops []Operation) error {
 				panic(fmt.Errorf("ElemBits is nil at operand %d of %v", idx, o))
 			}
 			*op[idx].ElemBits = *op[idx].OverwriteElementBits
-			*op[idx].Go = fmt.Sprintf("%s%dx%d", capitalizeFirst(*op[idx].Base), *op[idx].ElemBits, *op[idx].Bits / *op[idx].ElemBits)
-
+			*op[idx].Lanes = *op[idx].Bits / *op[idx].ElemBits
+			*op[idx].Go = fmt.Sprintf("%s%dx%d", capitalizeFirst(*op[idx].Base), *op[idx].ElemBits, *op[idx].Lanes)
 		}
 		return nil
 	}

@@ -24,3 +24,109 @@
   - class: greg
     base: $b
     bits: $e
+
+- go: Set128
+  asm: "VINSERTI128"
+  in:
+  - &i8x32
+    class: vreg
+    base: $t
+    bits: 256
+    OverwriteElementBits: 8
+  - &i8x16
+    class: vreg
+    base: $t
+    bits: 128
+    OverwriteElementBits: 8
+  - class: immediate
+    immOffset: 0
+  out:
+  - *i8x32
+
+- go: Set128
+  asm: "VINSERTI128"
+  in:
+  - &i16x16
+    class: vreg
+    base: $t
+    bits: 256
+    OverwriteElementBits: 16
+  - &i16x8
+    class: vreg
+    base: $t
+    bits: 128
+    OverwriteElementBits: 16
+  - class: immediate
+    immOffset: 0
+  out:
+  - *i16x16
+
+- go: Set128
+  asm: "VINSERTI128"
+  in:
+  - &i32x8
+    class: vreg
+    base: $t
+    bits: 256
+    OverwriteElementBits: 32
+  - &i32x4
+    class: vreg
+    base: $t
+    bits: 128
+    OverwriteElementBits: 32
+  - class: immediate
+    immOffset: 0
+  out:
+  - *i32x8
+
+- go: Set128
+  asm: "VINSERTI128"
+  in:
+  - &i64x4
+    class: vreg
+    base: $t
+    bits: 256
+    OverwriteElementBits: 64
+  - &i64x2
+    class: vreg
+    base: $t
+    bits: 128
+    OverwriteElementBits: 64
+  - class: immediate
+    immOffset: 0
+  out:
+  - *i64x4
+
+- go: Set128
+  asm: "VINSERTF128"
+  in:
+  - &f32x8
+    class: vreg
+    base: $t
+    bits: 256
+    OverwriteElementBits: 32
+  - &f32x4
+    class: vreg
+    base: $t
+    bits: 128
+    OverwriteElementBits: 32
+  - class: immediate
+    immOffset: 0
+  out:
+  - *f32x8
+
+- go: Set128
+  asm: "VINSERTF128"
+  in:
+  - &f64x4
+    class: vreg
+    base: $t
+    bits: 256
+  - &f64x2
+    class: vreg
+    base: $t
+    bits: 128
+  - class: immediate
+    immOffset: 0
+  out:
+  - *f64x4
