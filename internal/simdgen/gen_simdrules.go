@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"io"
 	"slices"
-	"strings"
 	"text/template"
 )
 
@@ -39,13 +38,13 @@ type tplRuleData struct {
 
 func compareTplRuleData(x, y tplRuleData) int {
 	// TODO should MaskedXYZ compare just after XYZ?
-	if c := strings.Compare(x.GoOp, y.GoOp); c != 0 {
+	if c := compareNatural(x.GoOp, y.GoOp); c != 0 {
 		return c
 	}
-	if c := strings.Compare(x.GoType, y.GoType); c != 0 {
+	if c := compareNatural(x.GoType, y.GoType); c != 0 {
 		return c
 	}
-	if c := strings.Compare(x.Args, y.Args); c != 0 {
+	if c := compareNatural(x.Args, y.Args); c != 0 {
 		return c
 	}
 	return 0

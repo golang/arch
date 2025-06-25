@@ -25,13 +25,13 @@ type simdType struct {
 
 func compareSimdTypes(x, y simdType) int {
 	// "mask" then "vreg"
-	if c := strings.Compare(x.Type, y.Type); c != 0 {
+	if c := compareNatural(x.Type, y.Type); c != 0 {
 		return c
 	}
 	// want "flo" < "int" < "uin" (and then 8 < 16 < 32 < 64),
 	// not "int16" < "int32" < "int64" < "int8")
 	// so limit comparison to first 3 bytes in string.
-	if c := strings.Compare(x.Base[:3], y.Base[:3]); c != 0 {
+	if c := compareNatural(x.Base[:3], y.Base[:3]); c != 0 {
 		return c
 	}
 	// base type size, 8 < 16 < 32 < 64
@@ -370,11 +370,11 @@ func writeSIMDTestsWrapper(ops []Operation) *bytes.Buffer {
 	}
 
 	compareOpData := func(x, y opData) int {
-		return strings.Compare(x.OpShape, y.OpShape)
+		return compareNatural(x.OpShape, y.OpShape)
 	}
 	data := make([]opData, 0)
 	for _, d := range opsByShape {
-		slices.SortFunc(d.Ops, strings.Compare)
+		slices.SortFunc(d.Ops, compareNatural)
 		data = append(data, d)
 	}
 	slices.SortFunc(data, compareOpData)
