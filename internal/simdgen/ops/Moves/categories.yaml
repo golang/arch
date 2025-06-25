@@ -14,3 +14,8 @@
   extension: "AVX.*"
   documentation: !string |-
     // Set128 combines a 128-bit vector with a 256-bit vector, where the constant operand specifies whether the low (0) or high (1) half is receives the smaller vector.
+- go: Get128
+  commutative: "false"
+  extension: "AVX.*"
+  documentation: !string |-
+    // Get128 retrieves the upper (1) or lower (0) half of a 256-bit vector, depending on the constant operand.

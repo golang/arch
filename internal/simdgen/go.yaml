@@ -776,22 +776,24 @@
   - class: greg
     base: $b
     lanes: 1 # Scalar, darn it!
-  - class: immediate
+  - &imm
+    class: immediate
     immOffset: 0
   out:
   - *t
+
 - go: GetElem
   asm: "VPEXTR[BWDQ]"
   in:
   - class: vreg
     base: $b
     elemBits: $e
-  - class: immediate
-    immOffset: 0
+  - *imm
   out:
   - class: greg
     base: $b
     bits: $e
+
 
 - go: Set128
   asm: "VINSERTI128"
@@ -806,10 +808,19 @@
     base: $t
     bits: 128
     OverwriteElementBits: 8
-  - class: immediate
+  - &imm01 # This immediate should be only 0 or 1
+    class: immediate
     immOffset: 0
   out:
   - *i8x32
+
+- go: Get128
+  asm: "VEXTRACTI128"
+  in:
+  - *i8x32
+  - *imm01
+  out:
+  - *i8x16
 
 - go: Set128
   asm: "VINSERTI128"
@@ -824,10 +835,17 @@
     base: $t
     bits: 128
     OverwriteElementBits: 16
-  - class: immediate
-    immOffset: 0
+  - *imm01
   out:
   - *i16x16
+
+- go: Get128
+  asm: "VEXTRACTI128"
+  in:
+  - *i16x16
+  - *imm01
+  out:
+  - *i16x8
 
 - go: Set128
   asm: "VINSERTI128"
@@ -842,10 +860,17 @@
     base: $t
     bits: 128
     OverwriteElementBits: 32
-  - class: immediate
-    immOffset: 0
+  - *imm01
   out:
   - *i32x8
+
+- go: Get128
+  asm: "VEXTRACTI128"
+  in:
+  - *i32x8
+  - *imm01
+  out:
+  - *i32x4
 
 - go: Set128
   asm: "VINSERTI128"
@@ -860,10 +885,17 @@
     base: $t
     bits: 128
     OverwriteElementBits: 64
-  - class: immediate
-    immOffset: 0
+  - *imm01
   out:
   - *i64x4
+
+- go: Get128
+  asm: "VEXTRACTI128"
+  in:
+  - *i64x4
+  - *imm01
+  out:
+  - *i64x2
 
 - go: Set128
   asm: "VINSERTF128"
@@ -878,10 +910,17 @@
     base: $t
     bits: 128
     OverwriteElementBits: 32
-  - class: immediate
-    immOffset: 0
+  - *imm01
   out:
   - *f32x8
+
+- go: Get128
+  asm: "VEXTRACTF128"
+  in:
+  - *f32x8
+  - *imm01
+  out:
+  - *f32x4
 
 - go: Set128
   asm: "VINSERTF128"
@@ -894,10 +933,25 @@
     class: vreg
     base: $t
     bits: 128
-  - class: immediate
-    immOffset: 0
+  - *imm01
   out:
   - *f64x4
+
+- go: Get128
+  asm: "VEXTRACTF128"
+  in:
+  - *f64x4
+  - *imm01
+  out:
+  - *f64x2
+
+
+
+
+
+
+
+
 # "Normal" multiplication is only available for floats.
 # This only covers the single and double precision.
 - go: Mul
