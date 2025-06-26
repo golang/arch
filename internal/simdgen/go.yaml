@@ -431,6 +431,36 @@
   - *fp
   out:
   - *fp
+- go: MaskedGaloisFieldAffineTransform
+  asm: VGF2P8AFFINEQB
+  in: &AffineArgs
+  - class: mask
+  - &uint8
+    go: $t
+    base: uint
+  - &uint8x8
+    go: $t2
+    base: uint
+  - &pureImmVar
+    class: immediate
+    immOffset: 0
+  out:
+  - *uint8
+
+- go: MaskedGaloisFieldAffineTransformInversed
+  asm: VGF2P8AFFINEINVQB
+  in: *AffineArgs
+  out:
+  - *uint8
+
+- go: MaskedGaloisFieldMul
+  asm: VGF2P8MULB
+  in:
+  - class: mask
+  - *uint8
+  - *uint8
+  out:
+  - *uint8
 # Average (unsigned byte, unsigned word)
 # Instructions: VPAVGB, VPAVGW
 - go: Average
