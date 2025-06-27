@@ -17,8 +17,9 @@ import (
 type Operation struct {
 	Go string // Go method name
 
-	GoArch string // GOARCH for this definition
-	Asm    string // Assembly mnemonic
+	GoArch       string  // GOARCH for this definition
+	Asm          string  // Assembly mnemonic
+	OperandOrder *string // optional Operand order for better Go declarations
 
 	In            []Operand // Arguments
 	Out           []Operand // Results

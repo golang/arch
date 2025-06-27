@@ -433,6 +433,7 @@
   - *fp
 - go: MaskedGaloisFieldAffineTransform
   asm: VGF2P8AFFINEQB
+  operandOrder: 2I # 2nd operand, then immediate
   in: &AffineArgs
   - class: mask
     name: m
@@ -451,6 +452,7 @@
 
 - go: MaskedGaloisFieldAffineTransformInversed
   asm: VGF2P8AFFINEINVQB
+  operandOrder: 2I # 2nd operand, then immediate
   in: *AffineArgs
   out:
   - *uint8

@@ -474,40 +474,44 @@ func (op Operation) Op4NameAndType(s string) string {
 	return op.In[4].OpNameAndType(s)
 }
 
+var immClasses []string = []string{"BAD0Imm", "BAD1Imm", "op1Imm8", "op2Imm8", "op3Imm8", "op4Imm8"}
+var classes []string = []string{"BAD0", "op1", "op2", "op3", "op4"}
+
 // classifyOp returns a classification string, modified operation, and perhaps error based
 // on the stub and intrinsic shape for the operation.
-// The classification string is in the regular expression set "op[1234](Imm8)?"
+// The classification string is in the regular expression set "op[1234](Imm8)?(_<order>)?"
+// where the "<order>" suffix is optionally attached to the Operation in its input yaml.
+// The classification string is used to select a template or a clause of a template
+// for intrinsics declaration and the ssagen intrinisics glue code in the compiler.
 func classifyOp(op Operation) (string, Operation, error) {
 	_, _, _, immType, _, opNoConstMask, gOp := op.shape()
 
+	var class string
+
 	if immType == VarImm || immType == ConstVarImm {
-		switch len(opNoConstMask.In) {
+		switch l := len(opNoConstMask.In); l {
 		case 1:
 			return "", op, fmt.Errorf("simdgen does not recognize this operation of only immediate input: %s", op)
-		case 2:
-			return "op1Imm8", opNoConstMask, nil
-		case 3:
-			return "op2Imm8", opNoConstMask, nil
-		case 4:
-			return "op3Imm8", opNoConstMask, nil
-		case 5:
-			return "op4Imm8", opNoConstMask, nil
+		case 2, 3, 4, 5:
+			class = immClasses[l]
 		default:
 			return "", op, fmt.Errorf("simdgen does not recognize this operation of input length %d: %s", len(opNoConstMask.In), op)
 		}
+		if order := op.OperandOrder; order != nil {
+			class += "_" + *order
+		}
+		return class, opNoConstMask, nil
 	} else {
-		switch len(gOp.In) {
-		case 1:
-			return "op1", gOp, nil
-		case 2:
-			return "op2", gOp, nil
-		case 3:
-			return "op3", gOp, nil
-		case 4:
-			return "op4", gOp, nil
+		switch l := len(gOp.In); l {
+		case 1, 2, 3, 4:
+			class = classes[l]
 		default:
 			return "", op, fmt.Errorf("simdgen does not recognize this operation of input length %d: %s", len(opNoConstMask.In), op)
 		}
+		if order := op.OperandOrder; order != nil {
+			class += "_" + *order
+		}
+		return class, gOp, nil
 	}
 }
 
