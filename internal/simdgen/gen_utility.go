@@ -5,6 +5,7 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"fmt"
 	"go/format"
@@ -44,6 +45,9 @@ func createPath(goroot string, file string) (*os.File, error) {
 func formatWriteAndClose(out *bytes.Buffer, goroot string, file string) {
 	b, err := format.Source(out.Bytes())
 	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		fmt.Fprintf(os.Stderr, "%s\n", numberLines(out.Bytes()))
+		fmt.Fprintf(os.Stderr, "%v\n", err)
 		panic(err)
 	} else {
 		writeAndClose(b, goroot, file)
@@ -57,6 +61,18 @@ func writeAndClose(b []byte, goroot string, file string) {
 	}
 	ofile.Write(b)
 	ofile.Close()
+}
+
+// numberLines takes a slice of bytes, and returns a string where each line
+// is numbered, starting from 1.
+func numberLines(data []byte) string {
+	var buf bytes.Buffer
+	r := bytes.NewReader(data)
+	s := bufio.NewScanner(r)
+	for i := 1; s.Scan(); i++ {
+		fmt.Fprintf(&buf, "%d: %s\n", i, s.Text())
+	}
+	return buf.String()
 }
 
 const (
@@ -378,6 +394,84 @@ func (op Operation) GoType() string {
 		return op.goNormalType()
 	}
 	return *op.Out[0].Go
+}
+
+// ImmName returns the name to use for an operation's immediate operand.
+// This can be overriden in the yaml with "name" on an operand,
+// otherwise, for now, it is "imm" but
+// TODO come up with a better default immediate parameter name.
+func (op Operation) ImmName() string {
+	return op.Op0Name("imm")
+}
+
+func (o Operand) OpName(s string) string {
+	if n := o.Name; n != nil {
+		return *n
+	}
+	return s
+}
+
+func (o Operand) OpNameAndType(s string) string {
+	return o.OpName(s) + " " + *o.Go
+}
+
+// Op0Name returns the name to use for the 0 operand,
+// if any is present, otherwise the parameter is used.
+func (op Operation) Op0Name(s string) string {
+	return op.In[0].OpName(s)
+}
+
+// Op1Name returns the name to use for the 1 operand,
+// if any is present, otherwise the parameter is used.
+func (op Operation) Op1Name(s string) string {
+	return op.In[1].OpName(s)
+}
+
+// Op2Name returns the name to use for the 2 operand,
+// if any is present, otherwise the parameter is used.
+func (op Operation) Op2Name(s string) string {
+	return op.In[2].OpName(s)
+}
+
+// Op3Name returns the name to use for the 3 operand,
+// if any is present, otherwise the parameter is used.
+func (op Operation) Op3Name(s string) string {
+	return op.In[3].OpName(s)
+}
+
+// Op0NameAndType returns the name and type to use for
+// the 0 operand, if a name is provided, otherwise
+// the parameter value is used as the default.
+func (op Operation) Op0NameAndType(s string) string {
+	return op.In[0].OpNameAndType(s)
+}
+
+// Op1NameAndType returns the name and type to use for
+// the 1 operand, if a name is provided, otherwise
+// the parameter value is used as the default.
+func (op Operation) Op1NameAndType(s string) string {
+	return op.In[1].OpNameAndType(s)
+}
+
+// Op2NameAndType returns the name and type to use for
+// the 2 operand, if a name is provided, otherwise
+// the parameter value is used as the default.
+func (op Operation) Op2NameAndType(s string) string {
+	return op.In[2].OpNameAndType(s)
+}
+
+// Op3NameAndType returns the name and type to use for
+// the 3 operand, if a name is provided, otherwise
+// the parameter value is used as the default.
+func (op Operation) Op3NameAndType(s string) string {
+	return op.In[3].OpNameAndType(s)
+}
+
+// Op4NameAndType returns the name and type to use for
+// the 4 operand, if a name is provided, otherwise
+// the parameter value is used as the default.
+func (op Operation) Op4NameAndType(s string) string {
+	return op.In[4].OpNameAndType(s)
 }
 
 // classifyOp returns a classification string, modified operation, and perhaps error based
@@ -771,6 +865,12 @@ func (op Operand) String() string {
 		sb.WriteString(fmt.Sprintf("    Lanes: %d\n", *op.Lanes))
 	} else {
 		sb.WriteString("    Lanes: <nil>\n")
+	}
+
+	if op.Name != nil {
+		sb.WriteString(fmt.Sprintf("    Name: %s\n", *op.Name))
+	} else {
+		sb.WriteString("    Name: <nil>\n")
 	}
 
 	if op.OverwriteClass != nil {

@@ -435,6 +435,7 @@
   asm: VGF2P8AFFINEQB
   in: &AffineArgs
   - class: mask
+    name: m
   - &uint8
     go: $t
     base: uint
@@ -444,6 +445,7 @@
   - &pureImmVar
     class: immediate
     immOffset: 0
+    name: b
   out:
   - *uint8
 

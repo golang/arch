@@ -114,14 +114,14 @@ func (x {{(index .In 0).Go}}) {{.Go}}() {{.GoType}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
-func (x {{(index .In 0).Go}}) {{.Go}}(y {{(index .In 1).Go}}) {{.GoType}}
+func (x {{(index .In 0).Go}}) {{.Go}}({{.Op1NameAndType "y"}}) {{.GoType}}
 {{end}}
 
 {{define "op3"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
-func (x {{(index .In 0).Go}}) {{.Go}}(y {{(index .In 1).Go}}, z {{(index .In 2).Go}}) {{.GoType}}
+func (x {{(index .In 0).Go}}) {{.Go}}({{.Op1NameAndType "y"}}, {{.Op2NameAndType "z"}}) {{.GoType}}
 {{end}}
 
 {{define "op2VecAsScalar"}}
@@ -135,42 +135,42 @@ func (x {{(index .In 0).Go}}) {{.Go}}(y uint{{(index .In 1).TreatLikeAScalarOfSi
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
-func (x {{(index .In 0).Go}}) {{.Go}}(y uint{{(index .In 1).TreatLikeAScalarOfSize}}, z {{(index .In 2).Go}}) {{(index .Out 0).Go}}
+func (x {{(index .In 0).Go}}) {{.Go}}(y uint{{(index .In 1).TreatLikeAScalarOfSize}}, {{.Op2NameAndType "z"}}) {{(index .Out 0).Go}}
 {{end}}
 
 {{define "op4"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
-func (x {{(index .In 0).Go}}) {{.Go}}(y {{(index .In 1).Go}}, z {{(index .In 2).Go}}, u {{(index .In 3).Go}}) {{.GoType}}
+func (x {{(index .In 0).Go}}) {{.Go}}({{.Op1NameAndType "y"}}, {{.Op2NameAndType "z"}}, {{.Op3NameAndType "u"}}) {{.GoType}}
 {{end}}
 
 {{define "op1Imm8"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
-func (x {{(index .In 1).Go}}) {{.Go}}(imm8 uint8) {{.GoType}}
+func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8) {{.GoType}}
 {{end}}
 
 {{define "op2Imm8"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
-func (x {{(index .In 1).Go}}) {{.Go}}(imm uint8, y {{(index .In 2).Go}}) {{.GoType}}
+func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}}) {{.GoType}}
 {{end}}
 
 {{define "op3Imm8"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
-func (x {{(index .In 1).Go}}) {{.Go}}(imm uint8, y {{(index .In 2).Go}}, z {{(index .In 3).Go}}) {{.GoType}}
+func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}}, {{.Op3NameAndType "z"}}) {{.GoType}}
 {{end}}
 
 {{define "op4Imm8"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
-func (x {{(index .In 1).Go}}) {{.Go}}(imm uint8, y {{(index .In 2).Go}}, z {{(index .In 3).Go}}, u {{(index .In 4).Go}}) {{.GoType}}
+func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}}, {{.Op3NameAndType "z"}}, {{.Op4NameAndType "u"}}) {{.GoType}}
 {{end}}
 
 {{define "vectorConversion"}}
