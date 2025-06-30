@@ -779,48 +779,47 @@ func reportXEDInconsistency(ops []Operation) error {
 
 func (o Operation) String() string {
 	var sb strings.Builder
+	var nils string
+
+	optStr := func(field string, ps *string) {
+		if ps != nil {
+			fmt.Fprintf(&sb, "  %s: %s\n", field, *ps)
+		} else {
+			nils += " " + field
+		}
+	}
+
+	// two spaces then field: value
+	str := func(field string, value string) {
+		fmt.Fprintf(&sb, "  %s: %s\n", field, value)
+	}
+
 	sb.WriteString("Operation {\n")
-	sb.WriteString(fmt.Sprintf("  Go: %s\n", o.Go))
-	sb.WriteString(fmt.Sprintf("  GoArch: %s\n", o.GoArch))
-	sb.WriteString(fmt.Sprintf("  Asm: %s\n", o.Asm))
+	str("Go", o.Go)
+	str("GoArch", o.GoArch)
+	str("Asm", o.Asm)
+	str("Commutative", o.Commutative)
+	str("Extension", o.Extension)
+	optStr("ConstImm", o.ConstImm)
+	optStr("Masked", o.Masked)
+	optStr("Zeroing", o.Zeroing)
+	optStr("OperandOrder", o.OperandOrder)
 
 	sb.WriteString("  In: [\n")
 	for _, op := range o.In {
-		sb.WriteString(fmt.Sprintf("    %s,\n", op.String()))
+		fmt.Fprintf(&sb, "    %s,\n", op.String())
 	}
 	sb.WriteString("  ]\n")
 
 	sb.WriteString("  Out: [\n")
 	for _, op := range o.Out {
-		sb.WriteString(fmt.Sprintf("    %s,\n", op.String()))
+		fmt.Fprintf(&sb, "    %s,\n", op.String())
 	}
 	sb.WriteString("  ]\n")
 
-	sb.WriteString(fmt.Sprintf("  Commutative: %s\n", o.Commutative))
-	sb.WriteString(fmt.Sprintf("  Extension: %s\n", o.Extension))
-
-	if o.Zeroing != nil {
-		sb.WriteString(fmt.Sprintf("  Zeroing: %s\n", *o.Zeroing))
-	} else {
-		sb.WriteString("  Zeroing: <nil>\n")
-	}
-
-	if o.Documentation != nil {
-		sb.WriteString(fmt.Sprintf("  Documentation: %s\n", *o.Documentation))
-	} else {
-		sb.WriteString("  Documentation: <nil>\n")
-	}
-
-	if o.ConstImm != nil {
-		sb.WriteString(fmt.Sprintf("  ConstImm: %s\n", *o.ConstImm))
-	} else {
-		sb.WriteString("  ConstImm: <nil>\n")
-	}
-
-	if o.Masked != nil {
-		sb.WriteString(fmt.Sprintf("  Masked: %s\n", *o.Masked))
-	} else {
-		sb.WriteString("  Masked: <nil>\n")
+	optStr("Documentation", o.Documentation)
+	if len(nils) != 0 {
+		sb.WriteString("  nils = " + nils[1:] + "\n")
 	}
 
 	sb.WriteString("}\n")
@@ -830,75 +829,49 @@ func (o Operation) String() string {
 // String returns a string representation of the Operand.
 func (op Operand) String() string {
 	var sb strings.Builder
+	var nils string
+
+	optStr := func(field string, ps *string) {
+		if ps != nil {
+			fmt.Fprintf(&sb, "    %s: %s\n", field, *ps)
+		} else {
+			nils += " " + field
+		}
+	}
+
+	optNum := func(field string, pi *int) {
+		if pi != nil {
+			fmt.Fprintf(&sb, "    %s: %d\n", field, *pi)
+		} else {
+			nils += " " + field
+		}
+	}
+
+	// four spaces then field: value
+	str := func(field string, value string) {
+		fmt.Fprintf(&sb, "    %s: %s\n", field, value)
+	}
+	num := func(field string, value int) {
+		fmt.Fprintf(&sb, "    %s: %d\n", field, value)
+	}
 	sb.WriteString("Operand {\n")
-	sb.WriteString(fmt.Sprintf("    Class: %s\n", op.Class))
+	str("Class", op.Class)
+	optStr("Go", op.Go)
+	num("AsmPos", op.AsmPos)
+	optStr("Base", op.Base)
+	optNum("ElemBits", op.ElemBits)
+	optNum("Bits", op.Bits)
+	optStr("Const", op.Const)
+	optStr("ImmOffset", op.ImmOffset)
+	optNum("Lanes", op.Lanes)
+	optStr("Name", op.Name)
+	optNum("TreatLikeAScalarOfSize", op.TreatLikeAScalarOfSize)
+	optStr("OverwriteClass", op.OverwriteClass)
+	optStr("OverwriteBase", op.OverwriteBase)
+	optNum("OverwriteElementBits", op.OverwriteElementBits)
 
-	if op.Go != nil {
-		sb.WriteString(fmt.Sprintf("    Go: %s\n", *op.Go))
-	} else {
-		sb.WriteString("    Go: <nil>\n")
-	}
-
-	sb.WriteString(fmt.Sprintf("    AsmPos: %d\n", op.AsmPos))
-
-	if op.Base != nil {
-		sb.WriteString(fmt.Sprintf("    Base: %s\n", *op.Base))
-	} else {
-		sb.WriteString("    Base: <nil>\n")
-	}
-
-	if op.ElemBits != nil {
-		sb.WriteString(fmt.Sprintf("    ElemBits: %d\n", *op.ElemBits))
-	} else {
-		sb.WriteString("    ElemBits: <nil>\n")
-	}
-
-	if op.Bits != nil {
-		sb.WriteString(fmt.Sprintf("    Bits: %d\n", *op.Bits))
-	} else {
-		sb.WriteString("    Bits: <nil>\n")
-	}
-
-	if op.Const != nil {
-		sb.WriteString(fmt.Sprintf("    Const: %s\n", *op.Const))
-	} else {
-		sb.WriteString("    Const: <nil>\n")
-	}
-
-	if op.Lanes != nil {
-		sb.WriteString(fmt.Sprintf("    Lanes: %d\n", *op.Lanes))
-	} else {
-		sb.WriteString("    Lanes: <nil>\n")
-	}
-
-	if op.Name != nil {
-		sb.WriteString(fmt.Sprintf("    Name: %s\n", *op.Name))
-	} else {
-		sb.WriteString("    Name: <nil>\n")
-	}
-
-	if op.OverwriteClass != nil {
-		sb.WriteString(fmt.Sprintf("    OverwriteClass: %s\n", *op.OverwriteClass))
-	} else {
-		sb.WriteString("    OverwriteClass: <nil>\n")
-	}
-
-	if op.OverwriteBase != nil {
-		sb.WriteString(fmt.Sprintf("    OverwriteBase: %s\n", *op.OverwriteBase))
-	} else {
-		sb.WriteString("    OverwriteBase: <nil>\n")
-	}
-
-	if op.OverwriteElementBits != nil {
-		sb.WriteString(fmt.Sprintf("    OverwriteElementBits: %d\n", *op.OverwriteElementBits))
-	} else {
-		sb.WriteString("    OverwriteElementBits: <nil>\n")
-	}
-
-	if op.TreatLikeAScalarOfSize != nil {
-		sb.WriteString(fmt.Sprintf("    TreatLikeAScalarOfSize: %d\n", *op.TreatLikeAScalarOfSize))
-	} else {
-		sb.WriteString("    TreatLikeAScalarOfSize: <nil>\n")
+	if len(nils) != 0 {
+		sb.WriteString("    nils = " + nils[1:] + "\n")
 	}
 
 	sb.WriteString("  }\n")
