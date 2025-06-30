@@ -29,7 +29,7 @@ import (
 	"strings"
 )
 
-var format = flag.String("fmt", "text", "output format: text, decoder")
+var format = flag.String("fmt", "text", "output format: text, decoder, scanner")
 
 var inputFile string
 
@@ -167,8 +167,8 @@ func (p *Prog) walk(action, key, text, opcode string) *Prog {
 	if p.Action == "" {
 		p.Action = action
 	} else if p.Action != action {
-		log.Printf("%s; %s: conflicting paths %s and %s|%s %s\n", text, opcode, p.findChildLeaf(), p.Path, action, key)
-		return new(Prog)
+		log.Printf("%s; %s: conflict [%s != %s] paths %s and %s|%s %s\n", text, opcode, p.Action, action, p.findChildLeaf(), p.Path, action, key)
+		return &Prog{}
 	}
 	q := p.Child[key]
 	if q == nil {
@@ -221,15 +221,30 @@ func add(root *Prog, text, opcode, valid32, valid64, cpuid, tags string) {
 		return
 	}
 
+	addTag := func(tags, tag string) string {
+		if strings.Contains(tags, tag) {
+			return tags
+		}
+		if tags != "" {
+			tags += ","
+		}
+		tags += tag
+		return tags
+	}
+
 	// Treat REX.W + opcode as being like having an "operand64" tag.
 	// The REX.W flag sets the operand size to 64 bits; in this way it is
 	// not much different than the 66 prefix that inverts 32 vs 16 bits.
 	if strings.Contains(opcode, "REX.W") {
-		if !strings.Contains(tags, "operand64") {
-			if tags != "" {
-				tags += ","
-			}
-			tags += "operand64"
+		tags = addTag(tags, "operand64")
+	}
+
+	// Similarly for VEX opcodes, use "operand128" / "operand256" tags.
+	if strings.HasPrefix(opcode, "VEX") {
+		if strings.Contains(opcode, ".128.") {
+			tags = addTag(tags, "operand128")
+		} else if strings.Contains(opcode, ".256.") {
+			tags = addTag(tags, "operand256")
 		}
 	}
 
@@ -267,37 +282,61 @@ func add(root *Prog, text, opcode, valid32, valid64, cpuid, tags string) {
 		p = p.walk(action, item, text, opcode)
 	}
 
-	// Ignore VEX instructions for now.
-	if strings.HasPrefix(opcode, "VEX") {
-		if !strings.HasPrefix(text, "VMOVNTDQ") &&
-			!strings.HasPrefix(text, "VMOVDQA") &&
-			!strings.HasPrefix(text, "VMOVDQU") &&
-			!strings.HasPrefix(text, "VZEROUPPER") {
-			return
-		}
-		if !strings.HasPrefix(opcode, "VEX.256") && !strings.HasPrefix(text, "VZEROUPPER") {
-			return
-		}
-		if !strings.Contains(tags, "VEXC4") {
-			add(root, text, opcode, valid32, valid64, cpuid, tags+",VEXC4")
-		}
-		encoding := strings.Fields(opcode)
-		walk("decode", encoding[1])
-		walk("is64", "any")
-		if strings.Contains(tags, "VEXC4") {
-			walk("prefix", "C4")
-		} else {
-			walk("prefix", "C5")
-		}
-		for _, pref := range strings.Split(encoding[0], ".") {
-			if isVexEncodablePrefix[pref] {
-				walk("prefix", pref)
-			}
-		}
-	}
-
 	var rex, prefix string
 	encoding := strings.Fields(opcode)
+
+	if strings.HasPrefix(opcode, "VEX") {
+		if strings.Contains(opcode, "/is4") {
+			// not supported yet
+			return
+		}
+
+		var vexPrefix, vexOpcodeMap string
+		// We'll mark the VEX instructions with a non-zero high byte in the prefix
+		// 0 (00): no VEX
+		// 1 (01): VEX with WIG (W=1 or W=0)
+		// 2 (10): VEX with W=0
+		// 3 (11): VEX with W=1
+		// This means the decoder will have to ensure the prefix is C4 or C5, but
+		// must be C4 if the value is 3.
+
+		if strings.Contains(opcode, ".WIG") {
+			vexPrefix = "1"
+		} else if strings.Contains(opcode, ".W0") {
+			vexPrefix = "2"
+		} else if strings.Contains(opcode, ".W1") {
+			vexPrefix = "3"
+		}
+
+		for _, val := range strings.Split(encoding[0], ".") {
+			if isVexPrefix[val] {
+				prefix = val
+			} else if isVexOpcodeMap[val] {
+				vexOpcodeMap = val
+			}
+		}
+
+		if prefix == "" {
+			prefix = vexPrefix + "00"
+		} else {
+			prefix = vexPrefix + prefix
+		}
+
+		switch vexOpcodeMap {
+		case "0F":
+			walk("decode", "0F")
+		case "0F38":
+			walk("decode", "0F")
+			walk("decode", "38")
+		case "0F3A":
+			walk("decode", "0F")
+			walk("decode", "3A")
+		}
+		walk("decode", encoding[1])
+
+		encoding = encoding[2:]
+	}
+
 	if len(encoding) > 0 && strings.HasPrefix(encoding[0], "REX") {
 		rex = encoding[0]
 		encoding = encoding[1:]
@@ -372,6 +411,10 @@ func add(root *Prog, text, opcode, valid32, valid64, cpuid, tags string) {
 		walk("datasize", "32")
 	} else if strings.Contains(tags, "operand64") {
 		walk("datasize", "64")
+	} else if strings.Contains(tags, "operand128") {
+		walk("datasize", "128")
+	} else if strings.Contains(tags, "operand256") {
+		walk("datasize", "256")
 	} else {
 		walk("datasize", "any")
 	}
@@ -391,14 +434,8 @@ func add(root *Prog, text, opcode, valid32, valid64, cpuid, tags string) {
 
 	walk("op", strings.Fields(text)[0])
 
-	if len(encoding) > 0 && strings.HasPrefix(encoding[0], "VEX") {
-		for _, field := range encoding[2:] {
-			walk("read", field)
-		}
-	} else {
-		for _, field := range encoding {
-			walk("read", field)
-		}
+	for _, field := range encoding {
+		walk("read", field)
 	}
 
 	var usedRM string
@@ -537,13 +574,16 @@ var usesRM = set(`
 	r/m64
 `)
 
-var isVexEncodablePrefix = set(`
-	0F
-	0F38
-	0F3A
+var isVexPrefix = set(`
 	66
 	F3
 	F2
+`)
+
+var isVexOpcodeMap = set(`
+	0F
+	0F38
+	0F3A
 `)
 
 // isHex reports whether the argument is a two digit hex number
@@ -1274,9 +1314,9 @@ func printDecoderPass(p *Prog, pc int, printing bool, ops map[string]bool) int {
 		}
 
 		if printing {
-			fmt.Printf("/*%d*/\tuint16(xCondDataSize), %d, %d, %d,\n", pc, p.childPC("16"), p.childPC("32"), p.childPC("64"))
+			fmt.Printf("/*%d*/\tuint16(xCondDataSize), %d, %d, %d, %d, %d,\n", pc, p.childPC("16"), p.childPC("32"), p.childPC("64"), p.childPC("128"), p.childPC("256"))
 		}
-		pc += 4
+		pc += 6
 
 	case "ismem":
 		// Decode based on modrm form: memory or register reference.
