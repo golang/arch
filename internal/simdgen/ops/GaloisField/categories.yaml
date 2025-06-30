@@ -4,7 +4,7 @@
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // GaloisFieldAffineTransform computes an affine transformation in GF(2^8):
+    // MaskedGaloisFieldAffineTransform computes an affine transformation in GF(2^8):
     // x is a vector of 8-bit vectors, with each adjacent 8 as a group; y is a vector of 8x8 1-bit matrixes;
     // b is an 8-bit vector. The affine transformation is y * x + b, with each element of y
     // corresponding to a group of 8 elements in x.
@@ -13,7 +13,7 @@
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // GaloisFieldAffineTransform computes an affine transformation in GF(2^8),
+    // MaskedGaloisFieldAffineTransform computes an affine transformation in GF(2^8),
     // with x inversed with reduction polynomial x^8 + x^4 + x^3 + x + 1:
     // x is a vector of 8-bit vectors, with each adjacent 8 as a group; y is a vector of 8x8 1-bit matrixes;
     // b is an 8-bit vector. The affine transformation is y * x + b, with each element of y
@@ -23,5 +23,5 @@
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // GaloisFieldMul computes element-wise GF(2^8) multiplication with
+    // MaskedGaloisFieldMul computes element-wise GF(2^8) multiplication with
     // reduction polynomial x^8 + x^4 + x^3 + x + 1.

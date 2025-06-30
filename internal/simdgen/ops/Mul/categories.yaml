@@ -26,8 +26,6 @@
   extension: "AVX.*"
   documentation: !string |-
     // MaskedMul multiplies corresponding elements of two vectors, masked.
-  docUnmasked: !string |-
-    // Mul multiplies corresponding elements of two vectors.
 - go: MaskedMulEvenWiden
   masked: "true"
   commutative: "true"
@@ -35,22 +33,15 @@
   documentation: !string |-
     // MaskedMulEvenWiden multiplies even-indexed elements, widening the result, masked.
     // Result[i] = v1.Even[i] * v2.Even[i].
-  docUnmasked: !string |-
-    // MulEvenWiden multiplies even-indexed elements, widening the result.
-    // Result[i] = v1.Even[i] * v2.Even[i].
 - go: MaskedMulHigh
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
     // MaskedMulHigh multiplies elements and stores the high part of the result, masked.
-  docUnmasked: !string |-
-    // MulHigh multiplies elements and stores the high part of the result.
 - go: MaskedMulLow
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
     // MaskedMulLow multiplies elements and stores the low part of the result, masked.
-  docUnmasked: !string |-
-    // MulLow multiplies elements and stores the low part of the result.

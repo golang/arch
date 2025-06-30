@@ -12,49 +12,42 @@
   extension: "AVX.*"
   documentation: !string |-
     // Equal compares for equality.
-    // Const Immediate = 0.
 - go: Less
   constImm: 1
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
     // Less compares for less than.
-    // Const Immediate = 1.
 - go: LessEqual
   constImm: 2
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
     // LessEqual compares for less than or equal.
-    // Const Immediate = 2.
 - go: IsNan # For float only.
   constImm: 3
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
     // IsNan checks if elements are NaN. Use as x.IsNan(x).
-    // Const Immediate = 3.
 - go: NotEqual
   constImm: 4
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
     // NotEqual compares for inequality.
-    // Const Immediate = 4.
 - go: GreaterEqual
   constImm: 5
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
     // GreaterEqual compares for greater than or equal.
-    // Const Immediate = 5.
 - go: Greater
   constImm: 6
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
     // Greater compares for greater than.
-    // Const Immediate = 6.
 
 - go: MaskedEqual
   constImm: 0
@@ -63,10 +56,6 @@
   extension: "AVX.*"
   documentation: !string |-
     // MaskedEqual compares for equality, masked.
-    // Const Immediate = 0.
-  docUnmasked: !string |-
-    // Equal compares for equality.
-    // Const Immediate = 0.
 - go: MaskedLess
   constImm: 1
   masked: "true"
@@ -74,7 +63,6 @@
   extension: "AVX.*"
   documentation: !string |-
     // MaskedLess compares for less than.
-    // Const Immediate = 1.
 - go: MaskedLessEqual
   constImm: 2
   masked: "true"
@@ -82,7 +70,6 @@
   extension: "AVX.*"
   documentation: !string |-
     // MaskedLessEqual compares for less than or equal.
-    // Const Immediate = 2.
 - go: MaskedIsNan # For float only.
   constImm: 3
   masked: "true"
@@ -90,7 +77,6 @@
   extension: "AVX.*"
   documentation: !string |-
     // MaskedIsNan checks if elements are NaN. Use as x.IsNan(x).
-    // Const Immediate = 3.
 - go: MaskedNotEqual
   constImm: 4
   masked: "true"
@@ -98,7 +84,6 @@
   extension: "AVX.*"
   documentation: !string |-
     // MaskedNotEqual compares for inequality.
-    // Const Immediate = 4.
 - go: MaskedGreaterEqual
   constImm: 5
   masked: "true"
@@ -106,7 +91,6 @@
   extension: "AVX.*"
   documentation: !string |-
     // MaskedGreaterEqual compares for greater than or equal.
-    // Const Immediate = 5.
 - go: MaskedGreater
   constImm: 6
   masked: "true"
@@ -114,4 +98,3 @@
   extension: "AVX.*"
   documentation: !string |-
     // MaskedGreater compares for greater than.
-    // Const Immediate = 6.

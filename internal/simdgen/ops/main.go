@@ -32,10 +32,6 @@ func mergeYamlFiles(targetFileName string) error {
 	if err != nil {
 		return fmt.Errorf("failed to write '!sum' to %s: %w", targetFileName, err)
 	}
-	_, err = writer.WriteString("# TODO: remove the \"Const Immediate\" from the documentation field, it's there only for debug purposes.\n")
-	if err != nil {
-		return fmt.Errorf("failed to write '!sum' to %s: %w", targetFileName, err)
-	}
 
 	entries, err := os.ReadDir(baseDir)
 	if err != nil {

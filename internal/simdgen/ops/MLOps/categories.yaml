@@ -32,7 +32,6 @@
   extension: "AVX.*"
   documentation: !string |-
     // DotProdBroadcast multiplies all elements and broadcasts the sum.
-    // Const Immediate = 127.
 - go: UnsignedSignedQuadDotProdAccumulate
   commutative: "false"
   extension: "AVX.*"
@@ -54,7 +53,7 @@
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // SaturatedUnsignedSignedQuadDotProdAccumulate multiplies performs dot products on groups of 4 elements of y and z and accumulates the results to x.
+    // MaskedSaturatedUnsignedSignedQuadDotProdAccumulate multiplies performs dot products on groups of 4 elements of y and z and accumulates the results to x.
 - go: PairDotProdAccumulate
   commutative: "false"
   extension: "AVX.*"

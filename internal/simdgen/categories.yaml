@@ -1,5 +1,4 @@
 !sum
-# TODO: remove the "Const Immediate" from the documentation field, it's there only for debug purposes.
 - go: Add
   commutative: "true"
   extension: "AVX.*"
@@ -127,49 +126,42 @@
   extension: "AVX.*"
   documentation: !string |-
     // Equal compares for equality.
-    // Const Immediate = 0.
 - go: Less
   constImm: 1
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
     // Less compares for less than.
-    // Const Immediate = 1.
 - go: LessEqual
   constImm: 2
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
     // LessEqual compares for less than or equal.
-    // Const Immediate = 2.
 - go: IsNan # For float only.
   constImm: 3
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
     // IsNan checks if elements are NaN. Use as x.IsNan(x).
-    // Const Immediate = 3.
 - go: NotEqual
   constImm: 4
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
     // NotEqual compares for inequality.
-    // Const Immediate = 4.
 - go: GreaterEqual
   constImm: 5
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
     // GreaterEqual compares for greater than or equal.
-    // Const Immediate = 5.
 - go: Greater
   constImm: 6
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
     // Greater compares for greater than.
-    // Const Immediate = 6.
 
 - go: MaskedEqual
   constImm: 0
@@ -178,10 +170,6 @@
   extension: "AVX.*"
   documentation: !string |-
     // MaskedEqual compares for equality, masked.
-    // Const Immediate = 0.
-  docUnmasked: !string |-
-    // Equal compares for equality.
-    // Const Immediate = 0.
 - go: MaskedLess
   constImm: 1
   masked: "true"
@@ -189,7 +177,6 @@
   extension: "AVX.*"
   documentation: !string |-
     // MaskedLess compares for less than.
-    // Const Immediate = 1.
 - go: MaskedLessEqual
   constImm: 2
   masked: "true"
@@ -197,7 +184,6 @@
   extension: "AVX.*"
   documentation: !string |-
     // MaskedLessEqual compares for less than or equal.
-    // Const Immediate = 2.
 - go: MaskedIsNan # For float only.
   constImm: 3
   masked: "true"
@@ -205,7 +191,6 @@
   extension: "AVX.*"
   documentation: !string |-
     // MaskedIsNan checks if elements are NaN. Use as x.IsNan(x).
-    // Const Immediate = 3.
 - go: MaskedNotEqual
   constImm: 4
   masked: "true"
@@ -213,7 +198,6 @@
   extension: "AVX.*"
   documentation: !string |-
     // MaskedNotEqual compares for inequality.
-    // Const Immediate = 4.
 - go: MaskedGreaterEqual
   constImm: 5
   masked: "true"
@@ -221,7 +205,6 @@
   extension: "AVX.*"
   documentation: !string |-
     // MaskedGreaterEqual compares for greater than or equal.
-    // Const Immediate = 5.
 - go: MaskedGreater
   constImm: 6
   masked: "true"
@@ -229,7 +212,6 @@
   extension: "AVX.*"
   documentation: !string |-
     // MaskedGreater compares for greater than.
-    // Const Immediate = 6.
 - go: Div
   commutative: "false"
   extension: "AVX.*"
@@ -287,7 +269,6 @@
   constImm: 0
   documentation: !string |-
     // Round rounds elements to the nearest integer.
-    // Const Immediate = 0.
 - go: MaskedRoundWithPrecision
   commutative: "false"
   extension: "AVX.*"
@@ -295,15 +276,6 @@
   masked: "true"
   documentation: !string |-
     // MaskedRoundWithPrecision rounds elements with specified precision.
-    // Const Immediate = 0.
-- go: MaskedRoundSuppressExceptionWithPrecision
-  commutative: "false"
-  extension: "AVX.*"
-  constImm: 8
-  masked: "true"
-  documentation: !string |-
-    // MaskedRoundSuppressExceptionWithPrecision rounds elements with specified precision, suppressing exceptions.
-    // Const Immediate = 8.
 - go: MaskedDiffWithRoundWithPrecision
   commutative: "false"
   extension: "AVX.*"
@@ -311,15 +283,6 @@
   masked: "true"
   documentation: !string |-
     // MaskedDiffWithRoundWithPrecision computes the difference after rounding with specified precision.
-    // Const Immediate = 0.
-- go: MaskedDiffWithRoundSuppressExceptionWithPrecision
-  commutative: "false"
-  extension: "AVX.*"
-  constImm: 8
-  masked: "true"
-  documentation: !string |-
-    // MaskedDiffWithRoundSuppressExceptionWithPrecision computes the difference after rounding with specified precision, suppressing exceptions.
-    // Const Immediate = 8.
 
 - go: Floor
   commutative: "false"
@@ -327,7 +290,6 @@
   constImm: 1
   documentation: !string |-
     // Floor rounds elements down to the nearest integer.
-    // Const Immediate = 1.
 - go: MaskedFloorWithPrecision
   commutative: "false"
   extension: "AVX.*"
@@ -335,21 +297,6 @@
   masked: "true"
   documentation: !string |-
     // MaskedFloorWithPrecision rounds elements down with specified precision, masked.
-    // Const Immediate = 1.
-  docUnmasked: !string |-
-    // FloorWithPrecision rounds elements down with specified precision.
-    // Const Immediate = 1.
-- go: MaskedFloorSuppressExceptionWithPrecision
-  commutative: "false"
-  extension: "AVX.*"
-  constImm: 9
-  masked: "true"
-  documentation: !string |-
-    // MaskedFloorSuppressExceptionWithPrecision rounds elements down with specified precision, suppressing exceptions, masked.
-    // Const Immediate = 9.
-  docUnmasked: !string |-
-    // FloorSuppressExceptionWithPrecision rounds elements down with specified precision, suppressing exceptions.
-    // Const Immediate = 9.
 - go: MaskedDiffWithFloorWithPrecision
   commutative: "false"
   extension: "AVX.*"
@@ -357,15 +304,6 @@
   masked: "true"
   documentation: !string |-
     // MaskedDiffWithFloorWithPrecision computes the difference after flooring with specified precision.
-    // Const Immediate = 1.
-- go: MaskedDiffWithFloorSuppressExceptionWithPrecision
-  commutative: "false"
-  extension: "AVX.*"
-  constImm: 9
-  masked: "true"
-  documentation: !string |-
-    // MaskedDiffWithFloorSuppressExceptionWithPrecision computes the difference after flooring with specified precision, suppressing exceptions.
-    // Const Immediate = 9.
 
 - go: Ceil
   commutative: "false"
@@ -373,7 +311,6 @@
   constImm: 2
   documentation: !string |-
     // Ceil rounds elements up to the nearest integer.
-    // Const Immediate = 2.
 - go: MaskedCeilWithPrecision
   commutative: "false"
   extension: "AVX.*"
@@ -381,18 +318,6 @@
   masked: "true"
   documentation: !string |-
     // MaskedCeilWithPrecision rounds elements up with specified precision, masked.
-    // Const Immediate = 2.
-  docUnmasked: !string |-
-    // CeilWithPrecision rounds elements up with specified precision.
-    // Const Immediate = 2.
-- go: MaskedCeilSuppressExceptionWithPrecision
-  commutative: "false"
-  extension: "AVX.*"
-  constImm: 10
-  masked: "true"
-  documentation: !string |-
-    // MaskedCeilSuppressExceptionWithPrecision rounds elements up with specified precision, suppressing exceptions.
-    // Const Immediate = 10.
 - go: MaskedDiffWithCeilWithPrecision
   commutative: "false"
   extension: "AVX.*"
@@ -400,15 +325,6 @@
   masked: "true"
   documentation: !string |-
     // MaskedDiffWithCeilWithPrecision computes the difference after ceiling with specified precision.
-    // Const Immediate = 2.
-- go: MaskedDiffWithCeilSuppressExceptionWithPrecision
-  commutative: "false"
-  extension: "AVX.*"
-  constImm: 10
-  masked: "true"
-  documentation: !string |-
-    // MaskedDiffWithCeilSuppressExceptionWithPrecision computes the difference after ceiling with specified precision, suppressing exceptions.
-    // Const Immediate = 10.
 
 - go: Trunc
   commutative: "false"
@@ -416,7 +332,6 @@
   constImm: 3
   documentation: !string |-
     // Trunc truncates elements towards zero.
-    // Const Immediate = 3.
 - go: MaskedTruncWithPrecision
   commutative: "false"
   extension: "AVX.*"
@@ -424,15 +339,6 @@
   masked: "true"
   documentation: !string |-
     // MaskedTruncWithPrecision truncates elements with specified precision.
-    // Const Immediate = 3.
-- go: MaskedTruncSuppressExceptionWithPrecision
-  commutative: "false"
-  extension: "AVX.*"
-  constImm: 11
-  masked: "true"
-  documentation: !string |-
-    // MaskedTruncSuppressExceptionWithPrecision truncates elements with specified precision, suppressing exceptions.
-    // Const Immediate = 11.
 - go: MaskedDiffWithTruncWithPrecision
   commutative: "false"
   extension: "AVX.*"
@@ -440,15 +346,6 @@
   masked: "true"
   documentation: !string |-
     // MaskedDiffWithTruncWithPrecision computes the difference after truncating with specified precision.
-    // Const Immediate = 3.
-- go: MaskedDiffWithTruncSuppressExceptionWithPrecision
-  commutative: "false"
-  extension: "AVX.*"
-  constImm: 11
-  masked: "true"
-  documentation: !string |-
-    // MaskedDiffWithTruncSuppressExceptionWithPrecision computes the difference after truncating with specified precision, suppressing exceptions.
-    // Const Immediate = 11.
 
 - go: AddSub
   commutative: "false"
@@ -460,7 +357,7 @@
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // GaloisFieldAffineTransform computes an affine transformation in GF(2^8):
+    // MaskedGaloisFieldAffineTransform computes an affine transformation in GF(2^8):
     // x is a vector of 8-bit vectors, with each adjacent 8 as a group; y is a vector of 8x8 1-bit matrixes;
     // b is an 8-bit vector. The affine transformation is y * x + b, with each element of y
     // corresponding to a group of 8 elements in x.
@@ -469,7 +366,7 @@
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // GaloisFieldAffineTransform computes an affine transformation in GF(2^8),
+    // MaskedGaloisFieldAffineTransform computes an affine transformation in GF(2^8),
     // with x inversed with reduction polynomial x^8 + x^4 + x^3 + x + 1:
     // x is a vector of 8-bit vectors, with each adjacent 8 as a group; y is a vector of 8x8 1-bit matrixes;
     // b is an 8-bit vector. The affine transformation is y * x + b, with each element of y
@@ -479,7 +376,7 @@
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // GaloisFieldMul computes element-wise GF(2^8) multiplication with
+    // MaskedGaloisFieldMul computes element-wise GF(2^8) multiplication with
     // reduction polynomial x^8 + x^4 + x^3 + x + 1.
 - go: Average
   commutative: "true"
@@ -554,7 +451,6 @@
   extension: "AVX.*"
   documentation: !string |-
     // DotProdBroadcast multiplies all elements and broadcasts the sum.
-    // Const Immediate = 127.
 - go: UnsignedSignedQuadDotProdAccumulate
   commutative: "false"
   extension: "AVX.*"
@@ -576,7 +472,7 @@
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // SaturatedUnsignedSignedQuadDotProdAccumulate multiplies performs dot products on groups of 4 elements of y and z and accumulates the results to x.
+    // MaskedSaturatedUnsignedSignedQuadDotProdAccumulate multiplies performs dot products on groups of 4 elements of y and z and accumulates the results to x.
 - go: PairDotProdAccumulate
   commutative: "false"
   extension: "AVX.*"
@@ -677,8 +573,6 @@
   extension: "AVX.*"
   documentation: !string |-
     // MaskedMul multiplies corresponding elements of two vectors, masked.
-  docUnmasked: !string |-
-    // Mul multiplies corresponding elements of two vectors.
 - go: MaskedMulEvenWiden
   masked: "true"
   commutative: "true"
@@ -686,25 +580,18 @@
   documentation: !string |-
     // MaskedMulEvenWiden multiplies even-indexed elements, widening the result, masked.
     // Result[i] = v1.Even[i] * v2.Even[i].
-  docUnmasked: !string |-
-    // MulEvenWiden multiplies even-indexed elements, widening the result.
-    // Result[i] = v1.Even[i] * v2.Even[i].
 - go: MaskedMulHigh
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
     // MaskedMulHigh multiplies elements and stores the high part of the result, masked.
-  docUnmasked: !string |-
-    // MulHigh multiplies elements and stores the high part of the result.
 - go: MaskedMulLow
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
     // MaskedMulLow multiplies elements and stores the low part of the result, masked.
-  docUnmasked: !string |-
-    // MulLow multiplies elements and stores the low part of the result.
 - go: ShiftAllLeft
   nameAndSizeCheck: "true"
   commutative: "false"
