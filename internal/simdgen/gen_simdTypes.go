@@ -24,8 +24,8 @@ type simdType struct {
 }
 
 func compareSimdTypes(x, y simdType) int {
-	// "mask" then "vreg"
-	if c := compareNatural(x.Type, y.Type); c != 0 {
+	// "vreg" then "mask"
+	if c := -compareNatural(x.Type, y.Type); c != 0 {
 		return c
 	}
 	// want "flo" < "int" < "uin" (and then 8 < 16 < 32 < 64),
@@ -518,7 +518,8 @@ func writeSIMDTypes(typeMap simdTypeMap) *bytes.Buffer {
 	}
 
 	sizes := make([]int, 0, len(typeMap))
-	for size := range typeMap {
+	for size, types := range typeMap {
+		slices.SortFunc(types, compareSimdTypes)
 		sizes = append(sizes, size)
 	}
 	sort.Ints(sizes)
