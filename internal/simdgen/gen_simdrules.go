@@ -65,7 +65,7 @@ func writeSIMDRules(ops []Operation) *bytes.Buffer {
 	var allData []tplRuleData
 
 	for _, opr := range ops {
-		opInShape, opOutShape, maskType, immType, _, _, gOp := opr.shape()
+		opInShape, opOutShape, maskType, immType, _, gOp := opr.shape()
 
 		vregInCnt := len(gOp.In)
 		asm := gOp.Asm

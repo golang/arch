@@ -97,7 +97,6 @@ const (
 	InvalidMask int = iota
 	NoMask
 	OneMask
-	OneConstMask
 	AllMasks
 )
 
@@ -130,7 +129,6 @@ const (
 //			InvalidMask: unknown, with err set to the error message
 //			NoMask: no mask
 //			OneMask: with mask (K1 to K7)
-//			OneConstMask: with const mask K0
 //			AllMasks: it's a K mask instruction
 //
 //	 	immType:
@@ -145,7 +143,7 @@ const (
 // opNoConstImmMask is op with its inputs excluding the const imm and mask.
 //
 // This function does not modify op.
-func (op *Operation) shape() (shapeIn, shapeOut, maskType, immType int, opNoImm Operation, opNoConstMask Operation, opNoImmConstMask Operation) {
+func (op *Operation) shape() (shapeIn, shapeOut, maskType, immType int, opNoImm Operation, opNoImmConstMask Operation) {
 	if len(op.Out) > 1 {
 		panic(fmt.Errorf("simdgen only supports 1 output: %s", op))
 	}
@@ -169,9 +167,8 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType, immType int, opNoImm 
 	}
 	hasImm := false
 	maskCount := 0
-	iConstMask := -1
 	hasVreg := false
-	for i, in := range op.In {
+	for _, in := range op.In {
 		if in.AsmPos == outputReg {
 			if shapeOut != OneVregOutAtIn && in.AsmPos == 0 && in.Class == "vreg" {
 				shapeOut = OneVregOutAtIn
@@ -187,35 +184,14 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType, immType int, opNoImm 
 			}
 			hasImm = true
 		} else if in.Class == "mask" {
-			if in.Const != nil {
-				if *in.Const == "K0" {
-					if iConstMask != -1 {
-						panic(fmt.Errorf("simdgen only supports one const mask in inputs: %s", op))
-					}
-					iConstMask = i
-					// Const mask should be invisible in ssa and prog, so we don't treat it as a mask.
-					// More specifically in prog, it's optional: when missing the assembler will default it to K0).
-					// TODO: verify the above assumption is safe.
-				} else {
-					panic(fmt.Errorf("simdgen only supports const mask K0 in inputs: %s", op))
-				}
-			} else {
-				maskCount++
-			}
+			maskCount++
 		} else {
 			hasVreg = true
 		}
 	}
 	opNoImm = *op
-	opNoConstMask = *op
 	opNoImmConstMask = *op
-	removeConstMask := func(o *Operation) {
-		o.In = append(o.In[:iConstMask], o.In[iConstMask+1:]...)
-	}
-	if iConstMask != -1 {
-		removeConstMask(&opNoConstMask)
-		removeConstMask(&opNoImmConstMask)
-	}
+
 	removeImm := func(o *Operation) {
 		o.In = o.In[1:]
 	}
@@ -237,20 +213,13 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType, immType int, opNoImm 
 		immType = NoImm
 	}
 	if maskCount == 0 {
-		if iConstMask == -1 {
-			maskType = NoMask
-		} else {
-			maskType = OneConstMask
-		}
+		maskType = NoMask
 	} else {
 		maskType = OneMask
 	}
 	checkPureMask := func() bool {
 		if hasImm {
 			panic(fmt.Errorf("simdgen does not support immediates in pure mask operations: %s", op))
-		}
-		if iConstMask != -1 {
-			panic(fmt.Errorf("simdgen does not support const mask in pure mask operations: %s", op))
 		}
 		if hasVreg {
 			panic(fmt.Errorf("simdgen does not support more than 1 masks in non-pure mask operations: %s", op))
@@ -284,7 +253,7 @@ func (op *Operation) shape() (shapeIn, shapeOut, maskType, immType int, opNoImm 
 
 // regShape returns a string representation of the register shape.
 func (op *Operation) regShape() (string, error) {
-	_, _, _, _, _, _, gOp := op.shape()
+	_, _, _, _, _, gOp := op.shape()
 	var regInfo string
 	var vRegInCnt, gRegInCnt, kMaskInCnt, vRegOutCnt, gRegOutCnt, kMaskOutCnt int
 	for _, in := range gOp.In {
@@ -484,29 +453,29 @@ var classes []string = []string{"BAD0", "op1", "op2", "op3", "op4"}
 // The classification string is used to select a template or a clause of a template
 // for intrinsics declaration and the ssagen intrinisics glue code in the compiler.
 func classifyOp(op Operation) (string, Operation, error) {
-	_, _, _, immType, _, opNoConstMask, gOp := op.shape()
+	_, _, _, immType, _, gOp := op.shape()
 
 	var class string
 
 	if immType == VarImm || immType == ConstVarImm {
-		switch l := len(opNoConstMask.In); l {
+		switch l := len(op.In); l {
 		case 1:
 			return "", op, fmt.Errorf("simdgen does not recognize this operation of only immediate input: %s", op)
 		case 2, 3, 4, 5:
 			class = immClasses[l]
 		default:
-			return "", op, fmt.Errorf("simdgen does not recognize this operation of input length %d: %s", len(opNoConstMask.In), op)
+			return "", op, fmt.Errorf("simdgen does not recognize this operation of input length %d: %s", len(op.In), op)
 		}
 		if order := op.OperandOrder; order != nil {
 			class += "_" + *order
 		}
-		return class, opNoConstMask, nil
+		return class, op, nil
 	} else {
 		switch l := len(gOp.In); l {
 		case 1, 2, 3, 4:
 			class = classes[l]
 		default:
-			return "", op, fmt.Errorf("simdgen does not recognize this operation of input length %d: %s", len(opNoConstMask.In), op)
+			return "", op, fmt.Errorf("simdgen does not recognize this operation of input length %d: %s", len(op.In), op)
 		}
 		if order := op.OperandOrder; order != nil {
 			class += "_" + *order
@@ -568,14 +537,12 @@ func splitMask(ops []Operation) ([]Operation, error) {
 		if op.Masked == nil || *op.Masked != "true" {
 			continue
 		}
-		shapeIn, _, _, _, _, _, _ := op.shape()
+		shapeIn, _, _, _, _, _ := op.shape()
 
 		if shapeIn == OneKmaskIn || shapeIn == OneKmaskImmIn {
 			op2 := op
-			op2.In = slices.Clone(op.In)
-			constMask := "K0"
-			// The ops should be sorted when calling this function, the mask is in the end.
-			op2.In[len(op2.In)-1].Const = &constMask
+			// The ops should be sorted when calling this function, the mask is in the end, drop the mask
+			op2.In = slices.Clone(op.In)[:len(op.In)-1]
 			if !strings.HasPrefix(op2.Go, "Masked") {
 				return nil, fmt.Errorf("simdgen only recognizes masked operations with name starting with 'Masked': %s", op)
 			}
@@ -598,7 +565,7 @@ func splitMask(ops []Operation) ([]Operation, error) {
 func dedupGodef(ops []Operation) ([]Operation, error) {
 	seen := map[string][]Operation{}
 	for _, op := range ops {
-		_, _, _, _, _, _, gOp := op.shape()
+		_, _, _, _, _, gOp := op.shape()
 
 		genericNames := gOp.Go + *gOp.In[0].Go
 		seen[genericNames] = append(seen[genericNames], op)
@@ -642,7 +609,7 @@ func copyConstImm(ops []Operation) error {
 		if op.ConstImm == nil {
 			continue
 		}
-		_, _, _, immType, _, _, _ := op.shape()
+		_, _, _, immType, _, _ := op.shape()
 
 		if immType == ConstImm || immType == ConstVarImm {
 			op.In[0].Const = op.ConstImm

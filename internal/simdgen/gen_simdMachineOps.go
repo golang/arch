@@ -50,7 +50,7 @@ func writeSIMDMachineOps(ops []Operation) *bytes.Buffer {
 	opsData := make([]opData, 0)
 	opsDataImm := make([]opData, 0)
 	for _, op := range ops {
-		shapeIn, shapeOut, maskType, _, _, _, gOp := op.shape()
+		shapeIn, shapeOut, maskType, _, _, gOp := op.shape()
 
 		asm := gOp.Asm
 		if maskType == OneMask {
