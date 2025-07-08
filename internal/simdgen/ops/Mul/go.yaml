@@ -10,7 +10,7 @@
   - *fp
   out:
   - *fp
-- go: MaskedMul
+- go: MulMasked
   asm: "VMULP[SD]"
   in:
   - class: mask
@@ -45,7 +45,7 @@
   - &uint2
     go: $t2
     base: uint
-- go: MaskedMulEvenWiden
+- go: MulEvenWidenMasked
   asm: "VPMULDQ"
   in:
   - class: mask
@@ -53,7 +53,7 @@
   - *int
   out:
   - *int2
-- go: MaskedMulEvenWiden
+- go: MulEvenWidenMasked
   asm: "VPMULUDQ"
   in:
   - class: mask
@@ -79,7 +79,7 @@
   - *uint
   out:
   - *uint2
-- go: MaskedMulHigh
+- go: MulHighMasked
   asm: "VPMULHW"
   in:
   - class: mask
@@ -87,7 +87,7 @@
   - *int
   out:
   - *int2
-- go: MaskedMulHigh
+- go: MulHighMasked
   asm: "VPMULHUW"
   in:
   - class: mask
@@ -106,7 +106,7 @@
   - *int
   out:
   - *int2
-- go: MaskedMulLow
+- go: MulLowMasked
   asm: "VPMULL[WDQ]"
   in:
   - class: mask

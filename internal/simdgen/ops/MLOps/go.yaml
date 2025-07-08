@@ -10,7 +10,7 @@
   - &int2 # The elemBits are different
     go: $t2
     base: int
-- go: MaskedPairDotProd
+- go: PairDotProdMasked
   asm: VPMADDWD
   in:
   - class: mask
@@ -29,7 +29,7 @@
     base: int
   out:
   - *int2
-- go: MaskedSaturatedUnsignedSignedPairDotProd
+- go: SaturatedUnsignedSignedPairDotProdMasked
   asm: VPMADDUBSW
   in:
   - class: mask
@@ -70,7 +70,7 @@
     overwriteElementBits: 8
   out:
   - *qdpa_acc
-- go: MaskedUnsignedSignedQuadDotProdAccumulate
+- go: UnsignedSignedQuadDotProdAccumulateMasked
   asm: "VPDPBUSD"
   in:
   - *qdpa_acc
@@ -87,7 +87,7 @@
   - *qdpa_src2
   out:
   - *qdpa_acc
-- go: MaskedSaturatedUnsignedSignedQuadDotProdAccumulate
+- go: SaturatedUnsignedSignedQuadDotProdAccumulateMasked
   asm: "VPDPBUSDS"
   in:
   - *qdpa_acc
@@ -113,7 +113,7 @@
     overwriteElementBits: 16
   out:
   - *pdpa_acc
-- go: MaskedPairDotProdAccumulate
+- go: PairDotProdAccumulateMasked
   asm: "VPDPWSSD"
   in:
   - *pdpa_acc
@@ -130,7 +130,7 @@
   - *pdpa_src2
   out:
   - *pdpa_acc
-- go: MaskedSaturatedPairDotProdAccumulate
+- go: SaturatedPairDotProdAccumulateMasked
   asm: "VPDPWSSDS"
   in:
   - *pdpa_acc
@@ -139,7 +139,7 @@
   - *pdpa_src2
   out:
   - *pdpa_acc
-- go: MaskedFusedMultiplyAdd
+- go: FusedMultiplyAddMasked
   asm: "VFMADD213PS|VFMADD213PD"
   in:
   - &fma_op
@@ -150,7 +150,7 @@
   - *fma_op
   out:
   - *fma_op
-- go: MaskedFusedMultiplyAddSub
+- go: FusedMultiplyAddSubMasked
   asm: "VFMADDSUB213PS|VFMADDSUB213PD"
   in:
   - *fma_op
@@ -159,7 +159,7 @@
   - *fma_op
   out:
   - *fma_op
-- go: MaskedFusedMultiplySubAdd
+- go: FusedMultiplySubAddMasked
   asm: "VFMSUBADD213PS|VFMSUBADD213PD"
   in:
   - *fma_op

@@ -4,51 +4,51 @@
   extension: "AVX.*"
   documentation: !string |-
     // Div divides elements of two vectors.
-- go: MaskedDiv
+- go: DivMasked
   commutative: "false"
   masked: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedDiv divides elements of two vectors.
+    // DivMasked divides elements of two vectors.
 - go: Sqrt
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
     // Sqrt computes the square root of each element.
-- go: MaskedSqrt
+- go: SqrtMasked
   commutative: "false"
   masked: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedSqrt computes the square root of each element.
+    // SqrtMasked computes the square root of each element.
 - go: ApproximateReciprocal
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
     // ApproximateReciprocal computes an approximate reciprocal of each element.
-- go: MaskedApproximateReciprocal
+- go: ApproximateReciprocalMasked
   commutative: "false"
   masked: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedApproximateReciprocal computes an approximate reciprocal of each element.
+    // ApproximateReciprocalMasked computes an approximate reciprocal of each element.
 - go: ApproximateReciprocalOfSqrt
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
     // ApproximateReciprocalOfSqrt computes an approximate reciprocal of the square root of each element.
-- go: MaskedApproximateReciprocalOfSqrt
+- go: ApproximateReciprocalOfSqrtMasked
   commutative: "false"
   masked: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedApproximateReciprocalOfSqrt computes an approximate reciprocal of the square root of each element.
-- go: MaskedMulByPowOf2 # This operation is all after AVX512, the unmasked version will be generated.
+    // ApproximateReciprocalOfSqrtMasked computes an approximate reciprocal of the square root of each element.
+- go: MulByPowOf2Masked # This operation is all after AVX512, the unmasked version will be generated.
   commutative: "false"
   masked: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedMulByPowOf2 multiplies elements by a power of 2.
+    // MulByPowOf2Masked multiplies elements by a power of 2.
 
 - go: Round
   commutative: "false"
@@ -56,20 +56,20 @@
   constImm: 0
   documentation: !string |-
     // Round rounds elements to the nearest integer.
-- go: MaskedRoundWithPrecision
+- go: RoundWithPrecisionMasked
   commutative: "false"
   extension: "AVX.*"
   constImm: 0
   masked: "true"
   documentation: !string |-
-    // MaskedRoundWithPrecision rounds elements with specified precision.
-- go: MaskedDiffWithRoundWithPrecision
+    // RoundWithPrecisionMasked rounds elements with specified precision.
+- go: DiffWithRoundWithPrecisionMasked
   commutative: "false"
   extension: "AVX.*"
   constImm: 0
   masked: "true"
   documentation: !string |-
-    // MaskedDiffWithRoundWithPrecision computes the difference after rounding with specified precision.
+    // DiffWithRoundWithPrecisionMasked computes the difference after rounding with specified precision.
 
 - go: Floor
   commutative: "false"
@@ -77,20 +77,20 @@
   constImm: 1
   documentation: !string |-
     // Floor rounds elements down to the nearest integer.
-- go: MaskedFloorWithPrecision
+- go: FloorWithPrecisionMasked
   commutative: "false"
   extension: "AVX.*"
   constImm: 1
   masked: "true"
   documentation: !string |-
-    // MaskedFloorWithPrecision rounds elements down with specified precision, masked.
-- go: MaskedDiffWithFloorWithPrecision
+    // FloorWithPrecisionMasked rounds elements down with specified precision, masked.
+- go: DiffWithFloorWithPrecisionMasked
   commutative: "false"
   extension: "AVX.*"
   constImm: 1
   masked: "true"
   documentation: !string |-
-    // MaskedDiffWithFloorWithPrecision computes the difference after flooring with specified precision.
+    // DiffWithFloorWithPrecisionMasked computes the difference after flooring with specified precision.
 
 - go: Ceil
   commutative: "false"
@@ -98,20 +98,20 @@
   constImm: 2
   documentation: !string |-
     // Ceil rounds elements up to the nearest integer.
-- go: MaskedCeilWithPrecision
+- go: CeilWithPrecisionMasked
   commutative: "false"
   extension: "AVX.*"
   constImm: 2
   masked: "true"
   documentation: !string |-
-    // MaskedCeilWithPrecision rounds elements up with specified precision, masked.
-- go: MaskedDiffWithCeilWithPrecision
+    // CeilWithPrecisionMasked rounds elements up with specified precision, masked.
+- go: DiffWithCeilWithPrecisionMasked
   commutative: "false"
   extension: "AVX.*"
   constImm: 2
   masked: "true"
   documentation: !string |-
-    // MaskedDiffWithCeilWithPrecision computes the difference after ceiling with specified precision.
+    // DiffWithCeilWithPrecisionMasked computes the difference after ceiling with specified precision.
 
 - go: Trunc
   commutative: "false"
@@ -119,20 +119,20 @@
   constImm: 3
   documentation: !string |-
     // Trunc truncates elements towards zero.
-- go: MaskedTruncWithPrecision
+- go: TruncWithPrecisionMasked
   commutative: "false"
   extension: "AVX.*"
   constImm: 3
   masked: "true"
   documentation: !string |-
-    // MaskedTruncWithPrecision truncates elements with specified precision.
-- go: MaskedDiffWithTruncWithPrecision
+    // TruncWithPrecisionMasked truncates elements with specified precision.
+- go: DiffWithTruncWithPrecisionMasked
   commutative: "false"
   extension: "AVX.*"
   constImm: 3
   masked: "true"
   documentation: !string |-
-    // MaskedDiffWithTruncWithPrecision computes the difference after truncating with specified precision.
+    // DiffWithTruncWithPrecisionMasked computes the difference after truncating with specified precision.
 
 - go: AddSub
   commutative: "false"

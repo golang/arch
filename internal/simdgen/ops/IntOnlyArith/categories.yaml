@@ -4,12 +4,12 @@
   extension: "AVX.*" # VPAVGB/W are available across various AVX versions
   documentation: !string |-
     // Average computes the rounded average of corresponding elements.
-- go: MaskedAverage
+- go: AverageMasked
   commutative: "true"
   masked: "true"
   extension: "AVX512.*" # Masked operations are typically AVX512
   documentation: !string |-
-    // MaskedAverage computes the rounded average of corresponding elements.
+    // AverageMasked computes the rounded average of corresponding elements.
 
 - go: Absolute
   commutative: "false"
@@ -17,12 +17,12 @@
   extension: "AVX.*" # VPABSB/W/D are AVX, VPABSQ is AVX512
   documentation: !string |-
     // Absolute computes the absolute value of each element.
-- go: MaskedAbsolute
+- go: AbsoluteMasked
   commutative: "false"
   masked: "true"
   extension: "AVX512.*"
   documentation: !string |-
-    // MaskedAbsolute computes the absolute value of each element.
+    // AbsoluteMasked computes the absolute value of each element.
 
 - go: Sign
   # Applies sign of second operand to first: sign(val, sign_src)
@@ -33,9 +33,9 @@
     // whichever constant is nearest to the value of the second operand.
   # Sign does not have masked version
 
-- go: MaskedPopCount
+- go: PopCountMasked
   commutative: "false"
   masked: "true"
   extension: "AVX512.*" # VPOPCNT instructions are AVX512 (BITALG or VPOPCNTDQ)
   documentation: !string |-
-    // MaskedPopCount counts the number of set bits in each element.
+    // PopCountMasked counts the number of set bits in each element.

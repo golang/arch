@@ -17,7 +17,7 @@
   in: *int2
   out:
   - *anyvregToMask
-- go: MaskedEqual
+- go: EqualMasked
   asm: "V?PCMPEQ[BWDQ]"
   in: &maskint2
   - class: mask
@@ -25,14 +25,14 @@
   - *int
   out:
   - class: mask
-- go: MaskedGreater
+- go: GreaterMasked
   asm: "V?PCMPGT[BWDQ]"
   in: *maskint2
   out:
   - class: mask
 # The const imm predicated compares after AVX512, please see categories.yaml
 # for const imm specification.
-- go: Masked(Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual)
+- go: (Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual)Masked
   asm: "VPCMP[BWDQ]"
   in:
   - class: mask
@@ -44,7 +44,7 @@
     const: 0 # Just a placeholder, will be overwritten by const imm porting.
   out:
   - class: mask
-- go: Masked(Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual)
+- go: (Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual)Masked
   asm: "VPCMPU[BWDQ]"
   in:
   - class: mask
@@ -71,7 +71,7 @@
   - go: $t # We still need the output to be the same shape as inputs.
     overwriteBase: int
     overwriteClass: mask
-- go: Masked(Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual|IsNan)
+- go: (Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual|IsNan)Masked
   asm: "VCMPP[SD]"
   in:
   - class: mask

@@ -49,52 +49,52 @@
   documentation: !string |-
     // Greater compares for greater than.
 
-- go: MaskedEqual
+- go: EqualMasked
   constImm: 0
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedEqual compares for equality, masked.
-- go: MaskedLess
+    // EqualMasked compares for equality, masked.
+- go: LessMasked
   constImm: 1
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedLess compares for less than.
-- go: MaskedLessEqual
+    // LessMasked compares for less than.
+- go: LessEqualMasked
   constImm: 2
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedLessEqual compares for less than or equal.
-- go: MaskedIsNan # For float only.
+    // LessEqualMasked compares for less than or equal.
+- go: IsNanMasked # For float only.
   constImm: 3
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedIsNan checks if elements are NaN. Use as x.IsNan(x).
-- go: MaskedNotEqual
+    // IsNanMasked checks if elements are NaN. Use as x.IsNan(x).
+- go: NotEqualMasked
   constImm: 4
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedNotEqual compares for inequality.
-- go: MaskedGreaterEqual
+    // NotEqualMasked compares for inequality.
+- go: GreaterEqualMasked
   constImm: 13
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedGreaterEqual compares for greater than or equal.
-- go: MaskedGreater
+    // GreaterEqualMasked compares for greater than or equal.
+- go: GreaterMasked
   constImm: 14
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedGreater compares for greater than.
+    // GreaterMasked compares for greater than.

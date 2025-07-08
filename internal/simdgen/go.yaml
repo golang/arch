@@ -8,7 +8,7 @@
   - *any
   out:
   - *any
-- go: MaskedAdd
+- go: AddMasked
   asm: "VPADD[BWDQ]|VADDP[SD]"
   in:
   - class: mask
@@ -35,7 +35,7 @@
   - *uint
   out:
   - *uint
-- go: MaskedSaturatedAdd
+- go: SaturatedAddMasked
   asm: "VPADDS[BWDQ]"
   in:
   - class: mask
@@ -43,7 +43,7 @@
   - *int
   out:
   - *int
-- go: MaskedSaturatedAdd
+- go: SaturatedAddMasked
   asm: "VPADDS[BWDQ]"
   in:
   - class: mask
@@ -60,7 +60,7 @@
   - *any
   out: &1any
   - *any
-- go: MaskedSub
+- go: SubMasked
   asm: "VPSUB[BWDQ]|VSUBP[SD]"
   in:
   - class: mask
@@ -83,7 +83,7 @@
   - *uint
   out:
   - *uint
-- go: MaskedSaturatedSub
+- go: SaturatedSubMasked
   asm: "VPSUBS[BWDQ]"
   in:
   - class: mask
@@ -91,7 +91,7 @@
   - *int
   out:
   - *int
-- go: MaskedSaturatedSub
+- go: SaturatedSubMasked
   asm: "VPSUBS[BWDQ]"
   in:
   - class: mask
@@ -145,7 +145,7 @@
 # Dword and Qword.
 # TODO: should we wildcard other smaller elemBits to VPANDQ or
 # VPANDD? Looks like elemBits doesn't really matter afterall in bitwise operations.
-- go: MaskedAnd
+- go: AndMasked
   asm: "VPAND[DQ]"
   in:
   - class: mask
@@ -161,7 +161,7 @@
   - *any
   out:
   - *any
-- go: MaskedAndNot
+- go: AndNotMasked
   asm: "VPANDN[DQ]"
   in:
   - class: mask
@@ -177,7 +177,7 @@
   - *any
   out:
   - *any
-- go: MaskedOr
+- go: OrMasked
   asm: "VPOR[DQ]"
   in:
   - class: mask
@@ -193,7 +193,7 @@
   - *any
   out:
   - *any
-- go: MaskedXor
+- go: XorMasked
   asm: "VPXOR[DQ]"
   in:
   - class: mask
@@ -219,7 +219,7 @@
   in: *int2
   out:
   - *anyvregToMask
-- go: MaskedEqual
+- go: EqualMasked
   asm: "V?PCMPEQ[BWDQ]"
   in: &maskint2
   - class: mask
@@ -227,14 +227,14 @@
   - *int
   out:
   - class: mask
-- go: MaskedGreater
+- go: GreaterMasked
   asm: "V?PCMPGT[BWDQ]"
   in: *maskint2
   out:
   - class: mask
 # The const imm predicated compares after AVX512, please see categories.yaml
 # for const imm specification.
-- go: Masked(Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual)
+- go: (Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual)Masked
   asm: "VPCMP[BWDQ]"
   in:
   - class: mask
@@ -246,7 +246,7 @@
     const: 0 # Just a placeholder, will be overwritten by const imm porting.
   out:
   - class: mask
-- go: Masked(Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual)
+- go: (Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual)Masked
   asm: "VPCMPU[BWDQ]"
   in:
   - class: mask
@@ -273,7 +273,7 @@
   - go: $t # We still need the output to be the same shape as inputs.
     overwriteBase: int
     overwriteClass: mask
-- go: Masked(Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual|IsNan)
+- go: (Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual|IsNan)Masked
   asm: "VCMPP[SD]"
   in:
   - class: mask
@@ -292,7 +292,7 @@
   - *fp
   out: &1fp
   - *fp
-- go: MaskedDiv
+- go: DivMasked
   asm: "V?DIVP[SD]"
   in: &1mask2fp
   - class: mask
@@ -303,13 +303,13 @@
   asm: "V?SQRTP[SD]"
   in: *1fp
   out: *1fp
-- go: MaskedSqrt
+- go: SqrtMasked
   asm: "V?SQRTP[SD]"
   in: &1mask1fp
   - class: mask
   - *fp
   out: *1fp
-- go: MaskedApproximateReciprocal
+- go: ApproximateReciprocalMasked
   asm: "VRCP14P[SD]"
   in: *1mask1fp
   out: *1fp
@@ -317,11 +317,11 @@
   asm: "V?RSQRTPS"
   in: *1fp
   out: *1fp
-- go: MaskedApproximateReciprocalOfSqrt
+- go: ApproximateReciprocalOfSqrtMasked
   asm: "VRSQRT14P[SD]"
   in: *1mask1fp
   out: *1fp
-- go: MaskedMulByPowOf2
+- go: MulByPowOf2Masked
   asm: "VSCALEFP[SD]"
   in: *1mask2fp
   out: *1fp
@@ -334,7 +334,7 @@
     const: 0 # place holder
   out: *1fp
 
-- go: "Masked(Round|Ceil|Floor|Trunc)(SuppressException)?WithPrecision"
+- go: "(Round|Ceil|Floor|Trunc)WithPrecisionMasked"
   asm: "VRNDSCALEP[SD]"
   in:
   - class: mask
@@ -343,7 +343,7 @@
     const: 0 # place holder
     immOffset: 4 # "M", round to numbers with M digits after dot(by means of binary number).
   out: *1fp
-- go: "MaskedDiffWith(Round|Ceil|Floor|Trunc)(SuppressException)?WithPrecision"
+- go: "DiffWith(Round|Ceil|Floor|Trunc)WithPrecisionMasked"
   asm: "VREDUCEP[SD]"
   in:
   - class: mask
@@ -360,7 +360,7 @@
   - *fp
   out:
   - *fp
-- go: MaskedGaloisFieldAffineTransform
+- go: GaloisFieldAffineTransformMasked
   asm: VGF2P8AFFINEQB
   operandOrder: 2I # 2nd operand, then immediate
   in: &AffineArgs
@@ -379,14 +379,14 @@
   out:
   - *uint8
 
-- go: MaskedGaloisFieldAffineTransformInversed
+- go: GaloisFieldAffineTransformInversedMasked
   asm: VGF2P8AFFINEINVQB
   operandOrder: 2I # 2nd operand, then immediate
   in: *AffineArgs
   out:
   - *uint8
 
-- go: MaskedGaloisFieldMul
+- go: GaloisFieldMulMasked
   asm: VGF2P8MULB
   in:
   - class: mask
@@ -405,7 +405,7 @@
   - *uint_t
   out:
   - *uint_t
-- go: MaskedAverage
+- go: AverageMasked
   asm: "VPAVG[BW]"
   in:
   - class: mask
@@ -424,7 +424,7 @@
     base: int
   out:
   - *int_t # Output is magnitude, fits in the same signed type
-- go: MaskedAbsolute
+- go: AbsoluteMasked
   asm: "VPABS[BWDQ]"
   in:
   - class: mask
@@ -446,7 +446,7 @@
 # Population Count (count set bits in each element)
 # Instructions: VPOPCNTB, VPOPCNTW (AVX512_BITALG)
 #               VPOPCNTD, VPOPCNTQ (AVX512_VPOPCNTDQ)
-- go: MaskedPopCount
+- go: PopCountMasked
   asm: "VPOPCNT[BWDQ]"
   in:
   - class: mask
@@ -465,7 +465,7 @@
   - &int2 # The elemBits are different
     go: $t2
     base: int
-- go: MaskedPairDotProd
+- go: PairDotProdMasked
   asm: VPMADDWD
   in:
   - class: mask
@@ -484,7 +484,7 @@
     base: int
   out:
   - *int2
-- go: MaskedSaturatedUnsignedSignedPairDotProd
+- go: SaturatedUnsignedSignedPairDotProdMasked
   asm: VPMADDUBSW
   in:
   - class: mask
@@ -525,7 +525,7 @@
     overwriteElementBits: 8
   out:
   - *qdpa_acc
-- go: MaskedUnsignedSignedQuadDotProdAccumulate
+- go: UnsignedSignedQuadDotProdAccumulateMasked
   asm: "VPDPBUSD"
   in:
   - *qdpa_acc
@@ -542,7 +542,7 @@
   - *qdpa_src2
   out:
   - *qdpa_acc
-- go: MaskedSaturatedUnsignedSignedQuadDotProdAccumulate
+- go: SaturatedUnsignedSignedQuadDotProdAccumulateMasked
   asm: "VPDPBUSDS"
   in:
   - *qdpa_acc
@@ -568,7 +568,7 @@
     overwriteElementBits: 16
   out:
   - *pdpa_acc
-- go: MaskedPairDotProdAccumulate
+- go: PairDotProdAccumulateMasked
   asm: "VPDPWSSD"
   in:
   - *pdpa_acc
@@ -585,7 +585,7 @@
   - *pdpa_src2
   out:
   - *pdpa_acc
-- go: MaskedSaturatedPairDotProdAccumulate
+- go: SaturatedPairDotProdAccumulateMasked
   asm: "VPDPWSSDS"
   in:
   - *pdpa_acc
@@ -594,7 +594,7 @@
   - *pdpa_src2
   out:
   - *pdpa_acc
-- go: MaskedFusedMultiplyAdd
+- go: FusedMultiplyAddMasked
   asm: "VFMADD213PS|VFMADD213PD"
   in:
   - &fma_op
@@ -605,7 +605,7 @@
   - *fma_op
   out:
   - *fma_op
-- go: MaskedFusedMultiplyAddSub
+- go: FusedMultiplyAddSubMasked
   asm: "VFMADDSUB213PS|VFMADDSUB213PD"
   in:
   - *fma_op
@@ -614,7 +614,7 @@
   - *fma_op
   out:
   - *fma_op
-- go: MaskedFusedMultiplySubAdd
+- go: FusedMultiplySubAddMasked
   asm: "VFMSUBADD213PS|VFMSUBADD213PD"
   in:
   - *fma_op
@@ -641,14 +641,14 @@
   - *uint
   out: &1uint
   - *uint
-- go: MaskedMax
+- go: MaxMasked
   asm: "V?PMAXS[BWDQ]"
   in: &1mask2int
   - class: mask
   - *int
   - *int
   out: *1int
-- go: MaskedMax
+- go: MaxMasked
   asm: "V?PMAXU[BWDQ]"
   in: &1mask2uint
   - class: mask
@@ -664,11 +664,11 @@
   asm: "V?PMINU[BWDQ]"
   in: *2uint
   out: *1uint
-- go: MaskedMin
+- go: MinMasked
   asm: "V?PMINS[BWDQ]"
   in: *1mask2int
   out: *1int
-- go: MaskedMin
+- go: MinMasked
   asm: "V?PMINU[BWDQ]"
   in: *1mask2uint
   out: *1uint
@@ -682,7 +682,7 @@
   - *float
   out: &1float
   - *float
-- go: MaskedMax
+- go: MaxMasked
   asm: "V?MAXP[SD]"
   in: &1mask2float
   - class: mask
@@ -693,7 +693,7 @@
   asm: "V?MINP[SD]"
   in: *2float
   out: *1float
-- go: MaskedMin
+- go: MinMasked
   asm: "V?MINP[SD]"
   in: *1mask2float
   out: *1float
@@ -893,7 +893,7 @@
   - *fp
   out:
   - *fp
-- go: MaskedMul
+- go: MulMasked
   asm: "VMULP[SD]"
   in:
   - class: mask
@@ -928,7 +928,7 @@
   - &uint2
     go: $t2
     base: uint
-- go: MaskedMulEvenWiden
+- go: MulEvenWidenMasked
   asm: "VPMULDQ"
   in:
   - class: mask
@@ -936,7 +936,7 @@
   - *int
   out:
   - *int2
-- go: MaskedMulEvenWiden
+- go: MulEvenWidenMasked
   asm: "VPMULUDQ"
   in:
   - class: mask
@@ -962,7 +962,7 @@
   - *uint
   out:
   - *uint2
-- go: MaskedMulHigh
+- go: MulHighMasked
   asm: "VPMULHW"
   in:
   - class: mask
@@ -970,7 +970,7 @@
   - *int
   out:
   - *int2
-- go: MaskedMulHigh
+- go: MulHighMasked
   asm: "VPMULHUW"
   in:
   - class: mask
@@ -989,7 +989,7 @@
   - *int
   out:
   - *int2
-- go: MaskedMulLow
+- go: MulLowMasked
   asm: "VPMULL[WDQ]"
   in:
   - class: mask
@@ -1009,7 +1009,7 @@
     go: Uint64x2
   out:
   - *any
-- go: MaskedShiftAllLeft
+- go: ShiftAllLeftMasked
   asm: "VPSLL[WDQ]"
   in:
   - class: mask
@@ -1024,7 +1024,7 @@
   - *vecAsScalar64
   out:
   - *any
-- go: MaskedShiftAllRight
+- go: ShiftAllRightMasked
   asm: "VPSRL[WDQ]"
   in:
   - class: mask
@@ -1041,7 +1041,7 @@
   - *vecAsScalar64
   out:
   - *int
-- go: MaskedShiftAllRightSignExtended
+- go: ShiftAllRightSignExtendedMasked
   asm: "VPSRA[WDQ]"
   in:
   - class: mask
@@ -1058,7 +1058,7 @@
   - *any
   out:
   - *any
-- go: MaskedShiftLeft
+- go: ShiftLeftMasked
   asm: "VPSLLV[WD]"
   in:
   - class: mask
@@ -1077,7 +1077,7 @@
   - *anyOverwriteElemBits
   out:
   - *anyOverwriteElemBits
-- go: MaskedShiftLeft
+- go: ShiftLeftMasked
   asm: "VPSLLVQ"
   in:
   - class: mask
@@ -1092,7 +1092,7 @@
   - *any
   out:
   - *any
-- go: MaskedShiftRight
+- go: ShiftRightMasked
   asm: "VPSRLV[WD]"
   in:
   - class: mask
@@ -1108,7 +1108,7 @@
   - *anyOverwriteElemBits
   out:
   - *anyOverwriteElemBits
-- go: MaskedShiftRight
+- go: ShiftRightMasked
   asm: "VPSRLVQ"
   in:
   - class: mask
@@ -1123,7 +1123,7 @@
   - *any
   out:
   - *any
-- go: MaskedShiftRightSignExtended
+- go: ShiftRightSignExtendedMasked
   asm: "VPSRAV[WDQ]"
   in:
   - class: mask
@@ -1133,7 +1133,7 @@
   - *any
 
 # Rotate
-- go: MaskedRotateAllLeft
+- go: RotateAllLeftMasked
   asm: "VPROL[DQ]"
   in:
   - class: mask
@@ -1143,7 +1143,7 @@
     immOffset: 0
   out:
   - *any
-- go: MaskedRotateAllRight
+- go: RotateAllRightMasked
   asm: "VPROR[DQ]"
   in:
   - class: mask
@@ -1151,7 +1151,7 @@
   - *pureImm
   out:
   - *any
-- go: MaskedRotateLeft
+- go: RotateLeftMasked
   asm: "VPROLV[DQ]"
   in:
   - class: mask
@@ -1159,7 +1159,7 @@
   - *any
   out:
   - *any
-- go: MaskedRotateRight
+- go: RotateRightMasked
   asm: "VPRORV[DQ]"
   in:
   - class: mask
@@ -1169,7 +1169,7 @@
   - *any
 
 # Bizzare shifts.
-- go: MaskedShiftAllLeftAndFillUpperFrom
+- go: ShiftAllLeftAndFillUpperFromMasked
   asm: "VPSHLD[WDQ]"
   in:
   - class: mask
@@ -1178,7 +1178,7 @@
   - *pureImm
   out:
   - *any
-- go: MaskedShiftAllRightAndFillUpperFrom
+- go: ShiftAllRightAndFillUpperFromMasked
   asm: "VPSHRD[WDQ]"
   in:
   - class: mask
@@ -1187,7 +1187,7 @@
   - *pureImm
   out:
   - *any
-- go: MaskedShiftLeftAndFillUpperFrom
+- go: ShiftLeftAndFillUpperFromMasked
   asm: "VPSHLDV[WDQ]"
   in:
   - *any
@@ -1196,7 +1196,7 @@
   - *any
   out:
   - *any
-- go: MaskedShiftRightAndFillUpperFrom
+- go: ShiftRightAndFillUpperFromMasked
   asm: "VPSHRDV[WDQ]"
   in:
   - *any

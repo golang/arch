@@ -11,7 +11,7 @@
     go: Uint64x2
   out:
   - *any
-- go: MaskedShiftAllLeft
+- go: ShiftAllLeftMasked
   asm: "VPSLL[WDQ]"
   in:
   - class: mask
@@ -26,7 +26,7 @@
   - *vecAsScalar64
   out:
   - *any
-- go: MaskedShiftAllRight
+- go: ShiftAllRightMasked
   asm: "VPSRL[WDQ]"
   in:
   - class: mask
@@ -43,7 +43,7 @@
   - *vecAsScalar64
   out:
   - *int
-- go: MaskedShiftAllRightSignExtended
+- go: ShiftAllRightSignExtendedMasked
   asm: "VPSRA[WDQ]"
   in:
   - class: mask
@@ -60,7 +60,7 @@
   - *any
   out:
   - *any
-- go: MaskedShiftLeft
+- go: ShiftLeftMasked
   asm: "VPSLLV[WD]"
   in:
   - class: mask
@@ -79,7 +79,7 @@
   - *anyOverwriteElemBits
   out:
   - *anyOverwriteElemBits
-- go: MaskedShiftLeft
+- go: ShiftLeftMasked
   asm: "VPSLLVQ"
   in:
   - class: mask
@@ -94,7 +94,7 @@
   - *any
   out:
   - *any
-- go: MaskedShiftRight
+- go: ShiftRightMasked
   asm: "VPSRLV[WD]"
   in:
   - class: mask
@@ -110,7 +110,7 @@
   - *anyOverwriteElemBits
   out:
   - *anyOverwriteElemBits
-- go: MaskedShiftRight
+- go: ShiftRightMasked
   asm: "VPSRLVQ"
   in:
   - class: mask
@@ -125,7 +125,7 @@
   - *any
   out:
   - *any
-- go: MaskedShiftRightSignExtended
+- go: ShiftRightSignExtendedMasked
   asm: "VPSRAV[WDQ]"
   in:
   - class: mask
@@ -135,7 +135,7 @@
   - *any
 
 # Rotate
-- go: MaskedRotateAllLeft
+- go: RotateAllLeftMasked
   asm: "VPROL[DQ]"
   in:
   - class: mask
@@ -145,7 +145,7 @@
     immOffset: 0
   out:
   - *any
-- go: MaskedRotateAllRight
+- go: RotateAllRightMasked
   asm: "VPROR[DQ]"
   in:
   - class: mask
@@ -153,7 +153,7 @@
   - *pureImm
   out:
   - *any
-- go: MaskedRotateLeft
+- go: RotateLeftMasked
   asm: "VPROLV[DQ]"
   in:
   - class: mask
@@ -161,7 +161,7 @@
   - *any
   out:
   - *any
-- go: MaskedRotateRight
+- go: RotateRightMasked
   asm: "VPRORV[DQ]"
   in:
   - class: mask
@@ -171,7 +171,7 @@
   - *any
 
 # Bizzare shifts.
-- go: MaskedShiftAllLeftAndFillUpperFrom
+- go: ShiftAllLeftAndFillUpperFromMasked
   asm: "VPSHLD[WDQ]"
   in:
   - class: mask
@@ -180,7 +180,7 @@
   - *pureImm
   out:
   - *any
-- go: MaskedShiftAllRightAndFillUpperFrom
+- go: ShiftAllRightAndFillUpperFromMasked
   asm: "VPSHRD[WDQ]"
   in:
   - class: mask
@@ -189,7 +189,7 @@
   - *pureImm
   out:
   - *any
-- go: MaskedShiftLeftAndFillUpperFrom
+- go: ShiftLeftAndFillUpperFromMasked
   asm: "VPSHLDV[WDQ]"
   in:
   - *any
@@ -198,7 +198,7 @@
   - *any
   out:
   - *any
-- go: MaskedShiftRightAndFillUpperFrom
+- go: ShiftRightAndFillUpperFromMasked
   asm: "VPSHRDV[WDQ]"
   in:
   - *any

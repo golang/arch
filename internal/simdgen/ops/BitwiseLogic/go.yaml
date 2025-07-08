@@ -21,7 +21,7 @@
 # Dword and Qword.
 # TODO: should we wildcard other smaller elemBits to VPANDQ or
 # VPANDD? Looks like elemBits doesn't really matter afterall in bitwise operations.
-- go: MaskedAnd
+- go: AndMasked
   asm: "VPAND[DQ]"
   in:
   - class: mask
@@ -37,7 +37,7 @@
   - *any
   out:
   - *any
-- go: MaskedAndNot
+- go: AndNotMasked
   asm: "VPANDN[DQ]"
   in:
   - class: mask
@@ -53,7 +53,7 @@
   - *any
   out:
   - *any
-- go: MaskedOr
+- go: OrMasked
   asm: "VPOR[DQ]"
   in:
   - class: mask
@@ -69,7 +69,7 @@
   - *any
   out:
   - *any
-- go: MaskedXor
+- go: XorMasked
   asm: "VPXOR[DQ]"
   in:
   - class: mask

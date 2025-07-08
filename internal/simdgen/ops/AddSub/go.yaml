@@ -8,7 +8,7 @@
   - *any
   out:
   - *any
-- go: MaskedAdd
+- go: AddMasked
   asm: "VPADD[BWDQ]|VADDP[SD]"
   in:
   - class: mask
@@ -35,7 +35,7 @@
   - *uint
   out:
   - *uint
-- go: MaskedSaturatedAdd
+- go: SaturatedAddMasked
   asm: "VPADDS[BWDQ]"
   in:
   - class: mask
@@ -43,7 +43,7 @@
   - *int
   out:
   - *int
-- go: MaskedSaturatedAdd
+- go: SaturatedAddMasked
   asm: "VPADDS[BWDQ]"
   in:
   - class: mask
@@ -60,7 +60,7 @@
   - *any
   out: &1any
   - *any
-- go: MaskedSub
+- go: SubMasked
   asm: "VPSUB[BWDQ]|VSUBP[SD]"
   in:
   - class: mask
@@ -83,7 +83,7 @@
   - *uint
   out:
   - *uint
-- go: MaskedSaturatedSub
+- go: SaturatedSubMasked
   asm: "VPSUBS[BWDQ]"
   in:
   - class: mask
@@ -91,7 +91,7 @@
   - *int
   out:
   - *int
-- go: MaskedSaturatedSub
+- go: SaturatedSubMasked
   asm: "VPSUBS[BWDQ]"
   in:
   - class: mask

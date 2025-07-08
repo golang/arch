@@ -9,18 +9,18 @@
   extension: "AVX.*"
   documentation: !string |-
     // SaturatedAdd adds corresponding elements of two vectors with saturation.
-- go: MaskedAdd
+- go: AddMasked
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedAdd adds corresponding elements of two vectors.
-- go: MaskedSaturatedAdd
+    // AddMasked adds corresponding elements of two vectors.
+- go: SaturatedAddMasked
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedSaturatedAdd adds corresponding elements of two vectors with saturation.
+    // SaturatedAddMasked adds corresponding elements of two vectors with saturation.
 - go: Sub
   commutative: "false"
   extension: "AVX.*"
@@ -31,18 +31,18 @@
   extension: "AVX.*"
   documentation: !string |-
     // SaturatedSub subtracts corresponding elements of two vectors with saturation.
-- go: MaskedSub
+- go: SubMasked
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedSub subtracts corresponding elements of two vectors.
-- go: MaskedSaturatedSub
+    // SubMasked subtracts corresponding elements of two vectors.
+- go: SaturatedSubMasked
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // MaskedSaturatedSub subtracts corresponding elements of two vectors with saturation.
+    // SaturatedSubMasked subtracts corresponding elements of two vectors with saturation.
 - go: PairwiseAdd
   commutative: "false"
   extension: "AVX.*"

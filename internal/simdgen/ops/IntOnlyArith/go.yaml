@@ -10,7 +10,7 @@
   - *uint_t
   out:
   - *uint_t
-- go: MaskedAverage
+- go: AverageMasked
   asm: "VPAVG[BW]"
   in:
   - class: mask
@@ -29,7 +29,7 @@
     base: int
   out:
   - *int_t # Output is magnitude, fits in the same signed type
-- go: MaskedAbsolute
+- go: AbsoluteMasked
   asm: "VPABS[BWDQ]"
   in:
   - class: mask
@@ -51,7 +51,7 @@
 # Population Count (count set bits in each element)
 # Instructions: VPOPCNTB, VPOPCNTW (AVX512_BITALG)
 #               VPOPCNTD, VPOPCNTQ (AVX512_VPOPCNTDQ)
-- go: MaskedPopCount
+- go: PopCountMasked
   asm: "VPOPCNT[BWDQ]"
   in:
   - class: mask

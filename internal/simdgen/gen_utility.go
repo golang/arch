@@ -521,12 +521,13 @@ func splitMask(ops []Operation) ([]Operation, error) {
 			op2 := op
 			// The ops should be sorted when calling this function, the mask is in the end, drop the mask
 			op2.In = slices.Clone(op.In)[:len(op.In)-1]
-			if !strings.HasPrefix(op2.Go, "Masked") {
-				return nil, fmt.Errorf("simdgen only recognizes masked operations with name starting with 'Masked': %s", op)
+			if !strings.HasSuffix(op2.Go, "Masked") {
+				return nil, fmt.Errorf("simdgen only recognizes masked operations with name ending with 'Masked': %s", op)
 			}
-			op2.Go = strings.ReplaceAll(op2.Go, "Masked", "")
+			maskedOpName := op2.Go
+			op2.Go = strings.TrimSuffix(op2.Go, "Masked")
 			if op2.Documentation != nil {
-				*op2.Documentation = strings.ReplaceAll(*op2.Documentation, "Masked", "")
+				*op2.Documentation = strings.ReplaceAll(*op2.Documentation, maskedOpName, op2.Go)
 			}
 			splited = append(splited, op2)
 		} else {

@@ -295,7 +295,7 @@ func writeSIMDTestsWrapper(ops []Operation) *bytes.Buffer {
 		var vec string
 		var vecOp Operand
 		allSameVec := true
-		masked := strings.HasPrefix(gOp.Go, "Masked")
+		masked := strings.HasSuffix(gOp.Go, "Masked")
 		skippedMaskCnt := 0
 		vecCnt := 0
 		for i, in := range gOp.In {
