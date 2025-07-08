@@ -266,17 +266,17 @@ func (op *Operation) regShape() (string, error) {
 
 	}
 
-	inRegs = rmAbbrev("fp", vRegInCnt)
+	inRegs = rmAbbrev("v", vRegInCnt)
 	inRegs += rmAbbrev("gp", gRegInCnt)
 	inMasks = rmAbbrev("k", kMaskInCnt)
 
-	outRegs = rmAbbrev("fp", vRegOutCnt)
+	outRegs = rmAbbrev("v", vRegOutCnt)
 	outRegs += rmAbbrev("gp", gRegOutCnt)
 	outMasks = rmAbbrev("k", kMaskOutCnt)
 
 	if kMaskInCnt == 0 && kMaskOutCnt == 0 && gRegInCnt == 0 && gRegOutCnt == 0 {
-		// For pure fp we can abbreviate it as fp%d%d.
-		regInfo = fmt.Sprintf("fp%d%d", vRegInCnt, vRegOutCnt)
+		// For pure v we can abbreviate it as v%d%d.
+		regInfo = fmt.Sprintf("v%d%d", vRegInCnt, vRegOutCnt)
 	} else if kMaskInCnt == 0 && kMaskOutCnt == 0 {
 		regInfo = fmt.Sprintf("%s%s", inRegs, outRegs)
 	} else {

@@ -60,26 +60,26 @@ type tplSSAData struct {
 func writeSIMDSSA(ops []Operation) *bytes.Buffer {
 	var ZeroingMask []string
 	regInfoKeys := []string{
-		"fp11",
-		"fp21",
-		"fp2k",
-		"fp2kfp",
-		"fp2kk",
-		"fpkfp",
-		"fp31",
-		"fp3kfp",
-		"fp11Imm8",
-		"fpkfpImm8",
-		"fp21Imm8",
-		"fp2kImm8",
-		"fp2kkImm8",
-		"fp31ResultInArg0",
-		"fp3kfpResultInArg0",
-		"fpXfp",
-		"fpXkfp",
-		"fpgpfpImm8",
-		"fpgpImm8",
-		"fp2kfpImm8",
+		"v11",
+		"v21",
+		"v2k",
+		"v2kv",
+		"v2kk",
+		"vkv",
+		"v31",
+		"v3kv",
+		"v11Imm8",
+		"vkvImm8",
+		"v21Imm8",
+		"v2kImm8",
+		"v2kkImm8",
+		"v31ResultInArg0",
+		"v3kvResultInArg0",
+		"vfpv",
+		"vfpkv",
+		"vgpvImm8",
+		"vgpImm8",
+		"v2kvImm8",
 	}
 	regInfoSet := map[string][]string{}
 	for _, key := range regInfoKeys {
@@ -121,10 +121,10 @@ func writeSIMDSSA(ops []Operation) *bytes.Buffer {
 			panic(err)
 		}
 		if idx != -1 {
-			if regShape == "fp21" {
-				regShape = "fpXfp"
-			} else if regShape == "fp2kfp" {
-				regShape = "fpXkfp"
+			if regShape == "v21" {
+				regShape = "vfpv"
+			} else if regShape == "v2kv" {
+				regShape = "vfpkv"
 			} else {
 				panic(fmt.Errorf("simdgen does not recognize uses of treatLikeAScalarOfSize with op regShape %s in op: %s", regShape, op))
 			}
