@@ -75,75 +75,53 @@ func numberLines(data []byte) string {
 	return buf.String()
 }
 
+type inShape uint8
+type outShape uint8
+type maskShape uint8
+type immShape uint8
+
 const (
-	InvalidIn int = iota
-	PureVregIn
-	OneKmaskIn
-	OneImmIn
-	OneKmaskImmIn
-	PureKmaskIn
+	InvalidIn     inShape = iota
+	PureVregIn            // vector register input only
+	OneKmaskIn            // vector and kmask input
+	OneImmIn              // vector and immediate input
+	OneKmaskImmIn         // vector, kmask, and immediate inputs
+	PureKmaskIn           // only mask inputs.
 )
 
 const (
-	InvalidOut int = iota
-	NoOut
-	OneVregOut
-	OneGregOut
-	OneKmaskOut
-	OneVregOutAtIn
+	InvalidOut     outShape = iota
+	NoOut                   // no output
+	OneVregOut              // (one) vector register output
+	OneGregOut              // (one) general register output
+	OneKmaskOut             // mask output
+	OneVregOutAtIn          // the first input is also the output
 )
 
 const (
-	InvalidMask int = iota
-	NoMask
-	OneMask
-	AllMasks
+	InvalidMask maskShape = iota
+	NoMask                // no mask
+	OneMask               // with mask (K1 to K7)
+	AllMasks              // a K mask instruction (K0-K7)
 )
 
 const (
-	InvalidImm int = iota
-	NoImm
-	ConstImm
-	VarImm
-	ConstVarImm
+	InvalidImm  immShape = iota
+	NoImm                // no immediate
+	ConstImm             // const only immediate
+	VarImm               // pure imm argument provided by the users
+	ConstVarImm          // a combination of user arg and const
 )
 
-// opShape returns the an int denoting the shape of the operation:
-//
-//		shapeIn:
-//			InvalidIn: unknown, with err set to the error message
-//			PureVregIn: pure vreg operation
-//			OneKmaskIn: operation with one k mask input (TODO: verify if it's always opmask predicate)
-//			OneImmIn: operation with one imm input
-//			OneKmaskImmIn: operation with one k mask input and one imm input
-//			PureKmaskIn: it's a K mask instruction (which can use K0)
-//
-//		shapeOut:
-//		 	InvalidOut: unknown, with err set to the error message
-//			NoOut: no outputs, this is invalid now.
-//			OneVregOut: one vreg output
-//			OneKmaskOut: one mask output
-//			OneVregOutAtIn: one vreg output, it's at the same time the first input
-//
-//		maskType:
-//			InvalidMask: unknown, with err set to the error message
-//			NoMask: no mask
-//			OneMask: with mask (K1 to K7)
-//			AllMasks: it's a K mask instruction
-//
-//	 	immType:
-//			InvalidImm: unrecognize immediate structure
-//			NoImm: no immediate
-//			ConstImm: const only immediate
-//			VarImm: pure imm argument provided by the users
-//			ConstVarImm: a combination of user arg and const
+// opShape returns the several integers describing the shape of the operation,
+// and modified versions of the op:
 //
 // opNoImm is op with its inputs excluding the const imm.
-// opNoConstMask is op with its inputs excluding the const mask.
 // opNoConstImmMask is op with its inputs excluding the const imm and mask.
 //
 // This function does not modify op.
-func (op *Operation) shape() (shapeIn, shapeOut, maskType, immType int, opNoImm Operation, opNoImmConstMask Operation) {
+func (op *Operation) shape() (shapeIn inShape, shapeOut outShape, maskType maskShape, immType immShape,
+	opNoImm Operation, opNoImmConstMask Operation) {
 	if len(op.Out) > 1 {
 		panic(fmt.Errorf("simdgen only supports 1 output: %s", op))
 	}
