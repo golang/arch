@@ -151,13 +151,13 @@
   documentation: !string |-
     // NotEqual compares for inequality.
 - go: GreaterEqual
-  constImm: 5
+  constImm: 13
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
     // GreaterEqual compares for greater than or equal.
 - go: Greater
-  constImm: 6
+  constImm: 14
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
@@ -199,14 +199,14 @@
   documentation: !string |-
     // MaskedNotEqual compares for inequality.
 - go: MaskedGreaterEqual
-  constImm: 5
+  constImm: 13
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
     // MaskedGreaterEqual compares for greater than or equal.
 - go: MaskedGreater
-  constImm: 6
+  constImm: 14
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
