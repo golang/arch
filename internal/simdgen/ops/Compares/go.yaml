@@ -2,32 +2,52 @@
 # Ints
 - go: Equal
   asm: "V?PCMPEQ[BWDQ]"
-  in: &int2
-  - &int
+  in:
+  - &any
     go: $t
-    base: int # Looks like PCMP is on signed integers - but for equals does it really matters?
-  - *int
+  - *any
   out:
   - &anyvregToMask
-    go: $t # We still need the output to be the same shape as inputs.
+    go: $t
     overwriteBase: int
     overwriteClass: mask
 - go: Greater
   asm: "V?PCMPGT[BWDQ]"
-  in: *int2
+  in:
+  - &int
+    go: $t
+    base: int
+  - *int
   out:
   - *anyvregToMask
+# 256-bit VCMPGTQ's output elemBits is marked 32-bit in the XED data, we
+# believe this is an error, so add this definition to overwrite.
+- go: Greater
+  asm: "VPCMPGTQ"
+  in:
+  - &int64
+    go: $t
+    base: int
+    elemBits: 64
+  - *int64
+  out:
+  - base: int
+    elemBits: 32
+    overwriteElementBits: 64
 - go: EqualMasked
   asm: "V?PCMPEQ[BWDQ]"
-  in: &maskint2
+  in:
   - class: mask
-  - *int
-  - *int
+  - *any
+  - *any
   out:
   - class: mask
 - go: GreaterMasked
   asm: "V?PCMPGT[BWDQ]"
-  in: *maskint2
+  in:
+  - class: mask
+  - *int
+  - *int
   out:
   - class: mask
 # The const imm predicated compares after AVX512, please see categories.yaml
@@ -36,9 +56,7 @@
   asm: "VPCMP[BWDQ]"
   in:
   - class: mask
-  - &int
-    go: $t
-    base: int
+  - *int
   - *int
   - class: immediate
     const: 0 # Just a placeholder, will be overwritten by const imm porting.
@@ -68,7 +86,7 @@
   - class: immediate
     const: 0
   out:
-  - go: $t # We still need the output to be the same shape as inputs.
+  - go: $t
     overwriteBase: int
     overwriteClass: mask
 - go: (Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual|IsNan)Masked
