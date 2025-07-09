@@ -34,6 +34,8 @@
   - base: int
     elemBits: 32
     overwriteElementBits: 64
+    overwriteClass: mask
+    overwriteBase: int
 - go: EqualMasked
   asm: "V?PCMPEQ[BWDQ]"
   in:

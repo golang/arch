@@ -615,6 +615,14 @@ func capitalizeFirst(s string) string {
 func overwrite(ops []Operation) error {
 	hasClassOverwrite := false
 	overwrite := func(op []Operand, idx int, o Operation) error {
+		if op[idx].OverwriteElementBits != nil {
+			if op[idx].ElemBits == nil {
+				panic(fmt.Errorf("ElemBits is nil at operand %d of %v", idx, o))
+			}
+			*op[idx].ElemBits = *op[idx].OverwriteElementBits
+			*op[idx].Lanes = *op[idx].Bits / *op[idx].ElemBits
+			*op[idx].Go = fmt.Sprintf("%s%dx%d", capitalizeFirst(*op[idx].Base), *op[idx].ElemBits, *op[idx].Lanes)
+		}
 		if op[idx].OverwriteClass != nil {
 			if op[idx].OverwriteBase == nil {
 				panic(fmt.Errorf("simdgen: [OverwriteClass] must be set together with [OverwriteBase]: %s", op[idx]))
@@ -638,14 +646,6 @@ func overwrite(ops []Operation) error {
 			oBase := *op[idx].OverwriteBase
 			*op[idx].Go = strings.ReplaceAll(*op[idx].Go, capitalizeFirst(*op[idx].Base), capitalizeFirst(oBase))
 			*op[idx].Base = oBase
-		}
-		if op[idx].OverwriteElementBits != nil {
-			if op[idx].ElemBits == nil {
-				panic(fmt.Errorf("ElemBits is nil at operand %d of %v", idx, o))
-			}
-			*op[idx].ElemBits = *op[idx].OverwriteElementBits
-			*op[idx].Lanes = *op[idx].Bits / *op[idx].ElemBits
-			*op[idx].Go = fmt.Sprintf("%s%dx%d", capitalizeFirst(*op[idx].Base), *op[idx].ElemBits, *op[idx].Lanes)
 		}
 		return nil
 	}
