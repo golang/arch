@@ -272,7 +272,7 @@ func writeSIMDTestsWrapper(ops []Operation) *bytes.Buffer {
 	opsByShape := make(map[string]opData)
 	opsSkipped := map[string]struct{}{}
 	for _, o := range ops {
-		_, _, _, immType, _, gOp := o.shape()
+		_, _, _, immType, gOp := o.shape()
 
 		if immType == VarImm || immType == ConstVarImm {
 			// Operations with variable immediates should be called directly

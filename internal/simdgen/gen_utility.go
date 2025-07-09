@@ -117,11 +117,10 @@ const (
 // and modified versions of the op:
 //
 // opNoImm is op with its inputs excluding the const imm.
-// opNoConstImmMask is op with its inputs excluding the const imm and mask.
 //
 // This function does not modify op.
 func (op *Operation) shape() (shapeIn inShape, shapeOut outShape, maskType maskShape, immType immShape,
-	opNoImm Operation, opNoImmConstMask Operation) {
+	opNoImm Operation) {
 	if len(op.Out) > 1 {
 		panic(fmt.Errorf("simdgen only supports 1 output: %s", op))
 	}
@@ -168,14 +167,12 @@ func (op *Operation) shape() (shapeIn inShape, shapeOut outShape, maskType maskS
 		}
 	}
 	opNoImm = *op
-	opNoImmConstMask = *op
 
 	removeImm := func(o *Operation) {
 		o.In = o.In[1:]
 	}
 	if hasImm {
 		removeImm(&opNoImm)
-		removeImm(&opNoImmConstMask)
 		if op.In[0].Const != nil {
 			if op.In[0].ImmOffset != nil {
 				immType = ConstVarImm
@@ -231,7 +228,7 @@ func (op *Operation) shape() (shapeIn inShape, shapeOut outShape, maskType maskS
 
 // regShape returns a string representation of the register shape.
 func (op *Operation) regShape() (string, error) {
-	_, _, _, _, _, gOp := op.shape()
+	_, _, _, _, gOp := op.shape()
 	var regInfo string
 	var vRegInCnt, gRegInCnt, kMaskInCnt, vRegOutCnt, gRegOutCnt, kMaskOutCnt int
 	for _, in := range gOp.In {
@@ -431,7 +428,7 @@ var classes []string = []string{"BAD0", "op1", "op2", "op3", "op4"}
 // The classification string is used to select a template or a clause of a template
 // for intrinsics declaration and the ssagen intrinisics glue code in the compiler.
 func classifyOp(op Operation) (string, Operation, error) {
-	_, _, _, immType, _, gOp := op.shape()
+	_, _, _, immType, gOp := op.shape()
 
 	var class string
 
@@ -515,7 +512,7 @@ func splitMask(ops []Operation) ([]Operation, error) {
 		if op.Masked == nil || *op.Masked != "true" {
 			continue
 		}
-		shapeIn, _, _, _, _, _ := op.shape()
+		shapeIn, _, _, _, _ := op.shape()
 
 		if shapeIn == OneKmaskIn || shapeIn == OneKmaskImmIn {
 			op2 := op
@@ -544,7 +541,7 @@ func splitMask(ops []Operation) ([]Operation, error) {
 func dedupGodef(ops []Operation) ([]Operation, error) {
 	seen := map[string][]Operation{}
 	for _, op := range ops {
-		_, _, _, _, _, gOp := op.shape()
+		_, _, _, _, gOp := op.shape()
 
 		genericNames := gOp.Go + *gOp.In[0].Go
 		seen[genericNames] = append(seen[genericNames], op)
@@ -588,7 +585,7 @@ func copyConstImm(ops []Operation) error {
 		if op.ConstImm == nil {
 			continue
 		}
-		_, _, _, immType, _, _ := op.shape()
+		_, _, _, immType, _ := op.shape()
 
 		if immType == ConstImm || immType == ConstVarImm {
 			op.In[0].Const = op.ConstImm
