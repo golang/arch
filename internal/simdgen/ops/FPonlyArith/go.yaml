@@ -58,6 +58,7 @@
   - class: immediate
     const: 0 # place holder
     immOffset: 4 # "M", round to numbers with M digits after dot(by means of binary number).
+    name: prec
   out: *1fp
 - go: "DiffWith(Round|Ceil|Floor|Trunc)WithPrecisionMasked"
   asm: "VREDUCEP[SD]"
@@ -67,6 +68,7 @@
   - class: immediate
     const: 0 # place holder
     immOffset: 4 # "M", round to numbers with M digits after dot(by means of binary number).
+    name: prec
   out: *1fp
 
 - go: "AddSub"

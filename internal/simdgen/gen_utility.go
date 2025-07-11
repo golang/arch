@@ -342,10 +342,9 @@ func (op Operation) GoType() string {
 
 // ImmName returns the name to use for an operation's immediate operand.
 // This can be overriden in the yaml with "name" on an operand,
-// otherwise, for now, it is "imm" but
-// TODO come up with a better default immediate parameter name.
+// otherwise, for now, "constant"
 func (op Operation) ImmName() string {
-	return op.Op0Name("imm")
+	return op.Op0Name("constant")
 }
 
 func (o Operand) OpName(s string) string {

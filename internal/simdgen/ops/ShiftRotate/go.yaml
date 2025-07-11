@@ -143,6 +143,7 @@
   - &pureImm
     class: immediate
     immOffset: 0
+    name: shift
   out:
   - *any
 - go: RotateAllRightMasked

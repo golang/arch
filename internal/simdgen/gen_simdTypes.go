@@ -148,6 +148,8 @@ func (x {{(index .In 0).Go}}) {{.Go}}({{.Op1NameAndType "y"}}, {{.Op2NameAndType
 {{define "op1Imm8"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
+// {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
+//
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
 func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8) {{.GoType}}
 {{end}}
@@ -155,6 +157,8 @@ func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8) {{.GoType}}
 {{define "op2Imm8"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
+// {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
+//
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
 func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}}) {{.GoType}}
 {{end}}
@@ -162,6 +166,8 @@ func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}
 {{define "op2Imm8_2I"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
+// {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
+//
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
 func (x {{(index .In 1).Go}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.ImmName}} uint8) {{.GoType}}
 {{end}}
@@ -170,6 +176,8 @@ func (x {{(index .In 1).Go}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.ImmName}} uint
 {{define "op3Imm8"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
+// {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
+//
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
 func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}}, {{.Op3NameAndType "z"}}) {{.GoType}}
 {{end}}
@@ -177,6 +185,8 @@ func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}
 {{define "op3Imm8_2I"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
+// {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
+//
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
 func (x {{(index .In 1).Go}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.ImmName}} uint8, {{.Op3NameAndType "z"}}) {{.GoType}}
 {{end}}
@@ -185,6 +195,8 @@ func (x {{(index .In 1).Go}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.ImmName}} uint
 {{define "op4Imm8"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
+// {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
+//
 // Asm: {{.Asm}}, CPU Feature: {{.Extension}}
 func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}}, {{.Op3NameAndType "z"}}, {{.Op4NameAndType "u"}}) {{.GoType}}
 {{end}}

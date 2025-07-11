@@ -11,6 +11,7 @@
   - &imm
     class: immediate
     immOffset: 0
+    name: index
   out:
   - *t
 
@@ -43,6 +44,7 @@
   - &imm01 # This immediate should be only 0 or 1
     class: immediate
     immOffset: 0
+    name: index
   out:
   - *i8x32
 

@@ -362,6 +362,7 @@
   - class: immediate
     const: 0 # place holder
     immOffset: 4 # "M", round to numbers with M digits after dot(by means of binary number).
+    name: prec
   out: *1fp
 - go: "DiffWith(Round|Ceil|Floor|Trunc)WithPrecisionMasked"
   asm: "VREDUCEP[SD]"
@@ -371,6 +372,7 @@
   - class: immediate
     const: 0 # place holder
     immOffset: 4 # "M", round to numbers with M digits after dot(by means of binary number).
+    name: prec
   out: *1fp
 
 - go: "AddSub"
@@ -729,6 +731,7 @@
   - &imm
     class: immediate
     immOffset: 0
+    name: index
   out:
   - *t
 
@@ -761,6 +764,7 @@
   - &imm01 # This immediate should be only 0 or 1
     class: immediate
     immOffset: 0
+    name: index
   out:
   - *i8x32
 
@@ -1161,6 +1165,7 @@
   - &pureImm
     class: immediate
     immOffset: 0
+    name: shift
   out:
   - *any
 - go: RotateAllRightMasked
