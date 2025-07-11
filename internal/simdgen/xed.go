@@ -58,13 +58,14 @@ func loadXED(xedPath string) []*unify.Value {
 			return
 		}
 		// TODO: "feature"
-		fields := []string{"goarch", "asm", "in", "out", "extension"}
+		fields := []string{"goarch", "asm", "in", "out", "extension", "isaset"}
 		values := []*unify.Value{
 			unify.NewValue(unify.NewStringExact("amd64")),
 			unify.NewValue(unify.NewStringExact(inst.Opcode())),
 			unify.NewValue(ins),
 			unify.NewValue(outs),
 			unify.NewValue(unify.NewStringExact(inst.Extension)),
+			unify.NewValue(unify.NewStringExact(inst.ISASet)),
 		}
 		if strings.Contains(inst.Pattern, "ZEROING=0") {
 			fields = append(fields, "zeroing")

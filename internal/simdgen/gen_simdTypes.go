@@ -106,42 +106,42 @@ package simd
 {{define "op1"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
-// Asm: {{.Asm}}, CPU Feature: {{.Extension}}
+// Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func (x {{(index .In 0).Go}}) {{.Go}}() {{.GoType}}
 {{end}}
 
 {{define "op2"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
-// Asm: {{.Asm}}, CPU Feature: {{.Extension}}
+// Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func (x {{(index .In 0).Go}}) {{.Go}}({{.Op1NameAndType "y"}}) {{.GoType}}
 {{end}}
 
 {{define "op3"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
-// Asm: {{.Asm}}, CPU Feature: {{.Extension}}
+// Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func (x {{(index .In 0).Go}}) {{.Go}}({{.Op1NameAndType "y"}}, {{.Op2NameAndType "z"}}) {{.GoType}}
 {{end}}
 
 {{define "op2VecAsScalar"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
-// Asm: {{.Asm}}, CPU Feature: {{.Extension}}
+// Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func (x {{(index .In 0).Go}}) {{.Go}}(y uint{{(index .In 1).TreatLikeAScalarOfSize}}) {{(index .Out 0).Go}}
 {{end}}
 
 {{define "op3VecAsScalar"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
-// Asm: {{.Asm}}, CPU Feature: {{.Extension}}
+// Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func (x {{(index .In 0).Go}}) {{.Go}}(y uint{{(index .In 1).TreatLikeAScalarOfSize}}, {{.Op2NameAndType "z"}}) {{(index .Out 0).Go}}
 {{end}}
 
 {{define "op4"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
-// Asm: {{.Asm}}, CPU Feature: {{.Extension}}
+// Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func (x {{(index .In 0).Go}}) {{.Go}}({{.Op1NameAndType "y"}}, {{.Op2NameAndType "z"}}, {{.Op3NameAndType "u"}}) {{.GoType}}
 {{end}}
 
@@ -150,7 +150,7 @@ func (x {{(index .In 0).Go}}) {{.Go}}({{.Op1NameAndType "y"}}, {{.Op2NameAndType
 //{{end}}
 // {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
 //
-// Asm: {{.Asm}}, CPU Feature: {{.Extension}}
+// Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8) {{.GoType}}
 {{end}}
 
@@ -159,7 +159,7 @@ func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8) {{.GoType}}
 //{{end}}
 // {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
 //
-// Asm: {{.Asm}}, CPU Feature: {{.Extension}}
+// Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}}) {{.GoType}}
 {{end}}
 
@@ -168,7 +168,7 @@ func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}
 //{{end}}
 // {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
 //
-// Asm: {{.Asm}}, CPU Feature: {{.Extension}}
+// Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func (x {{(index .In 1).Go}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.ImmName}} uint8) {{.GoType}}
 {{end}}
 
@@ -178,7 +178,7 @@ func (x {{(index .In 1).Go}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.ImmName}} uint
 //{{end}}
 // {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
 //
-// Asm: {{.Asm}}, CPU Feature: {{.Extension}}
+// Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}}, {{.Op3NameAndType "z"}}) {{.GoType}}
 {{end}}
 
@@ -187,7 +187,7 @@ func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}
 //{{end}}
 // {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
 //
-// Asm: {{.Asm}}, CPU Feature: {{.Extension}}
+// Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func (x {{(index .In 1).Go}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.ImmName}} uint8, {{.Op3NameAndType "z"}}) {{.GoType}}
 {{end}}
 
@@ -197,7 +197,7 @@ func (x {{(index .In 1).Go}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.ImmName}} uint
 //{{end}}
 // {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
 //
-// Asm: {{.Asm}}, CPU Feature: {{.Extension}}
+// Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}}, {{.Op3NameAndType "z"}}, {{.Op4NameAndType "u"}}) {{.GoType}}
 {{end}}
 

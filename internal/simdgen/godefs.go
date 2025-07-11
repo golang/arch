@@ -25,6 +25,8 @@ type Operation struct {
 	Out           []Operand // Results
 	Commutative   string    // Commutativity
 	Extension     string    // Extension
+	ISASet        string    // ISASet
+	CPUFeature    *string   // If ISASet is empty, then Extension, otherwise ISASet
 	Zeroing       *string   // Zeroing is a flag for asm prefix "Z", if non-nil it will always be "false"
 	Documentation *string   // Documentation will be appended to the stubs comments.
 	// ConstMask is a hack to reduce the size of defs the user writes for const-immediate
@@ -245,6 +247,11 @@ func writeGoDefs(path string, cl unify.Closure) error {
 	// The parsed XED data might contain duplicates, like
 	// 512 bits VPADDP.
 	deduped := dedup(ops)
+	var excluded []Operation
+	deduped, excluded = fillCPUFeature(deduped)
+	if *Verbose {
+		log.Printf("excluded len: %d\n", len(excluded))
+	}
 
 	if *Verbose {
 		log.Printf("dedup len: %d\n", len(ops))
@@ -280,6 +287,7 @@ func writeGoDefs(path string, cl unify.Closure) error {
 	if *Verbose {
 		log.Printf("dedup len: %d\n", len(deduped))
 	}
+	reportXEDInconsistency(deduped)
 	typeMap := parseSIMDTypes(deduped)
 
 	formatWriteAndClose(writeSIMDTypes(typeMap), path, "src/"+simdPackage+"/types_amd64.go")

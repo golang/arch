@@ -502,6 +502,44 @@ func dedup(ops []Operation) (deduped []Operation) {
 	return
 }
 
+func fillCPUFeature(ops []Operation) (filled []Operation, excluded []Operation) {
+	for _, op := range ops {
+		if op.ISASet == "" {
+			newS := op.Extension
+			op.CPUFeature = &newS
+		} else {
+			newS := strings.TrimSuffix(strings.TrimSuffix(strings.TrimSuffix(op.ISASet, "_128"), "_256"), "_512")
+			newS = strings.TrimSuffix(strings.TrimSuffix(strings.TrimSuffix(newS, "_128N"), "_256N"), "_512N")
+			op.CPUFeature = &newS
+		}
+		if *op.CPUFeature == "AVX" || *op.CPUFeature == "AVX2" || strings.HasPrefix(*op.CPUFeature, "AVX512") ||
+			strings.HasPrefix(*op.CPUFeature, "AVX_") || strings.HasPrefix(*op.CPUFeature, "AVX2_") {
+			// This excludes instructions from CPU Features like AVX10.1, which usually are rebrandings of AVX512.
+			filled = append(filled, op)
+			if strings.Contains(*op.CPUFeature, "_") {
+				*op.CPUFeature = strings.ReplaceAll(*op.CPUFeature, "_", "")
+			}
+		} else {
+			excluded = append(excluded, op)
+		}
+	}
+	// Sanity check, make sure we are not excluding the only definition of an operation
+	filledSeen := map[string]struct{}{}
+	excludedSeen := map[string]Operation{}
+	for _, op := range filled {
+		filledSeen[op.Go+*op.In[0].Go] = struct{}{}
+	}
+	for _, op := range excluded {
+		excludedSeen[op.Go+*op.In[0].Go] = op
+	}
+	for k, op := range excludedSeen {
+		if _, ok := filledSeen[k]; !ok {
+			panic(fmt.Sprintf("simdgen is excluding the only def of op: %s", op))
+		}
+	}
+	return
+}
+
 // splitMask splits operations with a single mask vreg input to be masked and unmasked(const: K0).
 // It also remove the "Masked" keyword from the name.
 func splitMask(ops []Operation) ([]Operation, error) {
@@ -561,13 +599,15 @@ func dedupGodef(ops []Operation) ([]Operation, error) {
 	deduped := []Operation{}
 	for _, dup := range seen {
 		if len(dup) > 1 {
-			sort.Slice(dup, func(i, j int) bool {
+			slices.SortFunc(dup, func(i, j Operation) int {
 				// Put non-AVX512 candidates at the beginning
-				if !isAVX512(dup[i]) && isAVX512(dup[j]) {
-					return true
+				if !isAVX512(i) && isAVX512(j) {
+					return -1
 				}
-				// TODO: make the sorting logic finer-grained.
-				return false
+				if isAVX512(i) && !isAVX512(j) {
+					return 1
+				}
+				return strings.Compare(*i.CPUFeature, *j.CPUFeature)
 			})
 		}
 		deduped = append(deduped, dup[0])
@@ -741,6 +781,8 @@ func (o Operation) String() string {
 	str("Asm", o.Asm)
 	str("Commutative", o.Commutative)
 	str("Extension", o.Extension)
+	str("ISASet", o.ISASet)
+	optStr("CPUFeature", o.CPUFeature)
 	optStr("ConstImm", o.ConstImm)
 	optStr("Masked", o.Masked)
 	optStr("Zeroing", o.Zeroing)
