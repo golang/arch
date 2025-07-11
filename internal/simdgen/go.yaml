@@ -1029,8 +1029,8 @@
   - &any
     go: $t
   - &vecAsScalar64
+    go: "Uint.*"
     treatLikeAScalarOfSize: 64
-    go: Uint64x2
   out:
   - *any
 - go: ShiftAllLeftMasked
@@ -1042,21 +1042,26 @@
   out:
   - *any
 - go: ShiftAllRight
+  signed: false
   asm: "VPSRL[WDQ]"
   in:
-  - *any
+  - &uint
+    go: $t
+    base: uint
   - *vecAsScalar64
   out:
-  - *any
+  - *uint
 - go: ShiftAllRightMasked
+  signed: false
   asm: "VPSRL[WDQ]"
   in:
   - class: mask
-  - *any
+  - *uint
   - *vecAsScalar64
   out:
-  - *any
-- go: ShiftAllRightSignExtended
+  - *uint
+- go: ShiftAllRight
+  signed: true
   asm: "VPSRA[WDQ]"
   in:
   - &int
@@ -1065,7 +1070,8 @@
   - *vecAsScalar64
   out:
   - *int
-- go: ShiftAllRightSignExtendedMasked
+- go: ShiftAllRightMasked
+  signed: true
   asm: "VPSRA[WDQ]"
   in:
   - class: mask
@@ -1110,51 +1116,60 @@
   out:
   - *anyOverwriteElemBits
 - go: ShiftRight
+  signed: false
   asm: "VPSRLV[WD]"
   in:
-  - *any
-  - *any
+  - *uint
+  - *uint
   out:
-  - *any
+  - *uint
 - go: ShiftRightMasked
+  signed: false
   asm: "VPSRLV[WD]"
   in:
   - class: mask
-  - *any
-  - *any
+  - *uint
+  - *uint
   out:
-  - *any
+  - *uint
 # XED data of VPSRLVQ needs the same overwrite as VPSLLVQ.
 - go: ShiftRight
+  signed: false
   asm: "VPSRLVQ"
   in:
-  - *anyOverwriteElemBits
-  - *anyOverwriteElemBits
+  - &uintOverwriteElemBits
+    go: $t
+    base: uint
+    overwriteElementBits: 64
+  - *uintOverwriteElemBits
   out:
-  - *anyOverwriteElemBits
+  - *uintOverwriteElemBits
 - go: ShiftRightMasked
+  signed: false
   asm: "VPSRLVQ"
   in:
   - class: mask
-  - *anyOverwriteElemBits
-  - *anyOverwriteElemBits
+  - *uintOverwriteElemBits
+  - *uintOverwriteElemBits
   out:
-  - *anyOverwriteElemBits
-- go: ShiftRightSignExtended
+  - *uintOverwriteElemBits
+- go: ShiftRight
+  signed: true
   asm: "VPSRAV[WDQ]"
   in:
-  - *any
-  - *any
+  - *int
+  - *int
   out:
-  - *any
-- go: ShiftRightSignExtendedMasked
+  - *int
+- go: ShiftRightMasked
+  signed: true
   asm: "VPSRAV[WDQ]"
   in:
   - class: mask
-  - *any
-  - *any
+  - *int
+  - *int
   out:
-  - *any
+  - *int
 
 # Rotate
 - go: RotateAllLeftMasked
