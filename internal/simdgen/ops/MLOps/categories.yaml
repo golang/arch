@@ -12,18 +12,19 @@
   documentation: !string |-
     // PairDotProdMasked multiplies the elements and add the pairs together,
     // yielding a vector of half as many elements with twice the input element size.
+# TODO: maybe simplify this name within the receiver-type + method-naming scheme we use.
 - go: SaturatedUnsignedSignedPairDotProd
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // SaturatedPairDotProd multiplies the elements and add the pairs together with saturation,
+    // SaturatedUnsignedSignedPairDotProd multiplies the elements and add the pairs together with saturation,
     // yielding a vector of half as many elements with twice the input element size.
 - go: SaturatedUnsignedSignedPairDotProdMasked
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // SaturatedPairDotProdMasked multiplies the elements and add the pairs together with saturation,
+    // SaturatedUnsignedSignedPairDotProdMasked multiplies the elements and add the pairs together with saturation,
     // yielding a vector of half as many elements with twice the input element size.
 
 # QuadDotProd, i.e. VPDPBUSD(S) are operations with src/dst on the same register, we are not supporting this as of now.

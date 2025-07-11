@@ -18,7 +18,7 @@
   out:
   - *uint8
 
-- go: GaloisFieldAffineTransformInversedMasked
+- go: GaloisFieldAffineTransformInverseMasked
   asm: VGF2P8AFFINEINVQB
   operandOrder: 2I # 2nd operand, then immediate
   in: *AffineArgs

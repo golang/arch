@@ -523,9 +523,8 @@ func splitMask(ops []Operation) ([]Operation, error) {
 			}
 			maskedOpName := op2.Go
 			op2.Go = strings.TrimSuffix(op2.Go, "Masked")
-			if op2.Documentation != nil {
-				*op2.Documentation = strings.ReplaceAll(*op2.Documentation, maskedOpName, op2.Go)
-			}
+			op2Doc := strings.ReplaceAll(*op2.Documentation, maskedOpName, op2.Go)
+			op2.Documentation = &op2Doc
 			splited = append(splited, op2)
 		} else {
 			return nil, fmt.Errorf("simdgen only recognizes masked operations with exactly one mask input: %s", op)

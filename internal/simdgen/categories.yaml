@@ -361,13 +361,13 @@
     // x is a vector of 8-bit vectors, with each adjacent 8 as a group; y is a vector of 8x8 1-bit matrixes;
     // b is an 8-bit vector. The affine transformation is y * x + b, with each element of y
     // corresponding to a group of 8 elements in x.
-- go: GaloisFieldAffineTransformInversedMasked
+- go: GaloisFieldAffineTransformInverseMasked
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // GaloisFieldAffineTransformMasked computes an affine transformation in GF(2^8),
-    // with x inversed with reduction polynomial x^8 + x^4 + x^3 + x + 1:
+    // GaloisFieldAffineTransformInverseMasked computes an affine transformation in GF(2^8),
+    // with x inverted with respect to reduction polynomial x^8 + x^4 + x^3 + x + 1:
     // x is a vector of 8-bit vectors, with each adjacent 8 as a group; y is a vector of 8x8 1-bit matrixes;
     // b is an 8-bit vector. The affine transformation is y * x + b, with each element of y
     // corresponding to a group of 8 elements in x.
@@ -431,18 +431,19 @@
   documentation: !string |-
     // PairDotProdMasked multiplies the elements and add the pairs together,
     // yielding a vector of half as many elements with twice the input element size.
+# TODO: maybe simplify this name within the receiver-type + method-naming scheme we use.
 - go: SaturatedUnsignedSignedPairDotProd
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // SaturatedPairDotProd multiplies the elements and add the pairs together with saturation,
+    // SaturatedUnsignedSignedPairDotProd multiplies the elements and add the pairs together with saturation,
     // yielding a vector of half as many elements with twice the input element size.
 - go: SaturatedUnsignedSignedPairDotProdMasked
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // SaturatedPairDotProdMasked multiplies the elements and add the pairs together with saturation,
+    // SaturatedUnsignedSignedPairDotProdMasked multiplies the elements and add the pairs together with saturation,
     // yielding a vector of half as many elements with twice the input element size.
 
 # QuadDotProd, i.e. VPDPBUSD(S) are operations with src/dst on the same register, we are not supporting this as of now.
