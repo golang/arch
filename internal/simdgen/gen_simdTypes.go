@@ -107,42 +107,70 @@ package simd
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
-func (x {{(index .In 0).Go}}) {{.Go}}() {{.GoType}}
+func ({{.Op0NameAndType "x"}}) {{.Go}}() {{.GoType}}
 {{end}}
 
 {{define "op2"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
-func (x {{(index .In 0).Go}}) {{.Go}}({{.Op1NameAndType "y"}}) {{.GoType}}
+func ({{.Op0NameAndType "x"}}) {{.Go}}({{.Op1NameAndType "y"}}) {{.GoType}}
+{{end}}
+
+{{define "op2_21Uint"}}
+{{if .Documentation}}{{.Documentation}}
+//{{end}}
+// Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
+func ({{.Op1NameAndType "x"}}) {{.Go}}({{.Op0NameAndType "y"}}) {{.GoType}}
 {{end}}
 
 {{define "op3"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
-func (x {{(index .In 0).Go}}) {{.Go}}({{.Op1NameAndType "y"}}, {{.Op2NameAndType "z"}}) {{.GoType}}
+func ({{.Op0NameAndType "x"}}) {{.Go}}({{.Op1NameAndType "y"}}, {{.Op2NameAndType "z"}}) {{.GoType}}
+{{end}}
+
+{{define "op3_21Uint"}}
+{{if .Documentation}}{{.Documentation}}
+//{{end}}
+// Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
+func ({{.Op1NameAndType "x"}}) {{.Go}}({{.Op0NameAndType "y"}}, {{.Op2NameAndType "z"}}) {{.GoType}}
+{{end}}
+
+{{define "op3_231Uint"}}
+{{if .Documentation}}{{.Documentation}}
+//{{end}}
+// Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
+func ({{.Op1NameAndType "x"}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.Op0NameAndType "z"}}) {{.GoType}}
 {{end}}
 
 {{define "op2VecAsScalar"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
-func (x {{(index .In 0).Go}}) {{.Go}}(y uint{{(index .In 1).TreatLikeAScalarOfSize}}) {{(index .Out 0).Go}}
+func ({{.Op0NameAndType "x"}}) {{.Go}}(y uint{{(index .In 1).TreatLikeAScalarOfSize}}) {{(index .Out 0).Go}}
 {{end}}
 
 {{define "op3VecAsScalar"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
-func (x {{(index .In 0).Go}}) {{.Go}}(y uint{{(index .In 1).TreatLikeAScalarOfSize}}, {{.Op2NameAndType "z"}}) {{(index .Out 0).Go}}
+func ({{.Op0NameAndType "x"}}) {{.Go}}(y uint{{(index .In 1).TreatLikeAScalarOfSize}}, {{.Op2NameAndType "z"}}) {{(index .Out 0).Go}}
 {{end}}
 
 {{define "op4"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
-func (x {{(index .In 0).Go}}) {{.Go}}({{.Op1NameAndType "y"}}, {{.Op2NameAndType "z"}}, {{.Op3NameAndType "u"}}) {{.GoType}}
+func ({{.Op0NameAndType "x"}}) {{.Go}}({{.Op1NameAndType "y"}}, {{.Op2NameAndType "z"}}, {{.Op3NameAndType "u"}}) {{.GoType}}
+{{end}}
+
+{{define "op4_231Uint"}}
+{{if .Documentation}}{{.Documentation}}
+//{{end}}
+// Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
+func ({{.Op1NameAndType "x"}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.Op0NameAndType "z"}}, {{.Op3NameAndType "u"}}) {{.GoType}}
 {{end}}
 
 {{define "op1Imm8"}}
@@ -151,7 +179,7 @@ func (x {{(index .In 0).Go}}) {{.Go}}({{.Op1NameAndType "y"}}, {{.Op2NameAndType
 // {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
 //
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
-func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8) {{.GoType}}
+func ({{.Op1NameAndType "x"}}) {{.Go}}({{.ImmName}} uint8) {{.GoType}}
 {{end}}
 
 {{define "op2Imm8"}}
@@ -160,7 +188,7 @@ func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8) {{.GoType}}
 // {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
 //
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
-func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}}) {{.GoType}}
+func ({{.Op1NameAndType "x"}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}}) {{.GoType}}
 {{end}}
 
 {{define "op2Imm8_2I"}}
@@ -169,7 +197,7 @@ func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}
 // {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
 //
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
-func (x {{(index .In 1).Go}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.ImmName}} uint8) {{.GoType}}
+func ({{.Op1NameAndType "x"}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.ImmName}} uint8) {{.GoType}}
 {{end}}
 
 
@@ -179,7 +207,7 @@ func (x {{(index .In 1).Go}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.ImmName}} uint
 // {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
 //
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
-func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}}, {{.Op3NameAndType "z"}}) {{.GoType}}
+func ({{.Op1NameAndType "x"}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}}, {{.Op3NameAndType "z"}}) {{.GoType}}
 {{end}}
 
 {{define "op3Imm8_2I"}}
@@ -188,7 +216,7 @@ func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}
 // {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
 //
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
-func (x {{(index .In 1).Go}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.ImmName}} uint8, {{.Op3NameAndType "z"}}) {{.GoType}}
+func ({{.Op1NameAndType "x"}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.ImmName}} uint8, {{.Op3NameAndType "z"}}) {{.GoType}}
 {{end}}
 
 
@@ -198,7 +226,7 @@ func (x {{(index .In 1).Go}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.ImmName}} uint
 // {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
 //
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
-func (x {{(index .In 1).Go}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}}, {{.Op3NameAndType "z"}}, {{.Op4NameAndType "u"}}) {{.GoType}}
+func ({{.Op1NameAndType "x"}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}}, {{.Op3NameAndType "z"}}, {{.Op4NameAndType "u"}}) {{.GoType}}
 {{end}}
 
 {{define "vectorConversion"}}
@@ -283,6 +311,7 @@ func writeSIMDTestsWrapper(ops []Operation) *bytes.Buffer {
 
 	opsByShape := make(map[string]opData)
 	opsSkipped := map[string]struct{}{}
+outerLoop:
 	for _, o := range ops {
 		_, _, _, immType, gOp := o.shape()
 
@@ -298,6 +327,18 @@ func writeSIMDTestsWrapper(ops []Operation) *bytes.Buffer {
 			// TODO: these could be tested via wrappers, implement this.
 			opsSkipped[o.Go] = struct{}{}
 			continue
+		}
+		if o.OperandOrder != nil {
+			// We need to check if the customize order change the function signature.
+			// It is only safe to proceed generating the test wrappers if the function
+			// signature stays the same.
+			// Filtering out unqualified cases as a hack now, this test wrapper
+			// infrastrcuture should be changing soon so it should be fine.
+			switch *o.OperandOrder {
+			default:
+				opsSkipped[o.Go] = struct{}{}
+				continue outerLoop
+			}
 		}
 
 		var shape string

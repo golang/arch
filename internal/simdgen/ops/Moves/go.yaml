@@ -179,10 +179,39 @@
   out:
   - *f64x2
 
+- go: Permute
+  asm: "VPERM[BWDQ]|VPERMP[SD]"
+  operandOrder: "21Uint"
+  in:
+  - &anyindices
+    go: $t
+    name: indices
+    overwriteBase: uint
+  - &any
+    go: $t
+  out:
+  - *any
 
+- go: PermuteMasked
+  asm: "VPERM[BWDQ]|VPERMP[SD]"
+  operandOrder: "21Uint"
+  in:
+  - class: mask
+  - *anyindices
+  - *any
+  out:
+  - *any
 
-
-
-
-
-
+- go: Permute2Masked
+  asm: "VPERMI2[BWDQ]|VPERMI2P[SD]"
+  # Because we are overwriting the receiver's type, we 
+  # have to move the receiver to be a parameter so that
+  # we can have no duplication.
+  operandOrder: "231Uint" 
+  in:
+  - *anyindices # result in arg 0
+  - class: mask
+  - *any
+  - *any
+  out:
+  - *any

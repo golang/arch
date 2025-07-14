@@ -570,6 +570,19 @@ func splitMask(ops []Operation) ([]Operation, error) {
 	return splited, nil
 }
 
+func genericName(op Operation) string {
+	if op.OperandOrder != nil {
+		switch *op.OperandOrder {
+		case "21Uint":
+			fallthrough
+		case "231Uint":
+			// Permute
+			return op.Go + *op.In[1].Go
+		}
+	}
+	return op.Go + *op.In[0].Go
+}
+
 // dedupGodef is deduping operations in [Op.Go]+[*Op.In[0].Go] level.
 // By deduping, it means picking the least advanced architecture that satisfy the requirement:
 // AVX512 will be least preferred.
@@ -579,8 +592,8 @@ func dedupGodef(ops []Operation) ([]Operation, error) {
 	for _, op := range ops {
 		_, _, _, _, gOp := op.shape()
 
-		genericNames := gOp.Go + *gOp.In[0].Go
-		seen[genericNames] = append(seen[genericNames], op)
+		gN := genericName(gOp)
+		seen[gN] = append(seen[gN], op)
 	}
 	if *FlagReportDup {
 		for gName, dup := range seen {

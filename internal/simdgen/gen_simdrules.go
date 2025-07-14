@@ -102,21 +102,33 @@ func writeSIMDRules(ops []Operation) *bytes.Buffer {
 			data.ArgsOut = fmt.Sprintf("[a+%s] %s", *opr.In[0].Const, data.ArgsOut)
 		}
 
+		goType := func(op Operation) string {
+			if op.OperandOrder != nil {
+				switch *op.OperandOrder {
+				case "21Uint":
+					fallthrough
+				case "231Uint":
+					// Permute
+					return *op.In[1].Go
+				}
+			}
+			return *op.In[0].Go
+		}
 		var tplName string
 		// If class overwrite is happening, that's not really a mask but a vreg.
 		if opOutShape == OneVregOut || opOutShape == OneVregOutAtIn || gOp.Out[0].OverwriteClass != nil {
 			switch opInShape {
 			case OneImmIn:
 				tplName = "pureVreg"
-				data.GoType = *gOp.In[0].Go
+				data.GoType = goType(gOp)
 			case PureVregIn:
 				tplName = "pureVreg"
-				data.GoType = *gOp.In[0].Go
+				data.GoType = goType(gOp)
 			case OneKmaskImmIn:
 				fallthrough
 			case OneKmaskIn:
 				tplName = "maskIn"
-				data.GoType = *gOp.In[0].Go
+				data.GoType = goType(gOp)
 				rearIdx := len(gOp.In) - 1
 				// Mask is at the end.
 				data.MaskInConvert = fmt.Sprintf("VPMOVVec%dx%dToM", *gOp.In[rearIdx].ElemBits, *gOp.In[rearIdx].Lanes)
@@ -125,7 +137,7 @@ func writeSIMDRules(ops []Operation) *bytes.Buffer {
 			}
 		} else if opOutShape == OneGregOut {
 			tplName = "pureVreg" // TODO this will be wrong
-			data.GoType = *gOp.In[0].Go
+			data.GoType = goType(gOp)
 		} else {
 			// OneKmaskOut case
 			data.MaskOutConvert = fmt.Sprintf("VPMOVMToVec%dx%d", *gOp.Out[0].ElemBits, *gOp.In[0].Lanes)
@@ -134,12 +146,12 @@ func writeSIMDRules(ops []Operation) *bytes.Buffer {
 				fallthrough
 			case PureVregIn:
 				tplName = "maskOut"
-				data.GoType = *gOp.In[0].Go
+				data.GoType = goType(gOp)
 			case OneKmaskImmIn:
 				fallthrough
 			case OneKmaskIn:
 				tplName = "maskInMaskOut"
-				data.GoType = *gOp.In[0].Go
+				data.GoType = goType(gOp)
 				rearIdx := len(gOp.In) - 1
 				data.MaskInConvert = fmt.Sprintf("VPMOVVec%dx%dToM", *gOp.In[rearIdx].ElemBits, *gOp.In[rearIdx].Lanes)
 			case PureKmaskIn:
