@@ -519,13 +519,10 @@
   out:
   - *int3
 - go: DotProdBroadcast
-  asm: VDPPD
+  asm: VDPP[SD]
   in:
   - &dpb_src
     go: $t
-    base: float
-    elemBits: 64
-    bits: $bits
   - *dpb_src
   - class: immediate
     const: 127
