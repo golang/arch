@@ -32,6 +32,7 @@
 
 - go: AndNot
   asm: "VPANDN"
+  operandOrder: "21" # switch the arg order
   in:
   - *any
   - *any
@@ -39,6 +40,7 @@
   - *any
 - go: AndNotMasked
   asm: "VPANDN[DQ]"
+  operandOrder: "21"
   in:
   - class: mask
   - *any

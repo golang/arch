@@ -117,6 +117,13 @@ func ({{.Op0NameAndType "x"}}) {{.Go}}() {{.GoType}}
 func ({{.Op0NameAndType "x"}}) {{.Go}}({{.Op1NameAndType "y"}}) {{.GoType}}
 {{end}}
 
+{{define "op2_21"}}
+{{if .Documentation}}{{.Documentation}}
+//{{end}}
+// Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
+func ({{.Op1NameAndType "x"}}) {{.Go}}({{.Op0NameAndType "y"}}) {{.GoType}}
+{{end}}
+
 {{define "op2_21Uint"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
@@ -129,6 +136,13 @@ func ({{.Op1NameAndType "x"}}) {{.Go}}({{.Op0NameAndType "y"}}) {{.GoType}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func ({{.Op0NameAndType "x"}}) {{.Go}}({{.Op1NameAndType "y"}}, {{.Op2NameAndType "z"}}) {{.GoType}}
+{{end}}
+
+{{define "op3_21"}}
+{{if .Documentation}}{{.Documentation}}
+//{{end}}
+// Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
+func ({{.Op1NameAndType "x"}}) {{.Go}}({{.Op0NameAndType "y"}}, {{.Op2NameAndType "z"}}) {{.GoType}}
 {{end}}
 
 {{define "op3_21Uint"}}
@@ -335,6 +349,8 @@ outerLoop:
 			// Filtering out unqualified cases as a hack now, this test wrapper
 			// infrastrcuture should be changing soon so it should be fine.
 			switch *o.OperandOrder {
+			case "21":
+				// No op because it's only set in AndNot, and opr[2] and opr[1] has the same shape
 			default:
 				opsSkipped[o.Go] = struct{}{}
 				continue outerLoop

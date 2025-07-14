@@ -93,13 +93,13 @@
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // AndNot performs a bitwise AND NOT operation between two vectors.
+    // AndNot performs a bitwise x &^ y.
 - go: AndNotMasked
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // AndNotMasked performs a masked bitwise AND NOT operation between two vectors.
+    // AndNotMasked performs a bitwise x &^ y.
 - go: Xor
   commutative: "true"
   extension: "AVX.*"
