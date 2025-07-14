@@ -351,6 +351,9 @@ func (o Operand) OpName(s string) string {
 	if n := o.Name; n != nil {
 		return *n
 	}
+	if o.Class == "mask" {
+		return "mask"
+	}
 	return s
 }
 
