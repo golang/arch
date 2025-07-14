@@ -47,3 +47,11 @@
     // result := {xy[indices[0]], xy[indices[1]], ..., xy[indices[n]]}
     // where xy is x appending y.
     // Only the needed bits to represent xy's index are used in indices' elements.
+
+- go: Compress
+  commutative: "false"
+  # The mask in Compress is a control mask rather than a write mask, so we don't mark it "masked"
+  extension: "AVX.*"
+  documentation: !string |-
+    // Compress performs a compression on vector x using mask by
+    // selecting elements as indicated by mask, and pack them to lower indexed elements.

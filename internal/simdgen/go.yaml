@@ -932,6 +932,14 @@
   - *any
   out:
   - *any
+
+- go: Compress
+  asm: "VPCOMPRESS[BWDQ]|VCOMPRESSP[SD]"
+  in:
+  - class: mask
+  - *any
+  out:
+  - *any
 # "Normal" multiplication is only available for floats.
 # This only covers the single and double precision.
 - go: Mul
