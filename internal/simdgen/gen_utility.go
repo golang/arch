@@ -506,6 +506,7 @@ func dedup(ops []Operation) (deduped []Operation) {
 }
 
 func fillCPUFeature(ops []Operation) (filled []Operation, excluded []Operation) {
+	allCPUFeatures := map[string]struct{}{}
 	for _, op := range ops {
 		if op.ISASet == "" {
 			newS := op.Extension
@@ -522,6 +523,7 @@ func fillCPUFeature(ops []Operation) (filled []Operation, excluded []Operation) 
 			if strings.Contains(*op.CPUFeature, "_") {
 				*op.CPUFeature = strings.ReplaceAll(*op.CPUFeature, "_", "")
 			}
+			allCPUFeatures[*op.CPUFeature] = struct{}{}
 		} else {
 			excluded = append(excluded, op)
 		}
@@ -539,6 +541,10 @@ func fillCPUFeature(ops []Operation) (filled []Operation, excluded []Operation) 
 		if _, ok := filledSeen[k]; !ok {
 			panic(fmt.Sprintf("simdgen is excluding the only def of op: %s", op))
 		}
+	}
+	if *Verbose {
+		// It might contain
+		log.Printf("All CPU Features: %v\n", allCPUFeatures)
 	}
 	return
 }
