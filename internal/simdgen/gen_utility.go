@@ -576,10 +576,8 @@ func splitMask(ops []Operation) ([]Operation, error) {
 func genericName(op Operation) string {
 	if op.OperandOrder != nil {
 		switch *op.OperandOrder {
-		case "21Uint":
-			fallthrough
-		case "231Uint":
-			// Permute
+		case "21Type1", "231Type1":
+			// Permute uses operand[1] for method receiver.
 			return op.Go + *op.In[1].Go
 		}
 	}

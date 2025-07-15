@@ -124,7 +124,7 @@ func ({{.Op0NameAndType "x"}}) {{.Go}}({{.Op1NameAndType "y"}}) {{.GoType}}
 func ({{.Op1NameAndType "x"}}) {{.Go}}({{.Op0NameAndType "y"}}) {{.GoType}}
 {{end}}
 
-{{define "op2_21Uint"}}
+{{define "op2_21Type1"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
@@ -145,14 +145,14 @@ func ({{.Op0NameAndType "x"}}) {{.Go}}({{.Op1NameAndType "y"}}, {{.Op2NameAndTyp
 func ({{.Op1NameAndType "x"}}) {{.Go}}({{.Op0NameAndType "y"}}, {{.Op2NameAndType "z"}}) {{.GoType}}
 {{end}}
 
-{{define "op3_21Uint"}}
+{{define "op3_21Type1"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func ({{.Op1NameAndType "x"}}) {{.Go}}({{.Op0NameAndType "y"}}, {{.Op2NameAndType "z"}}) {{.GoType}}
 {{end}}
 
-{{define "op3_231Uint"}}
+{{define "op3_231Type1"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
@@ -180,7 +180,7 @@ func ({{.Op0NameAndType "x"}}) {{.Go}}(y uint{{(index .In 1).TreatLikeAScalarOfS
 func ({{.Op0NameAndType "x"}}) {{.Go}}({{.Op1NameAndType "y"}}, {{.Op2NameAndType "z"}}, {{.Op3NameAndType "u"}}) {{.GoType}}
 {{end}}
 
-{{define "op4_231Uint"}}
+{{define "op4_231Type1"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}

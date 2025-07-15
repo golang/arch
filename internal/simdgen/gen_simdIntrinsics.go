@@ -31,19 +31,19 @@ func simdIntrinsics(addF func(pkg, fn string, b intrinsicBuilder, archFamilies .
 {{end}}
 {{define "op2_21"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen2_21(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.SSAType}}), sys.AMD64)
 {{end}}
-{{define "op2_21Uint"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen2_21(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}), sys.AMD64)
+{{define "op2_21Type1"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen2_21(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}), sys.AMD64)
 {{end}}
 {{define "op3"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen3(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.SSAType}}), sys.AMD64)
 {{end}}
 {{define "op3_21"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen3_21(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.SSAType}}), sys.AMD64)
 {{end}}
-{{define "op3_21Uint"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen3_21(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}), sys.AMD64)
+{{define "op3_21Type1"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen3_21(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}), sys.AMD64)
 {{end}}
-{{define "op3_231Uint"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen3_231(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}), sys.AMD64)
+{{define "op3_231Type1"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen3_231(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}), sys.AMD64)
 {{end}}
 {{define "op4"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen4(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.SSAType}}), sys.AMD64)
 {{end}}
-{{define "op4_231Uint"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen4_231(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}), sys.AMD64)
+{{define "op4_231Type1"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen4_231(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}), sys.AMD64)
 {{end}}
 {{define "op1Imm8"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen1Imm8(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
 {{end}}

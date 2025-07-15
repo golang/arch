@@ -181,7 +181,7 @@
 
 - go: Permute
   asm: "VPERM[BWDQ]|VPERMP[SD]"
-  operandOrder: "21Uint"
+  operandOrder: "21Type1"
   in:
   - &anyindices
     go: $t
@@ -194,7 +194,7 @@
 
 - go: PermuteMasked
   asm: "VPERM[BWDQ]|VPERMP[SD]"
-  operandOrder: "21Uint"
+  operandOrder: "21Type1"
   in:
   - class: mask
   - *anyindices
@@ -207,7 +207,7 @@
   # Because we are overwriting the receiver's type, we 
   # have to move the receiver to be a parameter so that
   # we can have no duplication.
-  operandOrder: "231Uint" 
+  operandOrder: "231Type1" 
   in:
   - *anyindices # result in arg 0
   - class: mask
