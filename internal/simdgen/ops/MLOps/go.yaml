@@ -53,9 +53,11 @@
   - *dpb_src
 - go: UnsignedSignedQuadDotProdAccumulate
   asm: "VPDPBUSD"
+  operandOrder: "31" # switch operand 3 and 1
   in:
   - &qdpa_acc
     go: $t_acc
+    base: int
     elemBits: 32
   - &qdpa_src1
     go: $t_src1
@@ -69,6 +71,7 @@
   - *qdpa_acc
 - go: UnsignedSignedQuadDotProdAccumulateMasked
   asm: "VPDPBUSD"
+  operandOrder: "31" # switch operand 3 and 1
   in:
   - *qdpa_acc
   - class: mask
@@ -78,6 +81,7 @@
   - *qdpa_acc
 - go: SaturatedUnsignedSignedQuadDotProdAccumulate
   asm: "VPDPBUSDS"
+  operandOrder: "31" # switch operand 3 and 1
   in:
   - *qdpa_acc
   - *qdpa_src1
@@ -86,6 +90,7 @@
   - *qdpa_acc
 - go: SaturatedUnsignedSignedQuadDotProdAccumulateMasked
   asm: "VPDPBUSDS"
+  operandOrder: "31" # switch operand 3 and 1
   in:
   - *qdpa_acc
   - class: mask
@@ -95,6 +100,7 @@
   - *qdpa_acc
 - go: PairDotProdAccumulate
   asm: "VPDPWSSD"
+  operandOrder: "31" # switch operand 3 and 1
   in:
   - &pdpa_acc
     go: $t_acc
@@ -112,6 +118,7 @@
   - *pdpa_acc
 - go: PairDotProdAccumulateMasked
   asm: "VPDPWSSD"
+  operandOrder: "31" # switch operand 3 and 1
   in:
   - *pdpa_acc
   - class: mask
@@ -121,6 +128,7 @@
   - *pdpa_acc
 - go: SaturatedPairDotProdAccumulate
   asm: "VPDPWSSDS"
+  operandOrder: "31" # switch operand 3 and 1
   in:
   - *pdpa_acc
   - *pdpa_src1
@@ -129,6 +137,7 @@
   - *pdpa_acc
 - go: SaturatedPairDotProdAccumulateMasked
   asm: "VPDPWSSDS"
+  operandOrder: "31" # switch operand 3 and 1
   in:
   - *pdpa_acc
   - class: mask

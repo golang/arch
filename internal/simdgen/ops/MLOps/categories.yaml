@@ -37,61 +37,61 @@
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // UnsignedSignedQuadDotProdAccumulate performs dot products on groups of 4 elements of y and z and accumulates the results to x.
+    // UnsignedSignedQuadDotProdAccumulate performs dot products on groups of 4 elements of x and y and then adds z.
 - go: UnsignedSignedQuadDotProdAccumulateMasked
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // UnsignedSignedQuadDotProdAccumulateMasked performs dot products on groups of 4 elements of y and z and accumulates the results to x.
+    // UnsignedSignedQuadDotProdAccumulateMasked performs dot products on groups of 4 elements of x and y and then adds z.
 - go: SaturatedUnsignedSignedQuadDotProdAccumulate
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // SaturatedUnsignedSignedQuadDotProdAccumulate multiplies performs dot products on groups of 4 elements of y and z and accumulates the results to x.
+    // SaturatedUnsignedSignedQuadDotProdAccumulate multiplies performs dot products on groups of 4 elements of x and y and then adds z.
 - go: SaturatedUnsignedSignedQuadDotProdAccumulateMasked
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // SaturatedUnsignedSignedQuadDotProdAccumulateMasked multiplies performs dot products on groups of 4 elements of y and z and accumulates the results to x.
+    // SaturatedUnsignedSignedQuadDotProdAccumulateMasked multiplies performs dot products on groups of 4 elements of x and y and then adds z.
 - go: PairDotProdAccumulate
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // PairDotProdAccumulate performs dot products on pairs of elements of y and z and accumulates the results to x.
+    // PairDotProdAccumulate performs dot products on pairs of elements of x and y and then adds z.
 - go: PairDotProdAccumulateMasked
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // PairDotProdAccumulateMasked performs dot products on pairs of elements of y and z and accumulates the results to x.
+    // PairDotProdAccumulateMasked performs dot products on pairs of elements of x and y and then adds z.
 - go: SaturatedPairDotProdAccumulate
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // SaturatedPairDotProdAccumulate performs dot products on pairs of elements of y and z and accumulates the results to x.
+    // SaturatedPairDotProdAccumulate performs dot products on pairs of elements of x and y and then adds z.
 - go: SaturatedPairDotProdAccumulateMasked
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // SaturatedPairDotProdAccumulateMasked performs dot products on pairs of elements of y and z and accumulates the results to x.
+    // SaturatedPairDotProdAccumulateMasked performs dot products on pairs of elements of x and y and then adds z.
 - go: FusedMultiplyAddMasked
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // FusedMultiplyAddMasked performs `(v1 * v2) + v3`.
+    // FusedMultiplyAddMasked performs (x * y) + z.
 - go: FusedMultiplyAddSubMasked
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // FusedMultiplyAddSubMasked performs `(v1 * v2) - v3` for odd-indexed elements, and `(v1 * v2) + v3` for even-indexed elements.
+    // FusedMultiplyAddSubMasked performs (x * y) - z for odd-indexed elements, and (x * y) + z for even-indexed elements.
 - go: FusedMultiplySubAddMasked
   masked: "true"
   commutative: "false"
   extension: "AVX.*"
   documentation: !string |-
-    // FusedMultiplySubAddMasked performs `(v1 * v2) + v3` for odd-indexed elements, and `(v1 * v2) - v3` for even-indexed elements.
+    // FusedMultiplySubAddMasked performs (x * y) + z for odd-indexed elements, and (x * y) - z for even-indexed elements.

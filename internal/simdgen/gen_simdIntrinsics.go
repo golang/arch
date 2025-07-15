@@ -41,9 +41,13 @@ func simdIntrinsics(addF func(pkg, fn string, b intrinsicBuilder, archFamilies .
 {{end}}
 {{define "op3_231Type1"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen3_231(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}), sys.AMD64)
 {{end}}
+{{define "op3_31"}}	addF(simdPackage, "{{(index .In 2).Go}}.{{.Go}}", opLen3_31(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.SSAType}}), sys.AMD64)
+{{end}}
 {{define "op4"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen4(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.SSAType}}), sys.AMD64)
 {{end}}
 {{define "op4_231Type1"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen4_231(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}), sys.AMD64)
+{{end}}
+{{define "op4_31"}}	addF(simdPackage, "{{(index .In 2).Go}}.{{.Go}}", opLen4_31(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.SSAType}}), sys.AMD64)
 {{end}}
 {{define "op1Imm8"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen1Imm8(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
 {{end}}
