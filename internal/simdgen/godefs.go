@@ -268,6 +268,7 @@ func writeGoDefs(path string, cl unify.Closure) error {
 			return err
 		}
 	}
+	insertMaskDescToDoc(deduped)
 	if *Verbose {
 		log.Printf("dedup len: %d\n", len(deduped))
 	}

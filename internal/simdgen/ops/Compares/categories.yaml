@@ -55,7 +55,7 @@
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // EqualMasked compares for equality, masked.
+    // EqualMasked compares for equality.
 - go: LessMasked
   constImm: 1
   masked: "true"

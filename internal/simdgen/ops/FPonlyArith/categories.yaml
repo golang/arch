@@ -83,7 +83,7 @@
   constImm: 1
   masked: "true"
   documentation: !string |-
-    // FloorWithPrecisionMasked rounds elements down with specified precision, masked.
+    // FloorWithPrecisionMasked rounds elements down with specified precision.
 - go: DiffWithFloorWithPrecisionMasked
   commutative: "false"
   extension: "AVX.*"
@@ -104,7 +104,7 @@
   constImm: 2
   masked: "true"
   documentation: !string |-
-    // CeilWithPrecisionMasked rounds elements up with specified precision, masked.
+    // CeilWithPrecisionMasked rounds elements up with specified precision.
 - go: DiffWithCeilWithPrecisionMasked
   commutative: "false"
   extension: "AVX.*"

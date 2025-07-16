@@ -9,7 +9,7 @@
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // AndMasked performs a masked bitwise AND operation between two vectors.
+    // AndMasked performs a bitwise AND operation between two vectors.
 - go: Or
   commutative: "true"
   extension: "AVX.*"
@@ -20,7 +20,7 @@
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // OrMasked performs a masked bitwise OR operation between two vectors.
+    // OrMasked performs a bitwise OR operation between two vectors.
 - go: AndNot
   commutative: "false"
   extension: "AVX.*"
@@ -42,6 +42,6 @@
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // XorMasked performs a masked bitwise XOR operation between two vectors.
+    // XorMasked performs a bitwise XOR operation between two vectors.
 # We also have PTEST and VPTERNLOG, those should be hidden from the users
 # and only appear in rewrite rules.

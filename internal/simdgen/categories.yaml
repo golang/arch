@@ -77,7 +77,7 @@
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // AndMasked performs a masked bitwise AND operation between two vectors.
+    // AndMasked performs a bitwise AND operation between two vectors.
 - go: Or
   commutative: "true"
   extension: "AVX.*"
@@ -88,7 +88,7 @@
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // OrMasked performs a masked bitwise OR operation between two vectors.
+    // OrMasked performs a bitwise OR operation between two vectors.
 - go: AndNot
   commutative: "false"
   extension: "AVX.*"
@@ -110,7 +110,7 @@
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // XorMasked performs a masked bitwise XOR operation between two vectors.
+    // XorMasked performs a bitwise XOR operation between two vectors.
 # We also have PTEST and VPTERNLOG, those should be hidden from the users
 # and only appear in rewrite rules.
 # const imm predicate(holds for both float and int|uint):
@@ -169,7 +169,7 @@
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // EqualMasked compares for equality, masked.
+    // EqualMasked compares for equality.
 - go: LessMasked
   constImm: 1
   masked: "true"
@@ -296,7 +296,7 @@
   constImm: 1
   masked: "true"
   documentation: !string |-
-    // FloorWithPrecisionMasked rounds elements down with specified precision, masked.
+    // FloorWithPrecisionMasked rounds elements down with specified precision.
 - go: DiffWithFloorWithPrecisionMasked
   commutative: "false"
   extension: "AVX.*"
@@ -317,7 +317,7 @@
   constImm: 2
   masked: "true"
   documentation: !string |-
-    // CeilWithPrecisionMasked rounds elements up with specified precision, masked.
+    // CeilWithPrecisionMasked rounds elements up with specified precision.
 - go: DiffWithCeilWithPrecisionMasked
   commutative: "false"
   extension: "AVX.*"
@@ -618,26 +618,26 @@
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // MulMasked multiplies corresponding elements of two vectors, masked.
+    // MulMasked multiplies corresponding elements of two vectors.
 - go: MulEvenWidenMasked
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // MulEvenWidenMasked multiplies even-indexed elements, widening the result, masked.
+    // MulEvenWidenMasked multiplies even-indexed elements, widening the result.
     // Result[i] = v1.Even[i] * v2.Even[i].
 - go: MulHighMasked
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // MulHighMasked multiplies elements and stores the high part of the result, masked.
+    // MulHighMasked multiplies elements and stores the high part of the result.
 - go: MulLowMasked
   masked: "true"
   commutative: "true"
   extension: "AVX.*"
   documentation: !string |-
-    // MulLowMasked multiplies elements and stores the low part of the result, masked.
+    // MulLowMasked multiplies elements and stores the low part of the result.
 - go: ShiftAllLeft
   nameAndSizeCheck: "true"
   commutative: "false"
