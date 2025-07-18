@@ -6,7 +6,7 @@ package arm64asm
 
 import (
 	"encoding/hex"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -14,7 +14,7 @@ import (
 
 func testDecode(t *testing.T, syntax string) {
 	input := filepath.Join("testdata", syntax+"cases.txt")
-	data, err := ioutil.ReadFile(input)
+	data, err := os.ReadFile(input)
 	if err != nil {
 		t.Fatal(err)
 	}
