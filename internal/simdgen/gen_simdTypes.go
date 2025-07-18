@@ -21,6 +21,7 @@ type simdType struct {
 	VectorCounterpart       string // For mask use only: just replacing the "Mask" in [simdType.Name] with "Int"
 	ReshapedVectorWithAndOr string // For mask use only: vector AND and OR are only available in some shape with element width 32.
 	Size                    int    // The size of the type
+	ElemBits                int    // Size / Lanes
 }
 
 func compareSimdTypes(x, y simdType) int {
@@ -92,7 +93,15 @@ func Load{{.Name}}(y *[{{.Lanes}}]{{.Base}}) {{.Name}}
 //go:noescape
 func (x {{.Name}}) Store(y *[{{.Lanes}}]{{.Base}})
 
-{{- end}}
+{{- else}}
+
+// {{.Name}}FromBits constructs a {{.Name}} from an a bitmap, where 1 means set for the indexed element, 0 means unset.
+// Only the lower {{.Lanes}} bits of y are used.
+//
+//go:noescape
+func Load{{.Name}}FromBits(y *uint64) {{.Name}}
+
+{{end}}
 {{end}}
 `
 
@@ -528,14 +537,14 @@ func parseSIMDTypes(ops []Operation) simdTypeMap {
 		if arg.Class == "mask" {
 			vectorCounterpart := strings.ReplaceAll(*arg.Go, "Mask", "Int")
 			reshapedVectorWithAndOr := fmt.Sprintf("Int32x%d", *arg.Bits/32)
-			ret[*arg.Bits] = append(ret[*arg.Bits], simdType{*arg.Go, lanes, base, fields, arg.Class, vectorCounterpart, reshapedVectorWithAndOr, *arg.Bits})
+			ret[*arg.Bits] = append(ret[*arg.Bits], simdType{*arg.Go, lanes, base, fields, arg.Class, vectorCounterpart, reshapedVectorWithAndOr, *arg.Bits, *arg.Bits / lanes})
 			// In case the vector counterpart of a mask is not present, put its vector counterpart typedef into the map as well.
 			if _, ok := seen[vectorCounterpart]; !ok {
 				seen[vectorCounterpart] = struct{}{}
-				ret[*arg.Bits] = append(ret[*arg.Bits], simdType{vectorCounterpart, lanes, base, fields, "vreg", "", "", *arg.Bits})
+				ret[*arg.Bits] = append(ret[*arg.Bits], simdType{vectorCounterpart, lanes, base, fields, "vreg", "", "", *arg.Bits, *arg.Bits / lanes})
 			}
 		} else {
-			ret[*arg.Bits] = append(ret[*arg.Bits], simdType{*arg.Go, lanes, base, fields, arg.Class, "", "", *arg.Bits})
+			ret[*arg.Bits] = append(ret[*arg.Bits], simdType{*arg.Go, lanes, base, fields, arg.Class, "", "", *arg.Bits, *arg.Bits / lanes})
 		}
 	}
 	for _, op := range ops {
