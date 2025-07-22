@@ -115,6 +115,17 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME compares for greater than.
+- go: ConvertToInt32
+  commutative: false
+  extension: "AVX.*"
+  documentation: !string |-
+    // ConvertToInt32 converts element values to int32.
+
+- go: ConvertToUint32
+  commutative: false
+  extension: "AVX.*"
+  documentation: !string |-
+    // ConvertToUint32Masked converts element values to uint32.
 - go: Div
   commutative: false
   extension: "AVX.*"
