@@ -33,7 +33,6 @@ func writeSIMDMachineOps(ops []Operation) *bytes.Buffer {
 	buffer := new(bytes.Buffer)
 
 	type opData struct {
-		sortKey      string
 		OpName       string
 		Asm          string
 		OpInLen      int
@@ -108,16 +107,16 @@ func writeSIMDMachineOps(ops []Operation) *bytes.Buffer {
 			resultInArg0 = true
 		}
 		if shapeIn == OneImmIn || shapeIn == OneKmaskImmIn {
-			opsDataImm = append(opsDataImm, opData{*gOp.In[0].Go + gOp.Go, asm, gOp.Asm, len(gOp.In), regInfo, gOp.Commutative, outType, resultInArg0})
+			opsDataImm = append(opsDataImm, opData{asm, gOp.Asm, len(gOp.In), regInfo, gOp.Commutative, outType, resultInArg0})
 		} else {
-			opsData = append(opsData, opData{*gOp.In[0].Go + gOp.Go, asm, gOp.Asm, len(gOp.In), regInfo, gOp.Commutative, outType, resultInArg0})
+			opsData = append(opsData, opData{asm, gOp.Asm, len(gOp.In), regInfo, gOp.Commutative, outType, resultInArg0})
 		}
 	}
 	sort.Slice(opsData, func(i, j int) bool {
-		return opsData[i].sortKey < opsData[j].sortKey
+		return compareNatural(opsData[i].OpName, opsData[j].OpName) < 0
 	})
 	sort.Slice(opsDataImm, func(i, j int) bool {
-		return opsDataImm[i].sortKey < opsDataImm[j].sortKey
+		return compareNatural(opsData[i].OpName, opsData[j].OpName) < 0
 	})
 	err := t.Execute(buffer, machineOpsData{opsData, opsDataImm})
 	if err != nil {

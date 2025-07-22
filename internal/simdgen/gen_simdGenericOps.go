@@ -32,7 +32,6 @@ func writeSIMDGenericOps(ops []Operation) *bytes.Buffer {
 	buffer := new(bytes.Buffer)
 
 	type genericOpsData struct {
-		sortKey string
 		OpName  string
 		OpInLen int
 		Comm    bool
@@ -44,7 +43,7 @@ func writeSIMDGenericOps(ops []Operation) *bytes.Buffer {
 	var opsData opData
 	for _, op := range ops {
 		_, _, _, immType, gOp := op.shape()
-		gOpData := genericOpsData{*gOp.In[0].Go + gOp.Go, genericName(gOp), len(gOp.In), op.Commutative}
+		gOpData := genericOpsData{genericName(gOp), len(gOp.In), op.Commutative}
 		if immType == VarImm || immType == ConstVarImm {
 			opsData.OpsImm = append(opsData.OpsImm, gOpData)
 		} else {
@@ -52,10 +51,10 @@ func writeSIMDGenericOps(ops []Operation) *bytes.Buffer {
 		}
 	}
 	sort.Slice(opsData.Ops, func(i, j int) bool {
-		return opsData.Ops[i].sortKey < opsData.Ops[j].sortKey
+		return compareNatural(opsData.Ops[i].OpName, opsData.Ops[j].OpName) < 0
 	})
 	sort.Slice(opsData.OpsImm, func(i, j int) bool {
-		return opsData.OpsImm[i].sortKey < opsData.OpsImm[j].sortKey
+		return compareNatural(opsData.OpsImm[i].OpName, opsData.OpsImm[j].OpName) < 0
 	})
 
 	err := t.Execute(buffer, opsData)
