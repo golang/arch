@@ -40,7 +40,7 @@
 // simdgen can also generate Go definitions of SIMD mappings:
 // To generate go files to the go root, run:
 //
-//	go run . -xedPath $XEDPATH -godefroot $/PATH/TO/go go.yaml categories.yaml types.yaml
+//	go run . -xedPath $XEDPATH -o godefs -goroot $PATH/TO/go go.yaml categories.yaml types.yaml
 //
 // types.yaml is already written, it specifies the shapes of vectors.
 // categories.yaml and go.yaml contains definitions that unifies with types.yaml and XED

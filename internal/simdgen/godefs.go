@@ -27,7 +27,7 @@ type Operation struct {
 	Extension     string    // Extension
 	ISASet        string    // ISASet
 	CPUFeature    *string   // If ISASet is empty, then Extension, otherwise ISASet
-	Zeroing       *string   // Zeroing is a flag for asm prefix "Z", if non-nil it will always be "false"
+	Zeroing       *string   // nil => use asm suffix ".Z"; "false" => do not use asm suffix ".Z"
 	Documentation *string   // Documentation will be appended to the stubs comments.
 	// ConstMask is a hack to reduce the size of defs the user writes for const-immediate
 	// If present, it will be copied to [In[0].Const].

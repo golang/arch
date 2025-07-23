@@ -68,6 +68,21 @@ func loadXED(xedPath string) []*unify.Value {
 			unify.NewValue(unify.NewStringExact(inst.ISASet)),
 		}
 		if strings.Contains(inst.Pattern, "ZEROING=0") {
+			// This is an EVEX instruction, but the ".Z" (zero-merging)
+			// instruction flag is NOT valid. EVEX.z must be zero.
+			//
+			// This can mean a few things:
+			//
+			// - The output of an instruction is a mask, so merging modes don't
+			// make any sense. E.g., VCMPPS.
+			//
+			// - There are no masks involved anywhere. (Maybe MASK=0 is also set
+			// in this case?) E.g., VINSERTPS.
+			//
+			// - The operation inherently performs merging. E.g., VCOMPRESSPS
+			// with a mem operand.
+			//
+			// There may be other reasons.
 			fields = append(fields, "zeroing")
 			values = append(values, unify.NewValue(unify.NewStringExact("false")))
 		}
@@ -220,14 +235,18 @@ func decodeOperand(db *xeddata.Database, operand string) (operand, error) {
 		fmt.Printf("  %+v\n", op)
 	}
 
+	if strings.HasPrefix(op.Name, "EMX_BROADCAST") {
+		// This refers to a set of macros defined in all-state.txt that set a
+		// BCAST operand to various fixed values. But the BCAST operand is
+		// itself suppressed and "internal", so I think we can just ignore this
+		// operand.
+		return nil, nil
+	}
+
 	// TODO: See xed_decoded_inst_operand_action. This might need to be more
 	// complicated.
 	action, ok := actionEncoding[op.Action]
 	if !ok {
-		if strings.HasPrefix(op.Name, "EMX_BROADCAST") {
-			// BROADCAST looks like to contain an obsolete operand.
-			return nil, nil
-		}
 		return nil, fmt.Errorf("unknown action %q", op.Action)
 	}
 	common := operandCommon{action: action}
