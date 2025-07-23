@@ -95,11 +95,19 @@ func (x {{.Name}}) Store(y *[{{.Lanes}}]{{.Base}})
 
 {{- else}}
 
-// {{.Name}}FromBits constructs a {{.Name}} from an a bitmap, where 1 means set for the indexed element, 0 means unset.
+// Load{{.Name}}FromBits constructs a {{.Name}} from a bitmap, where 1 means set for the indexed element, 0 means unset.
 // Only the lower {{.Lanes}} bits of y are used.
 //
+// CPU Features: AVX512
 //go:noescape
 func Load{{.Name}}FromBits(y *uint64) {{.Name}}
+
+// StoreToBits stores a {{.Name}} as a bitmap, where 1 means set for the indexed element, 0 means unset.
+// Only the lower {{.Lanes}} bits of y are used.
+//
+// CPU Features: AVX512
+//go:noescape
+func (x {{.Name}}) StoreToBits(y *uint64)
 
 {{end}}
 {{end}}
