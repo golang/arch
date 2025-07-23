@@ -27,6 +27,25 @@ func (x simdType) ElemBits() int {
 	return x.Size / x.Lanes
 }
 
+// LanesContainer returns the smallest int/uint bit size that is
+// large enough to hold one bit for each lane.  E.g., Mask32x4
+// is 4 lanes, and a uint8 is the smallest uint that has 4 bits.
+func (x simdType) LanesContainer() int {
+	if x.Lanes > 64 {
+		panic("too many lanes")
+	}
+	if x.Lanes > 32 {
+		return 64
+	}
+	if x.Lanes > 16 {
+		return 32
+	}
+	if x.Lanes > 8 {
+		return 16
+	}
+	return 8
+}
+
 // MaskedLoadStoreFilter encodes which simd type type currently
 // get masked loads/stores generated, it is used in two places,
 // this forces coordination.
@@ -120,6 +139,13 @@ func Load{{.Name}}FromBits(y *uint64) {{.Name}}
 // CPU Features: AVX512
 //go:noescape
 func (x {{.Name}}) StoreToBits(y *uint64)
+`
+
+const simdMaskFromValTemplate = `
+// {{.Name}}FromBits constructs a {{.Name}} from a bitmap value, where 1 means set for the indexed element, 0 means unset.
+// Only the lower {{.Lanes}} bits of y are used.
+//
+func {{.Name}}FromBits(y uint{{.LanesContainer}}) {{.Name}}
 `
 
 const simdMaskedLoadStoreTemplate = `
@@ -409,6 +435,7 @@ func writeSIMDTypes(typeMap simdTypeMap) *bytes.Buffer {
 	loadStore := templateOf(simdLoadStoreTemplate, "loadstore_amd64")
 	maskedLoadStore := templateOf(simdMaskedLoadStoreTemplate, "maskedloadstore_amd64")
 	maskFromBits := templateOf(simdMaskFromBitsTemplate, "maskFromBits_amd64")
+	maskFromVal := templateOf(simdMaskFromValTemplate, "maskFromVal_amd64")
 
 	buffer := new(bytes.Buffer)
 
@@ -451,6 +478,9 @@ func writeSIMDTypes(typeMap simdTypeMap) *bytes.Buffer {
 			} else {
 				if err := maskFromBits.ExecuteTemplate(buffer, "maskFromBits_amd64", typeDef); err != nil {
 					panic(fmt.Errorf("failed to execute maskFromBits template for type %s: %w", typeDef.Name, err))
+				}
+				if err := maskFromVal.ExecuteTemplate(buffer, "maskFromVal_amd64", typeDef); err != nil {
+					panic(fmt.Errorf("failed to execute maskFromVal template for type %s: %w", typeDef.Name, err))
 				}
 			}
 		}
