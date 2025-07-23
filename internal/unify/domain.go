@@ -259,6 +259,14 @@ func NewStringRegex(exprs ...string) (String, error) {
 	}
 	v := String{kind: -1}
 	for _, expr := range exprs {
+		if expr == "" {
+			// Skip constructing the regexp. It won't have a "literal prefix"
+			// and so we wind up thinking this is a regexp instead of an exact
+			// (empty) string.
+			v = String{kind: stringExact, exact: ""}
+			continue
+		}
+
 		re, err := regexp.Compile(`\A(?:` + expr + `)\z`)
 		if err != nil {
 			return String{}, fmt.Errorf("parsing value: %s", err)

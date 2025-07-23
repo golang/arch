@@ -133,3 +133,15 @@ func TestRoundTripString(t *testing.T) {
 		t.Fatal("parse 1 and parse 2 differ")
 	}
 }
+
+func TestEmptyString(t *testing.T) {
+	// Regression test. Make sure an empty string is parsed as an exact string,
+	// not a regexp.
+	const y = `""`
+	t.Logf("input:\n%s", y)
+
+	v1 := oneValue(t, mustParse(y))
+	if !v1.Exact() {
+		t.Fatal("expected exact string")
+	}
+}
