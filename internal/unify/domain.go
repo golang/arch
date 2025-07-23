@@ -310,9 +310,18 @@ func (d String) decode(rv reflect.Value) error {
 	if err == nil {
 		i, err := strconv.Atoi(d.exact)
 		if err != nil {
-			return fmt.Errorf("cannot decode String into %s: %s", rv.Type(), err)
+			return fmt.Errorf("cannot decode string into %s: %s", rv.Type(), err)
 		}
 		rv2.SetInt(int64(i))
+		return nil
+	}
+	rv2, err = preDecode(rv, reflect.Bool, "Bool")
+	if err == nil {
+		b, err := strconv.ParseBool(d.exact)
+		if err != nil {
+			return fmt.Errorf("cannot decode string into %s: %s", rv.Type(), err)
+		}
+		rv2.SetBool(b)
 		return nil
 	}
 	return err

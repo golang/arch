@@ -555,7 +555,7 @@ func splitMask(ops []Operation) ([]Operation, error) {
 	splited := []Operation{}
 	for _, op := range ops {
 		splited = append(splited, op)
-		if op.Masked == nil || *op.Masked != "true" {
+		if op.Masked == nil || !*op.Masked {
 			continue
 		}
 		shapeIn, _, _, _, _ := op.shape()
@@ -582,7 +582,7 @@ func splitMask(ops []Operation) ([]Operation, error) {
 
 func insertMaskDescToDoc(ops []Operation) {
 	for i, _ := range ops {
-		if ops[i].Masked != nil && *ops[i].Masked == "true" {
+		if ops[i].Masked != nil && *ops[i].Masked {
 			if ops[i].Documentation != nil {
 				*ops[i].Documentation += "\n//\n// This operation is applied selectively under a write mask."
 			}

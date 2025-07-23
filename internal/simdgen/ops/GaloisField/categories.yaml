@@ -1,7 +1,7 @@
 !sum
 - go: GaloisFieldAffineTransformMasked
-  masked: "true"
-  commutative: "false"
+  masked: true
+  commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // GaloisFieldAffineTransformMasked computes an affine transformation in GF(2^8):
@@ -9,8 +9,8 @@
     // b is an 8-bit vector. The affine transformation is y * x + b, with each element of y
     // corresponding to a group of 8 elements in x.
 - go: GaloisFieldAffineTransformInverseMasked
-  masked: "true"
-  commutative: "false"
+  masked: true
+  commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // GaloisFieldAffineTransformInverseMasked computes an affine transformation in GF(2^8),
@@ -19,8 +19,8 @@
     // b is an 8-bit vector. The affine transformation is y * x + b, with each element of y
     // corresponding to a group of 8 elements in x.
 - go: GaloisFieldMulMasked
-  masked: "true"
-  commutative: "false"
+  masked: true
+  commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // GaloisFieldMulMasked computes element-wise GF(2^8) multiplication with

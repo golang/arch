@@ -1,23 +1,23 @@
 !sum
 - go: Max
-  commutative: "true"
+  commutative: true
   extension: "AVX.*"
   documentation: !string |-
     // Max computes the maximum of corresponding elements.
 - go: MaxMasked
-  commutative: "true"
-  masked: "true"
+  commutative: true
+  masked: true
   extension: "AVX.*"
   documentation: !string |-
     // MaxMasked computes the maximum of corresponding elements.
 - go: Min
-  commutative: "true"
+  commutative: true
   extension: "AVX.*"
   documentation: !string |-
     // Min computes the minimum of corresponding elements.
 - go: MinMasked
-  commutative: "true"
-  masked: "true"
+  commutative: true
+  masked: true
   extension: "AVX.*"
   documentation: !string |-
     // MinMasked computes the minimum of corresponding elements.

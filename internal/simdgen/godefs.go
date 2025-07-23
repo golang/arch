@@ -23,20 +23,20 @@ type Operation struct {
 
 	In            []Operand // Arguments
 	Out           []Operand // Results
-	Commutative   string    // Commutativity
+	Commutative   bool      // Commutativity
 	Extension     string    // Extension
 	ISASet        string    // ISASet
 	CPUFeature    *string   // If ISASet is empty, then Extension, otherwise ISASet
-	Zeroing       *string   // nil => use asm suffix ".Z"; "false" => do not use asm suffix ".Z"
+	Zeroing       *bool     // nil => use asm suffix ".Z"; false => do not use asm suffix ".Z"
 	Documentation *string   // Documentation will be appended to the stubs comments.
 	// ConstMask is a hack to reduce the size of defs the user writes for const-immediate
 	// If present, it will be copied to [In[0].Const].
 	ConstImm *string
 	// Masked indicates that this is a masked operation, this field has to be set for masked operations
 	// otherwise simdgen won't recognize it in [splitMask].
-	Masked *string
+	Masked *bool
 	// NameAndSizeCheck is used to check [BWDQ] maps to (8|16|32|64) elemBits.
-	NameAndSizeCheck *string
+	NameAndSizeCheck *bool
 }
 
 func (o *Operation) VectorWidth() int {

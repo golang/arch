@@ -38,9 +38,9 @@ func writeSIMDMachineOps(ops []Operation) *bytes.Buffer {
 		Asm          string
 		OpInLen      int
 		RegInfo      string
-		Comm         string
+		Comm         bool
 		Type         string
-		ResultInArg0 string
+		ResultInArg0 bool
 	}
 	type machineOpsData struct {
 		OpsData    []opData
@@ -103,9 +103,9 @@ func writeSIMDMachineOps(ops []Operation) *bytes.Buffer {
 		} else {
 			panic(fmt.Errorf("simdgen does not recognize this output shape: %d", shapeOut))
 		}
-		resultInArg0 := "false"
+		resultInArg0 := false
 		if shapeOut == OneVregOutAtIn {
-			resultInArg0 = "true"
+			resultInArg0 = true
 		}
 		if shapeIn == OneImmIn || shapeIn == OneKmaskImmIn {
 			opsDataImm = append(opsDataImm, opData{*gOp.In[0].Go + gOp.Go, asm, gOp.Asm, len(gOp.In), regInfo, gOp.Commutative, outType, resultInArg0})

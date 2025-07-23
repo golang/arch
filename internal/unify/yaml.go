@@ -424,18 +424,21 @@ func (enc *yamlEncoder) value(v *Value) *yaml.Node {
 	case String:
 		switch d.kind {
 		case stringExact:
+			n.SetString(d.exact)
+			switch {
 			// Make this into a "nice" !!int node if I can.
-			if yamlIntRe.MatchString(d.exact) {
-				n.SetString(d.exact)
+			case yamlIntRe.MatchString(d.exact):
 				n.Tag = "tag:yaml.org,2002:int"
-				return &n
-			}
+
+			// Or a "nice" !!bool node.
+			case d.exact == "false" || d.exact == "true":
+				n.Tag = "tag:yaml.org,2002:bool"
+
 			// If this doesn't require escaping, leave it as a str node to avoid
 			// the annoying YAML tags. Otherwise, mark it as an exact string.
 			// Alternatively, we could always emit a str node with regexp
 			// quoting.
-			n.SetString(d.exact)
-			if d.exact != regexp.QuoteMeta(d.exact) {
+			case d.exact != regexp.QuoteMeta(d.exact):
 				n.Tag = "!string"
 			}
 			return &n

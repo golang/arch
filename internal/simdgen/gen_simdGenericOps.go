@@ -35,7 +35,7 @@ func writeSIMDGenericOps(ops []Operation) *bytes.Buffer {
 		sortKey string
 		OpName  string
 		OpInLen int
-		Comm    string
+		Comm    bool
 	}
 	type opData struct {
 		Ops    []genericOpsData

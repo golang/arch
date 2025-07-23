@@ -1,28 +1,28 @@
 !sum
 - go: SetElem
-  commutative: "false"
+  commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // SetElem sets a single constant-indexed element's value.
 - go: GetElem
-  commutative: "false"
+  commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // GetElem retrieves a single constant-indexed element's value.
 - go: Set128
-  commutative: "false"
+  commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // Set128 combines a 128-bit vector with a 256-bit vector, where the constant operand specifies whether the low (0) or high (1) half is receives the smaller vector.
 - go: Get128
-  commutative: "false"
+  commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // Get128 retrieves the upper (1) or lower (0) half of a 256-bit vector, depending on the constant operand.
 
 
 - go: Permute
-  commutative: "false"
+  commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // Permute performs a full permutation of vector x using indices:
@@ -30,8 +30,8 @@
     // Only the needed bits to represent x's index are used in indices' elements.
 
 - go: PermuteMasked
-  commutative: "false"
-  masked: "true"
+  commutative: false
+  masked: true
   extension: "AVX.*"
   documentation: !string |-
     // PermuteMasked performs a full permutation of vector y using indices:
@@ -39,8 +39,8 @@
     // Only the needed bits to represent x's index are used in indices' elements.
 
 - go: Permute2Masked # Permute2Masked is only available on or after AVX512
-  commutative: "false"
-  masked: "true"
+  commutative: false
+  masked: true
   extension: "AVX.*"
   documentation: !string |-
     // Permute2Masked performs a full permutation of vector x, y using indices:
@@ -49,7 +49,7 @@
     // Only the needed bits to represent xy's index are used in indices' elements.
 
 - go: Compress
-  commutative: "false"
+  commutative: false
   # The mask in Compress is a control mask rather than a write mask, so we don't mark it "masked"
   extension: "AVX.*"
   documentation: !string |-
