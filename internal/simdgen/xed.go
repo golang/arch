@@ -49,7 +49,7 @@ func loadXED(xedPath string) []*unify.Value {
 			fmt.Printf("%s:\n%+v\n", inst.Pos, inst)
 		}
 
-		ins, outs, err := decodeOperands(db, strings.Fields(inst.Operands))
+		ops, err := decodeOperands(db, strings.Fields(inst.Operands))
 		if err != nil {
 			operandRemarks++
 			if *Verbose {
@@ -57,39 +57,12 @@ func loadXED(xedPath string) []*unify.Value {
 			}
 			return
 		}
-		// TODO: "feature"
-		fields := []string{"goarch", "asm", "in", "out", "extension", "isaset"}
-		values := []*unify.Value{
-			unify.NewValue(unify.NewStringExact("amd64")),
-			unify.NewValue(unify.NewStringExact(inst.Opcode())),
-			unify.NewValue(ins),
-			unify.NewValue(outs),
-			unify.NewValue(unify.NewStringExact(inst.Extension)),
-			unify.NewValue(unify.NewStringExact(inst.ISASet)),
-		}
-		if strings.Contains(inst.Pattern, "ZEROING=0") {
-			// This is an EVEX instruction, but the ".Z" (zero-merging)
-			// instruction flag is NOT valid. EVEX.z must be zero.
-			//
-			// This can mean a few things:
-			//
-			// - The output of an instruction is a mask, so merging modes don't
-			// make any sense. E.g., VCMPPS.
-			//
-			// - There are no masks involved anywhere. (Maybe MASK=0 is also set
-			// in this case?) E.g., VINSERTPS.
-			//
-			// - The operation inherently performs merging. E.g., VCOMPRESSPS
-			// with a mem operand.
-			//
-			// There may be other reasons.
-			fields = append(fields, "zeroing")
-			values = append(values, unify.NewValue(unify.NewStringExact("false")))
-		}
-		pos := unify.Pos{Path: inst.Pos.Path, Line: inst.Pos.Line}
-		defs = append(defs, unify.NewValuePos(unify.NewDef(fields, values), pos))
+
+		uval := instToUVal(inst, ops)
+		defs = append(defs, uval)
+
 		if *flagDebugXED {
-			y, _ := yaml.Marshal(defs[len(defs)-1])
+			y, _ := yaml.Marshal(uval)
 			fmt.Printf("==>\n%s\n", y)
 		}
 	})
@@ -305,17 +278,12 @@ func decodeOperand(db *xeddata.Database, operand string) (operand, error) {
 	return nil, fmt.Errorf("unknown operand LHS %q in %q", lhs, operand)
 }
 
-func decodeOperands(db *xeddata.Database, operands []string) (ins, outs unify.Tuple, err error) {
-	fail := func(err error) (unify.Tuple, unify.Tuple, error) {
-		return unify.Tuple{}, unify.Tuple{}, err
-	}
-
-	// Decode all of the operands.
-	var ops []operand
+func decodeOperands(db *xeddata.Database, operands []string) (ops []operand, err error) {
+	// Decode the XED operand descriptions.
 	for _, o := range operands {
 		op, err := decodeOperand(db, o)
 		if err != nil {
-			return unify.Tuple{}, unify.Tuple{}, err
+			return nil, err
 		}
 		if op != nil {
 			ops = append(ops, op)
@@ -324,7 +292,14 @@ func decodeOperands(db *xeddata.Database, operands []string) (ins, outs unify.Tu
 
 	// XED doesn't encode the size of mask operands. If there are mask operands,
 	// try to infer their sizes from other operands.
-	//
+	if err := inferMaskSizes(ops); err != nil {
+		return nil, fmt.Errorf("%w in operands %+v", err, operands)
+	}
+
+	return ops, nil
+}
+
+func inferMaskSizes(ops []operand) error {
 	// This is a heuristic and it falls apart in some cases:
 	//
 	// - Mask operations like KAND[BWDQ] have *nothing* in the XED to indicate
@@ -394,7 +369,7 @@ func decodeOperands(db *xeddata.Database, operands []string) (ins, outs unify.Tu
 				}
 				return nil
 			}
-			return fmt.Errorf("cannot infer mask size: no register operands: %+v", operands)
+			return fmt.Errorf("cannot infer mask size: no register operands")
 		}
 		shape, ok := singular(sizes)
 		if !ok {
@@ -414,12 +389,15 @@ func decodeOperands(db *xeddata.Database, operands []string) (ins, outs unify.Tu
 		return nil
 	}
 	if err := inferMask(true, false); err != nil {
-		return fail(err)
+		return err
 	}
 	if err := inferMask(false, true); err != nil {
-		return fail(err)
+		return err
 	}
+	return nil
+}
 
+func operandsToUVals(ops []operand) (in, out unify.Tuple) {
 	var inVals, outVals []*unify.Value
 	for asmPos, op := range ops {
 		fields, values := op.toValue()
@@ -444,7 +422,44 @@ func decodeOperands(db *xeddata.Database, operands []string) (ins, outs unify.Tu
 		}
 	}
 
-	return unify.NewTuple(inVals...), unify.NewTuple(outVals...), nil
+	return unify.NewTuple(inVals...), unify.NewTuple(outVals...)
+}
+
+func instToUVal(inst *xeddata.Inst, ops []operand) *unify.Value {
+	// Map operands to unifier values.
+	ins, outs := operandsToUVals(ops)
+
+	// TODO: "feature"
+	fields := []string{"goarch", "asm", "in", "out", "extension", "isaset"}
+	values := []*unify.Value{
+		unify.NewValue(unify.NewStringExact("amd64")),
+		unify.NewValue(unify.NewStringExact(inst.Opcode())),
+		unify.NewValue(ins),
+		unify.NewValue(outs),
+		unify.NewValue(unify.NewStringExact(inst.Extension)),
+		unify.NewValue(unify.NewStringExact(inst.ISASet)),
+	}
+	if strings.Contains(inst.Pattern, "ZEROING=0") {
+		// This is an EVEX instruction, but the ".Z" (zero-merging)
+		// instruction flag is NOT valid. EVEX.z must be zero.
+		//
+		// This can mean a few things:
+		//
+		// - The output of an instruction is a mask, so merging modes don't
+		// make any sense. E.g., VCMPPS.
+		//
+		// - There are no masks involved anywhere. (Maybe MASK=0 is also set
+		// in this case?) E.g., VINSERTPS.
+		//
+		// - The operation inherently performs merging. E.g., VCOMPRESSPS
+		// with a mem operand.
+		//
+		// There may be other reasons.
+		fields = append(fields, "zeroing")
+		values = append(values, unify.NewValue(unify.NewStringExact("false")))
+	}
+	pos := unify.Pos{Path: inst.Pos.Path, Line: inst.Pos.Line}
+	return unify.NewValuePos(unify.NewDef(fields, values), pos)
 }
 
 func singular[T comparable](xs []T) (T, bool) {
