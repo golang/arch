@@ -186,6 +186,7 @@ func main() {
 	switch *flagO {
 	case "yaml":
 		// Produce a result that looks like encoding a slice, but stream it.
+		fmt.Println("!sum")
 		var val1 [1]*unify.Value
 		for val := range unified.All() {
 			val1[0] = val
@@ -203,11 +204,11 @@ func main() {
 		}
 	}
 
-	if !*Verbose {
+	if !*Verbose && *xedPath != "" {
 		if operandRemarks == 0 {
-			fmt.Printf("XED decoding generated no errors, which is unusual.\n")
+			fmt.Fprintf(os.Stderr, "XED decoding generated no errors, which is unusual.\n")
 		} else {
-			fmt.Printf("XED decoding generated %d \"errors\" which is not cause for alarm, use -v for details.\n", operandRemarks)
+			fmt.Fprintf(os.Stderr, "XED decoding generated %d \"errors\" which is not cause for alarm, use -v for details.\n", operandRemarks)
 		}
 	}
 
