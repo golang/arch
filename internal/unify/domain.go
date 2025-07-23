@@ -270,8 +270,8 @@ func NewStringRegex(exprs ...string) (String, error) {
 			continue
 		}
 
-		if _, complete := re.LiteralPrefix(); complete {
-			v = String{kind: stringExact, exact: expr}
+		if exact, complete := re.LiteralPrefix(); complete {
+			v = String{kind: stringExact, exact: exact}
 		} else {
 			v.kind = stringRegex
 			v.re = append(v.re, re)

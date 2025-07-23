@@ -8,6 +8,9 @@ import (
 	"bytes"
 	"fmt"
 	"iter"
+	"log"
+	"strings"
+	"testing"
 
 	"gopkg.in/yaml.v3"
 )
@@ -18,6 +21,19 @@ func mustParse(expr string) Closure {
 		panic(err)
 	}
 	return c
+}
+
+func oneValue(t *testing.T, c Closure) *Value {
+	t.Helper()
+	var v *Value
+	var i int
+	for v = range c.All() {
+		i++
+	}
+	if i != 1 {
+		t.Fatalf("expected 1 value, got %d", i)
+	}
+	return v
 }
 
 func printYaml(val any) {
@@ -87,5 +103,33 @@ func allYamlNodes(n *yaml.Node) iter.Seq[*yaml.Node] {
 				}
 			}
 		}
+	}
+}
+
+func TestRoundTripString(t *testing.T) {
+	// Check that we can round-trip a string with regexp meta-characters in it.
+	const y = `!string test*`
+	t.Logf("input:\n%s", y)
+
+	v1 := oneValue(t, mustParse(y))
+	var buf1 strings.Builder
+	enc := yaml.NewEncoder(&buf1)
+	if err := enc.Encode(v1); err != nil {
+		log.Fatal(err)
+	}
+	enc.Close()
+	t.Logf("after parse 1:\n%s", buf1.String())
+
+	v2 := oneValue(t, mustParse(buf1.String()))
+	var buf2 strings.Builder
+	enc = yaml.NewEncoder(&buf2)
+	if err := enc.Encode(v2); err != nil {
+		log.Fatal(err)
+	}
+	enc.Close()
+	t.Logf("after parse 2:\n%s", buf2.String())
+
+	if buf1.String() != buf2.String() {
+		t.Fatal("parse 1 and parse 2 differ")
 	}
 }

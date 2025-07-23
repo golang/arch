@@ -430,7 +430,14 @@ func (enc *yamlEncoder) value(v *Value) *yaml.Node {
 				n.Tag = "tag:yaml.org,2002:int"
 				return &n
 			}
-			n.SetString(regexp.QuoteMeta(d.exact))
+			// If this doesn't require escaping, leave it as a str node to avoid
+			// the annoying YAML tags. Otherwise, mark it as an exact string.
+			// Alternatively, we could always emit a str node with regexp
+			// quoting.
+			n.SetString(d.exact)
+			if d.exact != regexp.QuoteMeta(d.exact) {
+				n.Tag = "!string"
+			}
 			return &n
 		case stringRegex:
 			o := make([]string, 0, 1)
