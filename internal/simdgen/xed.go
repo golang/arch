@@ -119,7 +119,8 @@ type operandMask struct {
 	operandCommon
 	vecShape
 	// Bits in the mask is w/bits.
-	allMasks bool
+
+	allMasks bool // If set, size cannot be inferred because all operands are masks.
 }
 
 type operandImm struct {
@@ -129,7 +130,7 @@ type operandImm struct {
 
 type operand interface {
 	common() operandCommon
-	toValue() (fields []string, vals []*unify.Value)
+	addToDef(b *unify.DefBuilder)
 }
 
 func strVal(s any) *unify.Value {
@@ -140,53 +141,52 @@ func (o operandCommon) common() operandCommon {
 	return o
 }
 
-func (o operandMem) toValue() (fields []string, vals []*unify.Value) {
+func (o operandMem) addToDef(b *unify.DefBuilder) {
 	// TODO: w, base
-	return []string{"class"}, []*unify.Value{strVal("memory")}
+	b.Add("class", strVal("memory"))
 }
 
-func (o operandVReg) toValue() (fields []string, vals []*unify.Value) {
+func (o operandVReg) addToDef(b *unify.DefBuilder) {
 	baseDomain, err := unify.NewStringRegex(o.elemBaseType.regex())
 	if err != nil {
 		panic("parsing baseRe: " + err.Error())
 	}
-	fields, vals = []string{"class", "bits", "base"}, []*unify.Value{
-		strVal("vreg"),
-		strVal(o.bits),
-		unify.NewValue(baseDomain)}
+	b.Add("class", strVal("vreg"))
+	b.Add("bits", strVal(o.bits))
+	b.Add("base", unify.NewValue(baseDomain))
+	// If elemBits == bits, then the vector can be ANY shape. This happens with,
+	// for example, logical ops.
 	if o.elemBits != o.bits {
-		fields, vals = append(fields, "elemBits"), append(vals, strVal(o.elemBits))
+		b.Add("elemBits", strVal(o.elemBits))
 	}
-	// otherwise it means the vector could be any shape.
-	return
 }
 
-func (o operandGReg) toValue() (fields []string, vals []*unify.Value) {
+func (o operandGReg) addToDef(b *unify.DefBuilder) {
 	baseDomain, err := unify.NewStringRegex(o.elemBaseType.regex())
 	if err != nil {
 		panic("parsing baseRe: " + err.Error())
 	}
-	fields, vals = []string{"class", "bits", "base"}, []*unify.Value{
-		strVal("greg"),
-		strVal(o.bits),
-		unify.NewValue(baseDomain)}
+	b.Add("class", strVal("greg"))
+	b.Add("bits", strVal(o.bits))
+	b.Add("base", unify.NewValue(baseDomain))
 	if o.elemBits != o.bits {
-		fields, vals = append(fields, "elemBits"), append(vals, strVal(o.elemBits))
+		b.Add("elemBits", strVal(o.elemBits))
 	}
-	// otherwise it means the vector could be any shape.
-	return
 }
 
-func (o operandMask) toValue() (fields []string, vals []*unify.Value) {
-	return []string{"class", "elemBits", "bits"}, []*unify.Value{strVal("mask"), strVal(o.elemBits), strVal(o.bits)}
+func (o operandMask) addToDef(b *unify.DefBuilder) {
+	b.Add("class", strVal("mask"))
+	if o.allMasks {
+		// If all operands are masks, omit sizes and let unification determine mask sizes.
+		return
+	}
+	b.Add("elemBits", strVal(o.elemBits))
+	b.Add("bits", strVal(o.bits))
 }
 
-func (o operandMask) zeroMaskValue() (fields []string, vals []*unify.Value) {
-	return []string{"class"}, []*unify.Value{strVal("mask")}
-}
-
-func (o operandImm) toValue() (fields []string, vals []*unify.Value) {
-	return []string{"class", "bits"}, []*unify.Value{strVal("immediate"), strVal(o.bits)}
+func (o operandImm) addToDef(b *unify.DefBuilder) {
+	b.Add("class", strVal("immediate"))
+	b.Add("bits", strVal(o.bits))
 }
 
 var actionEncoding = map[string]operandAction{
@@ -400,24 +400,18 @@ func inferMaskSizes(ops []operand) error {
 func operandsToUVals(ops []operand) (in, out unify.Tuple) {
 	var inVals, outVals []*unify.Value
 	for asmPos, op := range ops {
-		fields, values := op.toValue()
-		if opm, ok := op.(operandMask); ok {
-			if opm.allMasks {
-				// If all operands are masks, leave the mask inferrence to the users.
-				fields, values = opm.zeroMaskValue()
-			}
-		}
+		var db unify.DefBuilder
+		op.addToDef(&db)
 
-		fields = append(fields, "asmPos")
-		values = append(values, unify.NewValue(unify.NewStringExact(fmt.Sprint(asmPos))))
+		db.Add("asmPos", unify.NewValue(unify.NewStringExact(fmt.Sprint(asmPos))))
 
 		action := op.common().action
 		if action.r {
-			inVal := unify.NewValue(unify.NewDef(fields, values))
+			inVal := unify.NewValue(db.Build())
 			inVals = append(inVals, inVal)
 		}
 		if action.w {
-			outVal := unify.NewValue(unify.NewDef(fields, values))
+			outVal := unify.NewValue(db.Build())
 			outVals = append(outVals, outVal)
 		}
 	}
@@ -430,15 +424,14 @@ func instToUVal(inst *xeddata.Inst, ops []operand) *unify.Value {
 	ins, outs := operandsToUVals(ops)
 
 	// TODO: "feature"
-	fields := []string{"goarch", "asm", "in", "out", "extension", "isaset"}
-	values := []*unify.Value{
-		unify.NewValue(unify.NewStringExact("amd64")),
-		unify.NewValue(unify.NewStringExact(inst.Opcode())),
-		unify.NewValue(ins),
-		unify.NewValue(outs),
-		unify.NewValue(unify.NewStringExact(inst.Extension)),
-		unify.NewValue(unify.NewStringExact(inst.ISASet)),
-	}
+	var db unify.DefBuilder
+	db.Add("goarch", unify.NewValue(unify.NewStringExact("amd64")))
+	db.Add("asm", unify.NewValue(unify.NewStringExact(inst.Opcode())))
+	db.Add("in", unify.NewValue(ins))
+	db.Add("out", unify.NewValue(outs))
+	db.Add("extension", unify.NewValue(unify.NewStringExact(inst.Extension)))
+	db.Add("isaset", unify.NewValue(unify.NewStringExact(inst.ISASet)))
+
 	if strings.Contains(inst.Pattern, "ZEROING=0") {
 		// This is an EVEX instruction, but the ".Z" (zero-merging)
 		// instruction flag is NOT valid. EVEX.z must be zero.
@@ -455,11 +448,10 @@ func instToUVal(inst *xeddata.Inst, ops []operand) *unify.Value {
 		// with a mem operand.
 		//
 		// There may be other reasons.
-		fields = append(fields, "zeroing")
-		values = append(values, unify.NewValue(unify.NewStringExact("false")))
+		db.Add("zeroing", unify.NewValue(unify.NewStringExact("false")))
 	}
 	pos := unify.Pos{Path: inst.Pos.Path, Line: inst.Pos.Line}
-	return unify.NewValuePos(unify.NewDef(fields, values), pos)
+	return unify.NewValuePos(db.Build(), pos)
 }
 
 func singular[T comparable](xs []T) (T, bool) {

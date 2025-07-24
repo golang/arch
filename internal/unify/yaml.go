@@ -206,8 +206,7 @@ func (dec *yamlDecoder) value(node *yaml.Node) (vOut *Value, errOut error) {
 		return mk2(NewStringRegex(vals...))
 
 	case is(yaml.MappingNode, "tag:yaml.org,2002:map"):
-		var fields []string
-		var vals []*Value
+		var db DefBuilder
 		for i := 0; i < len(node.Content); i += 2 {
 			key := node.Content[i]
 			if key.Kind != yaml.ScalarNode {
@@ -217,10 +216,9 @@ func (dec *yamlDecoder) value(node *yaml.Node) (vOut *Value, errOut error) {
 			if err != nil {
 				return nil, err
 			}
-			fields = append(fields, key.Value)
-			vals = append(vals, val)
+			db.Add(key.Value, val)
 		}
-		return mk(NewDef(fields, vals))
+		return mk(db.Build())
 
 	case is(yaml.SequenceNode, "tag:yaml.org,2002:seq"):
 		elts := node.Content

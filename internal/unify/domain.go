@@ -94,21 +94,25 @@ type Def struct {
 	fields map[string]*Value
 }
 
-// NewDef creates a new [Def].
-//
-// The fields and values slices must have the same length.
-func NewDef(fields []string, values []*Value) Def {
-	if len(fields) != len(values) {
-		panic("fields and values must have the same length")
+// A DefBuilder builds a [Def] one field at a time. The zero value is an empty
+// [Def].
+type DefBuilder struct {
+	fields map[string]*Value
+}
+
+func (b *DefBuilder) Add(name string, v *Value) {
+	if b.fields == nil {
+		b.fields = make(map[string]*Value)
 	}
-	m := make(map[string]*Value, len(fields))
-	for i := range fields {
-		if _, ok := m[fields[i]]; ok {
-			panic(fmt.Sprintf("duplicate field %q", fields[i]))
-		}
-		m[fields[i]] = values[i]
+	if _, ok := b.fields[name]; ok {
+		panic(fmt.Sprintf("duplicate field %q", name))
 	}
-	return Def{m}
+	b.fields[name] = v
+}
+
+// Build constructs a [Def] from the fields added to this builder.
+func (b *DefBuilder) Build() Def {
+	return Def{maps.Clone(b.fields)}
 }
 
 // Exact returns true if all field Values are exact.
