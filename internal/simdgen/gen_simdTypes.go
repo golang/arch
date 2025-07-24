@@ -50,7 +50,37 @@ func (x simdType) LanesContainer() int {
 // get masked loads/stores generated, it is used in two places,
 // this forces coordination.
 func (x simdType) MaskedLoadStoreFilter() bool {
-	return x.Size < 512 && x.ElemBits() >= 32 && x.Type != "mask"
+	return x.Size == 512 || x.ElemBits() >= 32 && x.Type != "mask"
+}
+
+func (x simdType) IntelSizeSuffix() string {
+	switch x.ElemBits() {
+	case 8:
+		return "B"
+	case 16:
+		return "W"
+	case 32:
+		return "D"
+	case 64:
+		return "Q"
+	}
+	panic("oops")
+}
+
+func (x simdType) MaskedLoadDoc() string {
+	if x.Size == 512 || x.ElemBits() < 32 {
+		return fmt.Sprintf("// Asm: VMOVDQU%d.Z, CPU Feature: AVX512", x.ElemBits())
+	} else {
+		return fmt.Sprintf("// Asm: VMASKMOV%s, CPU Feature: AVX2", x.IntelSizeSuffix())
+	}
+}
+
+func (x simdType) MaskedStoreDoc() string {
+	if x.Size == 512 || x.ElemBits() < 32 {
+		return fmt.Sprintf("// Asm: VMOVDQU%d, CPU Feature: AVX512", x.ElemBits())
+	} else {
+		return fmt.Sprintf("// Asm: VMASKMOV%s, CPU Feature: AVX2", x.IntelSizeSuffix())
+	}
 }
 
 func compareSimdTypes(x, y simdType) int {
@@ -145,6 +175,7 @@ const simdMaskFromValTemplate = `
 // {{.Name}}FromBits constructs a {{.Name}} from a bitmap value, where 1 means set for the indexed element, 0 means unset.
 // Only the lower {{.Lanes}} bits of y are used.
 //
+// Asm: KMOV{{.IntelSizeSuffix}}, CPU Feature: AVX512"
 func {{.Name}}FromBits(y uint{{.LanesContainer}}) {{.Name}}
 `
 
@@ -152,11 +183,15 @@ const simdMaskedLoadStoreTemplate = `
 // LoadMasked{{.Name}} loads a {{.Name}} from an array,
 // at those elements enabled by mask
 //
+{{.MaskedLoadDoc}}
+//
 //go:noescape
 func LoadMasked{{.Name}}(y *[{{.Lanes}}]{{.Base}}, mask Mask{{.ElemBits}}x{{.Lanes}}) {{.Name}}
 
 // StoreMasked stores a {{.Name}} to an array,
 // at those elements enabled by mask
+//
+{{.MaskedStoreDoc}}
 //
 //go:noescape
 func (x {{.Name}}) StoreMasked(y *[{{.Lanes}}]{{.Base}}, mask Mask{{.ElemBits}}x{{.Lanes}})
