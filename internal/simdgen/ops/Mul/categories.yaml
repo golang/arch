@@ -3,45 +3,45 @@
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
-    // Mul multiplies corresponding elements of two vectors.
+    // NAME multiplies corresponding elements of two vectors.
 - go: MulEvenWiden
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
-    // MulEvenWiden multiplies even-indexed elements, widening the result.
+    // NAME multiplies even-indexed elements, widening the result.
     // Result[i] = v1.Even[i] * v2.Even[i].
 - go: MulHigh
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
-    // MulHigh multiplies elements and stores the high part of the result.
+    // NAME multiplies elements and stores the high part of the result.
 - go: MulLow
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
-    // MulLow multiplies elements and stores the low part of the result.
+    // NAME multiplies elements and stores the low part of the result.
 - go: MulMasked
   masked: true
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
-    // MulMasked multiplies corresponding elements of two vectors.
+    // NAME multiplies corresponding elements of two vectors.
 - go: MulEvenWidenMasked
   masked: true
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
-    // MulEvenWidenMasked multiplies even-indexed elements, widening the result.
+    // NAME multiplies even-indexed elements, widening the result.
     // Result[i] = v1.Even[i] * v2.Even[i].
 - go: MulHighMasked
   masked: true
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
-    // MulHighMasked multiplies elements and stores the high part of the result.
+    // NAME multiplies elements and stores the high part of the result.
 - go: MulLowMasked
   masked: true
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
-    // MulLowMasked multiplies elements and stores the low part of the result.
+    // NAME multiplies elements and stores the low part of the result.

@@ -569,8 +569,8 @@ func splitMask(ops []Operation) ([]Operation, error) {
 			}
 			maskedOpName := op2.Go
 			op2.Go = strings.TrimSuffix(op2.Go, "Masked")
-			op2Doc := strings.ReplaceAll(*op2.Documentation, maskedOpName, op2.Go)
-			op2.Documentation = &op2Doc
+			op2Doc := strings.ReplaceAll(op2.Documentation, maskedOpName, op2.Go)
+			op2.Documentation = op2Doc
 			op2.Masked = nil // It's no longer masked.
 			splited = append(splited, op2)
 		} else {
@@ -583,9 +583,7 @@ func splitMask(ops []Operation) ([]Operation, error) {
 func insertMaskDescToDoc(ops []Operation) {
 	for i, _ := range ops {
 		if ops[i].Masked != nil && *ops[i].Masked {
-			if ops[i].Documentation != nil {
-				*ops[i].Documentation += "\n//\n// This operation is applied selectively under a write mask."
-			}
+			ops[i].Documentation += "\n//\n// This operation is applied selectively under a write mask."
 		}
 	}
 }

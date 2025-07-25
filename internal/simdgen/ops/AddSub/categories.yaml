@@ -3,67 +3,67 @@
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
-    // Add adds corresponding elements of two vectors.
+    // NAME adds corresponding elements of two vectors.
 - go: SaturatedAdd
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
-    // SaturatedAdd adds corresponding elements of two vectors with saturation.
+    // NAME adds corresponding elements of two vectors with saturation.
 - go: AddMasked
   masked: true
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
-    // AddMasked adds corresponding elements of two vectors.
+    // NAME adds corresponding elements of two vectors.
 - go: SaturatedAddMasked
   masked: true
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
-    // SaturatedAddMasked adds corresponding elements of two vectors with saturation.
+    // NAME adds corresponding elements of two vectors with saturation.
 - go: Sub
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // Sub subtracts corresponding elements of two vectors.
+    // NAME subtracts corresponding elements of two vectors.
 - go: SaturatedSub
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // SaturatedSub subtracts corresponding elements of two vectors with saturation.
+    // NAME subtracts corresponding elements of two vectors with saturation.
 - go: SubMasked
   masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // SubMasked subtracts corresponding elements of two vectors.
+    // NAME subtracts corresponding elements of two vectors.
 - go: SaturatedSubMasked
   masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // SaturatedSubMasked subtracts corresponding elements of two vectors with saturation.
+    // NAME subtracts corresponding elements of two vectors with saturation.
 - go: PairwiseAdd
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // PairwiseAdd horizontally adds adjacent pairs of elements.
+    // NAME horizontally adds adjacent pairs of elements.
     // For x = [x0, x1, x2, x3, ...] and y = [y0, y1, y2, y3, ...], the result is [y0+y1, y2+y3, ..., x0+x1, x2+x3, ...].
 - go: PairwiseSub
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // PairwiseSub horizontally subtracts adjacent pairs of elements.
+    // NAME horizontally subtracts adjacent pairs of elements.
     // For x = [x0, x1, x2, x3, ...] and y = [y0, y1, y2, y3, ...], the result is [y0-y1, y2-y3, ..., x0-x1, x2-x3, ...].
 - go: SaturatedPairwiseAdd
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // SaturatedPairwiseAdd horizontally adds adjacent pairs of elements with saturation.
+    // NAME horizontally adds adjacent pairs of elements with saturation.
     // For x = [x0, x1, x2, x3, ...] and y = [y0, y1, y2, y3, ...], the result is [y0+y1, y2+y3, ..., x0+x1, x2+x3, ...].
 - go: SaturatedPairwiseSub
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // SaturatedPairwiseSub horizontally subtracts adjacent pairs of elements with saturation.
+    // NAME horizontally subtracts adjacent pairs of elements with saturation.
     // For x = [x0, x1, x2, x3, ...] and y = [y0, y1, y2, y3, ...], the result is [y0-y1, y2-y3, ..., x0-x1, x2-x3, ...].

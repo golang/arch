@@ -11,90 +11,89 @@
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
-    // Equal compares for equality.
+    // NAME compares for equality.
 - go: Less
   constImm: 1
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // Less compares for less than.
+    // NAME compares for less than.
 - go: LessEqual
   constImm: 2
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // LessEqual compares for less than or equal.
+    // NAME compares for less than or equal.
 - go: IsNan # For float only.
   constImm: 3
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
-    // IsNan checks if elements are NaN. Use as x.IsNan(x).
+    // NAME checks if elements are NaN. Use as x.IsNan(x).
 - go: NotEqual
   constImm: 4
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
-    // NotEqual compares for inequality.
+    // NAME compares for inequality.
 - go: GreaterEqual
   constImm: 13
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // GreaterEqual compares for greater than or equal.
+    // NAME compares for greater than or equal.
 - go: Greater
   constImm: 14
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // Greater compares for greater than.
-
+    // NAME compares for greater than.
 - go: EqualMasked
   constImm: 0
   masked: true
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
-    // EqualMasked compares for equality.
+    // NAME compares for equality.
 - go: LessMasked
   constImm: 1
   masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // LessMasked compares for less than.
+    // NAME compares for less than.
 - go: LessEqualMasked
   constImm: 2
   masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // LessEqualMasked compares for less than or equal.
+    // NAME compares for less than or equal.
 - go: IsNanMasked # For float only.
   constImm: 3
   masked: true
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
-    // IsNanMasked checks if elements are NaN. Use as x.IsNan(x).
+    // NAME checks if elements are NaN. Use as x.IsNan(x).
 - go: NotEqualMasked
   constImm: 4
   masked: true
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
-    // NotEqualMasked compares for inequality.
+    // NAME compares for inequality.
 - go: GreaterEqualMasked
   constImm: 13
   masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // GreaterEqualMasked compares for greater than or equal.
+    // NAME compares for greater than or equal.
 - go: GreaterMasked
   constImm: 14
   masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // GreaterMasked compares for greater than.
+    // NAME compares for greater than.

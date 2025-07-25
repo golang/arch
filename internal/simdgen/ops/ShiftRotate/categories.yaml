@@ -4,21 +4,21 @@
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // ShiftAllLeft shifts each element to the left by the specified number of bits. Emptied lower bits are zeroed.
+    // NAME shifts each element to the left by the specified number of bits. Emptied lower bits are zeroed.
 - go: ShiftAllLeftMasked
   nameAndSizeCheck: true
   masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // ShiftAllLeftMasked shifts each element to the left by the specified number of bits. Emptied lower bits are zeroed.
+    // NAME shifts each element to the left by the specified number of bits. Emptied lower bits are zeroed.
 - go: ShiftAllRight
   signed: false
   nameAndSizeCheck: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // ShiftAllRight shifts each element to the right by the specified number of bits. Emptied upper bits are zeroed.
+    // NAME shifts each element to the right by the specified number of bits. Emptied upper bits are zeroed.
 - go: ShiftAllRightMasked
   signed: false
   nameAndSizeCheck: true
@@ -26,14 +26,14 @@
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // ShiftAllRightMasked shifts each element to the right by the specified number of bits. Emptied upper bits are zeroed.
+    // NAME shifts each element to the right by the specified number of bits. Emptied upper bits are zeroed.
 - go: ShiftAllRight
   signed: true
   nameAndSizeCheck: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // ShiftAllRight shifts each element to the right by the specified number of bits. Emptied upper bits are filled with the sign bit.
+    // NAME shifts each element to the right by the specified number of bits. Emptied upper bits are filled with the sign bit.
 - go: ShiftAllRightMasked
   signed: true
   nameAndSizeCheck: true
@@ -41,28 +41,27 @@
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // ShiftAllRightMasked shifts each element to the right by the specified number of bits. Emptied upper bits are filled with the sign bit.
-
+    // NAME shifts each element to the right by the specified number of bits. Emptied upper bits are filled with the sign bit.
 - go: ShiftLeft
   nameAndSizeCheck: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // ShiftLeft shifts each element in x to the left by the number of bits specified in y's corresponding elements. Emptied lower bits are zeroed.
+    // NAME shifts each element in x to the left by the number of bits specified in y's corresponding elements. Emptied lower bits are zeroed.
 - go: ShiftLeftMasked
   nameAndSizeCheck: true
   masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // ShiftLeftMasked shifts each element in x to the left by the number of bits specified in y's corresponding elements. Emptied lower bits are zeroed.
+    // NAME shifts each element in x to the left by the number of bits specified in y's corresponding elements. Emptied lower bits are zeroed.
 - go: ShiftRight
   signed: false
   nameAndSizeCheck: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // ShiftRight shifts each element in x to the right by the number of bits specified in y's corresponding elements. Emptied upper bits are zeroed.
+    // NAME shifts each element in x to the right by the number of bits specified in y's corresponding elements. Emptied upper bits are zeroed.
 - go: ShiftRightMasked
   signed: false
   nameAndSizeCheck: true
@@ -70,14 +69,14 @@
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // ShiftRightMasked shifts each element in x to the right by the number of bits specified in y's corresponding elements. Emptied upper bits are zeroed.
+    // NAME shifts each element in x to the right by the number of bits specified in y's corresponding elements. Emptied upper bits are zeroed.
 - go: ShiftRight
   signed: true
   nameAndSizeCheck: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // ShiftRight shifts each element in x to the right by the number of bits specified in y's corresponding elements. Emptied upper bits are filled with the sign bit.
+    // NAME shifts each element in x to the right by the number of bits specified in y's corresponding elements. Emptied upper bits are filled with the sign bit.
 - go: ShiftRightMasked
   signed: true
   nameAndSizeCheck: true
@@ -85,44 +84,42 @@
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // ShiftRightMasked shifts each element in x to the right by the number of bits specified in y's corresponding elements. Emptied upper bits are filled with the sign bit.
-
+    // NAME shifts each element in x to the right by the number of bits specified in y's corresponding elements. Emptied upper bits are filled with the sign bit.
 - go: RotateAllLeftMasked
   nameAndSizeCheck: true
   masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // RotateAllLeftMasked rotates each element to the left by the number of bits specified by the immediate.
+    // NAME rotates each element to the left by the number of bits specified by the immediate.
 - go: RotateLeftMasked
   nameAndSizeCheck: true
   masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // RotateLeftMasked rotates each element in x to the left by the number of bits specified by y's corresponding elements.
+    // NAME rotates each element in x to the left by the number of bits specified by y's corresponding elements.
 - go: RotateAllRightMasked
   nameAndSizeCheck: true
   masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // RotateAllRightMasked rotates each element to the right by the number of bits specified by the immediate.
+    // NAME rotates each element to the right by the number of bits specified by the immediate.
 - go: RotateRightMasked
   nameAndSizeCheck: true
   masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // RotateRightMasked rotates each element in x to the right by the number of bits specified by y's corresponding elements.
-
+    // NAME rotates each element in x to the right by the number of bits specified by y's corresponding elements.
 - go: ShiftAllLeftAndFillUpperFromMasked
   nameAndSizeCheck: true
   masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // ShiftAllLeftAndFillUpperFromMasked shifts each element of x to the left by the number of bits specified by the
+    // NAME shifts each element of x to the left by the number of bits specified by the
     // immediate(only the lower 5 bits are used), and then copies the upper bits of y to the emptied lower bits of the shifted x.
 - go: ShiftAllRightAndFillUpperFromMasked
   nameAndSizeCheck: true
@@ -130,7 +127,7 @@
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // ShiftAllRightAndFillUpperFromMasked shifts each element of x to the right by the number of bits specified by the
+    // NAME shifts each element of x to the right by the number of bits specified by the
     // immediate(only the lower 5 bits are used), and then copies the lower bits of y to the emptied upper bits of the shifted x.
 - go: ShiftLeftAndFillUpperFromMasked
   nameAndSizeCheck: true
@@ -138,7 +135,7 @@
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // ShiftLeftAndFillUpperFromMasked shifts each element of x to the left by the number of bits specified by the
+    // NAME shifts each element of x to the left by the number of bits specified by the
     // corresponding elements in y(only the lower 5 bits are used), and then copies the upper bits of z to the emptied lower bits of the shifted x.
 - go: ShiftRightAndFillUpperFromMasked
   nameAndSizeCheck: true
@@ -146,5 +143,5 @@
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // ShiftRightAndFillUpperFromMasked shifts each element of x to the right by the number of bits specified by the
+    // NAME shifts each element of x to the right by the number of bits specified by the
     // corresponding elements in y(only the lower 5 bits are used), and then copies the lower bits of z to the emptied upper bits of the shifted x.

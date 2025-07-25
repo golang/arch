@@ -7,6 +7,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"regexp"
 	"slices"
 	"strconv"
 	"strings"
@@ -16,6 +17,16 @@ import (
 
 type Operation struct {
 	rawOperation
+
+	// Documentation is the doc string for this API.
+	//
+	// It is computed from the raw documentation:
+	//
+	// - "NAME" is replaced by the Go method name.
+	//
+	// - For masked operation, the method name is updated and a sentence about
+	// masking is added.
+	Documentation string
 }
 
 // rawOperation is the unifier representation of an [Operation]. It is
@@ -49,6 +60,15 @@ func (o *Operation) DecodeUnified(v *unify.Value) error {
 	if err := v.Decode(&o.rawOperation); err != nil {
 		return err
 	}
+
+	// Compute doc string.
+	if o.rawOperation.Documentation != nil {
+		o.Documentation = *o.rawOperation.Documentation
+	} else {
+		o.Documentation = "// UNDOCUMENTED"
+	}
+	o.Documentation = regexp.MustCompile(`\bNAME\b`).ReplaceAllString(o.Documentation, o.Go)
+
 	return nil
 }
 
