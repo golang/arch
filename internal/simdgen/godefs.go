@@ -15,6 +15,12 @@ import (
 )
 
 type Operation struct {
+	rawOperation
+}
+
+// rawOperation is the unifier representation of an [Operation]. It is
+// translated into a more parsed form after unifier decoding.
+type rawOperation struct {
 	Go string // Go method name
 
 	GoArch       string  // GOARCH for this definition
@@ -37,6 +43,13 @@ type Operation struct {
 	Masked *bool
 	// NameAndSizeCheck is used to check [BWDQ] maps to (8|16|32|64) elemBits.
 	NameAndSizeCheck *bool
+}
+
+func (o *Operation) DecodeUnified(v *unify.Value) error {
+	if err := v.Decode(&o.rawOperation); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Operation) VectorWidth() int {
