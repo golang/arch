@@ -126,10 +126,10 @@ func (d Def) Exact() bool {
 }
 
 func (d Def) decode(rv reflect.Value) error {
-	rv, err := preDecode(rv, reflect.Struct, "Def")
-	if err != nil {
-		return err
+	if rv.Kind() != reflect.Struct {
+		return fmt.Errorf("cannot decode Def into %s", rv.Type())
 	}
+
 	var lowered map[string]string // Lower case -> canonical for d.fields.
 	rt := rv.Type()
 	for fi := range rv.NumField() {
@@ -161,7 +161,7 @@ func (d Def) decode(rv reflect.Value) error {
 				}
 			}
 		}
-		if err := v.Domain.decode(rv.Field(fi)); err != nil {
+		if err := decodeReflect(v, rv.Field(fi)); err != nil {
 			return newDecodeError(fType.Name, err)
 		}
 	}
@@ -224,9 +224,8 @@ func (d Tuple) decode(rv reflect.Value) error {
 		return &inexactError{"repeated tuple", rv.Type().String()}
 	}
 	// TODO: We could also do arrays.
-	rv, err := preDecode(rv, reflect.Slice, "Tuple")
-	if err != nil {
-		return err
+	if rv.Kind() != reflect.Slice {
+		return fmt.Errorf("cannot decode Tuple into %s", rv.Type())
 	}
 	if rv.IsNil() || rv.Cap() < len(d.vs) {
 		rv.Set(reflect.MakeSlice(rv.Type(), len(d.vs), len(d.vs)))
@@ -234,7 +233,7 @@ func (d Tuple) decode(rv reflect.Value) error {
 		rv.SetLen(len(d.vs))
 	}
 	for i, v := range d.vs {
-		if err := v.Domain.decode(rv.Index(i)); err != nil {
+		if err := decodeReflect(v, rv.Index(i)); err != nil {
 			return newDecodeError(fmt.Sprintf("%d", i), err)
 		}
 	}
@@ -305,28 +304,23 @@ func (d String) decode(rv reflect.Value) error {
 	if d.kind != stringExact {
 		return &inexactError{"regex", rv.Type().String()}
 	}
-	rv2, err := preDecode(rv, reflect.String, "String")
-	if err == nil {
-		rv2.SetString(d.exact)
-		return nil
-	}
-	rv2, err = preDecode(rv, reflect.Int, "String")
-	if err == nil {
+	switch rv.Kind() {
+	default:
+		return fmt.Errorf("cannot decode String into %s", rv.Type())
+	case reflect.String:
+		rv.SetString(d.exact)
+	case reflect.Int:
 		i, err := strconv.Atoi(d.exact)
 		if err != nil {
-			return fmt.Errorf("cannot decode string into %s: %s", rv.Type(), err)
+			return fmt.Errorf("cannot decode String into %s: %s", rv.Type(), err)
 		}
-		rv2.SetInt(int64(i))
-		return nil
-	}
-	rv2, err = preDecode(rv, reflect.Bool, "Bool")
-	if err == nil {
+		rv.SetInt(int64(i))
+	case reflect.Bool:
 		b, err := strconv.ParseBool(d.exact)
 		if err != nil {
-			return fmt.Errorf("cannot decode string into %s: %s", rv.Type(), err)
+			return fmt.Errorf("cannot decode String into %s: %s", rv.Type(), err)
 		}
-		rv2.SetBool(b)
-		return nil
+		rv.SetBool(b)
 	}
-	return err
+	return nil
 }

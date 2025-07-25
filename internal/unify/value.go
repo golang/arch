@@ -83,26 +83,57 @@ func (v *Value) Exact() bool {
 // are decoded into strings or ints. Any field can itself be a pointer to one of
 // these types. Top can be decoded into a pointer-typed field and will set the
 // field to nil. Anything else will allocate a value if necessary.
+//
+// Any type may implement [Decoder], in which case its DecodeUnified method will
+// be called instead of using the default decoding scheme.
 func (v *Value) Decode(into any) error {
 	rv := reflect.ValueOf(into)
 	if rv.Kind() != reflect.Pointer {
 		return fmt.Errorf("cannot decode into non-pointer %T", into)
 	}
-	return v.Domain.decode(rv)
+	return decodeReflect(v, rv.Elem())
 }
 
-func preDecode(rv reflect.Value, kind reflect.Kind, name string) (reflect.Value, error) {
-	if rv.Kind() == kind {
-		return rv, nil
-	}
-	if rv.Kind() == reflect.Pointer && rv.Type().Elem().Kind() == kind {
+func decodeReflect(v *Value, rv reflect.Value) error {
+	var ptr reflect.Value
+	if rv.Kind() == reflect.Pointer {
 		if rv.IsNil() {
-			rv.Set(reflect.New(rv.Type().Elem()))
+			// Transparently allocate through pointers, *except* for Top, which
+			// wants to set the pointer to nil.
+			//
+			// TODO: Drop this condition if I switch to an explicit Optional[T]
+			// or move the Top logic into Def.
+			if _, ok := v.Domain.(Top); !ok {
+				// Allocate the value to fill in, but don't actually store it in
+				// the pointer until we successfully decode.
+				ptr = rv
+				rv = reflect.New(rv.Type().Elem()).Elem()
+			}
+		} else {
+			rv = rv.Elem()
 		}
-		return rv.Elem(), nil
 	}
-	return reflect.Value{}, fmt.Errorf("cannot decode %s into %s", name, rv.Type())
+
+	var err error
+	if reflect.PointerTo(rv.Type()).Implements(decoderType) {
+		// Use the custom decoder.
+		err = rv.Addr().Interface().(Decoder).DecodeUnified(v)
+	} else {
+		err = v.Domain.decode(rv)
+	}
+	if err == nil && ptr.IsValid() {
+		ptr.Set(rv.Addr())
+	}
+	return err
 }
+
+// Decoder can be implemented by types as a custom implementation of [Decode]
+// for that type.
+type Decoder interface {
+	DecodeUnified(v *Value) error
+}
+
+var decoderType = reflect.TypeOf((*Decoder)(nil)).Elem()
 
 // Provenance iterates over all of the source Values that have contributed to
 // this Value.
