@@ -19,10 +19,6 @@ import (
 type UnmarshalOpts struct {
 	// Path is the file path to store in the [Pos] of all [Value]s.
 	Path string
-
-	// StringReplacer, if non-nil, is called for each string value to perform
-	// any application-specific string interpolation.
-	StringReplacer func(string) string
 }
 
 // UnmarshalYAML unmarshals a YAML node into a Closure.
@@ -184,18 +180,12 @@ func (dec *yamlDecoder) value(node *yaml.Node) (vOut *Value, errOut error) {
 
 	case isExact():
 		val := node.Value
-		if dec.opts.StringReplacer != nil {
-			val = dec.opts.StringReplacer(val)
-		}
 		return mk(NewStringExact(val))
 
 	case isStr || is(yaml.ScalarNode, "!regex"):
 		// Any other string we treat as a regex. This will produce an exact
 		// string anyway if the regex is literal.
 		val := node.Value
-		if dec.opts.StringReplacer != nil {
-			val = dec.opts.StringReplacer(val)
-		}
 		return mk2(NewStringRegex(val))
 
 	case is(yaml.SequenceNode, "!regex"):
