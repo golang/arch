@@ -36,38 +36,35 @@
     overwriteElementBits: 64
     overwriteClass: mask
     overwriteBase: int
-- go: EqualMasked
+# AVX-512 compares produce masks.
+- go: Equal
   asm: "V?PCMPEQ[BWDQ]"
   in:
-  - class: mask
   - *any
   - *any
   out:
   - class: mask
-- go: GreaterMasked
+- go: Greater
   asm: "V?PCMPGT[BWDQ]"
   in:
-  - class: mask
   - *int
   - *int
   out:
   - class: mask
 # The const imm predicated compares after AVX512, please see categories.yaml
 # for const imm specification.
-- go: (Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual)Masked
+- go: (Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual)
   asm: "VPCMP[BWDQ]"
   in:
-  - class: mask
   - *int
   - *int
   - class: immediate
     const: 0 # Just a placeholder, will be overwritten by const imm porting.
   out:
   - class: mask
-- go: (Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual)Masked
+- go: (Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual)
   asm: "VPCMPU[BWDQ]"
   in:
-  - class: mask
   - &uint
     go: $t
     base: uint
@@ -91,10 +88,9 @@
   - go: $t
     overwriteBase: int
     overwriteClass: mask
-- go: (Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual|IsNan)Masked
+- go: (Equal|Greater|Less|LessEqual|GreaterEqual|NotEqual|IsNan)
   asm: "VCMPP[SD]"
   in:
-  - class: mask
   - *float
   - *float
   - class: immediate

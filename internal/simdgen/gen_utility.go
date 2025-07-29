@@ -549,45 +549,6 @@ func fillCPUFeature(ops []Operation) (filled []Operation, excluded []Operation) 
 	return
 }
 
-// splitMask splits operations with a single mask vreg input to be masked and unmasked(const: K0).
-// It also remove the "Masked" keyword from the name.
-func splitMask(ops []Operation) ([]Operation, error) {
-	splited := []Operation{}
-	for _, op := range ops {
-		splited = append(splited, op)
-		if op.Masked == nil || !*op.Masked {
-			continue
-		}
-		shapeIn, _, _, _, _ := op.shape()
-
-		if shapeIn == OneKmaskIn || shapeIn == OneKmaskImmIn {
-			op2 := op
-			// The ops should be sorted when calling this function, the mask is in the end, drop the mask
-			op2.In = slices.Clone(op.In)[:len(op.In)-1]
-			if !strings.HasSuffix(op2.Go, "Masked") {
-				return nil, fmt.Errorf("simdgen only recognizes masked operations with name ending with 'Masked': %s", op)
-			}
-			maskedOpName := op2.Go
-			op2.Go = strings.TrimSuffix(op2.Go, "Masked")
-			op2Doc := strings.ReplaceAll(op2.Documentation, maskedOpName, op2.Go)
-			op2.Documentation = op2Doc
-			op2.Masked = nil // It's no longer masked.
-			splited = append(splited, op2)
-		} else {
-			return nil, fmt.Errorf("simdgen only recognizes masked operations with exactly one mask input: %s", op)
-		}
-	}
-	return splited, nil
-}
-
-func insertMaskDescToDoc(ops []Operation) {
-	for i, _ := range ops {
-		if ops[i].Masked != nil && *ops[i].Masked {
-			ops[i].Documentation += "\n//\n// This operation is applied selectively under a write mask."
-		}
-	}
-}
-
 func genericName(op Operation) string {
 	if op.OperandOrder != nil {
 		switch *op.OperandOrder {

@@ -10,37 +10,19 @@
   - &int2 # The elemBits are different
     go: $t2
     base: int
-- go: PairDotProdMasked
-  asm: VPMADDWD
-  in:
-  - class: mask
-  - *int
-  - *int
-  out:
-  - *int2
 - go: SaturatedUnsignedSignedPairDotProd
   asm: VPMADDUBSW
   in:
   - &uint
     go: $t
     base: uint
+    overwriteElementBits: 8
   - &int3
     go: $t3
     base: int
+    overwriteElementBits: 8
   out:
   - *int2
-- go: SaturatedUnsignedSignedPairDotProdMasked
-  asm: VPMADDUBSW
-  in:
-  - class: mask
-  - go: $t1
-    base: uint
-    overwriteElementBits: 8
-  - go: $t2
-    base: int
-    overwriteElementBits: 8
-  out:
-  - *int3
 - go: DotProdBroadcast
   asm: VDPP[SD]
   in:
@@ -69,31 +51,11 @@
     overwriteElementBits: 8
   out:
   - *qdpa_acc
-- go: UnsignedSignedQuadDotProdAccumulateMasked
-  asm: "VPDPBUSD"
-  operandOrder: "31" # switch operand 3 and 1
-  in:
-  - *qdpa_acc
-  - class: mask
-  - *qdpa_src1
-  - *qdpa_src2
-  out:
-  - *qdpa_acc
 - go: SaturatedUnsignedSignedQuadDotProdAccumulate
   asm: "VPDPBUSDS"
   operandOrder: "31" # switch operand 3 and 1
   in:
   - *qdpa_acc
-  - *qdpa_src1
-  - *qdpa_src2
-  out:
-  - *qdpa_acc
-- go: SaturatedUnsignedSignedQuadDotProdAccumulateMasked
-  asm: "VPDPBUSDS"
-  operandOrder: "31" # switch operand 3 and 1
-  in:
-  - *qdpa_acc
-  - class: mask
   - *qdpa_src1
   - *qdpa_src2
   out:
@@ -116,16 +78,6 @@
     overwriteElementBits: 16
   out:
   - *pdpa_acc
-- go: PairDotProdAccumulateMasked
-  asm: "VPDPWSSD"
-  operandOrder: "31" # switch operand 3 and 1
-  in:
-  - *pdpa_acc
-  - class: mask
-  - *pdpa_src1
-  - *pdpa_src2
-  out:
-  - *pdpa_acc
 - go: SaturatedPairDotProdAccumulate
   asm: "VPDPWSSDS"
   operandOrder: "31" # switch operand 3 and 1
@@ -135,41 +87,28 @@
   - *pdpa_src2
   out:
   - *pdpa_acc
-- go: SaturatedPairDotProdAccumulateMasked
-  asm: "VPDPWSSDS"
-  operandOrder: "31" # switch operand 3 and 1
-  in:
-  - *pdpa_acc
-  - class: mask
-  - *pdpa_src1
-  - *pdpa_src2
-  out:
-  - *pdpa_acc
-- go: FusedMultiplyAddMasked
+- go: FusedMultiplyAdd
   asm: "VFMADD213PS|VFMADD213PD"
   in:
   - &fma_op
    go: $t
    base: float
-  - class: mask
   - *fma_op
   - *fma_op
   out:
   - *fma_op
-- go: FusedMultiplyAddSubMasked
+- go: FusedMultiplyAddSub
   asm: "VFMADDSUB213PS|VFMADDSUB213PD"
   in:
   - *fma_op
-  - class: mask
   - *fma_op
   - *fma_op
   out:
   - *fma_op
-- go: FusedMultiplySubAddMasked
+- go: FusedMultiplySubAdd
   asm: "VFMSUBADD213PS|VFMSUBADD213PD"
   in:
   - *fma_op
-  - class: mask
   - *fma_op
   - *fma_op
   out:

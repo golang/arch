@@ -22,6 +22,18 @@ const (
 	GREG_CLASS    = 2 // classify as a general register
 )
 
+// instVariant is a bitmap indicating a variant of an instruction that has
+// optional parameters.
+type instVariant uint8
+
+const (
+	instVariantNone instVariant = 0
+
+	// instVariantMasked indicates that this is the masked variant of an
+	// optionally-masked instruction.
+	instVariantMasked instVariant = 1 << iota
+)
+
 var operandRemarks int
 
 // TODO: Doc. Returns Values with Def domains.
@@ -58,18 +70,51 @@ func loadXED(xedPath string) []*unify.Value {
 			return
 		}
 
-		uval := instToUVal(inst, ops)
-		defs = append(defs, uval)
+		applyQuirks(inst, ops)
+
+		defsPos := len(defs)
+		defs = append(defs, instToUVal(inst, ops)...)
 
 		if *flagDebugXED {
-			y, _ := yaml.Marshal(uval)
-			fmt.Printf("==>\n%s\n", y)
+			for i := defsPos; i < len(defs); i++ {
+				y, _ := yaml.Marshal(defs[i])
+				fmt.Printf("==>\n%s\n", y)
+			}
 		}
 	})
 	if err != nil {
 		log.Fatalf("walk insts: %v", err)
 	}
 	return defs
+}
+
+var (
+	maskRequiredRe = regexp.MustCompile(`VPCOMPRESS[BWDQ]|VCOMPRESSP[SD]`)
+	maskOptionalRe = regexp.MustCompile(`VPCMP(EQ|GT|U)?[BWDQ]|VCMPP[SD]`)
+)
+
+func applyQuirks(inst *xeddata.Inst, ops []operand) {
+	opc := inst.Opcode()
+	switch {
+	case maskRequiredRe.MatchString(opc):
+		// The mask on these instructions is marked optional, but the
+		// instruction is pointless without the mask.
+		for i, op := range ops {
+			if op, ok := op.(operandMask); ok {
+				op.optional = false
+				ops[i] = op
+			}
+		}
+
+	case maskOptionalRe.MatchString(opc):
+		// Conversely, these masks should be marked optional and aren't.
+		for i, op := range ops {
+			if op, ok := op.(operandMask); ok && op.action.r {
+				op.optional = true
+				ops[i] = op
+			}
+		}
+	}
 }
 
 type operandCommon struct {
@@ -121,6 +166,9 @@ type operandMask struct {
 	// Bits in the mask is w/bits.
 
 	allMasks bool // If set, size cannot be inferred because all operands are masks.
+
+	// Mask can be omitted, in which case it defaults to K0/"no mask"
+	optional bool
 }
 
 type operandImm struct {
@@ -233,8 +281,12 @@ func decodeOperand(db *xeddata.Database, operand string) (operand, error) {
 	} else if strings.HasPrefix(lhs, "REG") {
 		if op.Width == "mskw" {
 			// The mask operand doesn't specify a width. We have to infer it.
+			//
+			// XED uses the marker ZEROSTR to indicate that a mask operand is
+			// optional and, if omitted, implies K0, aka "no mask".
 			return operandMask{
 				operandCommon: common,
+				optional:      op.Attributes["TXT=ZEROSTR"],
 			}, nil
 		} else {
 			class, regBits := decodeReg(op)
@@ -397,38 +449,63 @@ func inferMaskSizes(ops []operand) error {
 	return nil
 }
 
-func operandsToUVals(ops []operand) (in, out unify.Tuple) {
-	var inVals, outVals []*unify.Value
-	for asmPos, op := range ops {
+// addOperandstoDef adds "in", "inVariant", and "out" to an instruction Def.
+//
+// Optional mask input operands are added to the inVariant field if
+// variant&instVariantMasked, and omitted otherwise.
+func addOperandsToDef(ops []operand, instDB *unify.DefBuilder, variant instVariant) {
+	var inVals, inVar, outVals []*unify.Value
+	asmPos := 0
+	for _, op := range ops {
 		var db unify.DefBuilder
 		op.addToDef(&db)
-
 		db.Add("asmPos", unify.NewValue(unify.NewStringExact(fmt.Sprint(asmPos))))
 
 		action := op.common().action
+		asmCount := 1 // # of assembly operands; 0 or 1
 		if action.r {
 			inVal := unify.NewValue(db.Build())
-			inVals = append(inVals, inVal)
+			// If this is an optional mask, put it in the input variant tuple.
+			if mask, ok := op.(operandMask); ok && mask.optional {
+				if variant&instVariantMasked != 0 {
+					inVar = append(inVar, inVal)
+				} else {
+					// This operand doesn't appear in the assembly at all.
+					asmCount = 0
+				}
+			} else {
+				// Just a regular input operand.
+				inVals = append(inVals, inVal)
+			}
 		}
 		if action.w {
 			outVal := unify.NewValue(db.Build())
 			outVals = append(outVals, outVal)
 		}
+
+		asmPos += asmCount
 	}
 
-	return unify.NewTuple(inVals...), unify.NewTuple(outVals...)
+	instDB.Add("in", unify.NewValue(unify.NewTuple(inVals...)))
+	instDB.Add("inVariant", unify.NewValue(unify.NewTuple(inVar...)))
+	instDB.Add("out", unify.NewValue(unify.NewTuple(outVals...)))
 }
 
-func instToUVal(inst *xeddata.Inst, ops []operand) *unify.Value {
-	// Map operands to unifier values.
-	ins, outs := operandsToUVals(ops)
+func instToUVal(inst *xeddata.Inst, ops []operand) []*unify.Value {
+	var vals []*unify.Value
+	vals = append(vals, instToUVal1(inst, ops, instVariantNone))
+	if hasOptionalMask(ops) {
+		vals = append(vals, instToUVal1(inst, ops, instVariantMasked))
+	}
+	return vals
+}
 
+func instToUVal1(inst *xeddata.Inst, ops []operand, variant instVariant) *unify.Value {
 	// TODO: "feature"
 	var db unify.DefBuilder
 	db.Add("goarch", unify.NewValue(unify.NewStringExact("amd64")))
 	db.Add("asm", unify.NewValue(unify.NewStringExact(inst.Opcode())))
-	db.Add("in", unify.NewValue(ins))
-	db.Add("out", unify.NewValue(outs))
+	addOperandsToDef(ops, &db, variant)
 	db.Add("extension", unify.NewValue(unify.NewStringExact(inst.Extension)))
 	db.Add("isaset", unify.NewValue(unify.NewStringExact(inst.ISASet)))
 
@@ -452,6 +529,16 @@ func instToUVal(inst *xeddata.Inst, ops []operand) *unify.Value {
 	}
 	pos := unify.Pos{Path: inst.Pos.Path, Line: inst.Pos.Line}
 	return unify.NewValuePos(db.Build(), pos)
+}
+
+// hasOptionalMask returns whether there is an optional mask operand in ops.
+func hasOptionalMask(ops []operand) bool {
+	for _, op := range ops {
+		if op, ok := op.(operandMask); ok && op.optional {
+			return true
+		}
+	}
+	return false
 }
 
 func singular[T comparable](xs []T) (T, bool) {

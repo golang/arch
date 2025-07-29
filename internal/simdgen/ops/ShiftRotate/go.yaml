@@ -11,14 +11,6 @@
     treatLikeAScalarOfSize: 64
   out:
   - *any
-- go: ShiftAllLeftMasked
-  asm: "VPSLL[WDQ]"
-  in:
-  - class: mask
-  - *any
-  - *vecAsScalar64
-  out:
-  - *any
 - go: ShiftAllRight
   signed: false
   asm: "VPSRL[WDQ]"
@@ -26,15 +18,6 @@
   - &uint
     go: $t
     base: uint
-  - *vecAsScalar64
-  out:
-  - *uint
-- go: ShiftAllRightMasked
-  signed: false
-  asm: "VPSRL[WDQ]"
-  in:
-  - class: mask
-  - *uint
   - *vecAsScalar64
   out:
   - *uint
@@ -48,28 +31,11 @@
   - *vecAsScalar64
   out:
   - *int
-- go: ShiftAllRightMasked
-  signed: true
-  asm: "VPSRA[WDQ]"
-  in:
-  - class: mask
-  - *int
-  - *vecAsScalar64
-  out:
-  - *int
 
 # Shift* (variable)
 - go: ShiftLeft
   asm: "VPSLLV[WD]"
   in:
-  - *any
-  - *any
-  out:
-  - *any
-- go: ShiftLeftMasked
-  asm: "VPSLLV[WD]"
-  in:
-  - class: mask
   - *any
   - *any
   out:
@@ -85,27 +51,10 @@
   - *anyOverwriteElemBits
   out:
   - *anyOverwriteElemBits
-- go: ShiftLeftMasked
-  asm: "VPSLLVQ"
-  in:
-  - class: mask
-  - *anyOverwriteElemBits
-  - *anyOverwriteElemBits
-  out:
-  - *anyOverwriteElemBits
 - go: ShiftRight
   signed: false
   asm: "VPSRLV[WD]"
   in:
-  - *uint
-  - *uint
-  out:
-  - *uint
-- go: ShiftRightMasked
-  signed: false
-  asm: "VPSRLV[WD]"
-  in:
-  - class: mask
   - *uint
   - *uint
   out:
@@ -122,15 +71,6 @@
   - *uintOverwriteElemBits
   out:
   - *uintOverwriteElemBits
-- go: ShiftRightMasked
-  signed: false
-  asm: "VPSRLVQ"
-  in:
-  - class: mask
-  - *uintOverwriteElemBits
-  - *uintOverwriteElemBits
-  out:
-  - *uintOverwriteElemBits
 - go: ShiftRight
   signed: true
   asm: "VPSRAV[WDQ]"
@@ -139,21 +79,11 @@
   - *int
   out:
   - *int
-- go: ShiftRightMasked
-  signed: true
-  asm: "VPSRAV[WDQ]"
-  in:
-  - class: mask
-  - *int
-  - *int
-  out:
-  - *int
 
 # Rotate
-- go: RotateAllLeftMasked
+- go: RotateAllLeft
   asm: "VPROL[DQ]"
   in:
-  - class: mask
   - *any
   - &pureImm
     class: immediate
@@ -161,64 +91,57 @@
     name: shift
   out:
   - *any
-- go: RotateAllRightMasked
+- go: RotateAllRight
   asm: "VPROR[DQ]"
   in:
-  - class: mask
   - *any
   - *pureImm
   out:
   - *any
-- go: RotateLeftMasked
+- go: RotateLeft
   asm: "VPROLV[DQ]"
   in:
-  - class: mask
   - *any
   - *any
   out:
   - *any
-- go: RotateRightMasked
+- go: RotateRight
   asm: "VPRORV[DQ]"
   in:
-  - class: mask
   - *any
   - *any
   out:
   - *any
 
 # Bizzare shifts.
-- go: ShiftAllLeftAndFillUpperFromMasked
+- go: ShiftAllLeftAndFillUpperFrom
   asm: "VPSHLD[WDQ]"
   in:
-  - class: mask
   - *any
   - *any
   - *pureImm
   out:
   - *any
-- go: ShiftAllRightAndFillUpperFromMasked
+- go: ShiftAllRightAndFillUpperFrom
   asm: "VPSHRD[WDQ]"
   in:
-  - class: mask
   - *any
   - *any
   - *pureImm
   out:
   - *any
-- go: ShiftLeftAndFillUpperFromMasked
+- go: ShiftLeftAndFillUpperFrom
   asm: "VPSHLDV[WDQ]"
   in:
   - *any
-  - class: mask
   - *any
   - *any
   out:
   - *any
-- go: ShiftRightAndFillUpperFromMasked
+- go: ShiftRightAndFillUpperFrom
   asm: "VPSHRDV[WDQ]"
   in:
   - *any
-  - class: mask
   - *any
   - *any
   out:

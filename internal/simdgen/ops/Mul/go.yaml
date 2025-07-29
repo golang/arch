@@ -10,14 +10,6 @@
   - *fp
   out:
   - *fp
-- go: MulMasked
-  asm: "VMULP[SD]"
-  in:
-  - class: mask
-  - *fp
-  - *fp
-  out:
-  - *fp
 
 # Integer multiplications.
 
@@ -45,26 +37,9 @@
   - &uint2
     go: $t2
     base: uint
-- go: MulEvenWidenMasked
-  asm: "VPMULDQ"
-  in:
-  - class: mask
-  - *int
-  - *int
-  out:
-  - *int2
-- go: MulEvenWidenMasked
-  asm: "VPMULUDQ"
-  in:
-  - class: mask
-  - *uint
-  - *uint
-  out:
-  - *uint2
 
 # MulHigh
 # Word only.
-# Non-masked
 - go: MulHigh
   asm: "VPMULHW"
   in:
@@ -75,22 +50,6 @@
 - go: MulHigh
   asm: "VPMULHUW"
   in:
-  - *uint
-  - *uint
-  out:
-  - *uint2
-- go: MulHighMasked
-  asm: "VPMULHW"
-  in:
-  - class: mask
-  - *int
-  - *int
-  out:
-  - *int2
-- go: MulHighMasked
-  asm: "VPMULHUW"
-  in:
-  - class: mask
   - *uint
   - *uint
   out:
@@ -98,18 +57,9 @@
 
 # MulLow
 # Signed int only.
-# Non-masked
 - go: MulLow
   asm: "VPMULL[WDQ]"
   in:
-  - *int
-  - *int
-  out:
-  - *int2
-- go: MulLowMasked
-  asm: "VPMULL[WDQ]"
-  in:
-  - class: mask
   - *int
   - *int
   out:

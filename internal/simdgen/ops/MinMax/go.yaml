@@ -17,20 +17,6 @@
   - *uint
   out: &1uint
   - *uint
-- go: MaxMasked
-  asm: "V?PMAXS[BWDQ]"
-  in: &1mask2int
-  - class: mask
-  - *int
-  - *int
-  out: *1int
-- go: MaxMasked
-  asm: "V?PMAXU[BWDQ]"
-  in: &1mask2uint
-  - class: mask
-  - *uint
-  - *uint
-  out: *1uint
 
 - go: Min
   asm: "V?PMINS[BWDQ]"
@@ -39,14 +25,6 @@
 - go: Min
   asm: "V?PMINU[BWDQ]"
   in: *2uint
-  out: *1uint
-- go: MinMasked
-  asm: "V?PMINS[BWDQ]"
-  in: *1mask2int
-  out: *1int
-- go: MinMasked
-  asm: "V?PMINU[BWDQ]"
-  in: *1mask2uint
   out: *1uint
 
 - go: Max
@@ -58,18 +36,7 @@
   - *float
   out: &1float
   - *float
-- go: MaxMasked
-  asm: "V?MAXP[SD]"
-  in: &1mask2float
-  - class: mask
-  - *float
-  - *float
-  out: *1float
 - go: Min
   asm: "V?MINP[SD]"
   in: *2float
-  out: *1float
-- go: MinMasked
-  asm: "V?MINP[SD]"
-  in: *1mask2float
   out: *1float

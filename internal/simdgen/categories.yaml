@@ -9,36 +9,12 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME adds corresponding elements of two vectors with saturation.
-- go: AddMasked
-  masked: true
-  commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME adds corresponding elements of two vectors.
-- go: SaturatedAddMasked
-  masked: true
-  commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME adds corresponding elements of two vectors with saturation.
 - go: Sub
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME subtracts corresponding elements of two vectors.
 - go: SaturatedSub
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME subtracts corresponding elements of two vectors with saturation.
-- go: SubMasked
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME subtracts corresponding elements of two vectors.
-- go: SaturatedSubMasked
-  masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
@@ -72,19 +48,7 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs a bitwise AND operation between two vectors.
-- go: AndMasked
-  masked: true
-  commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME performs a bitwise AND operation between two vectors.
 - go: Or
-  commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME performs a bitwise OR operation between two vectors.
-- go: OrMasked
-  masked: true
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
@@ -94,19 +58,7 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs a bitwise x &^ y.
-- go: AndNotMasked
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME performs a bitwise x &^ y.
 - go: Xor
-  commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME performs a bitwise XOR operation between two vectors.
-- go: XorMasked
-  masked: true
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
@@ -163,63 +115,8 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME compares for greater than.
-- go: EqualMasked
-  constImm: 0
-  masked: true
-  commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME compares for equality.
-- go: LessMasked
-  constImm: 1
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME compares for less than.
-- go: LessEqualMasked
-  constImm: 2
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME compares for less than or equal.
-- go: IsNanMasked # For float only.
-  constImm: 3
-  masked: true
-  commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME checks if elements are NaN. Use as x.IsNan(x).
-- go: NotEqualMasked
-  constImm: 4
-  masked: true
-  commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME compares for inequality.
-- go: GreaterEqualMasked
-  constImm: 13
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME compares for greater than or equal.
-- go: GreaterMasked
-  constImm: 14
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME compares for greater than.
 - go: Div
   commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME divides elements of two vectors.
-- go: DivMasked
-  commutative: false
-  masked: true
   extension: "AVX.*"
   documentation: !string |-
     // NAME divides elements of two vectors.
@@ -228,20 +125,8 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME computes the square root of each element.
-- go: SqrtMasked
-  commutative: false
-  masked: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME computes the square root of each element.
 - go: ApproximateReciprocal
   commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME computes an approximate reciprocal of each element.
-- go: ApproximateReciprocalMasked
-  commutative: false
-  masked: true
   extension: "AVX.*"
   documentation: !string |-
     // NAME computes an approximate reciprocal of each element.
@@ -250,15 +135,8 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME computes an approximate reciprocal of the square root of each element.
-- go: ApproximateReciprocalOfSqrtMasked
+- go: MulByPowOf2
   commutative: false
-  masked: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME computes an approximate reciprocal of the square root of each element.
-- go: MulByPowOf2Masked # This operation is all after AVX512, the unmasked version will be generated.
-  commutative: false
-  masked: true
   extension: "AVX.*"
   documentation: !string |-
     // NAME multiplies elements by a power of 2.
@@ -268,18 +146,16 @@
   constImm: 0
   documentation: !string |-
     // NAME rounds elements to the nearest integer.
-- go: RoundWithPrecisionMasked
+- go: RoundWithPrecision
   commutative: false
   extension: "AVX.*"
   constImm: 0
-  masked: true
   documentation: !string |-
     // NAME rounds elements with specified precision.
-- go: DiffWithRoundWithPrecisionMasked
+- go: DiffWithRoundWithPrecision
   commutative: false
   extension: "AVX.*"
   constImm: 0
-  masked: true
   documentation: !string |-
     // NAME computes the difference after rounding with specified precision.
 - go: Floor
@@ -288,18 +164,16 @@
   constImm: 1
   documentation: !string |-
     // NAME rounds elements down to the nearest integer.
-- go: FloorWithPrecisionMasked
+- go: FloorWithPrecision
   commutative: false
   extension: "AVX.*"
   constImm: 1
-  masked: true
   documentation: !string |-
     // NAME rounds elements down with specified precision.
-- go: DiffWithFloorWithPrecisionMasked
+- go: DiffWithFloorWithPrecision
   commutative: false
   extension: "AVX.*"
   constImm: 1
-  masked: true
   documentation: !string |-
     // NAME computes the difference after flooring with specified precision.
 - go: Ceil
@@ -308,18 +182,16 @@
   constImm: 2
   documentation: !string |-
     // NAME rounds elements up to the nearest integer.
-- go: CeilWithPrecisionMasked
+- go: CeilWithPrecision
   commutative: false
   extension: "AVX.*"
   constImm: 2
-  masked: true
   documentation: !string |-
     // NAME rounds elements up with specified precision.
-- go: DiffWithCeilWithPrecisionMasked
+- go: DiffWithCeilWithPrecision
   commutative: false
   extension: "AVX.*"
   constImm: 2
-  masked: true
   documentation: !string |-
     // NAME computes the difference after ceiling with specified precision.
 - go: Trunc
@@ -328,18 +200,16 @@
   constImm: 3
   documentation: !string |-
     // NAME truncates elements towards zero.
-- go: TruncWithPrecisionMasked
+- go: TruncWithPrecision
   commutative: false
   extension: "AVX.*"
   constImm: 3
-  masked: true
   documentation: !string |-
     // NAME truncates elements with specified precision.
-- go: DiffWithTruncWithPrecisionMasked
+- go: DiffWithTruncWithPrecision
   commutative: false
   extension: "AVX.*"
   constImm: 3
-  masked: true
   documentation: !string |-
     // NAME computes the difference after truncating with specified precision.
 - go: AddSub
@@ -347,8 +217,7 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME subtracts even elements and adds odd elements of two vectors.
-- go: GaloisFieldAffineTransformMasked
-  masked: true
+- go: GaloisFieldAffineTransform
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
@@ -356,8 +225,7 @@
     // x is a vector of 8-bit vectors, with each adjacent 8 as a group; y is a vector of 8x8 1-bit matrixes;
     // b is an 8-bit vector. The affine transformation is y * x + b, with each element of y
     // corresponding to a group of 8 elements in x.
-- go: GaloisFieldAffineTransformInverseMasked
-  masked: true
+- go: GaloisFieldAffineTransformInverse
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
@@ -366,8 +234,7 @@
     // x is a vector of 8-bit vectors, with each adjacent 8 as a group; y is a vector of 8x8 1-bit matrixes;
     // b is an 8-bit vector. The affine transformation is y * x + b, with each element of y
     // corresponding to a group of 8 elements in x.
-- go: GaloisFieldMulMasked
-  masked: true
+- go: GaloisFieldMul
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
@@ -378,22 +245,10 @@
   extension: "AVX.*" # VPAVGB/W are available across various AVX versions
   documentation: !string |-
     // NAME computes the rounded average of corresponding elements.
-- go: AverageMasked
-  commutative: true
-  masked: true
-  extension: "AVX512.*" # Masked operations are typically AVX512
-  documentation: !string |-
-    // NAME computes the rounded average of corresponding elements.
 - go: Absolute
   commutative: false
   # Unary operation, not commutative
   extension: "AVX.*" # VPABSB/W/D are AVX, VPABSQ is AVX512
-  documentation: !string |-
-    // NAME computes the absolute value of each element.
-- go: AbsoluteMasked
-  commutative: false
-  masked: true
-  extension: "AVX512.*"
   documentation: !string |-
     // NAME computes the absolute value of each element.
 - go: Sign
@@ -404,10 +259,9 @@
     // NAME returns the product of the first operand with -1, 0, or 1,
     // whichever constant is nearest to the value of the second operand.
   # Sign does not have masked version
-- go: PopCountMasked
+- go: PopCount
   commutative: false
-  masked: true
-  extension: "AVX512.*" # VPOPCNT instructions are AVX512 (BITALG or VPOPCNTDQ)
+  extension: "AVX512.*"
   documentation: !string |-
     // NAME counts the number of set bits in each element.
 - go: PairDotProd
@@ -416,22 +270,8 @@
   documentation: !string |-
     // NAME multiplies the elements and add the pairs together,
     // yielding a vector of half as many elements with twice the input element size.
-- go: PairDotProdMasked
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME multiplies the elements and add the pairs together,
-    // yielding a vector of half as many elements with twice the input element size.
 # TODO: maybe simplify this name within the receiver-type + method-naming scheme we use.
 - go: SaturatedUnsignedSignedPairDotProd
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME multiplies the elements and add the pairs together with saturation,
-    // yielding a vector of half as many elements with twice the input element size.
-- go: SaturatedUnsignedSignedPairDotProdMasked
-  masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
@@ -448,19 +288,7 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs dot products on groups of 4 elements of x and y and then adds z.
-- go: UnsignedSignedQuadDotProdAccumulateMasked
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME performs dot products on groups of 4 elements of x and y and then adds z.
 - go: SaturatedUnsignedSignedQuadDotProdAccumulate
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME multiplies performs dot products on groups of 4 elements of x and y and then adds z.
-- go: SaturatedUnsignedSignedQuadDotProdAccumulateMasked
-  masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
@@ -470,37 +298,22 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs dot products on pairs of elements of x and y and then adds z.
-- go: PairDotProdAccumulateMasked
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME performs dot products on pairs of elements of x and y and then adds z.
 - go: SaturatedPairDotProdAccumulate
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs dot products on pairs of elements of x and y and then adds z.
-- go: SaturatedPairDotProdAccumulateMasked
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME performs dot products on pairs of elements of x and y and then adds z.
-- go: FusedMultiplyAddMasked
-  masked: true
+- go: FusedMultiplyAdd
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs (x * y) + z.
-- go: FusedMultiplyAddSubMasked
-  masked: true
+- go: FusedMultiplyAddSub
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs (x * y) - z for odd-indexed elements, and (x * y) + z for even-indexed elements.
-- go: FusedMultiplySubAddMasked
-  masked: true
+- go: FusedMultiplySubAdd
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
@@ -510,20 +323,8 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME computes the maximum of corresponding elements.
-- go: MaxMasked
-  commutative: true
-  masked: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME computes the maximum of corresponding elements.
 - go: Min
   commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME computes the minimum of corresponding elements.
-- go: MinMasked
-  commutative: true
-  masked: true
   extension: "AVX.*"
   documentation: !string |-
     // NAME computes the minimum of corresponding elements.
@@ -554,17 +355,8 @@
     // NAME performs a full permutation of vector x using indices:
     // result := {x[indices[0]], x[indices[1]], ..., x[indices[n]]}
     // Only the needed bits to represent x's index are used in indices' elements.
-- go: PermuteMasked
+- go: Permute2 # Permute2 is only available on or after AVX512
   commutative: false
-  masked: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME performs a full permutation of vector y using indices:
-    // result := {x[indices[0]], x[indices[1]], ..., x[indices[n]]}
-    // Only the needed bits to represent x's index are used in indices' elements.
-- go: Permute2Masked # Permute2Masked is only available on or after AVX512
-  commutative: false
-  masked: true
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs a full permutation of vector x, y using indices:
@@ -573,7 +365,6 @@
     // Only the needed bits to represent xy's index are used in indices' elements.
 - go: Compress
   commutative: false
-  # The mask in Compress is a control mask rather than a write mask, so we don't mark it "masked"
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs a compression on vector x using mask by
@@ -599,44 +390,12 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME multiplies elements and stores the low part of the result.
-- go: MulMasked
-  masked: true
-  commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME multiplies corresponding elements of two vectors.
-- go: MulEvenWidenMasked
-  masked: true
-  commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME multiplies even-indexed elements, widening the result.
-    // Result[i] = v1.Even[i] * v2.Even[i].
-- go: MulHighMasked
-  masked: true
-  commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME multiplies elements and stores the high part of the result.
-- go: MulLowMasked
-  masked: true
-  commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME multiplies elements and stores the low part of the result.
 - go: ShiftAllLeft
   nameAndSizeCheck: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME shifts each element to the left by the specified number of bits. Emptied lower bits are zeroed.
-- go: ShiftAllLeftMasked
-  nameAndSizeCheck: true
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME shifts each element to the left by the specified number of bits. Emptied lower bits are zeroed.
 - go: ShiftAllRight
   signed: false
   nameAndSizeCheck: true
@@ -644,25 +403,9 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME shifts each element to the right by the specified number of bits. Emptied upper bits are zeroed.
-- go: ShiftAllRightMasked
-  signed: false
-  nameAndSizeCheck: true
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME shifts each element to the right by the specified number of bits. Emptied upper bits are zeroed.
 - go: ShiftAllRight
   signed: true
   nameAndSizeCheck: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME shifts each element to the right by the specified number of bits. Emptied upper bits are filled with the sign bit.
-- go: ShiftAllRightMasked
-  signed: true
-  nameAndSizeCheck: true
-  masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
@@ -673,24 +416,9 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME shifts each element in x to the left by the number of bits specified in y's corresponding elements. Emptied lower bits are zeroed.
-- go: ShiftLeftMasked
-  nameAndSizeCheck: true
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME shifts each element in x to the left by the number of bits specified in y's corresponding elements. Emptied lower bits are zeroed.
 - go: ShiftRight
   signed: false
   nameAndSizeCheck: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME shifts each element in x to the right by the number of bits specified in y's corresponding elements. Emptied upper bits are zeroed.
-- go: ShiftRightMasked
-  signed: false
-  nameAndSizeCheck: true
-  masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
@@ -702,69 +430,53 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME shifts each element in x to the right by the number of bits specified in y's corresponding elements. Emptied upper bits are filled with the sign bit.
-- go: ShiftRightMasked
-  signed: true
+- go: RotateAllLeft
   nameAndSizeCheck: true
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME shifts each element in x to the right by the number of bits specified in y's corresponding elements. Emptied upper bits are filled with the sign bit.
-- go: RotateAllLeftMasked
-  nameAndSizeCheck: true
-  masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME rotates each element to the left by the number of bits specified by the immediate.
-- go: RotateLeftMasked
+- go: RotateLeft
   nameAndSizeCheck: true
-  masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME rotates each element in x to the left by the number of bits specified by y's corresponding elements.
-- go: RotateAllRightMasked
+- go: RotateAllRight
   nameAndSizeCheck: true
-  masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME rotates each element to the right by the number of bits specified by the immediate.
-- go: RotateRightMasked
+- go: RotateRight
   nameAndSizeCheck: true
-  masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME rotates each element in x to the right by the number of bits specified by y's corresponding elements.
-- go: ShiftAllLeftAndFillUpperFromMasked
+- go: ShiftAllLeftAndFillUpperFrom
   nameAndSizeCheck: true
-  masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME shifts each element of x to the left by the number of bits specified by the
     // immediate(only the lower 5 bits are used), and then copies the upper bits of y to the emptied lower bits of the shifted x.
-- go: ShiftAllRightAndFillUpperFromMasked
+- go: ShiftAllRightAndFillUpperFrom
   nameAndSizeCheck: true
-  masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME shifts each element of x to the right by the number of bits specified by the
     // immediate(only the lower 5 bits are used), and then copies the lower bits of y to the emptied upper bits of the shifted x.
-- go: ShiftLeftAndFillUpperFromMasked
+- go: ShiftLeftAndFillUpperFrom
   nameAndSizeCheck: true
-  masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME shifts each element of x to the left by the number of bits specified by the
     // corresponding elements in y(only the lower 5 bits are used), and then copies the upper bits of z to the emptied lower bits of the shifted x.
-- go: ShiftRightAndFillUpperFromMasked
+- go: ShiftRightAndFillUpperFrom
   nameAndSizeCheck: true
-  masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-

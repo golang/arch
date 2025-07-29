@@ -192,17 +192,7 @@
   out:
   - *any
 
-- go: PermuteMasked
-  asm: "VPERM[BWDQ]|VPERMP[SD]"
-  operandOrder: "21Type1"
-  in:
-  - class: mask
-  - *anyindices
-  - *any
-  out:
-  - *any
-
-- go: Permute2Masked
+- go: Permute2
   asm: "VPERMI2[BWDQ]|VPERMI2P[SD]"
   # Because we are overwriting the receiver's type, we 
   # have to move the receiver to be a parameter so that
@@ -210,7 +200,6 @@
   operandOrder: "231Type1" 
   in:
   - *anyindices # result in arg 0
-  - class: mask
   - *any
   - *any
   out:
@@ -219,6 +208,7 @@
 - go: Compress
   asm: "VPCOMPRESS[BWDQ]|VCOMPRESSP[SD]"
   in:
+    # The mask in Compress is a control mask rather than a write mask, so it's not optional.
   - class: mask
   - *any
   out:

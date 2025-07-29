@@ -8,38 +8,22 @@
   - *fp
   out: &1fp
   - *fp
-- go: DivMasked
-  asm: "V?DIVP[SD]"
-  in: &1mask2fp
-  - class: mask
-  - *fp
-  - *fp
-  out: *1fp
 - go: Sqrt
   asm: "V?SQRTP[SD]"
   in: *1fp
   out: *1fp
-- go: SqrtMasked
-  asm: "V?SQRTP[SD]"
-  in: &1mask1fp
-  - class: mask
-  - *fp
-  out: *1fp
-- go: ApproximateReciprocalMasked
-  asm: "VRCP14P[SD]"
-  in: *1mask1fp
-  out: *1fp
-- go: ApproximateReciprocalOfSqrt
-  asm: "V?RSQRTPS"
+# TODO: Provide separate methods for 12-bit precision and 14-bit precision?
+- go: ApproximateReciprocal
+  asm: "VRCP(14)?P[SD]"
   in: *1fp
   out: *1fp
-- go: ApproximateReciprocalOfSqrtMasked
-  asm: "VRSQRT14P[SD]"
-  in: *1mask1fp
+- go: ApproximateReciprocalOfSqrt
+  asm: "V?RSQRT(14)?P[SD]"
+  in: *1fp
   out: *1fp
-- go: MulByPowOf2Masked
+- go: MulByPowOf2
   asm: "VSCALEFP[SD]"
-  in: *1mask2fp
+  in: *2fp
   out: *1fp
 
 - go: "Round|Ceil|Floor|Trunc"
@@ -50,20 +34,18 @@
     const: 0 # place holder
   out: *1fp
 
-- go: "(Round|Ceil|Floor|Trunc)WithPrecisionMasked"
+- go: "(Round|Ceil|Floor|Trunc)WithPrecision"
   asm: "VRNDSCALEP[SD]"
   in:
-  - class: mask
   - *fp
   - class: immediate
     const: 0 # place holder
     immOffset: 4 # "M", round to numbers with M digits after dot(by means of binary number).
     name: prec
   out: *1fp
-- go: "DiffWith(Round|Ceil|Floor|Trunc)WithPrecisionMasked"
+- go: "DiffWith(Round|Ceil|Floor|Trunc)WithPrecision"
   asm: "VREDUCEP[SD]"
   in:
-  - class: mask
   - *fp
   - class: immediate
     const: 0 # place holder

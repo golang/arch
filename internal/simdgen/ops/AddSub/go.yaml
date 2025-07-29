@@ -8,14 +8,6 @@
   - *any
   out:
   - *any
-- go: AddMasked
-  asm: "VPADD[BWDQ]|VADDP[SD]"
-  in:
-  - class: mask
-  - *any
-  - *any
-  out:
-  - *any
 # Saturated Add
 - go: SaturatedAdd
   asm: "VPADDS[BWDQ]"
@@ -35,22 +27,6 @@
   - *uint
   out:
   - *uint
-- go: SaturatedAddMasked
-  asm: "VPADDS[BWDQ]"
-  in:
-  - class: mask
-  - *int
-  - *int
-  out:
-  - *int
-- go: SaturatedAddMasked
-  asm: "VPADDS[BWDQ]"
-  in:
-  - class: mask
-  - *uint
-  - *uint
-  out:
-  - *uint
 
 # Sub
 - go: Sub
@@ -59,14 +35,6 @@
   - *any
   - *any
   out: &1any
-  - *any
-- go: SubMasked
-  asm: "VPSUB[BWDQ]|VSUBP[SD]"
-  in:
-  - class: mask
-  - *any
-  - *any
-  out:
   - *any
 # Saturated Sub
 - go: SaturatedSub
@@ -79,22 +47,6 @@
 - go: SaturatedSub
   asm: "VPSUBS[BWDQ]"
   in:
-  - *uint
-  - *uint
-  out:
-  - *uint
-- go: SaturatedSubMasked
-  asm: "VPSUBS[BWDQ]"
-  in:
-  - class: mask
-  - *int
-  - *int
-  out:
-  - *int
-- go: SaturatedSubMasked
-  asm: "VPSUBS[BWDQ]"
-  in:
-  - class: mask
   - *uint
   - *uint
   out:

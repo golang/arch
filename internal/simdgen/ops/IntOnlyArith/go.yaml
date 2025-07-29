@@ -10,14 +10,6 @@
   - *uint_t
   out:
   - *uint_t
-- go: AverageMasked
-  asm: "VPAVG[BW]"
-  in:
-  - class: mask
-  - *uint_t
-  - *uint_t
-  out:
-  - *uint_t
 
 # Absolute Value (signed byte, word, dword, qword)
 # Instructions: VPABSB, VPABSW, VPABSD, VPABSQ
@@ -29,13 +21,6 @@
     base: int
   out:
   - *int_t # Output is magnitude, fits in the same signed type
-- go: AbsoluteMasked
-  asm: "VPABS[BWDQ]"
-  in:
-  - class: mask
-  - *int_t
-  out:
-  - *int_t
 
 # Sign Operation (signed byte, word, dword)
 # Applies sign of second operand to the first.
@@ -51,10 +36,9 @@
 # Population Count (count set bits in each element)
 # Instructions: VPOPCNTB, VPOPCNTW (AVX512_BITALG)
 #               VPOPCNTD, VPOPCNTQ (AVX512_VPOPCNTDQ)
-- go: PopCountMasked
+- go: PopCount
   asm: "VPOPCNT[BWDQ]"
   in:
-  - class: mask
   - &any
     go: $t
   out:

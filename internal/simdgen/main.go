@@ -107,7 +107,6 @@ var (
 	flagO                 = flag.String("o", "yaml", "output type: yaml, godefs (generate definitions into a Go source tree")
 	flagGoDefRoot         = flag.String("goroot", ".", "the path to the Go dev directory that will receive the generated files")
 	FlagNoDedup           = flag.Bool("nodedup", false, "disable deduplicating godefs of 2 qualifying operations from different extensions")
-	FlagNoSplitMask       = flag.Bool("nosplitmask", false, "disable splitting the masks to const and non const")
 	FlagNoConstImmPorting = flag.Bool("noconstimmporting", false, "disable const immediate porting from op to imm operand")
 	FlagArch              = flag.String("arch", "amd64", "the target architecture")
 

@@ -1,10 +1,8 @@
 !sum
-- go: GaloisFieldAffineTransformMasked
+- go: GaloisFieldAffineTransform
   asm: VGF2P8AFFINEQB
   operandOrder: 2I # 2nd operand, then immediate
   in: &AffineArgs
-  - class: mask
-    name: m
   - &uint8
     go: $t
     base: uint
@@ -18,17 +16,16 @@
   out:
   - *uint8
 
-- go: GaloisFieldAffineTransformInverseMasked
+- go: GaloisFieldAffineTransformInverse
   asm: VGF2P8AFFINEINVQB
   operandOrder: 2I # 2nd operand, then immediate
   in: *AffineArgs
   out:
   - *uint8
 
-- go: GaloisFieldMulMasked
+- go: GaloisFieldMul
   asm: VGF2P8MULB
   in:
-  - class: mask
   - *uint8
   - *uint8
   out:

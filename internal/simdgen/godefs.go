@@ -18,27 +18,38 @@ import (
 type Operation struct {
 	rawOperation
 
+	// Go is the Go method name of this operation.
+	//
+	// It is derived from the raw Go method name by adding optional suffixes.
+	// Currently, "Masked" is the only suffix.
+	Go string
+
 	// Documentation is the doc string for this API.
 	//
 	// It is computed from the raw documentation:
 	//
 	// - "NAME" is replaced by the Go method name.
 	//
-	// - For masked operation, the method name is updated and a sentence about
-	// masking is added.
+	// - For masked operation, a sentence about masking is added.
 	Documentation string
+
+	// In is the sequence of parameters to the Go method.
+	//
+	// For masked operations, this will have the mask operand appended.
+	In []Operand
 }
 
 // rawOperation is the unifier representation of an [Operation]. It is
 // translated into a more parsed form after unifier decoding.
 type rawOperation struct {
-	Go string // Go method name
+	Go string // Base Go method name
 
 	GoArch       string  // GOARCH for this definition
 	Asm          string  // Assembly mnemonic
 	OperandOrder *string // optional Operand order for better Go declarations
 
-	In            []Operand // Arguments
+	In            []Operand // Parameters
+	InVariant     []Operand // Optional parameters
 	Out           []Operand // Results
 	Commutative   bool      // Commutativity
 	Extension     string    // Extension
@@ -49,9 +60,6 @@ type rawOperation struct {
 	// ConstMask is a hack to reduce the size of defs the user writes for const-immediate
 	// If present, it will be copied to [In[0].Const].
 	ConstImm *string
-	// Masked indicates that this is a masked operation, this field has to be set for masked operations
-	// otherwise simdgen won't recognize it in [splitMask].
-	Masked *bool
 	// NameAndSizeCheck is used to check [BWDQ] maps to (8|16|32|64) elemBits.
 	NameAndSizeCheck *bool
 }
@@ -61,6 +69,21 @@ func (o *Operation) DecodeUnified(v *unify.Value) error {
 		return err
 	}
 
+	isMasked := false
+	if len(o.InVariant) == 0 {
+		// No variant
+	} else if len(o.InVariant) == 1 && o.InVariant[0].Class == "mask" {
+		isMasked = true
+	} else {
+		return fmt.Errorf("unknown inVariant")
+	}
+
+	// Compute full Go method name.
+	o.Go = o.rawOperation.Go
+	if isMasked {
+		o.Go += "Masked"
+	}
+
 	// Compute doc string.
 	if o.rawOperation.Documentation != nil {
 		o.Documentation = *o.rawOperation.Documentation
@@ -68,6 +91,11 @@ func (o *Operation) DecodeUnified(v *unify.Value) error {
 		o.Documentation = "// UNDOCUMENTED"
 	}
 	o.Documentation = regexp.MustCompile(`\bNAME\b`).ReplaceAllString(o.Documentation, o.Go)
+	if isMasked {
+		o.Documentation += "\n//\n// This operation is applied selectively under a write mask."
+	}
+
+	o.In = append(o.rawOperation.In, o.rawOperation.InVariant...)
 
 	return nil
 }
@@ -296,12 +324,6 @@ func writeGoDefs(path string, cl unify.Closure) error {
 	if *Verbose {
 		log.Printf("dedup len: %d\n", len(deduped))
 	}
-	if !*FlagNoSplitMask {
-		if deduped, err = splitMask(deduped); err != nil {
-			return err
-		}
-	}
-	insertMaskDescToDoc(deduped)
 	if *Verbose {
 		log.Printf("dedup len: %d\n", len(deduped))
 	}

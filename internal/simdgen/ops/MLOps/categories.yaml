@@ -5,22 +5,8 @@
   documentation: !string |-
     // NAME multiplies the elements and add the pairs together,
     // yielding a vector of half as many elements with twice the input element size.
-- go: PairDotProdMasked
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME multiplies the elements and add the pairs together,
-    // yielding a vector of half as many elements with twice the input element size.
 # TODO: maybe simplify this name within the receiver-type + method-naming scheme we use.
 - go: SaturatedUnsignedSignedPairDotProd
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME multiplies the elements and add the pairs together with saturation,
-    // yielding a vector of half as many elements with twice the input element size.
-- go: SaturatedUnsignedSignedPairDotProdMasked
-  masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
@@ -37,19 +23,7 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs dot products on groups of 4 elements of x and y and then adds z.
-- go: UnsignedSignedQuadDotProdAccumulateMasked
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME performs dot products on groups of 4 elements of x and y and then adds z.
 - go: SaturatedUnsignedSignedQuadDotProdAccumulate
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME multiplies performs dot products on groups of 4 elements of x and y and then adds z.
-- go: SaturatedUnsignedSignedQuadDotProdAccumulateMasked
-  masked: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
@@ -59,37 +33,22 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs dot products on pairs of elements of x and y and then adds z.
-- go: PairDotProdAccumulateMasked
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME performs dot products on pairs of elements of x and y and then adds z.
 - go: SaturatedPairDotProdAccumulate
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs dot products on pairs of elements of x and y and then adds z.
-- go: SaturatedPairDotProdAccumulateMasked
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME performs dot products on pairs of elements of x and y and then adds z.
-- go: FusedMultiplyAddMasked
-  masked: true
+- go: FusedMultiplyAdd
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs (x * y) + z.
-- go: FusedMultiplyAddSubMasked
-  masked: true
+- go: FusedMultiplyAddSub
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs (x * y) - z for odd-indexed elements, and (x * y) + z for even-indexed elements.
-- go: FusedMultiplySubAddMasked
-  masked: true
+- go: FusedMultiplySubAdd
   commutative: false
   extension: "AVX.*"
   documentation: !string |-

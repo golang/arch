@@ -4,77 +4,64 @@
 # decided that they want FP bit-wise logic operations, but this irregularity
 # has to be dealed with in separate rules with some overwrites.
 
-# Int/Uint operations.
-# Non-masked for 128/256-bit vectors
+# For many bit-wise operations, we have the following non-orthogonal
+# choices:
+#
+# - Non-masked AVX operations have no element width (because it
+# doesn't matter), but only cover 128 and 256 bit vectors.
+#
+# - Masked AVX-512 operations have an element width (because it needs
+# to know how to interpret the mask), and cover 128, 256, and 512 bit
+# vectors. These only cover 32- and 64-bit element widths.
+#
+# - Non-masked AVX-512 operations still have an element width (because
+# they're just the masked operations with an implicit K0 mask) but it
+# doesn't matter! This is the only option for non-masked 512 bit
+# operations, and we can pick any of the element widths.
+#
+# We unify with ALL of these operations and the compiler generator
+# picks when there are multiple options.
+
+# TODO: We don't currently generate unmasked bit-wise operations on 512 bit
+# vectors of 8- or 16-bit elements. AVX-512 only has *masked* bit-wise
+# operations for 32- and 64-bit elements; while the element width doesn't matter
+# for unmasked operations, right now we don't realize that we can just use the
+# 32- or 64-bit version for the unmasked form. Maybe in the XED decoder we
+# should recognize bit-wise operations when generating unmasked versions and
+# omit the element width.
+
 # For binary operations, we constrain their two inputs and one output to the
-# same Go type using a variable. This will map to instructions before AVX512.
+# same Go type using a variable.
+
 - go: And
-  asm: "VPAND"
+  asm: "VPAND[DQ]?"
   in:
   - &any
     go: $t
   - *any
   out:
   - *any
-# Masked
-# Looks like VPAND$xi works only for 2 shapes for integer:
-# Dword and Qword.
-# TODO: should we wildcard other smaller elemBits to VPANDQ or
-# VPANDD? Looks like elemBits doesn't really matter afterall in bitwise operations.
-- go: AndMasked
-  asm: "VPAND[DQ]"
-  in:
-  - class: mask
-  - *any
-  - *any
-  out:
-  - *any
 
 - go: AndNot
-  asm: "VPANDN"
+  asm: "VPANDN[DQ]?"
   operandOrder: "21" # switch the arg order
   in:
   - *any
   - *any
   out:
   - *any
-- go: AndNotMasked
-  asm: "VPANDN[DQ]"
-  operandOrder: "21"
-  in:
-  - class: mask
-  - *any
-  - *any
-  out:
-  - *any
 
 - go: Or
-  asm: "VPOR"
+  asm: "VPOR[DQ]?"
   in:
-  - *any
-  - *any
-  out:
-  - *any
-- go: OrMasked
-  asm: "VPOR[DQ]"
-  in:
-  - class: mask
   - *any
   - *any
   out:
   - *any
 
 - go: Xor
-  asm: "VPXOR"
+  asm: "VPXOR[DQ]?"
   in:
-  - *any
-  - *any
-  out:
-  - *any
-- go: XorMasked
-  asm: "VPXOR[DQ]"
-  in:
-  - class: mask
   - *any
   - *any
   out:

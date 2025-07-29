@@ -4,20 +4,8 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME computes the maximum of corresponding elements.
-- go: MaxMasked
-  commutative: true
-  masked: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME computes the maximum of corresponding elements.
 - go: Min
   commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME computes the minimum of corresponding elements.
-- go: MinMasked
-  commutative: true
-  masked: true
   extension: "AVX.*"
   documentation: !string |-
     // NAME computes the minimum of corresponding elements.

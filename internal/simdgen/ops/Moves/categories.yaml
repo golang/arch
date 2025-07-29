@@ -26,17 +26,8 @@
     // NAME performs a full permutation of vector x using indices:
     // result := {x[indices[0]], x[indices[1]], ..., x[indices[n]]}
     // Only the needed bits to represent x's index are used in indices' elements.
-- go: PermuteMasked
+- go: Permute2 # Permute2 is only available on or after AVX512
   commutative: false
-  masked: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME performs a full permutation of vector y using indices:
-    // result := {x[indices[0]], x[indices[1]], ..., x[indices[n]]}
-    // Only the needed bits to represent x's index are used in indices' elements.
-- go: Permute2Masked # Permute2Masked is only available on or after AVX512
-  commutative: false
-  masked: true
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs a full permutation of vector x, y using indices:
@@ -45,7 +36,6 @@
     // Only the needed bits to represent xy's index are used in indices' elements.
 - go: Compress
   commutative: false
-  # The mask in Compress is a control mask rather than a write mask, so we don't mark it "masked"
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs a compression on vector x using mask by

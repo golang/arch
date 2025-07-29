@@ -37,6 +37,7 @@ in: !repeat
   - {class: vreg, go: Uint64x8,   base: "uint",  elemBits: 64, bits: 512, lanes:  8}
   - {class: vreg, go: Float32x16, base: "float", elemBits: 32, bits: 512, lanes: 16}
   - {class: vreg, go: Float64x8,  base: "float", elemBits: 64, bits: 512, lanes:  8}
+
   - {class: mask, go: Mask8x16,   base: "int",   elemBits:  8, bits: 128, lanes: 16}
   - {class: mask, go: Mask16x8,   base: "int",   elemBits: 16, bits: 128, lanes:  8}
   - {class: mask, go: Mask32x4,   base: "int",   elemBits: 32, bits: 128, lanes:  4}
@@ -83,5 +84,7 @@ in: !repeat
   - {class: vreg, go: Uint64x4,   base: "uint",  elemBits: 128, bits: 256, lanes: 4}
 
   - {class: immediate, go: Immediate} # TODO: we only support imms that are not used as value -- usually as instruction semantic predicate like VPCMP as of now.
+inVariant: !repeat
+- *types
 out: !repeat
 - *types

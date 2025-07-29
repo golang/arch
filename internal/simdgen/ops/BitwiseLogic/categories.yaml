@@ -4,19 +4,7 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs a bitwise AND operation between two vectors.
-- go: AndMasked
-  masked: true
-  commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME performs a bitwise AND operation between two vectors.
 - go: Or
-  commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME performs a bitwise OR operation between two vectors.
-- go: OrMasked
-  masked: true
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
@@ -26,19 +14,7 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs a bitwise x &^ y.
-- go: AndNotMasked
-  masked: true
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME performs a bitwise x &^ y.
 - go: Xor
-  commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME performs a bitwise XOR operation between two vectors.
-- go: XorMasked
-  masked: true
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
