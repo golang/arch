@@ -8,22 +8,21 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"os"
 	"regexp"
 	"strings"
 
 	"gopkg.in/yaml.v3"
 )
 
-// UnmarshalOpts provides options to unmarshaling. The zero value is the default
-// options.
-type UnmarshalOpts struct {
-	// Path is the file path to store in the [Pos] of all [Value]s.
-	Path string
+// ReadOpts provides options to [Read] and related functions. The zero value is
+// the default options.
+type ReadOpts struct {
 }
 
-// UnmarshalYAML unmarshals a YAML node into a Closure.
+// Read reads a [Closure] in YAML format from r, using path for error messages.
 //
-// This is how UnmarshalYAML maps YAML nodes into terminal Values:
+// It maps YAML nodes into terminal Values as follows:
 //
 // - "_" or !top _ is the top value ([Top]).
 //
@@ -46,7 +45,7 @@ type UnmarshalOpts struct {
 //
 // - !regex [x, y, ...] is an intersection of regular expressions ([String]).
 //
-// This is how UnmarshalYAML maps YAML nodes into non-terminal Values:
+// It maps YAML nodes into non-terminal Values as follows:
 //
 // - Sequence nodes like [x, y, z] are tuples ([Tuple]).
 //
@@ -62,48 +61,53 @@ type UnmarshalOpts struct {
 // non-deterministic choice view really works. The unifier does not directly
 // implement sums; instead, this is decoded as a fresh variable that's
 // simultaneously bound to x, y, and z.
+func Read(r io.Reader, path string, opts ReadOpts) (Closure, error) {
+	dec := yamlDecoder{opts: opts, path: path, env: topEnv}
+	v, err := dec.read(r)
+	if err != nil {
+		return Closure{}, err
+	}
+	return dec.close(v), nil
+}
+
+// ReadFile reads a [Closure] in YAML format from a file.
+//
+// The file must consist of a single YAML document.
+//
+// See [Read] for details.
+func ReadFile(path string, opts ReadOpts) (Closure, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return Closure{}, err
+	}
+	defer f.Close()
+
+	dec := yamlDecoder{opts: opts, path: path, env: topEnv}
+	v, err := dec.read(f)
+	if err != nil {
+		return Closure{}, err
+	}
+
+	return dec.close(v), nil
+}
+
+// UnmarshalYAML implements [yaml.Unmarshaler].
+//
+// Since there is no way to pass [ReadOpts] to this function, it assumes default
+// options.
 func (c *Closure) UnmarshalYAML(node *yaml.Node) error {
-	return c.unmarshal(node, UnmarshalOpts{})
-}
-
-// Unmarshal is like [UnmarshalYAML], but accepts options and reads from r. If
-// opts.Path is "" and r has a Name() string method, the result of r.Name() is
-// used as the path for all [Value]s read from r.
-func (c *Closure) Unmarshal(r io.Reader, opts UnmarshalOpts) error {
-	if opts.Path == "" {
-		type named interface{ Name() string }
-		if n, ok := r.(named); ok {
-			opts.Path = n.Name()
-		}
-	}
-
-	var node yaml.Node
-	if err := yaml.NewDecoder(r).Decode(&node); err != nil {
-		return err
-	}
-	np := &node
-	if np.Kind == yaml.DocumentNode {
-		np = node.Content[0]
-	}
-	return c.unmarshal(np, opts)
-}
-
-func (c *Closure) unmarshal(node *yaml.Node, opts UnmarshalOpts) error {
-	dec := &yamlDecoder{opts: opts, vars: make(map[string]*ident), env: topEnv}
-	val, err := dec.value(node)
+	dec := yamlDecoder{path: "<yaml.Node>", env: topEnv}
+	v, err := dec.root(node)
 	if err != nil {
 		return err
 	}
-	vars := make(map[*ident]*Value)
-	for _, id := range dec.vars {
-		vars[id] = topValue
-	}
-	*c = Closure{val, dec.env}
+	*c = dec.close(v)
 	return nil
 }
 
 type yamlDecoder struct {
-	opts UnmarshalOpts
+	opts ReadOpts
+	path string
 
 	vars  map[string]*ident
 	nSums int
@@ -111,8 +115,62 @@ type yamlDecoder struct {
 	env envSet
 }
 
+func (dec *yamlDecoder) read(r io.Reader) (*Value, error) {
+	n, err := readOneNode(r)
+	if err != nil {
+		return nil, fmt.Errorf("%s: %w", dec.path, err)
+	}
+
+	// Decode YAML node to a Value
+	v, err := dec.root(n)
+	if err != nil {
+		return nil, fmt.Errorf("%s: %w", dec.path, err)
+	}
+
+	return v, nil
+}
+
+// readOneNode reads a single YAML document from r and returns an error if there
+// are more documents in r.
+func readOneNode(r io.Reader) (*yaml.Node, error) {
+	yd := yaml.NewDecoder(r)
+
+	// Decode as a YAML node
+	var node yaml.Node
+	if err := yd.Decode(&node); err != nil {
+		return nil, err
+	}
+	np := &node
+	if np.Kind == yaml.DocumentNode {
+		np = node.Content[0]
+	}
+
+	// Ensure there are no more YAML docs in this file
+	if err := yd.Decode(nil); err == nil {
+		return nil, fmt.Errorf("must not contain multiple documents")
+	} else if err != io.EOF {
+		return nil, err
+	}
+
+	return np, nil
+}
+
+// root parses the root of a file.
+func (dec *yamlDecoder) root(node *yaml.Node) (*Value, error) {
+	// Prepare for variable name resolution in this file.
+	dec.vars = make(map[string]*ident, 0)
+	dec.nSums = 0
+
+	return dec.value(node)
+}
+
+// close wraps a decoded [Value] into a [Closure].
+func (dec *yamlDecoder) close(v *Value) Closure {
+	return Closure{v, dec.env}
+}
+
 func (dec *yamlDecoder) value(node *yaml.Node) (vOut *Value, errOut error) {
-	pos := &Pos{Path: dec.opts.Path, Line: node.Line}
+	pos := &Pos{Path: dec.path, Line: node.Line}
 
 	// Resolve alias nodes.
 	if node.Kind == yaml.AliasNode {

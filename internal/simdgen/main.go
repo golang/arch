@@ -162,8 +162,8 @@ func main() {
 	// Load query.
 	if *flagQ != "" {
 		r := strings.NewReader(*flagQ)
-		var def unify.Closure
-		if err := def.Unmarshal(r, unify.UnmarshalOpts{Path: "<query>"}); err != nil {
+		def, err := unify.Read(r, "<query>", unify.ReadOpts{})
+		if err != nil {
 			log.Fatalf("parsing -q: %s", err)
 		}
 		inputs = append(inputs, def)
@@ -172,7 +172,7 @@ func main() {
 	// Load defs files.
 	must := make(map[*unify.Value]struct{})
 	for _, path := range flag.Args() {
-		defs, err := loadValue(path)
+		defs, err := unify.ReadFile(path, unify.ReadOpts{})
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -243,20 +243,6 @@ func main() {
 	if *flagQ == "" && len(must) > 0 {
 		validate(unified, must)
 	}
-}
-
-func loadValue(path string) (unify.Closure, error) {
-	f, err := os.Open(path)
-	if err != nil {
-		return unify.Closure{}, err
-	}
-	defer f.Close()
-
-	var c unify.Closure
-	if err := c.Unmarshal(f, unify.UnmarshalOpts{}); err != nil {
-		return unify.Closure{}, fmt.Errorf("%s: %v", path, err)
-	}
-	return c, nil
 }
 
 func validate(cl unify.Closure, required map[*unify.Value]struct{}) {
