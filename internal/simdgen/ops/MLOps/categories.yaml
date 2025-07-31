@@ -28,16 +28,16 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME multiplies performs dot products on groups of 4 elements of x and y and then adds z.
-- go: PairDotProdAccumulate
+- go: AddDotProd
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // NAME performs dot products on pairs of elements of x and y and then adds z.
-- go: SaturatedPairDotProdAccumulate
+    // NAME performs dot products on pairs of elements of y and z and then adds x.
+- go: SaturatedAddDotProd
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // NAME performs dot products on pairs of elements of x and y and then adds z.
+    // NAME performs dot products on pairs of elements of y and z and then adds x.
 - go: FusedMultiplyAdd
   commutative: false
   extension: "AVX.*"

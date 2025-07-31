@@ -60,9 +60,8 @@
   - *qdpa_src2
   out:
   - *qdpa_acc
-- go: PairDotProdAccumulate
+- go: AddDotProd
   asm: "VPDPWSSD"
-  operandOrder: "31" # switch operand 3 and 1
   in:
   - &pdpa_acc
     go: $t_acc
@@ -78,9 +77,8 @@
     overwriteElementBits: 16
   out:
   - *pdpa_acc
-- go: SaturatedPairDotProdAccumulate
+- go: SaturatedAddDotProd
   asm: "VPDPWSSDS"
-  operandOrder: "31" # switch operand 3 and 1
   in:
   - *pdpa_acc
   - *pdpa_src1
