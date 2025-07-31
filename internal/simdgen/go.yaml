@@ -945,7 +945,7 @@
   - *any
 
 # Bizzare shifts.
-- go: ShiftAllLeftAndFillUpperFrom
+- go: ShiftAllLeftConcat
   asm: "VPSHLD[WDQ]"
   in:
   - *any
@@ -953,7 +953,7 @@
   - *pureImm
   out:
   - *any
-- go: ShiftAllRightAndFillUpperFrom
+- go: ShiftAllRightConcat
   asm: "VPSHRD[WDQ]"
   in:
   - *any
@@ -961,7 +961,7 @@
   - *pureImm
   out:
   - *any
-- go: ShiftLeftAndFillUpperFrom
+- go: ShiftLeftConcat
   asm: "VPSHLDV[WDQ]"
   in:
   - *any
@@ -969,7 +969,7 @@
   - *any
   out:
   - *any
-- go: ShiftRightAndFillUpperFrom
+- go: ShiftRightConcat
   asm: "VPSHRDV[WDQ]"
   in:
   - *any

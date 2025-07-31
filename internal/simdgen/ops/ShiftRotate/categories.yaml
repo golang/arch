@@ -63,28 +63,28 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME rotates each element in x to the right by the number of bits specified by y's corresponding elements.
-- go: ShiftAllLeftAndFillUpperFrom
+- go: ShiftAllLeftConcat
   nameAndSizeCheck: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME shifts each element of x to the left by the number of bits specified by the
     // immediate(only the lower 5 bits are used), and then copies the upper bits of y to the emptied lower bits of the shifted x.
-- go: ShiftAllRightAndFillUpperFrom
+- go: ShiftAllRightConcat
   nameAndSizeCheck: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME shifts each element of x to the right by the number of bits specified by the
     // immediate(only the lower 5 bits are used), and then copies the lower bits of y to the emptied upper bits of the shifted x.
-- go: ShiftLeftAndFillUpperFrom
+- go: ShiftLeftConcat
   nameAndSizeCheck: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME shifts each element of x to the left by the number of bits specified by the
     // corresponding elements in y(only the lower 5 bits are used), and then copies the upper bits of z to the emptied lower bits of the shifted x.
-- go: ShiftRightAndFillUpperFrom
+- go: ShiftRightConcat
   nameAndSizeCheck: true
   commutative: false
   extension: "AVX.*"
