@@ -118,6 +118,28 @@
   out:
   - *any
 
+- go: And
+  asm: "VPANDD" # Fill in the gap, And is missing for Uint8x64 and Int8x64
+  inVariant: []
+  in: &twoI8x64
+  - &i8x64
+    go: $t
+    overwriteElementBits: 8
+  - *i8x64
+  out: &oneI8x64
+  - *i8x64
+
+- go: And
+  asm: "VPANDD" # Fill in the gap, And is missing for Uint16x32 and Int16x32
+  inVariant: []
+  in: &twoI16x32
+  - &i16x32
+    go: $t
+    overwriteElementBits: 16
+  - *i16x32
+  out: &oneI16x32
+  - *i16x32
+
 - go: AndNot
   asm: "VPANDN[DQ]?"
   operandOrder: "21" # switch the arg order
@@ -127,6 +149,20 @@
   out:
   - *any
 
+- go: AndNot
+  asm: "VPANDND" # Fill in the gap, AndNot is missing for Uint8x64 and Int8x64
+  operandOrder: "21" # switch the arg order
+  inVariant: []
+  in: *twoI8x64
+  out: *oneI8x64
+
+- go: AndNot
+  asm: "VPANDND" # Fill in the gap, AndNot is missing for Uint16x32 and Int16x32
+  operandOrder: "21" # switch the arg order
+  inVariant: []
+  in: *twoI16x32
+  out: *oneI16x32
+
 - go: Or
   asm: "VPOR[DQ]?"
   in:
@@ -135,6 +171,18 @@
   out:
   - *any
 
+- go: Or
+  asm: "VPORD" # Fill in the gap, Or is missing for Uint8x64 and Int8x64
+  inVariant: []
+  in: *twoI8x64
+  out: *oneI8x64
+
+- go: Or
+  asm: "VPORD" # Fill in the gap, Or is missing for Uint16x32 and Int16x32
+  inVariant: []
+  in: *twoI16x32
+  out: *oneI16x32
+
 - go: Xor
   asm: "VPXOR[DQ]?"
   in:
@@ -142,6 +190,18 @@
   - *any
   out:
   - *any
+
+- go: Xor
+  asm: "VPXORD" # Fill in the gap, Or is missing for Uint8x64 and Int8x64
+  inVariant: []
+  in: *twoI8x64
+  out: *oneI8x64
+
+- go: Xor
+  asm: "VPXORD" # Fill in the gap, Or is missing for Uint16x32 and Int16x32
+  inVariant: []
+  in: *twoI16x32
+  out: *oneI16x32
 # Ints
 - go: Equal
   asm: "V?PCMPEQ[BWDQ]"
