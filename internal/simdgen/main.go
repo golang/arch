@@ -250,7 +250,7 @@ func validate(cl unify.Closure, required map[*unify.Value]struct{}) {
 		}
 
 		if !def.Exact() {
-			fmt.Fprintf(os.Stderr, "%s: def not reduced to an exact value:\n", def.PosString())
+			fmt.Fprintf(os.Stderr, "%s: def not reduced to an exact value, why is %s:\n", def.PosString(), def.WhyNotExact())
 			fmt.Fprintf(os.Stderr, "\t%s\n", strings.ReplaceAll(def.String(), "\n", "\n\t"))
 		}
 

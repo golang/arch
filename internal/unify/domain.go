@@ -39,6 +39,7 @@ import (
 //   - [Var] - A value captured in the environment.
 type Domain interface {
 	Exact() bool
+	WhyNotExact() string
 
 	// decode stores this value in a Go value. If this value is not exact, this
 	// returns a potentially wrapped *inexactError.
@@ -77,7 +78,8 @@ func (e *decodeError) Error() string {
 // Top represents all possible values of all possible types.
 type Top struct{}
 
-func (t Top) Exact() bool { return false }
+func (t Top) Exact() bool         { return false }
+func (t Top) WhyNotExact() string { return "is top" }
 
 func (t Top) decode(rv reflect.Value) error {
 	// We can decode Top into a pointer-typed value as nil.
@@ -123,6 +125,17 @@ func (d Def) Exact() bool {
 		}
 	}
 	return true
+}
+
+// WhyNotExact returns why the value is not exact
+func (d Def) WhyNotExact() string {
+	for s, v := range d.fields {
+		if !v.Exact() {
+			w := v.WhyNotExact()
+			return "field " + s + ": " + w
+		}
+	}
+	return ""
 }
 
 func (d Def) decode(rv reflect.Value) error {
@@ -219,6 +232,19 @@ func (d Tuple) Exact() bool {
 	return true
 }
 
+func (d Tuple) WhyNotExact() string {
+	if d.repeat != nil {
+		return "d.repeat is not nil"
+	}
+	for i, v := range d.vs {
+		if !v.Exact() {
+			w := v.WhyNotExact()
+			return "index " + strconv.FormatInt(int64(i), 10) + ": " + w
+		}
+	}
+	return ""
+}
+
 func (d Tuple) decode(rv reflect.Value) error {
 	if d.repeat != nil {
 		return &inexactError{"repeated tuple", rv.Type().String()}
@@ -298,6 +324,13 @@ func NewStringExact(s string) String {
 // Exact returns whether this Value is known to consist of a single string.
 func (d String) Exact() bool {
 	return d.kind == stringExact
+}
+
+func (d String) WhyNotExact() string {
+	if d.kind == stringExact {
+		return ""
+	}
+	return "string is not exact"
 }
 
 func (d String) decode(rv reflect.Value) error {

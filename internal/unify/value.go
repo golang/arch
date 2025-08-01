@@ -69,6 +69,13 @@ func (v *Value) PosString() string {
 	return string(b)
 }
 
+func (v *Value) WhyNotExact() string {
+	if v.Domain == nil {
+		return "v.Domain is nil"
+	}
+	return v.Domain.WhyNotExact()
+}
+
 func (v *Value) Exact() bool {
 	if v.Domain == nil {
 		return false
