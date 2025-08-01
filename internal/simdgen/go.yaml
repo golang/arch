@@ -8,8 +8,8 @@
   - *any
   out:
   - *any
-# Saturated Add
-- go: SaturatedAdd
+# Add Saturated
+- go: AddSaturated
   asm: "VPADDS[BWDQ]"
   in:
   - &int
@@ -18,7 +18,7 @@
   - *int
   out:
   - *int
-- go: SaturatedAdd
+- go: AddSaturated
   asm: "VPADDS[BWDQ]"
   in:
   - &uint
@@ -36,42 +36,42 @@
   - *any
   out: &1any
   - *any
-# Saturated Sub
-- go: SaturatedSub
+# Sub Saturated
+- go: SubSaturated
   asm: "VPSUBS[BWDQ]"
   in: &2int
   - *int
   - *int
   out: &1int
   - *int
-- go: SaturatedSub
+- go: SubSaturated
   asm: "VPSUBS[BWDQ]"
   in:
   - *uint
   - *uint
   out:
   - *uint
-- go: PairwiseAdd
+- go: AddPairs
   asm: "VPHADD[DW]"
   in: *2any
   out: *1any
-- go: PairwiseSub
+- go: SubPairs
   asm: "VPHSUB[DW]"
   in: *2any
   out: *1any
-- go: PairwiseAdd
+- go: AddPairs
   asm: "VHADDP[SD]" # floats
   in: *2any
   out: *1any
-- go: PairwiseSub
+- go: SubPairs
   asm: "VHSUBP[SD]"  # floats
   in: *2any
   out: *1any
-- go: SaturatedPairwiseAdd
+- go: AddPairsSaturated
   asm: "VPHADDS[DW]"
   in: *2int
   out: *1int
-- go: SaturatedPairwiseSub
+- go: SubPairsSaturated
   asm: "VPHSUBS[DW]"
   in: *2int
   out: *1int
@@ -342,7 +342,7 @@
   asm: "V?RSQRT(14)?P[SD]"
   in: *1fp
   out: *1fp
-- go: MulByPowOf2
+- go: Scale
   asm: "VSCALEFP[SD]"
   in: *2fp
   out: *1fp
@@ -355,7 +355,7 @@
     const: 0 # place holder
   out: *1fp
 
-- go: "(Round|Ceil|Floor|Trunc)WithPrecision"
+- go: "(Round|Ceil|Floor|Trunc)Scaled"
   asm: "VRNDSCALEP[SD]"
   in:
   - *fp
@@ -364,7 +364,7 @@
     immOffset: 4 # "M", round to numbers with M digits after dot(by means of binary number).
     name: prec
   out: *1fp
-- go: "DiffWith(Round|Ceil|Floor|Trunc)WithPrecision"
+- go: "(Round|Ceil|Floor|Trunc)ScaledResidue"
   asm: "VREDUCEP[SD]"
   in:
   - *fp
@@ -881,7 +881,7 @@
 
 # MulLow
 # Signed int only.
-- go: MulLow
+- go: Mul
   asm: "VPMULL[WDQ]"
   in:
   - *int

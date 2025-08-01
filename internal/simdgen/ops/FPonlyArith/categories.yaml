@@ -19,7 +19,7 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME computes an approximate reciprocal of the square root of each element.
-- go: MulByPowOf2
+- go: Scale
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
@@ -30,13 +30,13 @@
   constImm: 0
   documentation: !string |-
     // NAME rounds elements to the nearest integer.
-- go: RoundWithPrecision
+- go: RoundScaled
   commutative: false
   extension: "AVX.*"
   constImm: 0
   documentation: !string |-
     // NAME rounds elements with specified precision.
-- go: DiffWithRoundWithPrecision
+- go: RoundScaledResidue
   commutative: false
   extension: "AVX.*"
   constImm: 0
@@ -48,13 +48,13 @@
   constImm: 1
   documentation: !string |-
     // NAME rounds elements down to the nearest integer.
-- go: FloorWithPrecision
+- go: FloorScaled
   commutative: false
   extension: "AVX.*"
   constImm: 1
   documentation: !string |-
     // NAME rounds elements down with specified precision.
-- go: DiffWithFloorWithPrecision
+- go: FloorScaledResidue
   commutative: false
   extension: "AVX.*"
   constImm: 1
@@ -66,13 +66,13 @@
   constImm: 2
   documentation: !string |-
     // NAME rounds elements up to the nearest integer.
-- go: CeilWithPrecision
+- go: CeilScaled
   commutative: false
   extension: "AVX.*"
   constImm: 2
   documentation: !string |-
     // NAME rounds elements up with specified precision.
-- go: DiffWithCeilWithPrecision
+- go: CeilScaledResidue
   commutative: false
   extension: "AVX.*"
   constImm: 2
@@ -84,13 +84,13 @@
   constImm: 3
   documentation: !string |-
     // NAME truncates elements towards zero.
-- go: TruncWithPrecision
+- go: TruncScaled
   commutative: false
   extension: "AVX.*"
   constImm: 3
   documentation: !string |-
     // NAME truncates elements with specified precision.
-- go: DiffWithTruncWithPrecision
+- go: TruncScaledResidue
   commutative: false
   extension: "AVX.*"
   constImm: 3

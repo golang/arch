@@ -57,7 +57,7 @@
 
 # MulLow
 # Signed int only.
-- go: MulLow
+- go: Mul
   asm: "VPMULL[WDQ]"
   in:
   - *int

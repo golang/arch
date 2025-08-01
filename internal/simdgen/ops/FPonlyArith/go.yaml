@@ -21,7 +21,7 @@
   asm: "V?RSQRT(14)?P[SD]"
   in: *1fp
   out: *1fp
-- go: MulByPowOf2
+- go: Scale
   asm: "VSCALEFP[SD]"
   in: *2fp
   out: *1fp
@@ -34,7 +34,7 @@
     const: 0 # place holder
   out: *1fp
 
-- go: "(Round|Ceil|Floor|Trunc)WithPrecision"
+- go: "(Round|Ceil|Floor|Trunc)Scaled"
   asm: "VRNDSCALEP[SD]"
   in:
   - *fp
@@ -43,7 +43,7 @@
     immOffset: 4 # "M", round to numbers with M digits after dot(by means of binary number).
     name: prec
   out: *1fp
-- go: "DiffWith(Round|Ceil|Floor|Trunc)WithPrecision"
+- go: "(Round|Ceil|Floor|Trunc)ScaledResidue"
   asm: "VREDUCEP[SD]"
   in:
   - *fp

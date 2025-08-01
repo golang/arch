@@ -15,8 +15,3 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME multiplies elements and stores the high part of the result.
-- go: MulLow
-  commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME multiplies elements and stores the low part of the result.

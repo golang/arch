@@ -4,7 +4,7 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME adds corresponding elements of two vectors.
-- go: SaturatedAdd
+- go: AddSaturated
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
@@ -14,30 +14,30 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME subtracts corresponding elements of two vectors.
-- go: SaturatedSub
+- go: SubSaturated
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME subtracts corresponding elements of two vectors with saturation.
-- go: PairwiseAdd
+- go: AddPairs
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME horizontally adds adjacent pairs of elements.
     // For x = [x0, x1, x2, x3, ...] and y = [y0, y1, y2, y3, ...], the result is [y0+y1, y2+y3, ..., x0+x1, x2+x3, ...].
-- go: PairwiseSub
+- go: SubPairs
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME horizontally subtracts adjacent pairs of elements.
     // For x = [x0, x1, x2, x3, ...] and y = [y0, y1, y2, y3, ...], the result is [y0-y1, y2-y3, ..., x0-x1, x2-x3, ...].
-- go: SaturatedPairwiseAdd
+- go: AddPairsSaturated
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME horizontally adds adjacent pairs of elements with saturation.
     // For x = [x0, x1, x2, x3, ...] and y = [y0, y1, y2, y3, ...], the result is [y0+y1, y2+y3, ..., x0+x1, x2+x3, ...].
-- go: SaturatedPairwiseSub
+- go: SubPairsSaturated
   commutative: false
   extension: "AVX.*"
   documentation: !string |-

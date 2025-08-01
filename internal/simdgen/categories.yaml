@@ -4,7 +4,7 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME adds corresponding elements of two vectors.
-- go: SaturatedAdd
+- go: AddSaturated
   commutative: true
   extension: "AVX.*"
   documentation: !string |-
@@ -14,30 +14,30 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME subtracts corresponding elements of two vectors.
-- go: SaturatedSub
+- go: SubSaturated
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME subtracts corresponding elements of two vectors with saturation.
-- go: PairwiseAdd
+- go: AddPairs
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME horizontally adds adjacent pairs of elements.
     // For x = [x0, x1, x2, x3, ...] and y = [y0, y1, y2, y3, ...], the result is [y0+y1, y2+y3, ..., x0+x1, x2+x3, ...].
-- go: PairwiseSub
+- go: SubPairs
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME horizontally subtracts adjacent pairs of elements.
     // For x = [x0, x1, x2, x3, ...] and y = [y0, y1, y2, y3, ...], the result is [y0-y1, y2-y3, ..., x0-x1, x2-x3, ...].
-- go: SaturatedPairwiseAdd
+- go: AddPairsSaturated
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME horizontally adds adjacent pairs of elements with saturation.
     // For x = [x0, x1, x2, x3, ...] and y = [y0, y1, y2, y3, ...], the result is [y0+y1, y2+y3, ..., x0+x1, x2+x3, ...].
-- go: SaturatedPairwiseSub
+- go: SubPairsSaturated
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
@@ -146,7 +146,7 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME computes an approximate reciprocal of the square root of each element.
-- go: MulByPowOf2
+- go: Scale
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
@@ -157,13 +157,13 @@
   constImm: 0
   documentation: !string |-
     // NAME rounds elements to the nearest integer.
-- go: RoundWithPrecision
+- go: RoundScaled
   commutative: false
   extension: "AVX.*"
   constImm: 0
   documentation: !string |-
     // NAME rounds elements with specified precision.
-- go: DiffWithRoundWithPrecision
+- go: RoundScaledResidue
   commutative: false
   extension: "AVX.*"
   constImm: 0
@@ -175,13 +175,13 @@
   constImm: 1
   documentation: !string |-
     // NAME rounds elements down to the nearest integer.
-- go: FloorWithPrecision
+- go: FloorScaled
   commutative: false
   extension: "AVX.*"
   constImm: 1
   documentation: !string |-
     // NAME rounds elements down with specified precision.
-- go: DiffWithFloorWithPrecision
+- go: FloorScaledResidue
   commutative: false
   extension: "AVX.*"
   constImm: 1
@@ -193,13 +193,13 @@
   constImm: 2
   documentation: !string |-
     // NAME rounds elements up to the nearest integer.
-- go: CeilWithPrecision
+- go: CeilScaled
   commutative: false
   extension: "AVX.*"
   constImm: 2
   documentation: !string |-
     // NAME rounds elements up with specified precision.
-- go: DiffWithCeilWithPrecision
+- go: CeilScaledResidue
   commutative: false
   extension: "AVX.*"
   constImm: 2
@@ -211,13 +211,13 @@
   constImm: 3
   documentation: !string |-
     // NAME truncates elements towards zero.
-- go: TruncWithPrecision
+- go: TruncScaled
   commutative: false
   extension: "AVX.*"
   constImm: 3
   documentation: !string |-
     // NAME truncates elements with specified precision.
-- go: DiffWithTruncWithPrecision
+- go: TruncScaledResidue
   commutative: false
   extension: "AVX.*"
   constImm: 3
@@ -396,11 +396,6 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME multiplies elements and stores the high part of the result.
-- go: MulLow
-  commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME multiplies elements and stores the low part of the result.
 - go: ShiftAllLeft
   nameAndSizeCheck: true
   commutative: false
