@@ -398,6 +398,7 @@
     // NAME multiplies elements and stores the high part of the result.
 - go: ShiftAllLeft
   nameAndSizeCheck: true
+  specialLower: sftimm
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
@@ -405,17 +406,43 @@
 - go: ShiftAllRight
   signed: false
   nameAndSizeCheck: true
+  specialLower: sftimm
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME shifts each element to the right by the specified number of bits. Emptied upper bits are zeroed.
 - go: ShiftAllRight
   signed: true
+  specialLower: sftimm
   nameAndSizeCheck: true
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME shifts each element to the right by the specified number of bits. Emptied upper bits are filled with the sign bit.
+- go: shiftAllLeftConst # no APIs, only ssa ops.
+  noTypes: "true"
+  noGenericOps: "true"
+  SSAVariant: "const" # to avoid its name colliding with reg version of this instruction, amend this to its ssa op name.
+  nameAndSizeCheck: true
+  commutative: false
+  extension: "AVX.*"
+- go: shiftAllRightConst # no APIs, only ssa ops.
+  noTypes: "true"
+  noGenericOps: "true"
+  SSAVariant: "const"
+  signed: false
+  nameAndSizeCheck: true
+  commutative: false
+  extension: "AVX.*"
+- go: shiftAllRightConst # no APIs, only ssa ops.
+  noTypes: "true"
+  noGenericOps: "true"
+  SSAVariant: "const"
+  signed: true
+  nameAndSizeCheck: true
+  commutative: false
+  extension: "AVX.*"
+
 - go: ShiftLeft
   nameAndSizeCheck: true
   commutative: false

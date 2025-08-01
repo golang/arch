@@ -22,6 +22,10 @@ var (
 {{end}}
 {{define "maskInMaskOut"}}({{.GoOp}}{{.GoType}} {{.Args}} mask) => ({{.MaskOutConvert}} ({{.Asm}} {{.ArgsOut}} ({{.MaskInConvert}} <types.TypeMask> mask)))
 {{end}}
+{{define "sftimm"}}({{.GoOp}}{{.GoType}} x (MOVQconst [c])) => ({{.Asm}}const [int8(c)] x)
+{{end}}
+{{define "masksftimm"}}({{.GoOp}}{{.GoType}} x (MOVQconst [c]) mask) => ({{.Asm}}const [int8(c)] x ({{.MaskInConvert}} <types.TypeMask> mask))
+{{end}}
 `))
 )
 
@@ -65,15 +69,15 @@ func writeSIMDRules(ops []Operation) *bytes.Buffer {
 	var allData []tplRuleData
 
 	for _, opr := range ops {
+		if opr.NoGenericOps != nil && *opr.NoGenericOps == "true" {
+			continue
+		}
 		opInShape, opOutShape, maskType, immType, gOp := opr.shape()
-
+		asm := machineOpName(maskType, gOp)
 		vregInCnt := len(gOp.In)
-		asm := gOp.Asm
 		if maskType == OneMask {
-			asm += "Masked"
 			vregInCnt--
 		}
-		asm = fmt.Sprintf("%s%d", asm, gOp.VectorWidth())
 
 		data := tplRuleData{
 			GoOp: gOp.Go,
@@ -157,11 +161,25 @@ func writeSIMDRules(ops []Operation) *bytes.Buffer {
 			}
 		}
 
-		if tplName == "pureVreg" && data.Args == data.ArgsOut {
-			data.Args = "..."
-			data.ArgsOut = "..."
+		if gOp.SpecialLower != nil {
+			if *gOp.SpecialLower == "sftimm" {
+				sftImmData := data
+				if tplName == "maskIn" {
+					sftImmData.tplName = "masksftimm"
+				} else {
+					sftImmData.tplName = "sftimm"
+				}
+				allData = append(allData, sftImmData)
+			} else {
+				panic("simdgen sees unknwon special lower " + *gOp.SpecialLower + ", maybe implement it?")
+			}
+		} else {
+			// SpecialLower rules cannot use "...".
+			if tplName == "pureVreg" && data.Args == data.ArgsOut {
+				data.Args = "..."
+				data.ArgsOut = "..."
+			}
 		}
-
 		data.tplName = tplName
 		allData = append(allData, data)
 	}

@@ -89,13 +89,9 @@ func writeSIMDSSA(ops []Operation) *bytes.Buffer {
 	seen := map[string]struct{}{}
 	allUnseen := make(map[string][]Operation)
 	for _, op := range ops {
-		asm := op.Asm
 		shapeIn, shapeOut, maskType, _, gOp := op.shape()
+		asm := machineOpName(maskType, gOp)
 
-		if maskType == 2 {
-			asm += "Masked"
-		}
-		asm = fmt.Sprintf("%s%d", asm, gOp.VectorWidth())
 		if _, ok := seen[asm]; ok {
 			continue
 		}

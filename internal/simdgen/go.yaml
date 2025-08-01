@@ -921,6 +921,30 @@
   out:
   - *int
 
+- go: shiftAllLeftConst
+  asm: "VPSLL[WDQ]"
+  in:
+  - *any
+  - &imm
+    class: immediate
+    immOffset: 0
+  out:
+  - *any
+- go: shiftAllRightConst
+  asm: "VPSRL[WDQ]"
+  in:
+  - *int
+  - *imm
+  out:
+  - *int
+- go: shiftAllRightConst
+  asm: "VPSRA[WDQ]"
+  in:
+  - *uint
+  - *imm
+  out:
+  - *uint
+
 # Shift* (variable)
 - go: ShiftLeft
   asm: "VPSLLV[WD]"

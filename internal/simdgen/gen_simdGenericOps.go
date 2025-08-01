@@ -42,8 +42,11 @@ func writeSIMDGenericOps(ops []Operation) *bytes.Buffer {
 	}
 	var opsData opData
 	for _, op := range ops {
+		if op.NoGenericOps != nil && *op.NoGenericOps == "true" {
+			continue
+		}
 		_, _, _, immType, gOp := op.shape()
-		gOpData := genericOpsData{genericName(gOp), len(gOp.In), op.Commutative}
+		gOpData := genericOpsData{gOp.GenericName(), len(gOp.In), op.Commutative}
 		if immType == VarImm || immType == ConstVarImm {
 			opsData.OpsImm = append(opsData.OpsImm, gOpData)
 		} else {

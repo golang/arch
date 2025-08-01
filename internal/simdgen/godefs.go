@@ -47,6 +47,9 @@ type rawOperation struct {
 	GoArch       string  // GOARCH for this definition
 	Asm          string  // Assembly mnemonic
 	OperandOrder *string // optional Operand order for better Go declarations
+	// Optional tag to indicate this operation is paired with special generic->machine ssa lowering rules.
+	// Should be paired with special templates in gen_simdrules.go
+	SpecialLower *string
 
 	In            []Operand // Parameters
 	InVariant     []Operand // Optional parameters
@@ -62,6 +65,12 @@ type rawOperation struct {
 	ConstImm *string
 	// NameAndSizeCheck is used to check [BWDQ] maps to (8|16|32|64) elemBits.
 	NameAndSizeCheck *bool
+	// If non-nil, all generation in gen_simdTypes.go and gen_intrinsics will be skipped.
+	NoTypes *string
+	// If non-nil, all generation in gen_simdGenericOps and gen_simdrules will be skipped.
+	NoGenericOps *string
+	// If non-nil, this string will be attached to the machine ssa op name.
+	SSAVariant *string
 }
 
 func (o *Operation) DecodeUnified(v *unify.Value) error {
@@ -112,6 +121,18 @@ func (o *Operation) VectorWidth() int {
 		}
 	}
 	panic(fmt.Errorf("Figure out what the vector width is for %v and implement it", *o))
+}
+
+func machineOpName(maskType maskShape, gOp Operation) string {
+	asm := gOp.Asm
+	if maskType == 2 {
+		asm += "Masked"
+	}
+	asm = fmt.Sprintf("%s%d", asm, gOp.VectorWidth())
+	if gOp.SSAVariant != nil {
+		asm += *gOp.SSAVariant
+	}
+	return asm
 }
 
 func compareStringPointers(x, y *string) int {

@@ -524,7 +524,7 @@ func writeSIMDTypes(typeMap simdTypeMap) *bytes.Buffer {
 	return buffer
 }
 
-// writeSIMDStubs generates the simd vector intrinsic stubs and writes it to stubs_amd64.go
+// writeSIMDStubs generates the simd vector intrinsic stubs and writes it to ops_amd64.go and ops_internal_amd64.go
 // within the specified directory.
 func writeSIMDStubs(ops []Operation, typeMap simdTypeMap) *bytes.Buffer {
 	t := templateOf(simdStubsTmpl, "simdStubs")
@@ -537,6 +537,9 @@ func writeSIMDStubs(ops []Operation, typeMap simdTypeMap) *bytes.Buffer {
 	slices.SortFunc(ops, compareOperations)
 
 	for i, op := range ops {
+		if op.NoTypes != nil && *op.NoTypes == "true" {
+			continue
+		}
 		idxVecAsScalar, err := checkVecAsScalar(op)
 		if err != nil {
 			panic(err)
@@ -555,7 +558,6 @@ func writeSIMDStubs(ops []Operation, typeMap simdTypeMap) *bytes.Buffer {
 			if err := t.ExecuteTemplate(buffer, s, op); err != nil {
 				panic(fmt.Errorf("failed to execute template %s for op %v: %w", s, op, err))
 			}
-
 		} else {
 			panic(fmt.Errorf("failed to classify op %v: %w", op.Go, err))
 		}

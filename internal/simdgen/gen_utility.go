@@ -361,6 +361,16 @@ func (o Operand) OpNameAndType(s string) string {
 	return o.OpName(s) + " " + *o.Go
 }
 
+// GoExported returns [Go] with first character capitalized.
+func (op Operation) GoExported() string {
+	return capitalizeFirst(op.Go)
+}
+
+// DocumentationExported returns [Documentation] with method name capitalized.
+func (op Operation) DocumentationExported() string {
+	return strings.ReplaceAll(op.Documentation, op.Go, op.GoExported())
+}
+
 // Op0Name returns the name to use for the 0 operand,
 // if any is present, otherwise the parameter is used.
 func (op Operation) Op0Name(s string) string {
@@ -549,13 +559,16 @@ func fillCPUFeature(ops []Operation) (filled []Operation, excluded []Operation) 
 	return
 }
 
-func genericName(op Operation) string {
+func (op Operation) GenericName() string {
 	if op.OperandOrder != nil {
 		switch *op.OperandOrder {
 		case "21Type1", "231Type1":
 			// Permute uses operand[1] for method receiver.
 			return op.Go + *op.In[1].Go
 		}
+	}
+	if op.In[0].Class == "immediate" {
+		return op.Go + *op.In[1].Go
 	}
 	return op.Go + *op.In[0].Go
 }
@@ -569,7 +582,7 @@ func dedupGodef(ops []Operation) ([]Operation, error) {
 	for _, op := range ops {
 		_, _, _, _, gOp := op.shape()
 
-		gN := genericName(gOp)
+		gN := gOp.GenericName()
 		seen[gN] = append(seen[gN], op)
 	}
 	if *FlagReportDup {

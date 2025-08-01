@@ -25,41 +25,41 @@ const simdPackage = "` + simdPackage + `"
 func simdIntrinsics(addF func(pkg, fn string, b intrinsicBuilder, archFamilies ...sys.ArchFamily)) {
 {{end}}
 
-{{define "op1"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen1(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.SSAType}}), sys.AMD64)
+{{define "op1"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen1(ssa.Op{{.GenericName}}, {{.SSAType}}), sys.AMD64)
 {{end}}
-{{define "op2"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen2(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.SSAType}}), sys.AMD64)
+{{define "op2"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen2(ssa.Op{{.GenericName}}, {{.SSAType}}), sys.AMD64)
 {{end}}
-{{define "op2_21"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen2_21(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.SSAType}}), sys.AMD64)
+{{define "op2_21"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen2_21(ssa.Op{{.GenericName}}, {{.SSAType}}), sys.AMD64)
 {{end}}
-{{define "op2_21Type1"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen2_21(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}), sys.AMD64)
+{{define "op2_21Type1"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen2_21(ssa.Op{{.GenericName}}, {{.SSAType}}), sys.AMD64)
 {{end}}
-{{define "op3"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen3(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.SSAType}}), sys.AMD64)
+{{define "op3"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen3(ssa.Op{{.GenericName}}, {{.SSAType}}), sys.AMD64)
 {{end}}
-{{define "op3_21"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen3_21(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.SSAType}}), sys.AMD64)
+{{define "op3_21"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen3_21(ssa.Op{{.GenericName}}, {{.SSAType}}), sys.AMD64)
 {{end}}
-{{define "op3_21Type1"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen3_21(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}), sys.AMD64)
+{{define "op3_21Type1"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen3_21(ssa.Op{{.GenericName}}, {{.SSAType}}), sys.AMD64)
 {{end}}
-{{define "op3_231Type1"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen3_231(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}), sys.AMD64)
+{{define "op3_231Type1"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen3_231(ssa.Op{{.GenericName}}, {{.SSAType}}), sys.AMD64)
 {{end}}
-{{define "op3_31"}}	addF(simdPackage, "{{(index .In 2).Go}}.{{.Go}}", opLen3_31(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.SSAType}}), sys.AMD64)
+{{define "op3_31"}}	addF(simdPackage, "{{(index .In 2).Go}}.{{.Go}}", opLen3_31(ssa.Op{{.GenericName}}, {{.SSAType}}), sys.AMD64)
 {{end}}
-{{define "op4"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen4(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.SSAType}}), sys.AMD64)
+{{define "op4"}}	addF(simdPackage, "{{(index .In 0).Go}}.{{.Go}}", opLen4(ssa.Op{{.GenericName}}, {{.SSAType}}), sys.AMD64)
 {{end}}
-{{define "op4_231Type1"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen4_231(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}), sys.AMD64)
+{{define "op4_231Type1"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen4_231(ssa.Op{{.GenericName}}, {{.SSAType}}), sys.AMD64)
 {{end}}
-{{define "op4_31"}}	addF(simdPackage, "{{(index .In 2).Go}}.{{.Go}}", opLen4_31(ssa.Op{{.Go}}{{(index .In 0).Go}}, {{.SSAType}}), sys.AMD64)
+{{define "op4_31"}}	addF(simdPackage, "{{(index .In 2).Go}}.{{.Go}}", opLen4_31(ssa.Op{{.GenericName}}, {{.SSAType}}), sys.AMD64)
 {{end}}
-{{define "op1Imm8"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen1Imm8(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
+{{define "op1Imm8"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen1Imm8(ssa.Op{{.GenericName}}, {{.SSAType}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
 {{end}}
-{{define "op2Imm8"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen2Imm8(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
+{{define "op2Imm8"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen2Imm8(ssa.Op{{.GenericName}}, {{.SSAType}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
 {{end}}
-{{define "op2Imm8_2I"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen2Imm8_2I(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
+{{define "op2Imm8_2I"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen2Imm8_2I(ssa.Op{{.GenericName}}, {{.SSAType}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
 {{end}}
-{{define "op3Imm8"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen3Imm8(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
+{{define "op3Imm8"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen3Imm8(ssa.Op{{.GenericName}}, {{.SSAType}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
 {{end}}
-{{define "op3Imm8_2I"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen3Imm8_2I(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
+{{define "op3Imm8_2I"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen3Imm8_2I(ssa.Op{{.GenericName}}, {{.SSAType}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
 {{end}}
-{{define "op4Imm8"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen4Imm8(ssa.Op{{.Go}}{{(index .In 1).Go}}, {{.SSAType}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
+{{define "op4Imm8"}}	addF(simdPackage, "{{(index .In 1).Go}}.{{.Go}}", opLen4Imm8(ssa.Op{{.GenericName}}, {{.SSAType}}, {{(index .In 0).ImmOffset}}), sys.AMD64)
 {{end}}
 
 {{define "vectorConversion"}}	addF(simdPackage, "{{.Tsrc.Name}}.As{{.Tdst.Name}}", func(s *state, n *ir.CallExpr, args []*ssa.Value) *ssa.Value { return args[0] }, sys.AMD64)
@@ -99,6 +99,9 @@ func writeSIMDIntrinsics(ops []Operation, typeMap simdTypeMap) *bytes.Buffer {
 	slices.SortFunc(ops, compareOperations)
 
 	for _, op := range ops {
+		if op.NoTypes != nil && *op.NoTypes == "true" {
+			continue
+		}
 		if s, op, err := classifyOp(op); err == nil {
 			if err := t.ExecuteTemplate(buffer, s, op); err != nil {
 				panic(fmt.Errorf("failed to execute template %s for op %s: %w", s, op.Go, err))
