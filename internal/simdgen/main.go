@@ -94,6 +94,7 @@ import (
 	"maps"
 	"os"
 	"path/filepath"
+	"runtime/pprof"
 	"slices"
 	"strings"
 
@@ -116,12 +117,35 @@ var (
 	flagDebugUnify = flag.Bool("debug-unify", false, "print unification trace")
 	flagDebugHTML  = flag.String("debug-html", "", "write unification trace to `file.html`")
 	FlagReportDup  = flag.Bool("reportdup", false, "report the duplicate godefs")
+
+	flagCPUProfile = flag.String("cpuprofile", "", "write CPU profile to `file`")
+	flagMemProfile = flag.String("memprofile", "", "write memory profile to `file`")
 )
 
 const simdPackage = "simd"
 
 func main() {
 	flag.Parse()
+
+	if *flagCPUProfile != "" {
+		f, err := os.Create(*flagCPUProfile)
+		if err != nil {
+			log.Fatalf("-cpuprofile: %s", err)
+		}
+		defer f.Close()
+		pprof.StartCPUProfile(f)
+		defer pprof.StopCPUProfile()
+	}
+	if *flagMemProfile != "" {
+		f, err := os.Create(*flagMemProfile)
+		if err != nil {
+			log.Fatalf("-memprofile: %s", err)
+		}
+		defer func() {
+			pprof.WriteHeapProfile(f)
+			f.Close()
+		}()
+	}
 
 	var inputs []unify.Closure
 
