@@ -8,7 +8,9 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/fs"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 
@@ -18,6 +20,9 @@ import (
 // ReadOpts provides options to [Read] and related functions. The zero value is
 // the default options.
 type ReadOpts struct {
+	// FS, if non-nil, is the file system from which to resolve !import file
+	// names.
+	FS fs.FS
 }
 
 // Read reads a [Closure] in YAML format from r, using path for error messages.
@@ -61,6 +66,10 @@ type ReadOpts struct {
 // non-deterministic choice view really works. The unifier does not directly
 // implement sums; instead, this is decoded as a fresh variable that's
 // simultaneously bound to x, y, and z.
+//
+// - !import glob is like a !sum, but its children are read from all files
+// matching the given glob pattern, which is interpreted relative to the current
+// file path. Each file gets its own variable scope.
 func Read(r io.Reader, path string, opts ReadOpts) (Closure, error) {
 	dec := yamlDecoder{opts: opts, path: path, env: topEnv}
 	v, err := dec.read(r)
@@ -74,6 +83,8 @@ func Read(r io.Reader, path string, opts ReadOpts) (Closure, error) {
 //
 // The file must consist of a single YAML document.
 //
+// If opts.FS is not set, this sets it to a FS rooted at path's directory.
+//
 // See [Read] for details.
 func ReadFile(path string, opts ReadOpts) (Closure, error) {
 	f, err := os.Open(path)
@@ -82,13 +93,11 @@ func ReadFile(path string, opts ReadOpts) (Closure, error) {
 	}
 	defer f.Close()
 
-	dec := yamlDecoder{opts: opts, path: path, env: topEnv}
-	v, err := dec.read(f)
-	if err != nil {
-		return Closure{}, err
+	if opts.FS == nil {
+		opts.FS = os.DirFS(filepath.Dir(path))
 	}
 
-	return dec.close(v), nil
+	return Read(f, path, opts)
 }
 
 // UnmarshalYAML implements [yaml.Unmarshaler].
@@ -157,7 +166,12 @@ func readOneNode(r io.Reader) (*yaml.Node, error) {
 
 // root parses the root of a file.
 func (dec *yamlDecoder) root(node *yaml.Node) (*Value, error) {
-	// Prepare for variable name resolution in this file.
+	// Prepare for variable name resolution in this file. This may be a nested
+	// root, so restore the current values when we're done.
+	oldVars, oldNSums := dec.vars, dec.nSums
+	defer func() {
+		dec.vars, dec.nSums = oldVars, oldNSums
+	}()
 	dec.vars = make(map[string]*ident, 0)
 	dec.nSums = 0
 
@@ -339,9 +353,73 @@ func (dec *yamlDecoder) value(node *yaml.Node) (vOut *Value, errOut error) {
 		dec.nSums++
 		dec.env = dec.env.bind(id, vs...)
 		return mk(Var{id: id})
+
+	case is(yaml.ScalarNode, "!import"):
+		if dec.opts.FS == nil {
+			return nil, fmt.Errorf("!import not allowed (ReadOpts.FS not set)")
+		}
+		pat := node.Value
+
+		if !fs.ValidPath(pat) {
+			// This will result in Glob returning no results. Give a more useful
+			// error message for this case.
+			return nil, fmt.Errorf("!import path must not contain '.' or '..'")
+		}
+
+		ms, err := fs.Glob(dec.opts.FS, pat)
+		if err != nil {
+			return nil, fmt.Errorf("resolving !import: %w", err)
+		}
+		if len(ms) == 0 {
+			return nil, fmt.Errorf("!import did not match any files")
+		}
+
+		// Parse each file
+		vs := make([]*Value, 0, len(ms))
+		for _, m := range ms {
+			v, err := dec.import1(m)
+			if err != nil {
+				return nil, err
+			}
+			vs = append(vs, v)
+		}
+
+		// Create a sum.
+		if len(vs) == 1 {
+			return vs[0], nil
+		}
+		id := &ident{name: "import"}
+		dec.env = dec.env.bind(id, vs...)
+		return mk(Var{id: id})
 	}
 
 	return nil, fmt.Errorf("unknown node kind %d %v", node.Kind, node.Tag)
+}
+
+func (dec *yamlDecoder) import1(path string) (*Value, error) {
+	// Make sure we can open the path first.
+	f, err := dec.opts.FS.Open(path)
+	if err != nil {
+		return nil, fmt.Errorf("!import failed: %w", err)
+	}
+	defer f.Close()
+
+	// Prepare the enter path.
+	oldFS, oldPath := dec.opts.FS, dec.path
+	defer func() {
+		dec.opts.FS, dec.path = oldFS, oldPath
+	}()
+
+	// Enter path, which is relative to the current path's directory.
+	newPath := filepath.Join(filepath.Dir(dec.path), path)
+	subFS, err := fs.Sub(dec.opts.FS, filepath.Dir(path))
+	if err != nil {
+		return nil, err
+	}
+	dec.opts.FS, dec.path = subFS, newPath
+
+	// Parse the file.
+	return dec.read(f)
 }
 
 type yamlEncoder struct {

@@ -11,6 +11,7 @@ import (
 	"log"
 	"strings"
 	"testing"
+	"testing/fstest"
 
 	"gopkg.in/yaml.v3"
 )
@@ -37,6 +38,10 @@ func oneValue(t *testing.T, c Closure) *Value {
 }
 
 func printYaml(val any) {
+	fmt.Println(prettyYaml(val))
+}
+
+func prettyYaml(val any) string {
 	b, err := yaml.Marshal(val)
 	if err != nil {
 		panic(err)
@@ -66,7 +71,7 @@ func printYaml(val any) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(b))
+	return string(b)
 }
 
 func cleanYaml(node *yaml.Node, lines []int, endPos int) {
@@ -144,4 +149,54 @@ func TestEmptyString(t *testing.T) {
 	if !v1.Exact() {
 		t.Fatal("expected exact string")
 	}
+}
+
+func TestImport(t *testing.T) {
+	// Test a basic import
+	main := strings.NewReader("!import x/y.yaml")
+	fs := fstest.MapFS{
+		// Test a glob import with a relative path
+		"x/y.yaml":   {Data: []byte("!import y/*.yaml")},
+		"x/y/z.yaml": {Data: []byte("42")},
+	}
+	cl, err := Read(main, "x.yaml", ReadOpts{FS: fs})
+	if err != nil {
+		t.Fatal(err)
+	}
+	x := 42
+	checkDecode(t, oneValue(t, cl), &x)
+}
+
+func TestImportEscape(t *testing.T) {
+	// Make sure an import can't escape its subdirectory.
+	main := strings.NewReader("!import x/y.yaml")
+	fs := fstest.MapFS{
+		"x/y.yaml": {Data: []byte("!import ../y/*.yaml")},
+		"y/z.yaml": {Data: []byte("42")},
+	}
+	_, err := Read(main, "x.yaml", ReadOpts{FS: fs})
+	if err == nil {
+		t.Fatal("relative !import should have failed")
+	}
+	if !strings.Contains(err.Error(), "must not contain") {
+		t.Fatalf("unexpected error %v", err)
+	}
+}
+
+func TestImportScope(t *testing.T) {
+	// Test that imports have different variable scopes.
+	main := strings.NewReader("[!import y.yaml, !import y.yaml]")
+	fs := fstest.MapFS{
+		"y.yaml": {Data: []byte("$v")},
+	}
+	cl1, err := Read(main, "x.yaml", ReadOpts{FS: fs})
+	if err != nil {
+		t.Fatal(err)
+	}
+	cl2 := mustParse("[1, 2]")
+	res, err := Unify(cl1, cl2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	checkDecode(t, oneValue(t, res), []int{1, 2})
 }

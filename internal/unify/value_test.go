@@ -4,7 +4,11 @@
 
 package unify
 
-import "slices"
+import (
+	"reflect"
+	"slices"
+	"testing"
+)
 
 func ExampleClosure_All_tuple() {
 	v := mustParse(`
@@ -33,4 +37,14 @@ c: 5
 	// - {a: 1, b: 4, c: 5}
 	// - {a: 2, b: 3, c: 5}
 	// - {a: 2, b: 4, c: 5}
+}
+
+func checkDecode[T any](t *testing.T, got *Value, want T) {
+	var gotT T
+	if err := got.Decode(&gotT); err != nil {
+		t.Fatalf("Decode failed: %v", err)
+	}
+	if !reflect.DeepEqual(&gotT, &want) {
+		t.Fatalf("got:\n%s\nwant:\n%s", prettyYaml(gotT), prettyYaml(want))
+	}
 }
