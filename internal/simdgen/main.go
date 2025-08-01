@@ -46,10 +46,6 @@
 // categories.yaml and go.yaml contains definitions that unifies with types.yaml and XED
 // data, you can find an example in ops/AddSub/.
 //
-// To produce an aggregation of go.yaml and categoris.yaml from ./ops/ to ./, run:
-//
-// go generate
-//
 // When generating Go definitions, simdgen do 3 "magic"s:
 // - It splits masked operations(with op's [Masked] field set) to const and non const:
 //   - One is a normal masked operation, the original
@@ -83,8 +79,6 @@ package main
 //
 // - Do I need Closure, Value, and Domain? It feels like I should only need two
 // types.
-
-//go:generate go run ./ops/.
 
 import (
 	"cmp"

@@ -13,7 +13,6 @@ builds the compiler.
 
 rm -rf go-test
 git clone https://go.googlesource.com/go -b dev.simd go-test
-go generate
 go run . -xedPath xeddata  -o godefs -goroot ./go-test  go.yaml types.yaml categories.yaml
 (cd go-test/src/cmd/compile/internal/ssa/_gen ; go run *.go )
 (cd go-test/src ; GOEXPERIMENT=simd  ./make.bash )
