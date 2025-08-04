@@ -40,3 +40,9 @@
   documentation: !string |-
     // NAME performs a compression on vector x using mask by
     // selecting elements as indicated by mask, and pack them to lower indexed elements.
+- go: blend
+  commutative: false
+  extension: "AVX.*"
+  documentation: !string |-
+    // NAME blends two vectors based on mask values, choosing either
+    // the first or the second based on whether the third is false or true

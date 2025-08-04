@@ -637,7 +637,6 @@
     base: $b
     bits: $e
 
-
 - go: Set128
   asm: "VINSERTI128"
   in:
@@ -823,6 +822,42 @@
   - *any
   out:
   - *any
+
+# For now a non-public method because
+# (1) [OverwriteClass] must be set together with [OverwriteBase]
+# (2) "simdgen does not support [OverwriteClass] in inputs".
+# That means the signature is wrong.  
+- go: blend
+  asm: VPBLENDVB
+  in: 
+  - &v
+    go: $t
+    class: vreg
+    base: int
+  - *v
+  - 
+    class: vreg
+    base: int
+    name: mask
+  out:
+  - *v
+
+# For AVX512
+- go: blend
+  asm: VPBLENDM[BWDQ]
+  in: 
+  - &v
+    go: $t
+    bits: 512
+    class: vreg
+    base: int
+  - *v
+  inVariant: 
+  - 
+    class: mask
+  out:
+  - *v
+
 # "Normal" multiplication is only available for floats.
 # This only covers the single and double precision.
 - go: Mul
