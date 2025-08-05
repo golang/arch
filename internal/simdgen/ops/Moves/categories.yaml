@@ -60,3 +60,9 @@
   documentation: !string |-
     // NAME blends two vectors based on mask values, choosing either
     // the first or the second based on whether the third is false or true
+- go: Expand
+  commutative: false
+  extension: "AVX.*"
+  documentation: !string |-
+    // NAME performs an expansion on a vector x whose elements are packed to lower parts.
+    // The expansion is to distribute elements as indexed by mask, from lower mask elements to upper in order.

@@ -250,3 +250,11 @@
   out:
   - *v
 
+- go: Expand
+  asm: "VPEXPAND[BWDQ]|VEXPANDP[SD]"
+  in:
+    # The mask in Expand is a control mask rather than a write mask, so it's not optional.
+  - class: mask
+  - *any
+  out:
+  - *any
