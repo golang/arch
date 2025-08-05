@@ -52,7 +52,7 @@ const htmlCSS = `
 type htmlTracer struct {
 	w    io.Writer
 	dot  *dotEncoder
-	svgs map[*Value]string
+	svgs map[any]string
 }
 
 func (t *htmlTracer) writeTree(node *traceTree) {
@@ -91,19 +91,19 @@ func (t *htmlTracer) writeTree(node *traceTree) {
 	}
 }
 
-func (t *htmlTracer) svg(v *Value) string {
-	if s, ok := t.svgs[v]; ok {
+func htmlSVG[Key comparable](t *htmlTracer, f func(Key), arg Key) string {
+	if s, ok := t.svgs[arg]; ok {
 		return s
 	}
 	var buf strings.Builder
-	t.dot.subgraph(v)
+	f(arg)
 	t.dot.writeSvg(&buf)
 	t.dot.clear()
 	svg := buf.String()
 	if t.svgs == nil {
-		t.svgs = make(map[*Value]string)
+		t.svgs = make(map[any]string)
 	}
-	t.svgs[v] = svg
+	t.svgs[arg] = svg
 	buf.Reset()
 	return svg
 }
@@ -112,79 +112,12 @@ func (t *htmlTracer) emit(vs []*Value, labels []string, env nonDetEnv) {
 	fmt.Fprintf(t.w, `<div class="unify">`)
 	for i, v := range vs {
 		fmt.Fprintf(t.w, `<div class="header" style="grid-column: %d">%s</div>`, i+1, html.EscapeString(labels[i]))
-		fmt.Fprintf(t.w, `<div style="grid-area: 2 / %d">%s</div>`, i+1, t.svg(v))
+		fmt.Fprintf(t.w, `<div style="grid-area: 2 / %d">%s</div>`, i+1, htmlSVG(t, t.dot.valueSubgraph, v))
 	}
+	col := len(vs)
 
-	t.emitEnv(env, len(vs))
+	fmt.Fprintf(t.w, `<div class="header" style="grid-column: %d">in</div>`, col+1)
+	fmt.Fprintf(t.w, `<div style="grid-area: 2 / %d">%s</div>`, col+1, htmlSVG(t, t.dot.envSubgraph, env))
 
 	fmt.Fprintf(t.w, `</div>`)
-}
-
-func (t *htmlTracer) emitEnv(env nonDetEnv, colStart int) {
-	if env.isBottom() {
-		fmt.Fprintf(t.w, `<div class="header" style="grid-column: %d">_|_</div>`, colStart+1)
-		return
-	}
-
-	colLimit := 10
-	col := colStart
-	for i, f := range env.factors {
-		if i > 0 {
-			// Print * between each factor.
-			fmt.Fprintf(t.w, `<div class="header" style="grid-column: %d">&times;</div>`, col+1)
-			col++
-		}
-
-		var idCols []int
-		for i, id := range f.ids {
-			var str string
-			if i == 0 && len(f.ids) > 1 {
-				str = "("
-			}
-			if colLimit <= 0 {
-				str += "..."
-			} else {
-				str += html.EscapeString(t.dot.idp.unique(id))
-			}
-			if (i == len(f.ids)-1 || colLimit <= 0) && len(f.ids) > 1 {
-				str += ")"
-			}
-
-			fmt.Fprintf(t.w, `<div class="header" style="grid-column: %d">%s</div>`, col+1, str)
-			idCols = append(idCols, col)
-
-			col++
-			if colLimit <= 0 {
-				break
-			}
-			colLimit--
-		}
-
-		fmt.Fprintf(t.w, `<div class="envFactor" style="grid-area: 2 / %d / 3 / %d">`, idCols[0]+1, col+1)
-		rowLimit := 10
-		row := 0
-		for _, term := range f.terms {
-			// TODO: Print + between rows? With some horizontal something to
-			// make it clear what it applies across?
-
-			for i, val := range term.vals {
-				fmt.Fprintf(t.w, `<div style="grid-area: %d / %d">`, row+1, idCols[i]-idCols[0]+1)
-				if i < len(term.vals)-1 && i == len(idCols)-1 {
-					fmt.Fprintf(t.w, `...</div>`)
-					break
-				} else if rowLimit <= 0 {
-					fmt.Fprintf(t.w, `...</div>`)
-				} else {
-					fmt.Fprintf(t.w, `%s</div>`, t.svg(val))
-				}
-			}
-
-			row++
-			if rowLimit <= 0 {
-				break
-			}
-			rowLimit--
-		}
-		fmt.Fprintf(t.w, `</div>`)
-	}
 }

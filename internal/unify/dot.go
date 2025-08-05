@@ -96,14 +96,15 @@ func (enc *dotEncoder) edge(from, to string, label string, args ...any) {
 	fmt.Fprintf(enc.w, "%s -> %s [label=%q];\n", from, to, l)
 }
 
-func (enc *dotEncoder) subgraph(v *Value) (vID, cID string) {
+func (enc *dotEncoder) valueSubgraph(v *Value) {
 	enc.valLimit = maxNodes
-	cID = enc.newID("cluster_%d")
+	cID := enc.newID("cluster_%d")
 	fmt.Fprintf(enc.w, "subgraph %s {\n", cID)
 	fmt.Fprintf(enc.w, "style=invis;")
-	vID = enc.value(v)
+	vID := enc.value(v)
 	fmt.Fprintf(enc.w, "}\n")
-	return
+	// We don't need the IDs right now.
+	_, _ = cID, vID
 }
 
 func (enc *dotEncoder) value(v *Value) string {
@@ -179,5 +180,42 @@ func (enc *dotEncoder) value(v *Value) string {
 
 	case Var:
 		return enc.node(fmt.Sprintf("Var %s", enc.idp.unique(vd.id)), "")
+	}
+}
+
+func (enc *dotEncoder) envSubgraph(e nonDetEnv) {
+	enc.valLimit = maxNodes
+	cID := enc.newID("cluster_%d")
+	fmt.Fprintf(enc.w, "subgraph %s {\n", cID)
+	fmt.Fprintf(enc.w, "style=invis;")
+	vID := enc.env(e.root)
+	fmt.Fprintf(enc.w, "}\n")
+	_, _ = cID, vID
+}
+
+func (enc *dotEncoder) env(e *envExpr) string {
+	switch e.kind {
+	default:
+		panic("bad kind")
+	case envZero:
+		return enc.node("0", "")
+	case envUnit:
+		return enc.node("1", "")
+	case envBinding:
+		node := enc.node(fmt.Sprintf("%q :", enc.idp.unique(e.id)), "")
+		enc.edge(node, enc.value(e.val), "")
+		return node
+	case envProduct:
+		node := enc.node("⨯", "")
+		for _, op := range e.operands {
+			enc.edge(node, enc.env(op), "")
+		}
+		return node
+	case envSum:
+		node := enc.node("+", "")
+		for _, op := range e.operands {
+			enc.edge(node, enc.env(op), "")
+		}
+		return node
 	}
 }

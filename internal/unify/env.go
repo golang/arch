@@ -8,29 +8,36 @@ import (
 	"fmt"
 	"iter"
 	"reflect"
-	"slices"
 	"strings"
 )
 
-// A nonDetEnv is a non-deterministic mapping from [ident]s to [Value]s.
+// A nonDetEnv is an immutable set of environments, where each environment is a
+// mapping from [ident]s to [Value]s.
 //
-// Logically, this is just a set of deterministic environments, where each
-// deterministic environment is a complete mapping from each [ident]s to exactly
-// one [Value]. In particular, [ident]s are NOT necessarily independent of each
-// other. For example, an environment may have both {x: 1, y: 1} and {x: 2, y:
-// 2}, but not {x: 1, y: 2}.
+// To keep this compact, we use an algebraic representation similar to
+// relational algebra. The atoms are zero, unit, or a singular binding:
 //
-// A nonDetEnv is immutable.
+// - A singular binding is an environment set consisting of a single environment
+// that binds a single ident to a single value.
 //
-// Often [ident]s are independent of each other, so the representation optimizes
-// for this by using a cross-product of environment factors, where each factor
-// is a sum of deterministic environments. These operations obey the usual
-// distributional laws, so we can always canonicalize into this form. (It MAY be
-// worthwhile to allow more general expressions of sums and products.)
+// - Zero is the empty set.
 //
-// For example, to represent {{x: 1, y: 1}, {x: 2, y: 2}}, in which the
-// variables x and y are dependent, we need a single factor that covers x and y
-// and consists of two terms: {x: 1, y: 1} + {x: 2, y: 2}.
+// - Unit is an environment set consisting of a single, empty environment (no
+// bindings).
+//
+// From these, we build up more complex sets of environments using sums and
+// cross products:
+//
+// - A sum is simply the union of the two environment sets.
+//
+// - A cross product is the Cartesian product of the two environment sets,
+// followed by combining each pair of environments. Combining simply merges the
+// two mappings, but fails if the mappings overlap.
+//
+// For example, to represent {{x: 1, y: 1}, {x: 2, y: 2}}, we build the two
+// environments and sum them:
+//
+//	({x: 1} ⨯ {y: 1}) + ({x: 2} ⨯ {y: 2})
 //
 // If we add a third variable z that can be 1 or 2, independent of x and y, we
 // get four logical environments:
@@ -40,43 +47,59 @@ import (
 //	{x: 1, y: 1, z: 2}
 //	{x: 2, y: 2, z: 2}
 //
-// This could be represented as a single factor that is the sum of these four
-// detEnvs, but because z is independent, it can be a separate factor. Hence,
-// the most compact representation of this environment is:
+// This could be represented as a sum of all four environments, but because z is
+// independent, we can use a more compact representation:
 //
-//	({x: 1, y: 1} + {x: 2, y: 2}) ⨯ ({z: 1} + {z: 2})
+//	(({x: 1} ⨯ {y: 1}) + ({x: 2} ⨯ {y: 2})) ⨯ ({z: 1} + {z: 2})
 //
-// That is, two factors, where each is the sum of two terms.
+// Environment sets obey commutative algebra rules:
+//
+//	e + 0 = e
+//	e ⨯ 0 = 0
+//	e ⨯ 1 =
+//	e + f = f + e
+//	e ⨯ f = f ⨯ e
 type nonDetEnv struct {
-	// factors is a list of the multiplicative factors in this environment. The
-	// set of deterministic environments is the cross-product of these factors.
-	// All factors must have disjoint variables.
-	factors []*envSum
+	root *envExpr
 }
 
-// envSum is a sum of deterministic environments, all with the same set of
-// variables.
-type envSum struct {
-	ids   []*ident // TODO: Do we ever use this as a slice? Should it be a map?
-	terms []detEnv
+type envExpr struct {
+	// TODO: A tree-based data structure for this may not be ideal, since it
+	// involves a lot of walking to find things and we often have to do deep
+	// rewrites anyway for partitioning. Would some flattened array-style
+	// representation be better, possibly combined with an index of ident uses?
+	// We could even combine that with an immutable array abstraction (ala
+	// Clojure) that could enable more efficient construction operations.
+
+	kind envExprKind
+
+	// For envBinding
+	id  *ident
+	val *Value
+
+	// For sum or product. Len must be >= 2 and none of the elements can have
+	// the same kind as this node.
+	operands []*envExpr
 }
 
-type detEnv struct {
-	vals []*Value // Indexes correspond to envSum.ids
-}
+type envExprKind byte
+
+const (
+	envZero envExprKind = iota
+	envUnit
+	envProduct
+	envSum
+	envBinding
+)
 
 var (
-	// zeroEnvFactor is the "0" value of an [envSum]. It's a a factor with no
-	// sum terms. This is easiest to think of as: an empty sum must be the
-	// additive identity, 0.
-	zeroEnvFactor = &envSum{}
+	// topEnv is the unit value (multiplicative identity) of a [nonDetEnv].
+	topEnv = nonDetEnv{envExprUnit}
+	// bottomEnv is the zero value (additive identity) of a [nonDetEnv].
+	bottomEnv = nonDetEnv{envExprZero}
 
-	// topEnv is the algebraic one value of a [nonDetEnv]. It has no factors
-	// because the product of no factors is the multiplicative identity.
-	topEnv = nonDetEnv{}
-	// bottomEnv is the algebraic zero value of a [nonDetEnv]. The product of
-	// bottomEnv with x is bottomEnv, and the sum of bottomEnv with y is y.
-	bottomEnv = nonDetEnv{factors: []*envSum{zeroEnvFactor}}
+	envExprZero = &envExpr{kind: envZero}
+	envExprUnit = &envExpr{kind: envUnit}
 )
 
 // bind binds id to each of vals in e.
@@ -90,232 +113,132 @@ func (e nonDetEnv) bind(id *ident, vals ...*Value) nonDetEnv {
 		return bottomEnv
 	}
 
-	// TODO: If any of vals are _, should we just not do anything? We're kind of
+	// TODO: If any of vals are _, should we just drop that val? We're kind of
 	// inconsistent about whether an id missing from e means id is invalid or
 	// means id is _.
 
 	// Check that id isn't present in e.
-	for _, f := range e.factors {
-		if slices.Contains(f.ids, id) {
-			panic("id " + id.name + " already present in environment")
-		}
+	for range e.root.bindings(id) {
+		panic("id " + id.name + " already present in environment")
 	}
 
-	// Create the new sum term.
-	sum := &envSum{ids: []*ident{id}}
+	// Create a sum of all the values.
+	bindings := make([]*envExpr, 0, 1)
 	for _, val := range vals {
-		sum.terms = append(sum.terms, detEnv{vals: []*Value{val}})
+		bindings = append(bindings, &envExpr{kind: envBinding, id: id, val: val})
 	}
+
 	// Multiply it in.
-	factors := append(e.factors[:len(e.factors):len(e.factors)], sum)
-	return nonDetEnv{factors}
+	return nonDetEnv{newEnvExprProduct(e.root, newEnvExprSum(bindings...))}
 }
 
 func (e nonDetEnv) isBottom() bool {
-	if len(e.factors) == 0 {
-		// This is top.
-		return false
-	}
-	return len(e.factors[0].terms) == 0
+	return e.root.kind == envZero
 }
 
-func (e nonDetEnv) vars() iter.Seq[*ident] {
-	return func(yield func(*ident) bool) {
-		for _, t := range e.factors {
-			for _, id := range t.ids {
-				if !yield(id) {
-					return
+// bindings yields all [envBinding] nodes in e with the given id. If id is nil,
+// it yields all binding nodes.
+func (e *envExpr) bindings(id *ident) iter.Seq[*envExpr] {
+	// This is just a pre-order walk and it happens this is the only thing we
+	// need a pre-order walk for.
+	return func(yield func(*envExpr) bool) {
+		var rec func(e *envExpr) bool
+		rec = func(e *envExpr) bool {
+			if e.kind == envBinding && (id == nil || e.id == id) {
+				if !yield(e) {
+					return false
 				}
 			}
-		}
-	}
-}
-
-// all enumerates all deterministic environments in e.
-//
-// The result slice is in the same order as the slice returned by
-// [nonDetEnv2.vars]. The slice is reused between iterations.
-func (e nonDetEnv) all() iter.Seq[[]*Value] {
-	return func(yield func([]*Value) bool) {
-		var vals []*Value
-		var walk func(int) bool
-		walk = func(i int) bool {
-			if i == len(e.factors) {
-				return yield(vals)
-			}
-			start := len(vals)
-			for _, term := range e.factors[i].terms {
-				vals = append(vals[:start], term.vals...)
-				if !walk(i + 1) {
+			for _, o := range e.operands {
+				if !rec(o) {
 					return false
 				}
 			}
 			return true
 		}
-		walk(0)
+		rec(e)
 	}
 }
 
-// allOrdered is like all, but idOrder controls the order of the values in the
-// resulting slice. Any [ident]s in idOrder that are missing from e are set to
-// topValue. The values of idOrder must be a bijection with [0, n).
-func (e nonDetEnv) allOrdered(idOrder map[*ident]int) iter.Seq[[]*Value] {
-	valsLen := 0
-	for _, idx := range idOrder {
-		valsLen = max(valsLen, idx+1)
+// newEnvExprProduct constructs a product node from exprs, performing
+// simplifications. It does NOT check that bindings are disjoint.
+func newEnvExprProduct(exprs ...*envExpr) *envExpr {
+	factors := make([]*envExpr, 0, 2)
+	for _, expr := range exprs {
+		switch expr.kind {
+		case envZero:
+			return envExprZero
+		case envUnit:
+			// No effect on product
+		case envProduct:
+			factors = append(factors, expr.operands...)
+		default:
+			factors = append(factors, expr)
+		}
 	}
 
-	return func(yield func([]*Value) bool) {
-		vals := make([]*Value, valsLen)
-		// e may not have all of the IDs in idOrder. Make sure any missing
-		// values are top.
-		for i := range vals {
-			vals[i] = topValue
-		}
-		var walk func(int) bool
-		walk = func(i int) bool {
-			if i == len(e.factors) {
-				return yield(vals)
-			}
-			for _, term := range e.factors[i].terms {
-				for j, id := range e.factors[i].ids {
-					vals[idOrder[id]] = term.vals[j]
-				}
-				if !walk(i + 1) {
-					return false
-				}
-			}
-			return true
-		}
-		walk(0)
+	if len(factors) == 0 {
+		return envExprUnit
+	} else if len(factors) == 1 {
+		return factors[0]
 	}
+	return &envExpr{kind: envProduct, operands: factors}
 }
 
-func crossEnvs(envs ...nonDetEnv) nonDetEnv {
-	// Combine the factors of envs
-	var factors []*envSum
-	haveIDs := map[*ident]struct{}{}
-	for _, e := range envs {
-		if e.isBottom() {
-			// The environment is bottom, so the whole product goes to
-			// bottom.
-			return bottomEnv
-		}
-		// Check that all ids are disjoint.
-		for _, f := range e.factors {
-			for _, id := range f.ids {
-				if _, ok := haveIDs[id]; ok {
-					panic("conflict on " + id.name)
+// newEnvExprSum constructs a sum node from exprs, performing simplifications.
+func newEnvExprSum(exprs ...*envExpr) *envExpr {
+	// TODO: If all of envs are products (or bindings), factor any common terms.
+	// E.g., x * y + x * z ==> x * (y + z). This is easy to do for binding
+	// terms, but harder to do for more general terms.
+
+	var have smallSet[*envExpr]
+	terms := make([]*envExpr, 0, 2)
+	for _, expr := range exprs {
+		switch expr.kind {
+		case envZero:
+			// No effect on sum
+		case envSum:
+			for _, expr1 := range expr.operands {
+				if have.Add(expr1) {
+					terms = append(terms, expr1)
 				}
-				haveIDs[id] = struct{}{}
+			}
+		default:
+			if have.Add(expr) {
+				terms = append(terms, expr)
 			}
 		}
-		// Everything checks out. Multiply the factors.
-		factors = append(factors, e.factors...)
 	}
-	return nonDetEnv{factors: factors}
+
+	if len(terms) == 0 {
+		return envExprZero
+	} else if len(terms) == 1 {
+		return terms[0]
+	}
+	return &envExpr{kind: envSum, operands: terms}
+}
+
+func crossEnvs(env1, env2 nonDetEnv) nonDetEnv {
+	// Confirm that envs have disjoint idents.
+	var ids1 smallSet[*ident]
+	for e := range env1.root.bindings(nil) {
+		ids1.Add(e.id)
+	}
+	for e := range env2.root.bindings(nil) {
+		if ids1.Has(e.id) {
+			panic(fmt.Sprintf("%s bound on both sides of cross-product", e.id.name))
+		}
+	}
+
+	return nonDetEnv{newEnvExprProduct(env1.root, env2.root)}
 }
 
 func sumEnvs(envs ...nonDetEnv) nonDetEnv {
-	// nonDetEnv is a product at the top level, so we implement summation using
-	// the distributive law. We also use associativity to keep as many top-level
-	// factors as we can, since those are what keep the environment compact.
-	//
-	// a * b * c + a * d         (where a, b, c, and d are factors)
-	//                           (combine common factors)
-	//   = a * (b * c + d)
-	//                           (expand factors into their sum terms)
-	//   = a * ((b_1 + b_2 + ...) * (c_1 + c_2 + ...) + d)
-	//                           (where b_i and c_i are deterministic environments)
-	//                           (FOIL)
-	//   = a * (b_1 * c_1 + b_1 * c_2 + b_2 * c_1 + b_2 * c2 + d)
-	//                           (all factors are now in canonical form)
-	//   = a * e
-	//
-	// The product of two deterministic environments is a deterministic
-	// environment, and the sum of deterministic environments is a factor, so
-	// this process results in the canonical product-of-sums form.
-	//
-	// TODO: This is a bit of a one-way process. We could try to factor the
-	// environment to reduce the number of sums. I'm not sure how to do this
-	// efficiently. It might be possible to guide it by gathering the
-	// distributions of each ID's bindings. E.g., if there are 12 deterministic
-	// environments in a sum and $x is bound to 4 different values, each 3
-	// times, then it *might* be possible to factor out $x into a 4-way sum of
-	// its own.
-
-	factors, toSum := commonFactors(envs)
-
-	if len(toSum) > 0 {
-		// Collect all IDs into a single order.
-		var ids []*ident
-		idOrder := make(map[*ident]int)
-		for _, e := range toSum {
-			for v := range e.vars() {
-				if _, ok := idOrder[v]; !ok {
-					idOrder[v] = len(ids)
-					ids = append(ids, v)
-				}
-			}
-		}
-
-		// Flatten out each term in the sum.
-		var summands []detEnv
-		for _, env := range toSum {
-			for vals := range env.allOrdered(idOrder) {
-				summands = append(summands, detEnv{vals: slices.Clone(vals)})
-			}
-		}
-		factors = append(factors, &envSum{ids: ids, terms: summands})
+	exprs := make([]*envExpr, len(envs))
+	for i := range envs {
+		exprs[i] = envs[i].root
 	}
-
-	return nonDetEnv{factors: factors}
-}
-
-// commonFactors finds common factors that can be factored out of a summation of
-// [nonDetEnv]s.
-func commonFactors(envs []nonDetEnv) (common []*envSum, toSum []nonDetEnv) {
-	// Drop any bottom environments. They don't contribute to the sum and they
-	// would complicate some logic below.
-	envs = slices.DeleteFunc(envs, func(e nonDetEnv) bool {
-		return e.isBottom()
-	})
-	if len(envs) == 0 {
-		return bottomEnv.factors, nil
-	}
-
-	// It's very common that the exact same factor will appear across all envs.
-	// Keep those factored out.
-	//
-	// TODO: Is it also common to have vars that are bound to the same value
-	// across all envs? If so, we could also factor those into common terms.
-	counts := map[*envSum]int{}
-	for _, e := range envs {
-		for _, f := range e.factors {
-			counts[f]++
-		}
-	}
-	for _, f := range envs[0].factors {
-		if counts[f] == len(envs) {
-			// Common factor
-			common = append(common, f)
-		}
-	}
-
-	// Any other factors need to be multiplied out.
-	for _, env := range envs {
-		var newFactors []*envSum
-		for _, f := range env.factors {
-			if counts[f] != len(envs) {
-				newFactors = append(newFactors, f)
-			}
-		}
-		if len(newFactors) > 0 {
-			toSum = append(toSum, nonDetEnv{factors: newFactors})
-		}
-	}
-
-	return common, toSum
+	return nonDetEnv{newEnvExprSum(exprs...)}
 }
 
 // envPartition is a subset of an env where id is bound to value in all
@@ -326,69 +249,125 @@ type envPartition struct {
 	env   nonDetEnv
 }
 
+// partitionBy splits e by distinct bindings of id and removes id from each
+// partition.
+//
+// If there are environments in e where id is not bound, they will not be
+// reflected in any partition.
+//
+// It panics if e is bottom, since attempting to partition an empty environment
+// set almost certainly indicates a bug.
 func (e nonDetEnv) partitionBy(id *ident) []envPartition {
 	if e.isBottom() {
-		// Bottom contains all variables
-		return []envPartition{{id: id, value: bottomValue, env: e}}
+		// We could return zero partitions, but getting here at all almost
+		// certainly indicates a bug.
+		panic("cannot partition empty environment set")
 	}
 
-	// Find the factor containing id and id's index in that factor.
-	idFactor, idIndex := -1, -1
-	var newIDs []*ident
-	for factI, fact := range e.factors {
-		idI := slices.Index(fact.ids, id)
-		if idI < 0 {
-			continue
-		} else if idFactor != -1 {
-			panic("multiple factors containing id " + id.name)
-		} else {
-			idFactor, idIndex = factI, idI
-			// Drop id from this factor's IDs
-			newIDs = without(fact.ids, idI)
-		}
-	}
-	if idFactor == -1 {
-		panic("id " + id.name + " not found in environment")
-	}
-
-	// If id is the only term in its factor, then dropping it is equivalent to
-	// making the factor be the unit value, so we can just drop the factor. (And
-	// if this is the only factor, we'll arrive at [topEnv], which is exactly
-	// what we want!). In this case we can use the same nonDetEnv in all of the
-	// partitions.
-	isUnit := len(newIDs) == 0
-	var unitFactors []*envSum
-	if isUnit {
-		unitFactors = without(e.factors, idFactor)
-	}
-
-	// Create a partition for each distinct value of id.
+	// Emit a partition for each value of id.
+	var seen smallSet[*Value]
 	var parts []envPartition
-	partIndex := map[*Value]int{}
-	for _, det := range e.factors[idFactor].terms {
-		val := det.vals[idIndex]
-		i, ok := partIndex[val]
-		if !ok {
-			i = len(parts)
-			var factors []*envSum
-			if isUnit {
-				factors = unitFactors
-			} else {
-				// Copy all other factor
-				factors = slices.Clone(e.factors)
-				factors[idFactor] = &envSum{ids: newIDs}
-			}
-			parts = append(parts, envPartition{id: id, value: val, env: nonDetEnv{factors: factors}})
-			partIndex[val] = i
+	for n := range e.root.bindings(id) {
+		if !seen.Add(n.val) {
+			// Already emitted a partition for this value.
+			continue
 		}
 
-		if !isUnit {
-			factor := parts[i].env.factors[idFactor]
-			newVals := without(det.vals, idIndex)
-			factor.terms = append(factor.terms, detEnv{vals: newVals})
+		parts = append(parts, envPartition{
+			id:    id,
+			value: n.val,
+			env:   nonDetEnv{e.root.substitute(id, n.val)},
+		})
+	}
+
+	return parts
+}
+
+// substitute replaces bindings of id to val with 1 and bindings of id to any
+// other value with 0 and simplifies the result.
+func (e *envExpr) substitute(id *ident, val *Value) *envExpr {
+	switch e.kind {
+	default:
+		panic("bad kind")
+
+	case envZero, envUnit:
+		return e
+
+	case envBinding:
+		if e.id != id {
+			return e
+		} else if e.val != val {
+			return envExprZero
+		} else {
+			return envExprUnit
+		}
+
+	case envProduct, envSum:
+		// Substitute each operand. Sometimes, this won't change anything, so we
+		// build the new operands list lazily.
+		var nOperands []*envExpr
+		for i, op := range e.operands {
+			nOp := op.substitute(id, val)
+			if nOperands == nil && op != nOp {
+				// Operand diverged; initialize nOperands.
+				nOperands = make([]*envExpr, 0, len(e.operands))
+				nOperands = append(nOperands, e.operands[:i]...)
+			}
+			if nOperands != nil {
+				nOperands = append(nOperands, nOp)
+			}
+		}
+		if nOperands == nil {
+			// Nothing changed.
+			return e
+		}
+		if e.kind == envProduct {
+			return newEnvExprProduct(nOperands...)
+		} else {
+			return newEnvExprSum(nOperands...)
 		}
 	}
-	return parts
+}
+
+// A smallSet is a set optimized for stack allocation when small.
+type smallSet[T comparable] struct {
+	array [32]T
+	n     int
+
+	m map[T]struct{}
+}
+
+// Has returns whether val is in set.
+func (s *smallSet[T]) Has(val T) bool {
+	arr := s.array[:s.n]
+	for i := range arr {
+		if arr[i] == val {
+			return true
+		}
+	}
+	_, ok := s.m[val]
+	return ok
+}
+
+// Add adds val to the set and returns true if it was added (not already
+// present).
+func (s *smallSet[T]) Add(val T) bool {
+	// Test for presence.
+	if s.Has(val) {
+		return false
+	}
+
+	// Add it
+	if s.n < len(s.array) {
+		s.array[s.n] = val
+		s.n++
+	} else {
+		if s.m == nil {
+			s.m = make(map[T]struct{})
+		}
+		s.m[val] = struct{}{}
+	}
+	return true
 }
 
 type ident struct {
@@ -493,8 +472,4 @@ func (p *identPrinter) slice(ids []*ident) string {
 		strs = append(strs, p.unique(id))
 	}
 	return fmt.Sprintf("[%s]", strings.Join(strs, ", "))
-}
-
-func without[Elt any](s []Elt, i int) []Elt {
-	return append(s[:i:i], s[i+1:]...)
 }

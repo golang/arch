@@ -93,7 +93,7 @@ func (c *Closure) Unmarshal(r io.Reader, opts UnmarshalOpts) error {
 }
 
 func (c *Closure) unmarshal(node *yaml.Node, opts UnmarshalOpts) error {
-	dec := &yamlDecoder{opts: opts, vars: make(map[string]*ident)}
+	dec := &yamlDecoder{opts: opts, vars: make(map[string]*ident), env: topEnv}
 	val, err := dec.value(node)
 	if err != nil {
 		return err
@@ -349,25 +349,35 @@ func (enc *yamlEncoder) closure(c Closure) *yaml.Node {
 }
 
 func (enc *yamlEncoder) env(e nonDetEnv) *yaml.Node {
-	var n yaml.Node
-	n.Kind = yaml.SequenceNode
-	n.Tag = "!env"
-	for _, term := range e.factors {
-		var nTerm yaml.Node
-		n.Content = append(n.Content, &nTerm)
-		nTerm.Kind = yaml.SequenceNode
-		for _, det := range term.terms {
-			var nDet yaml.Node
-			nTerm.Content = append(nTerm.Content, &nDet)
-			nDet.Kind = yaml.MappingNode
-			for i, val := range det.vals {
-				var nLabel yaml.Node
-				nLabel.SetString(enc.idp.unique(term.ids[i]))
-				nDet.Content = append(nDet.Content, &nLabel, enc.value(val))
+	var encode func(e *envExpr) *yaml.Node
+	encode = func(e *envExpr) *yaml.Node {
+		var n yaml.Node
+		switch e.kind {
+		default:
+			panic("bad kind")
+		case envZero:
+			n.SetString("0")
+		case envUnit:
+			n.SetString("1")
+		case envBinding:
+			var id yaml.Node
+			id.SetString(enc.idp.unique(e.id))
+			n.Kind = yaml.MappingNode
+			n.Content = []*yaml.Node{&id, enc.value(e.val)}
+		case envProduct, envSum:
+			n.Kind = yaml.SequenceNode
+			if e.kind == envProduct {
+				n.Tag = "!product"
+			} else {
+				n.Tag = "!sum"
+			}
+			for _, e2 := range e.operands {
+				n.Content = append(n.Content, encode(e2))
 			}
 		}
+		return &n
 	}
-	return &n
+	return encode(e.root)
 }
 
 var yamlIntRe = regexp.MustCompile(`^-?[0-9]+$`)
