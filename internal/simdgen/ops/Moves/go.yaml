@@ -27,156 +27,158 @@
     base: $b
     bits: $e
 
-- go: Set128
-  asm: "VINSERTI128"
+- go: "SetHi|SetLo"
+  asm: "VINSERTI128|VINSERTI64X4"
+  inVariant: []
   in:
-  - &i8x32
+  - &i8x2N
     class: vreg
     base: $t
-    bits: 256
     OverwriteElementBits: 8
-  - &i8x16
+  - &i8xN
     class: vreg
     base: $t
-    bits: 128
     OverwriteElementBits: 8
   - &imm01 # This immediate should be only 0 or 1
     class: immediate
-    immOffset: 0
+    const: 0 # place holder
     name: index
   out:
-  - *i8x32
+  - *i8x2N
 
-- go: Get128
-  asm: "VEXTRACTI128"
+- go: "GetHi|GetLo"
+  asm: "VEXTRACTI128|VEXTRACTI64X4"
+  inVariant: []
   in:
-  - *i8x32
+  - *i8x2N
   - *imm01
   out:
-  - *i8x16
+  - *i8xN
 
-- go: Set128
-  asm: "VINSERTI128"
+- go: "SetHi|SetLo"
+  asm: "VINSERTI128|VINSERTI64X4"
+  inVariant: []
   in:
-  - &i16x16
+  - &i16x2N
     class: vreg
     base: $t
-    bits: 256
     OverwriteElementBits: 16
-  - &i16x8
+  - &i16xN
     class: vreg
     base: $t
-    bits: 128
     OverwriteElementBits: 16
   - *imm01
   out:
-  - *i16x16
+  - *i16x2N
 
-- go: Get128
-  asm: "VEXTRACTI128"
+- go: "GetHi|GetLo"
+  asm: "VEXTRACTI128|VEXTRACTI64X4"
+  inVariant: []
   in:
-  - *i16x16
+  - *i16x2N
   - *imm01
   out:
-  - *i16x8
+  - *i16xN
 
-- go: Set128
-  asm: "VINSERTI128"
+- go: "SetHi|SetLo"
+  asm: "VINSERTI128|VINSERTI64X4"
+  inVariant: []
   in:
-  - &i32x8
+  - &i32x2N
     class: vreg
     base: $t
-    bits: 256
     OverwriteElementBits: 32
-  - &i32x4
+  - &i32xN
     class: vreg
     base: $t
-    bits: 128
     OverwriteElementBits: 32
   - *imm01
   out:
-  - *i32x8
+  - *i32x2N
 
-- go: Get128
-  asm: "VEXTRACTI128"
+- go: "GetHi|GetLo"
+  asm: "VEXTRACTI128|VEXTRACTI64X4"
+  inVariant: []
   in:
-  - *i32x8
+  - *i32x2N
   - *imm01
   out:
-  - *i32x4
+  - *i32xN
 
-- go: Set128
-  asm: "VINSERTI128"
+- go: "SetHi|SetLo"
+  asm: "VINSERTI128|VINSERTI64X4"
+  inVariant: []
   in:
-  - &i64x4
+  - &i64x2N
     class: vreg
     base: $t
-    bits: 256
     OverwriteElementBits: 64
-  - &i64x2
+  - &i64xN
     class: vreg
     base: $t
-    bits: 128
     OverwriteElementBits: 64
   - *imm01
   out:
-  - *i64x4
+  - *i64x2N
 
-- go: Get128
-  asm: "VEXTRACTI128"
+- go: "GetHi|GetLo"
+  asm: "VEXTRACTI128|VEXTRACTI64X4"
+  inVariant: []
   in:
-  - *i64x4
+  - *i64x2N
   - *imm01
   out:
-  - *i64x2
+  - *i64xN
 
-- go: Set128
-  asm: "VINSERTF128"
+- go: "SetHi|SetLo"
+  asm: "VINSERTF128|VINSERTF64X4"
+  inVariant: []
   in:
-  - &f32x8
+  - &f32x2N
     class: vreg
     base: $t
-    bits: 256
     OverwriteElementBits: 32
-  - &f32x4
+  - &f32xN
     class: vreg
     base: $t
-    bits: 128
     OverwriteElementBits: 32
   - *imm01
   out:
-  - *f32x8
+  - *f32x2N
 
-- go: Get128
-  asm: "VEXTRACTF128"
+- go: "GetHi|GetLo"
+  asm: "VEXTRACTF128|VEXTRACTF64X4"
+  inVariant: []
   in:
-  - *f32x8
+  - *f32x2N
   - *imm01
   out:
-  - *f32x4
+  - *f32xN
 
-- go: Set128
-  asm: "VINSERTF128"
+- go: "SetHi|SetLo"
+  asm: "VINSERTF128|VINSERTF64X4"
+  inVariant: []
   in:
-  - &f64x4
+  - &f64x2N
     class: vreg
     base: $t
-    bits: 256
-  - &f64x2
+    OverwriteElementBits: 64
+  - &f64xN
     class: vreg
     base: $t
-    bits: 128
+    OverwriteElementBits: 64
   - *imm01
   out:
-  - *f64x4
+  - *f64x2N
 
-- go: Get128
-  asm: "VEXTRACTF128"
+- go: "GetHi|GetLo"
+  asm: "VEXTRACTF128|VEXTRACTF64X4"
+  inVariant: []
   in:
-  - *f64x4
+  - *f64x2N
   - *imm01
   out:
-  - *f64x2
+  - *f64xN
 
 - go: Permute
   asm: "VPERM[BWDQ]|VPERMP[SD]"

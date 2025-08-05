@@ -9,16 +9,30 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME retrieves a single constant-indexed element's value.
-- go: Set128
+- go: SetLo
   commutative: false
+  constImm: 0
   extension: "AVX.*"
   documentation: !string |-
-    // NAME combines a 128-bit vector with a 256-bit vector, where the constant operand specifies whether the low (0) or high (1) half is receives the smaller vector.
-- go: Get128
+    // NAME returns x with its lower half set to y.
+- go: GetLo
   commutative: false
+  constImm: 0
   extension: "AVX.*"
   documentation: !string |-
-    // NAME retrieves the upper (1) or lower (0) half of a 256-bit vector, depending on the constant operand.
+    // NAME returns the lower half of x.
+- go: SetHi
+  commutative: false
+  constImm: 1
+  extension: "AVX.*"
+  documentation: !string |-
+    // NAME returns x with its upper half set to y.
+- go: GetHi
+  commutative: false
+  constImm: 1
+  extension: "AVX.*"
+  documentation: !string |-
+    // NAME returns the upper half of x.
 - go: Permute
   commutative: false
   extension: "AVX.*"
