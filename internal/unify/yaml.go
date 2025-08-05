@@ -112,7 +112,7 @@ type yamlDecoder struct {
 	vars  map[string]*ident
 	nSums int
 
-	env nonDetEnv
+	env envSet
 }
 
 func (dec *yamlDecoder) value(node *yaml.Node) (vOut *Value, errOut error) {
@@ -243,7 +243,7 @@ func (dec *yamlDecoder) value(node *yaml.Node) (vOut *Value, errOut error) {
 		// Decode the children to make sure they're well-formed, but otherwise
 		// discard that decoding and do it again every time we need a new
 		// element.
-		var gen []func(e nonDetEnv) (*Value, nonDetEnv)
+		var gen []func(e envSet) (*Value, envSet)
 		origEnv := dec.env
 		elts := node.Content
 		for i, elt := range elts {
@@ -256,7 +256,7 @@ func (dec *yamlDecoder) value(node *yaml.Node) (vOut *Value, errOut error) {
 			// introduced within the element.
 			dec.env = origEnv
 			// Add a generator function
-			gen = append(gen, func(e nonDetEnv) (*Value, nonDetEnv) {
+			gen = append(gen, func(e envSet) (*Value, envSet) {
 				dec.env = e
 				// TODO: If this is in a sum, this tends to generate a ton of
 				// fresh variables that are different on each branch of the
@@ -298,7 +298,7 @@ func (dec *yamlDecoder) value(node *yaml.Node) (vOut *Value, errOut error) {
 
 type yamlEncoder struct {
 	idp identPrinter
-	e   nonDetEnv // We track the environment for !repeat nodes.
+	e   envSet // We track the environment for !repeat nodes.
 }
 
 // TODO: Switch some Value marshaling to Closure?
@@ -344,11 +344,11 @@ func (enc *yamlEncoder) closure(c Closure) *yaml.Node {
 	// Fill in the env after we've written the value in case value encoding
 	// affects the env.
 	n.Content[1] = enc.env(enc.e)
-	enc.e = nonDetEnv{} // Allow GC'ing the env
+	enc.e = envSet{} // Allow GC'ing the env
 	return &n
 }
 
-func (enc *yamlEncoder) env(e nonDetEnv) *yaml.Node {
+func (enc *yamlEncoder) env(e envSet) *yaml.Node {
 	var encode func(e *envExpr) *yaml.Node
 	encode = func(e *envExpr) *yaml.Node {
 		var n yaml.Node

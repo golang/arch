@@ -103,7 +103,7 @@ func newUnifier() *unifier {
 // unify1 could not unify the domains of the two values.
 var errDomains = errors.New("cannot unify domains")
 
-func (v *Value) unify(w *Value, e nonDetEnv, swap bool, uf *unifier) (*Value, nonDetEnv, error) {
+func (v *Value) unify(w *Value, e envSet, swap bool, uf *unifier) (*Value, envSet, error) {
 	if swap {
 		// Put the values in order. This just happens to be a handy choke-point
 		// to do this at.
@@ -122,14 +122,14 @@ func (v *Value) unify(w *Value, e nonDetEnv, swap bool, uf *unifier) (*Value, no
 		}
 	}
 	if err != nil {
-		uf.traceDone(nil, nonDetEnv{}, err)
-		return nil, nonDetEnv{}, err
+		uf.traceDone(nil, envSet{}, err)
+		return nil, envSet{}, err
 	}
 	res := unified(d, v, w)
 	uf.traceDone(res, e2, nil)
 	if d == nil {
 		// Double check that a bottom Value also has a bottom env.
-		if !e2.isBottom() {
+		if !e2.isEmpty() {
 			panic("bottom Value has non-bottom environment")
 		}
 	}
@@ -137,7 +137,7 @@ func (v *Value) unify(w *Value, e nonDetEnv, swap bool, uf *unifier) (*Value, no
 	return res, e2, nil
 }
 
-func (v *Value) unify1(w *Value, e nonDetEnv, swap bool, uf *unifier) (Domain, nonDetEnv, error) {
+func (v *Value) unify1(w *Value, e envSet, swap bool, uf *unifier) (Domain, envSet, error) {
 	// TODO: If there's an error, attach position information to it.
 
 	vd, wd := v.Domain, w.Domain
@@ -180,10 +180,10 @@ func (v *Value) unify1(w *Value, e nonDetEnv, swap bool, uf *unifier) (Domain, n
 		}
 	}
 
-	return nil, nonDetEnv{}, errDomains
+	return nil, envSet{}, errDomains
 }
 
-func (d Def) unify(o Def, e nonDetEnv, swap bool, uf *unifier) (Domain, nonDetEnv, error) {
+func (d Def) unify(o Def, e envSet, swap bool, uf *unifier) (Domain, envSet, error) {
 	out := Def{fields: make(map[string]*Value)}
 
 	// Check keys of d against o.
@@ -198,7 +198,7 @@ func (d Def) unify(o Def, e nonDetEnv, swap bool, uf *unifier) (Domain, nonDetEn
 		res, e2, err := dv.unify(ov, e, swap, uf)
 		exit.exit()
 		if err != nil {
-			return nil, nonDetEnv{}, err
+			return nil, envSet{}, err
 		} else if res.Domain == nil {
 			// No match.
 			return nil, bottomEnv, nil
@@ -216,7 +216,7 @@ func (d Def) unify(o Def, e nonDetEnv, swap bool, uf *unifier) (Domain, nonDetEn
 	return out, e, nil
 }
 
-func (v Tuple) unify(w Tuple, e nonDetEnv, swap bool, uf *unifier) (Domain, nonDetEnv, error) {
+func (v Tuple) unify(w Tuple, e envSet, swap bool, uf *unifier) (Domain, envSet, error) {
 	if v.repeat != nil && w.repeat != nil {
 		// Since we generate the content of these lazily, there's not much we
 		// can do but just stick them on a list to unify later.
@@ -253,7 +253,7 @@ func (v Tuple) unify(w Tuple, e nonDetEnv, swap bool, uf *unifier) (Domain, nonD
 			z, e2, err := v1.unify(t.vs[i], e, swap, uf)
 			exit.exit()
 			if err != nil {
-				return nil, nonDetEnv{}, err
+				return nil, envSet{}, err
 			} else if z.Domain == nil {
 				return nil, bottomEnv, nil
 			}
@@ -268,7 +268,7 @@ func (v Tuple) unify(w Tuple, e nonDetEnv, swap bool, uf *unifier) (Domain, nonD
 
 // doRepeat creates a fixed-length tuple from a repeated tuple. The caller is
 // expected to unify the returned tuples.
-func (v Tuple) doRepeat(e nonDetEnv, n int) ([]Tuple, nonDetEnv) {
+func (v Tuple) doRepeat(e envSet, n int) ([]Tuple, envSet) {
 	res := make([]Tuple, len(v.repeat))
 	for i, gen := range v.repeat {
 		res[i].vs = make([]*Value, n)

@@ -13,7 +13,7 @@ import (
 
 type Closure struct {
 	val *Value
-	env nonDetEnv
+	env envSet
 }
 
 func NewSum(vs ...*Value) Closure {
@@ -67,13 +67,13 @@ func (c Closure) All() iter.Seq[*Value] {
 	// continuation for each choice. Similar to a yield function, the
 	// continuation can return false to stop the non-deterministic walk.
 	return func(yield func(*Value) bool) {
-		c.val.all1(c.env, func(v *Value, e nonDetEnv) bool {
+		c.val.all1(c.env, func(v *Value, e envSet) bool {
 			return yield(v)
 		})
 	}
 }
 
-func (v *Value) all1(e nonDetEnv, cont func(*Value, nonDetEnv) bool) bool {
+func (v *Value) all1(e envSet, cont func(*Value, envSet) bool) bool {
 	switch d := v.Domain.(type) {
 	default:
 		panic(fmt.Sprintf("unknown domain type %T", d))
@@ -93,8 +93,8 @@ func (v *Value) all1(e nonDetEnv, cont func(*Value, nonDetEnv) bool) bool {
 
 		// TODO: If there are no Vars or Sums under this Def, then nothing can
 		// change the Value or env, so we could just cont(v, e).
-		var allElt func(elt int, e nonDetEnv) bool
-		allElt = func(elt int, e nonDetEnv) bool {
+		var allElt func(elt int, e envSet) bool
+		allElt = func(elt int, e envSet) bool {
 			if elt == len(fields) {
 				// Build a new Def from the concrete parts. Clone parts because
 				// we may reuse it on other non-deterministic branches.
@@ -102,7 +102,7 @@ func (v *Value) all1(e nonDetEnv, cont func(*Value, nonDetEnv) bool) bool {
 				return cont(nVal, e)
 			}
 
-			return d.fields[fields[elt]].all1(e, func(v *Value, e nonDetEnv) bool {
+			return d.fields[fields[elt]].all1(e, func(v *Value, e envSet) bool {
 				parts[fields[elt]] = v
 				return allElt(elt+1, e)
 			})
@@ -116,8 +116,8 @@ func (v *Value) all1(e nonDetEnv, cont func(*Value, nonDetEnv) bool) bool {
 			return cont(v, e)
 		}
 		parts := make([]*Value, len(d.vs))
-		var allElt func(elt int, e nonDetEnv) bool
-		allElt = func(elt int, e nonDetEnv) bool {
+		var allElt func(elt int, e envSet) bool
+		allElt = func(elt int, e envSet) bool {
 			if elt == len(d.vs) {
 				// Build a new tuple from the concrete parts. Clone parts because
 				// we may reuse it on other non-deterministic branches.
@@ -125,7 +125,7 @@ func (v *Value) all1(e nonDetEnv, cont func(*Value, nonDetEnv) bool) bool {
 				return cont(nVal, e)
 			}
 
-			return d.vs[elt].all1(e, func(v *Value, e nonDetEnv) bool {
+			return d.vs[elt].all1(e, func(v *Value, e envSet) bool {
 				parts[elt] = v
 				return allElt(elt+1, e)
 			})

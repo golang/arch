@@ -183,7 +183,7 @@ func (enc *dotEncoder) value(v *Value) string {
 	}
 }
 
-func (enc *dotEncoder) envSubgraph(e nonDetEnv) {
+func (enc *dotEncoder) envSubgraph(e envSet) {
 	enc.valLimit = maxNodes
 	cID := enc.newID("cluster_%d")
 	fmt.Fprintf(enc.w, "subgraph %s {\n", cID)

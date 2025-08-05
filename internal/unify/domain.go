@@ -196,14 +196,14 @@ type Tuple struct {
 	// function because we don't necessarily want *exactly* the same Value
 	// repeated. For example, in YAML encoding, a !sum in a repeated tuple needs
 	// a fresh variable in each instance.
-	repeat []func(nonDetEnv) (*Value, nonDetEnv)
+	repeat []func(envSet) (*Value, envSet)
 }
 
 func NewTuple(vs ...*Value) Tuple {
 	return Tuple{vs: vs}
 }
 
-func NewRepeat(gens ...func(nonDetEnv) (*Value, nonDetEnv)) Tuple {
+func NewRepeat(gens ...func(envSet) (*Value, envSet)) Tuple {
 	return Tuple{repeat: gens}
 }
 

@@ -108,7 +108,7 @@ func htmlSVG[Key comparable](t *htmlTracer, f func(Key), arg Key) string {
 	return svg
 }
 
-func (t *htmlTracer) emit(vs []*Value, labels []string, env nonDetEnv) {
+func (t *htmlTracer) emit(vs []*Value, labels []string, env envSet) {
 	fmt.Fprintf(t.w, `<div class="unify">`)
 	for i, v := range vs {
 		fmt.Fprintf(t.w, `<div class="header" style="grid-column: %d">%s</div>`, i+1, html.EscapeString(labels[i]))

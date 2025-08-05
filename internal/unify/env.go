@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-// A nonDetEnv is an immutable set of environments, where each environment is a
+// An envSet is an immutable set of environments, where each environment is a
 // mapping from [ident]s to [Value]s.
 //
 // To keep this compact, we use an algebraic representation similar to
@@ -59,7 +59,7 @@ import (
 //	e ⨯ 1 =
 //	e + f = f + e
 //	e ⨯ f = f ⨯ e
-type nonDetEnv struct {
+type envSet struct {
 	root *envExpr
 }
 
@@ -93,10 +93,10 @@ const (
 )
 
 var (
-	// topEnv is the unit value (multiplicative identity) of a [nonDetEnv].
-	topEnv = nonDetEnv{envExprUnit}
-	// bottomEnv is the zero value (additive identity) of a [nonDetEnv].
-	bottomEnv = nonDetEnv{envExprZero}
+	// topEnv is the unit value (multiplicative identity) of a [envSet].
+	topEnv = envSet{envExprUnit}
+	// bottomEnv is the zero value (additive identity) of a [envSet].
+	bottomEnv = envSet{envExprZero}
 
 	envExprZero = &envExpr{kind: envZero}
 	envExprUnit = &envExpr{kind: envUnit}
@@ -108,8 +108,8 @@ var (
 //
 // Environments are typically initially constructed by starting with [topEnv]
 // and calling bind one or more times.
-func (e nonDetEnv) bind(id *ident, vals ...*Value) nonDetEnv {
-	if e.isBottom() {
+func (e envSet) bind(id *ident, vals ...*Value) envSet {
+	if e.isEmpty() {
 		return bottomEnv
 	}
 
@@ -129,10 +129,10 @@ func (e nonDetEnv) bind(id *ident, vals ...*Value) nonDetEnv {
 	}
 
 	// Multiply it in.
-	return nonDetEnv{newEnvExprProduct(e.root, newEnvExprSum(bindings...))}
+	return envSet{newEnvExprProduct(e.root, newEnvExprSum(bindings...))}
 }
 
-func (e nonDetEnv) isBottom() bool {
+func (e envSet) isEmpty() bool {
 	return e.root.kind == envZero
 }
 
@@ -218,7 +218,7 @@ func newEnvExprSum(exprs ...*envExpr) *envExpr {
 	return &envExpr{kind: envSum, operands: terms}
 }
 
-func crossEnvs(env1, env2 nonDetEnv) nonDetEnv {
+func crossEnvs(env1, env2 envSet) envSet {
 	// Confirm that envs have disjoint idents.
 	var ids1 smallSet[*ident]
 	for e := range env1.root.bindings(nil) {
@@ -230,15 +230,15 @@ func crossEnvs(env1, env2 nonDetEnv) nonDetEnv {
 		}
 	}
 
-	return nonDetEnv{newEnvExprProduct(env1.root, env2.root)}
+	return envSet{newEnvExprProduct(env1.root, env2.root)}
 }
 
-func sumEnvs(envs ...nonDetEnv) nonDetEnv {
+func unionEnvs(envs ...envSet) envSet {
 	exprs := make([]*envExpr, len(envs))
 	for i := range envs {
 		exprs[i] = envs[i].root
 	}
-	return nonDetEnv{newEnvExprSum(exprs...)}
+	return envSet{newEnvExprSum(exprs...)}
 }
 
 // envPartition is a subset of an env where id is bound to value in all
@@ -246,7 +246,7 @@ func sumEnvs(envs ...nonDetEnv) nonDetEnv {
 type envPartition struct {
 	id    *ident
 	value *Value
-	env   nonDetEnv
+	env   envSet
 }
 
 // partitionBy splits e by distinct bindings of id and removes id from each
@@ -257,8 +257,8 @@ type envPartition struct {
 //
 // It panics if e is bottom, since attempting to partition an empty environment
 // set almost certainly indicates a bug.
-func (e nonDetEnv) partitionBy(id *ident) []envPartition {
-	if e.isBottom() {
+func (e envSet) partitionBy(id *ident) []envPartition {
+	if e.isEmpty() {
 		// We could return zero partitions, but getting here at all almost
 		// certainly indicates a bug.
 		panic("cannot partition empty environment set")
@@ -276,7 +276,7 @@ func (e nonDetEnv) partitionBy(id *ident) []envPartition {
 		parts = append(parts, envPartition{
 			id:    id,
 			value: n.val,
-			env:   nonDetEnv{e.root.substitute(id, n.val)},
+			env:   envSet{e.root.substitute(id, n.val)},
 		})
 	}
 
@@ -388,7 +388,7 @@ func (d Var) decode(rv reflect.Value) error {
 	return &inexactError{"var", rv.Type().String()}
 }
 
-func (d Var) unify(w *Value, e nonDetEnv, swap bool, uf *unifier) (Domain, nonDetEnv, error) {
+func (d Var) unify(w *Value, e envSet, swap bool, uf *unifier) (Domain, envSet, error) {
 	// TODO: Vars from !sums in the input can have a huge number of values.
 	// Unifying these could be way more efficient with some indexes over any
 	// exact values we can pull out, like Def fields that are exact Strings.
@@ -409,7 +409,7 @@ func (d Var) unify(w *Value, e nonDetEnv, swap bool, uf *unifier) (Domain, nonDe
 	// We need to unify w with the value of d in each possible environment. We
 	// can save some work by grouping environments by the value of d, since
 	// there will be a lot of redundancy here.
-	var nEnvs []nonDetEnv
+	var nEnvs []envSet
 	envParts := e.partitionBy(d.id)
 	for i, envPart := range envParts {
 		exit := uf.enterVar(d.id, i)
@@ -419,7 +419,7 @@ func (d Var) unify(w *Value, e nonDetEnv, swap bool, uf *unifier) (Domain, nonDe
 		res, e2, err := w.unify(envPart.value, envPart.env, swap, uf)
 		exit.exit()
 		if err != nil {
-			return nil, nonDetEnv{}, err
+			return nil, envSet{}, err
 		}
 		if res.Domain == nil {
 			// This branch entirely failed to unify, so it's gone.
@@ -436,7 +436,7 @@ func (d Var) unify(w *Value, e nonDetEnv, swap bool, uf *unifier) (Domain, nonDe
 
 	// The effect of this is entirely captured in the environment. We can return
 	// back the same Bind node.
-	return d, sumEnvs(nEnvs...), nil
+	return d, unionEnvs(nEnvs...), nil
 }
 
 // An identPrinter maps [ident]s to unique string names.

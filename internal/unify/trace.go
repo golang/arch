@@ -40,9 +40,9 @@ type tracer struct {
 type traceTree struct {
 	label string // Identifies this node as a child of parent
 	v, w  *Value // Unification inputs
-	envIn nonDetEnv
+	envIn envSet
 	res   *Value // Unification result
-	env   nonDetEnv
+	env   envSet
 	err   error // or error
 
 	parent   *traceTree
@@ -127,7 +127,7 @@ func (t *tracer) logf(pat string, vals ...any) {
 	fmt.Fprintf(t.logw, "%s\n", s)
 }
 
-func (t *tracer) traceUnify(v, w *Value, e nonDetEnv) {
+func (t *tracer) traceUnify(v, w *Value, e envSet) {
 	if t == nil {
 		return
 	}
@@ -146,7 +146,7 @@ func (t *tracer) traceUnify(v, w *Value, e nonDetEnv) {
 	}
 }
 
-func (t *tracer) traceDone(res *Value, e nonDetEnv, err error) {
+func (t *tracer) traceDone(res *Value, e envSet, err error) {
 	if t == nil {
 		return
 	}
