@@ -29,18 +29,24 @@ func (c Closure) IsBottom() bool {
 // Summands returns the top-level Values of c. This assumes the top-level of c
 // was constructed as a sum, and is mostly useful for debugging.
 func (c Closure) Summands() iter.Seq[*Value] {
-	if v, ok := c.val.Domain.(Var); ok {
-		parts := c.env.partitionBy(v.id)
-		return func(yield func(*Value) bool) {
-			for _, part := range parts {
-				if !yield(part.value) {
-					return
+	return func(yield func(*Value) bool) {
+		var rec func(v *Value, env envSet) bool
+		rec = func(v *Value, env envSet) bool {
+			switch d := v.Domain.(type) {
+			case Var:
+				parts := env.partitionBy(d.id)
+				for _, part := range parts {
+					// It may be a sum of sums. Walk into this value.
+					if !rec(part.value, part.env) {
+						return false
+					}
 				}
+				return true
+			default:
+				return yield(v)
 			}
 		}
-	}
-	return func(yield func(*Value) bool) {
-		yield(c.val)
+		rec(c.val, c.env)
 	}
 }
 
