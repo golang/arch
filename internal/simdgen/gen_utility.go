@@ -642,6 +642,9 @@ func overwrite(ops []Operation) error {
 		} else if op[idx].OverwriteBase != nil {
 			oBase := *op[idx].OverwriteBase
 			*op[idx].Go = strings.ReplaceAll(*op[idx].Go, capitalizeFirst(*op[idx].Base), capitalizeFirst(oBase))
+			if op[idx].Class == "greg" {
+				*op[idx].Go = strings.ReplaceAll(*op[idx].Go, *op[idx].Base, oBase)
+			}
 			*op[idx].Base = oBase
 		}
 		return nil
