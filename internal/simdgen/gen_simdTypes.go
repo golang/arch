@@ -175,8 +175,14 @@ const simdMaskFromValTemplate = `
 // {{.Name}}FromBits constructs a {{.Name}} from a bitmap value, where 1 means set for the indexed element, 0 means unset.
 // Only the lower {{.Lanes}} bits of y are used.
 //
-// Asm: KMOV{{.IntelSizeSuffix}}, CPU Feature: AVX512"
+// Asm: KMOV{{.IntelSizeSuffix}}, CPU Feature: AVX512
 func {{.Name}}FromBits(y uint{{.LanesContainer}}) {{.Name}}
+
+// ToBits constructs a bitmap from a {{.Name}}, where 1 means set for the indexed element, 0 means unset.
+// Only the lower {{.Lanes}} bits of y are used.
+//
+// Asm: KMOV{{.IntelSizeSuffix}}, CPU Features: AVX512
+func (x {{.Name}}) ToBits() uint{{.LanesContainer}}
 `
 
 const simdMaskedLoadStoreTemplate = `
