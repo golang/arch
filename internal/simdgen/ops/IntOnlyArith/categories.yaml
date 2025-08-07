@@ -4,13 +4,13 @@
   extension: "AVX.*" # VPAVGB/W are available across various AVX versions
   documentation: !string |-
     // NAME computes the rounded average of corresponding elements.
-- go: Absolute
+- go: Abs
   commutative: false
   # Unary operation, not commutative
   extension: "AVX.*" # VPABSB/W/D are AVX, VPABSQ is AVX512
   documentation: !string |-
     // NAME computes the absolute value of each element.
-- go: Sign
+- go: CopySign
   # Applies sign of second operand to first: sign(val, sign_src)
   commutative: false
   extension: "AVX.*"
@@ -18,7 +18,7 @@
     // NAME returns the product of the first operand with -1, 0, or 1,
     // whichever constant is nearest to the value of the second operand.
   # Sign does not have masked version
-- go: PopCount
+- go: OnesCount
   commutative: false
   extension: "AVX512.*"
   documentation: !string |-

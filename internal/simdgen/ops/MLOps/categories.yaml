@@ -1,55 +1,57 @@
 !sum
-- go: PairDotProd
+- go: DotProdPairs
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME multiplies the elements and add the pairs together,
     // yielding a vector of half as many elements with twice the input element size.
 # TODO: maybe simplify this name within the receiver-type + method-naming scheme we use.
-- go: SaturatedUnsignedSignedPairDotProd
+- go: DotProdPairsSaturated
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME multiplies the elements and add the pairs together with saturation,
     // yielding a vector of half as many elements with twice the input element size.
 # QuadDotProd, i.e. VPDPBUSD(S) are operations with src/dst on the same register, we are not supporting this as of now.
-- go: DotProdBroadcast
-  commutative: true
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME multiplies all elements and broadcasts the sum.
-- go: UnsignedSignedQuadDotProdAccumulate
+# - go: DotProdBroadcast
+#   commutative: true
+#   extension: "AVX.*"
+#   documentation: !string |-
+#     // NAME multiplies all elements and broadcasts the sum.
+- go: AddDotProdQuadruple
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs dot products on groups of 4 elements of x and y and then adds z.
-- go: SaturatedUnsignedSignedQuadDotProdAccumulate
+- go: AddDotProdQuadrupleSaturated
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME multiplies performs dot products on groups of 4 elements of x and y and then adds z.
-- go: AddDotProd
+- go: AddDotProdPairs
+  commutative: false
+  noTypes: "true"
+  noGenericOps: "true"
+  extension: "AVX.*"
+  documentation: !string |-
+    // NAME performs dot products on pairs of elements of y and z and then adds x.
+- go: AddDotProdPairsSaturated
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME performs dot products on pairs of elements of y and z and then adds x.
-- go: SaturatedAddDotProd
+- go: MulAdd
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // NAME performs dot products on pairs of elements of y and z and then adds x.
-- go: FusedMultiplyAdd
+    // NAME performs a fused (x * y) + z.
+- go: MulAddSub
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // NAME performs (x * y) + z.
-- go: FusedMultiplyAddSub
+    // NAME performs a fused (x * y) - z for odd-indexed elements, and (x * y) + z for even-indexed elements.
+- go: MulSubAdd
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
-    // NAME performs (x * y) - z for odd-indexed elements, and (x * y) + z for even-indexed elements.
-- go: FusedMultiplySubAdd
-  commutative: false
-  extension: "AVX.*"
-  documentation: !string |-
-    // NAME performs (x * y) + z for odd-indexed elements, and (x * y) - z for even-indexed elements.
+    // NAME performs a fused (x * y) + z for odd-indexed elements, and (x * y) - z for even-indexed elements.

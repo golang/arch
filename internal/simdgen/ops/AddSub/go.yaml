@@ -19,7 +19,7 @@
   out:
   - *int
 - go: AddSaturated
-  asm: "VPADDS[BWDQ]"
+  asm: "VPADDUS[BWDQ]"
   in:
   - &uint
     go: $t
@@ -45,7 +45,7 @@
   out: &1int
   - *int
 - go: SubSaturated
-  asm: "VPSUBS[BWDQ]"
+  asm: "VPSUBUS[BWDQ]"
   in:
   - *uint
   - *uint

@@ -13,11 +13,11 @@
   in: *1fp
   out: *1fp
 # TODO: Provide separate methods for 12-bit precision and 14-bit precision?
-- go: ApproximateReciprocal
+- go: Reciprocal
   asm: "VRCP(14)?P[SD]"
   in: *1fp
   out: *1fp
-- go: ApproximateReciprocalOfSqrt
+- go: ReciprocalSqrt
   asm: "V?RSQRT(14)?P[SD]"
   in: *1fp
   out: *1fp
@@ -26,7 +26,7 @@
   in: *2fp
   out: *1fp
 
-- go: "Round|Ceil|Floor|Trunc"
+- go: "RoundToEven|Ceil|Floor|Trunc"
   asm: "VROUNDP[SD]"
   in:
   - *fp
@@ -34,7 +34,7 @@
     const: 0 # place holder
   out: *1fp
 
-- go: "(Round|Ceil|Floor|Trunc)Scaled"
+- go: "(RoundToEven|Ceil|Floor|Trunc)Scaled"
   asm: "VRNDSCALEP[SD]"
   in:
   - *fp
@@ -43,7 +43,7 @@
     immOffset: 4 # "M", round to numbers with M digits after dot(by means of binary number).
     name: prec
   out: *1fp
-- go: "(Round|Ceil|Floor|Trunc)ScaledResidue"
+- go: "(RoundToEven|Ceil|Floor|Trunc)ScaledResidue"
   asm: "VREDUCEP[SD]"
   in:
   - *fp

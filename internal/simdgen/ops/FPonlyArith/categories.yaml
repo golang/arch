@@ -9,12 +9,12 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME computes the square root of each element.
-- go: ApproximateReciprocal
+- go: Reciprocal
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
     // NAME computes an approximate reciprocal of each element.
-- go: ApproximateReciprocalOfSqrt
+- go: ReciprocalSqrt
   commutative: false
   extension: "AVX.*"
   documentation: !string |-
@@ -24,19 +24,19 @@
   extension: "AVX.*"
   documentation: !string |-
     // NAME multiplies elements by a power of 2.
-- go: Round
+- go: RoundToEven
   commutative: false
   extension: "AVX.*"
   constImm: 0
   documentation: !string |-
     // NAME rounds elements to the nearest integer.
-- go: RoundScaled
+- go: RoundToEvenScaled
   commutative: false
   extension: "AVX.*"
   constImm: 0
   documentation: !string |-
     // NAME rounds elements with specified precision.
-- go: RoundScaledResidue
+- go: RoundToEvenScaledResidue
   commutative: false
   extension: "AVX.*"
   constImm: 0

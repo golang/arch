@@ -18,10 +18,11 @@
 - go: MulEvenWiden
   asm: "VPMULDQ"
   in:
-  - &int
+  - &intNot64
     go: $t
+    elemBits: 8|16|32
     base: int
-  - *int
+  - *intNot64
   out:
   - &int2
     go: $t2
@@ -29,10 +30,11 @@
 - go: MulEvenWiden
   asm: "VPMULUDQ"
   in:
-  - &uint
+  - &uintNot64
     go: $t
+    elemBits: 8|16|32
     base: uint
-  - *uint
+  - *uintNot64
   out:
   - &uint2
     go: $t2
@@ -43,24 +45,29 @@
 - go: MulHigh
   asm: "VPMULHW"
   in:
-  - *int
+  - &int
+    go: $t
+    base: int
   - *int
   out:
-  - *int2
+  - *int
 - go: MulHigh
   asm: "VPMULHUW"
   in:
-  - *uint
+  - &uint
+    go: $t
+    base: int
   - *uint
   out:
-  - *uint2
+  - *uint
 
 # MulLow
-# Signed int only.
+# signed and unsigned are the same for lower bits.
 - go: Mul
   asm: "VPMULL[WDQ]"
   in:
-  - *int
-  - *int
+  - &any
+    go: $t
+  - *any
   out:
-  - *int2
+  - *any

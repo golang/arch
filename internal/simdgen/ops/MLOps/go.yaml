@@ -1,5 +1,5 @@
 !sum
-- go: PairDotProd
+- go: DotProdPairs
   asm: VPMADDWD
   in:
   - &int
@@ -10,7 +10,7 @@
   - &int2 # The elemBits are different
     go: $t2
     base: int
-- go: SaturatedUnsignedSignedPairDotProd
+- go: DotProdPairsSaturated
   asm: VPMADDUBSW
   in:
   - &uint
@@ -23,17 +23,17 @@
     overwriteElementBits: 8
   out:
   - *int2
-- go: DotProdBroadcast
-  asm: VDPP[SD]
-  in:
-  - &dpb_src
-    go: $t
-  - *dpb_src
-  - class: immediate
-    const: 127
-  out:
-  - *dpb_src
-- go: UnsignedSignedQuadDotProdAccumulate
+# - go: DotProdBroadcast
+#   asm: VDPP[SD]
+#   in:
+#   - &dpb_src
+#     go: $t
+#   - *dpb_src
+#   - class: immediate
+#     const: 127
+#   out:
+#   - *dpb_src
+- go: AddDotProdQuadruple
   asm: "VPDPBUSD"
   operandOrder: "31" # switch operand 3 and 1
   in:
@@ -51,7 +51,7 @@
     overwriteElementBits: 8
   out:
   - *qdpa_acc
-- go: SaturatedUnsignedSignedQuadDotProdAccumulate
+- go: AddDotProdQuadrupleSaturated
   asm: "VPDPBUSDS"
   operandOrder: "31" # switch operand 3 and 1
   in:
@@ -60,7 +60,7 @@
   - *qdpa_src2
   out:
   - *qdpa_acc
-- go: AddDotProd
+- go: AddDotProdPairs
   asm: "VPDPWSSD"
   in:
   - &pdpa_acc
@@ -77,7 +77,7 @@
     overwriteElementBits: 16
   out:
   - *pdpa_acc
-- go: SaturatedAddDotProd
+- go: AddDotProdPairsSaturated
   asm: "VPDPWSSDS"
   in:
   - *pdpa_acc
@@ -85,7 +85,7 @@
   - *pdpa_src2
   out:
   - *pdpa_acc
-- go: FusedMultiplyAdd
+- go: MulAdd
   asm: "VFMADD213PS|VFMADD213PD"
   in:
   - &fma_op
@@ -95,7 +95,7 @@
   - *fma_op
   out:
   - *fma_op
-- go: FusedMultiplyAddSub
+- go: MulAddSub
   asm: "VFMADDSUB213PS|VFMADDSUB213PD"
   in:
   - *fma_op
@@ -103,7 +103,7 @@
   - *fma_op
   out:
   - *fma_op
-- go: FusedMultiplySubAdd
+- go: MulSubAdd
   asm: "VFMSUBADD213PS|VFMSUBADD213PD"
   in:
   - *fma_op
