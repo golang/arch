@@ -56,7 +56,7 @@ import (
 //
 //	e + 0 = e
 //	e ⨯ 0 = 0
-//	e ⨯ 1 =
+//	e ⨯ 1 = e
 //	e + f = f + e
 //	e ⨯ f = f ⨯ e
 type envSet struct {
