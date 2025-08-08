@@ -9,42 +9,35 @@
 - go: Equal
   constImm: 0
   commutative: true
-  extension: "AVX.*"
   documentation: !string |-
     // NAME compares for equality.
 - go: Less
   constImm: 1
   commutative: false
-  extension: "AVX.*"
   documentation: !string |-
     // NAME compares for less than.
 - go: LessEqual
   constImm: 2
   commutative: false
-  extension: "AVX.*"
   documentation: !string |-
     // NAME compares for less than or equal.
 - go: IsNan # For float only.
   constImm: 3
   commutative: true
-  extension: "AVX.*"
   documentation: !string |-
     // NAME checks if elements are NaN. Use as x.IsNan(x).
 - go: NotEqual
   constImm: 4
   commutative: true
-  extension: "AVX.*"
   documentation: !string |-
     // NAME compares for inequality.
 - go: GreaterEqual
   constImm: 13
   commutative: false
-  extension: "AVX.*"
   documentation: !string |-
     // NAME compares for greater than or equal.
 - go: Greater
   constImm: 14
   commutative: false
-  extension: "AVX.*"
   documentation: !string |-
     // NAME compares for greater than.

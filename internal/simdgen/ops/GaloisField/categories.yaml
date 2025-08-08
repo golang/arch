@@ -1,7 +1,6 @@
 !sum
 - go: GaloisFieldAffineTransform
   commutative: false
-  extension: "AVX.*"
   documentation: !string |-
     // NAME computes an affine transformation in GF(2^8):
     // x is a vector of 8-bit vectors, with each adjacent 8 as a group; y is a vector of 8x8 1-bit matrixes;
@@ -9,7 +8,6 @@
     // corresponding to a group of 8 elements in x.
 - go: GaloisFieldAffineTransformInverse
   commutative: false
-  extension: "AVX.*"
   documentation: !string |-
     // NAME computes an affine transformation in GF(2^8),
     // with x inverted with respect to reduction polynomial x^8 + x^4 + x^3 + x + 1:
@@ -18,7 +16,6 @@
     // corresponding to a group of 8 elements in x.
 - go: GaloisFieldMul
   commutative: false
-  extension: "AVX.*"
   documentation: !string |-
     // NAME computes element-wise GF(2^8) multiplication with
     // reduction polynomial x^8 + x^4 + x^3 + x + 1.

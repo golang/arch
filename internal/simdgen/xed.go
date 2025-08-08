@@ -5,9 +5,12 @@
 package main
 
 import (
+	"cmp"
 	"fmt"
 	"log"
+	"maps"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -52,9 +55,9 @@ func loadXED(xedPath string) []*unify.Value {
 		switch {
 		case inst.RealOpcode == "N":
 			return // Skip unstable instructions
-		case !(strings.HasPrefix(inst.Extension, "SSE") || strings.HasPrefix(inst.Extension, "AVX")):
-			// We're only intested in SSE and AVX instuctions.
-			return // Skip non-AVX or SSE instructions
+		case !strings.HasPrefix(inst.Extension, "AVX"):
+			// We're only interested in AVX instructions.
+			return
 		}
 
 		if *flagDebugXED {
@@ -85,6 +88,30 @@ func loadXED(xedPath string) []*unify.Value {
 	if err != nil {
 		log.Fatalf("walk insts: %v", err)
 	}
+
+	if len(unknownFeatures) > 0 {
+		if !*Verbose {
+			nInst := 0
+			for _, insts := range unknownFeatures {
+				nInst += len(insts)
+			}
+			log.Printf("%d unhandled CPU features for %d instructions (use -v for details)", len(unknownFeatures), nInst)
+		} else {
+			keys := slices.SortedFunc(maps.Keys(unknownFeatures), func(a, b cpuFeatureKey) int {
+				return cmp.Or(cmp.Compare(a.Extension, b.Extension),
+					cmp.Compare(a.ISASet, b.ISASet))
+			})
+			for _, key := range keys {
+				if key.ISASet == "" || key.ISASet == key.Extension {
+					log.Printf("unhandled Extension %s", key.Extension)
+				} else {
+					log.Printf("unhandled Extension %s and ISASet %s", key.Extension, key.ISASet)
+				}
+				log.Printf("  opcodes: %s", slices.Sorted(maps.Keys(unknownFeatures[key])))
+			}
+		}
+	}
+
 	return defs
 }
 
@@ -492,22 +519,25 @@ func addOperandsToDef(ops []operand, instDB *unify.DefBuilder, variant instVaria
 }
 
 func instToUVal(inst *xeddata.Inst, ops []operand) []*unify.Value {
+	feature, ok := decodeCPUFeature(inst)
+	if !ok {
+		return nil
+	}
+
 	var vals []*unify.Value
-	vals = append(vals, instToUVal1(inst, ops, instVariantNone))
+	vals = append(vals, instToUVal1(inst, ops, feature, instVariantNone))
 	if hasOptionalMask(ops) {
-		vals = append(vals, instToUVal1(inst, ops, instVariantMasked))
+		vals = append(vals, instToUVal1(inst, ops, feature, instVariantMasked))
 	}
 	return vals
 }
 
-func instToUVal1(inst *xeddata.Inst, ops []operand, variant instVariant) *unify.Value {
-	// TODO: "feature"
+func instToUVal1(inst *xeddata.Inst, ops []operand, feature string, variant instVariant) *unify.Value {
 	var db unify.DefBuilder
 	db.Add("goarch", unify.NewValue(unify.NewStringExact("amd64")))
 	db.Add("asm", unify.NewValue(unify.NewStringExact(inst.Opcode())))
 	addOperandsToDef(ops, &db, variant)
-	db.Add("extension", unify.NewValue(unify.NewStringExact(inst.Extension)))
-	db.Add("isaset", unify.NewValue(unify.NewStringExact(inst.ISASet)))
+	db.Add("cpuFeature", unify.NewValue(unify.NewStringExact(feature)))
 
 	if strings.Contains(inst.Pattern, "ZEROING=0") {
 		// This is an EVEX instruction, but the ".Z" (zero-merging)
@@ -530,6 +560,66 @@ func instToUVal1(inst *xeddata.Inst, ops []operand, variant instVariant) *unify.
 	pos := unify.Pos{Path: inst.Pos.Path, Line: inst.Pos.Line}
 	return unify.NewValuePos(db.Build(), pos)
 }
+
+// decodeCPUFeature returns the CPU feature name required by inst. These match
+// the names of the "Has*" feature checks in the simd package.
+func decodeCPUFeature(inst *xeddata.Inst) (string, bool) {
+	key := cpuFeatureKey{
+		Extension: inst.Extension,
+		ISASet:    isaSetStrip.ReplaceAllLiteralString(inst.ISASet, ""),
+	}
+	feat, ok := cpuFeatureMap[key]
+	if !ok {
+		imap := unknownFeatures[key]
+		if imap == nil {
+			imap = make(map[string]struct{})
+			unknownFeatures[key] = imap
+		}
+		imap[inst.Opcode()] = struct{}{}
+		return "", false
+	}
+	if feat == "ignore" {
+		return "", false
+	}
+	return feat, true
+}
+
+var isaSetStrip = regexp.MustCompile("_(128N?|256N?|512)$")
+
+type cpuFeatureKey struct {
+	Extension, ISASet string
+}
+
+// cpuFeatureMap maps from XED's "EXTENSION" and "ISA_SET" to a CPU feature name
+// that can be used in the SIMD API.
+var cpuFeatureMap = map[cpuFeatureKey]string{
+	{"AVX", ""}:              "AVX",
+	{"AVX_VNNI", "AVX_VNNI"}: "AVXVNNI",
+	{"AVX2", ""}:             "AVX2",
+
+	// AVX-512 foundational features
+	//
+	// TODO: These should all map to "AVX512".
+	{"AVX512EVEX", "AVX512F"}:  "AVX512F",
+	{"AVX512EVEX", "AVX512CD"}: "AVX512CD",
+	{"AVX512EVEX", "AVX512BW"}: "AVX512BW",
+	{"AVX512EVEX", "AVX512DQ"}: "AVX512DQ",
+	// AVX512VL doesn't appear explicitly in the ISASet. I guess it's implied by
+	// the vector length suffix.
+
+	// AVX-512 extension features
+	{"AVX512EVEX", "AVX512_BITALG"}:    "AVX512BITALG",
+	{"AVX512EVEX", "AVX512_GFNI"}:      "AVX512GFNI",
+	{"AVX512EVEX", "AVX512_VBMI2"}:     "AVX512VBMI2",
+	{"AVX512EVEX", "AVX512_VBMI"}:      "AVX512VBMI",
+	{"AVX512EVEX", "AVX512_VNNI"}:      "AVX512VNNI",
+	{"AVX512EVEX", "AVX512_VPOPCNTDQ"}: "AVX512VPOPCNTDQ",
+
+	// AVX 10.2 (not yet supported)
+	{"AVX512EVEX", "AVX10_2_RC"}: "ignore",
+}
+
+var unknownFeatures = map[cpuFeatureKey]map[string]struct{}{}
 
 // hasOptionalMask returns whether there is an optional mask operand in ops.
 func hasOptionalMask(ops []operand) bool {

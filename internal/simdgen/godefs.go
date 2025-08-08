@@ -55,9 +55,7 @@ type rawOperation struct {
 	InVariant     []Operand // Optional parameters
 	Out           []Operand // Results
 	Commutative   bool      // Commutativity
-	Extension     string    // Extension
-	ISASet        string    // ISASet
-	CPUFeature    *string   // If ISASet is empty, then Extension, otherwise ISASet
+	CPUFeature    string    // CPUID/Has* feature name
 	Zeroing       *bool     // nil => use asm suffix ".Z"; false => do not use asm suffix ".Z"
 	Documentation *string   // Documentation will be appended to the stubs comments.
 	// ConstMask is a hack to reduce the size of defs the user writes for const-immediate
@@ -329,11 +327,6 @@ func writeGoDefs(path string, cl unify.Closure) error {
 	// The parsed XED data might contain duplicates, like
 	// 512 bits VPADDP.
 	deduped := dedup(ops)
-	var excluded []Operation
-	deduped, excluded = fillCPUFeature(deduped)
-	if *Verbose {
-		log.Printf("excluded len: %d\n", len(excluded))
-	}
 
 	if *Verbose {
 		log.Printf("dedup len: %d\n", len(ops))

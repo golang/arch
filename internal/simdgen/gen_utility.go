@@ -515,50 +515,6 @@ func dedup(ops []Operation) (deduped []Operation) {
 	return
 }
 
-func fillCPUFeature(ops []Operation) (filled []Operation, excluded []Operation) {
-	allCPUFeatures := map[string]struct{}{}
-	for _, op := range ops {
-		if op.ISASet == "" {
-			newS := op.Extension
-			op.CPUFeature = &newS
-		} else {
-			newS := strings.TrimSuffix(strings.TrimSuffix(strings.TrimSuffix(op.ISASet, "_128"), "_256"), "_512")
-			newS = strings.TrimSuffix(strings.TrimSuffix(strings.TrimSuffix(newS, "_128N"), "_256N"), "_512N")
-			op.CPUFeature = &newS
-		}
-		if *op.CPUFeature == "AVX" || *op.CPUFeature == "AVX2" || strings.HasPrefix(*op.CPUFeature, "AVX512") ||
-			strings.HasPrefix(*op.CPUFeature, "AVX_") || strings.HasPrefix(*op.CPUFeature, "AVX2_") {
-			// This excludes instructions from CPU Features like AVX10.1, which usually are rebrandings of AVX512.
-			filled = append(filled, op)
-			if strings.Contains(*op.CPUFeature, "_") {
-				*op.CPUFeature = strings.ReplaceAll(*op.CPUFeature, "_", "")
-			}
-			allCPUFeatures[*op.CPUFeature] = struct{}{}
-		} else {
-			excluded = append(excluded, op)
-		}
-	}
-	// Sanity check, make sure we are not excluding the only definition of an operation
-	filledSeen := map[string]struct{}{}
-	excludedSeen := map[string]Operation{}
-	for _, op := range filled {
-		filledSeen[op.Go+*op.In[0].Go] = struct{}{}
-	}
-	for _, op := range excluded {
-		excludedSeen[op.Go+*op.In[0].Go] = op
-	}
-	for k, op := range excludedSeen {
-		if _, ok := filledSeen[k]; !ok {
-			panic(fmt.Sprintf("simdgen is excluding the only def of op: %s", op))
-		}
-	}
-	if *Verbose {
-		// It might contain
-		log.Printf("All CPU Features: %v\n", allCPUFeatures)
-	}
-	return
-}
-
 func (op Operation) GenericName() string {
 	if op.OperandOrder != nil {
 		switch *op.OperandOrder {
@@ -597,7 +553,7 @@ func dedupGodef(ops []Operation) ([]Operation, error) {
 		return ops, nil
 	}
 	isAVX512 := func(op Operation) bool {
-		return strings.Contains(op.Extension, "AVX512")
+		return strings.Contains(op.CPUFeature, "AVX512")
 	}
 	deduped := []Operation{}
 	for _, dup := range seen {
@@ -610,7 +566,7 @@ func dedupGodef(ops []Operation) ([]Operation, error) {
 				if isAVX512(i) && !isAVX512(j) {
 					return 1
 				}
-				return strings.Compare(*i.CPUFeature, *j.CPUFeature)
+				return strings.Compare(i.CPUFeature, j.CPUFeature)
 			})
 		}
 		deduped = append(deduped, dup[0])

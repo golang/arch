@@ -1,103 +1,85 @@
 !sum
 - go: Div
   commutative: false
-  extension: "AVX.*"
   documentation: !string |-
     // NAME divides elements of two vectors.
 - go: Sqrt
   commutative: false
-  extension: "AVX.*"
   documentation: !string |-
     // NAME computes the square root of each element.
 - go: Reciprocal
   commutative: false
-  extension: "AVX.*"
   documentation: !string |-
     // NAME computes an approximate reciprocal of each element.
 - go: ReciprocalSqrt
   commutative: false
-  extension: "AVX.*"
   documentation: !string |-
     // NAME computes an approximate reciprocal of the square root of each element.
 - go: Scale
   commutative: false
-  extension: "AVX.*"
   documentation: !string |-
     // NAME multiplies elements by a power of 2.
 - go: RoundToEven
   commutative: false
-  extension: "AVX.*"
   constImm: 0
   documentation: !string |-
     // NAME rounds elements to the nearest integer.
 - go: RoundToEvenScaled
   commutative: false
-  extension: "AVX.*"
   constImm: 0
   documentation: !string |-
     // NAME rounds elements with specified precision.
 - go: RoundToEvenScaledResidue
   commutative: false
-  extension: "AVX.*"
   constImm: 0
   documentation: !string |-
     // NAME computes the difference after rounding with specified precision.
 - go: Floor
   commutative: false
-  extension: "AVX.*"
   constImm: 1
   documentation: !string |-
     // NAME rounds elements down to the nearest integer.
 - go: FloorScaled
   commutative: false
-  extension: "AVX.*"
   constImm: 1
   documentation: !string |-
     // NAME rounds elements down with specified precision.
 - go: FloorScaledResidue
   commutative: false
-  extension: "AVX.*"
   constImm: 1
   documentation: !string |-
     // NAME computes the difference after flooring with specified precision.
 - go: Ceil
   commutative: false
-  extension: "AVX.*"
   constImm: 2
   documentation: !string |-
     // NAME rounds elements up to the nearest integer.
 - go: CeilScaled
   commutative: false
-  extension: "AVX.*"
   constImm: 2
   documentation: !string |-
     // NAME rounds elements up with specified precision.
 - go: CeilScaledResidue
   commutative: false
-  extension: "AVX.*"
   constImm: 2
   documentation: !string |-
     // NAME computes the difference after ceiling with specified precision.
 - go: Trunc
   commutative: false
-  extension: "AVX.*"
   constImm: 3
   documentation: !string |-
     // NAME truncates elements towards zero.
 - go: TruncScaled
   commutative: false
-  extension: "AVX.*"
   constImm: 3
   documentation: !string |-
     // NAME truncates elements with specified precision.
 - go: TruncScaledResidue
   commutative: false
-  extension: "AVX.*"
   constImm: 3
   documentation: !string |-
     // NAME computes the difference after truncating with specified precision.
 - go: AddSub
   commutative: false
-  extension: "AVX.*"
   documentation: !string |-
     // NAME subtracts even elements and adds odd elements of two vectors.

@@ -79,7 +79,7 @@ func writeSIMDMachineOps(ops []Operation) *bytes.Buffer {
 			}
 		}
 		// Makes AVX512 operations use upper registers
-		if strings.Contains(op.Extension, "AVX512") {
+		if strings.Contains(op.CPUFeature, "AVX512") {
 			regInfo = strings.ReplaceAll(regInfo, "v", "w")
 		}
 		if _, ok := regInfoSet[regInfo]; !ok {
