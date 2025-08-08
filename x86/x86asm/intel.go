@@ -93,7 +93,7 @@ func IntelSyntax(inst Inst, pc uint64, symname SymLookup) string {
 				inst.Prefix[i] |= PrefixImplicit
 			}
 			if p.IsVEX() {
-				if p == PrefixVEX3Bytes {
+				if p == PrefixVEX3 {
 					inst.Prefix[i+2] |= PrefixImplicit
 				}
 				inst.Prefix[i] |= PrefixImplicit
@@ -473,12 +473,7 @@ func intelArg(inst *Inst, pc uint64, symname SymLookup, arg Arg) string {
 		}
 	case Reg:
 		if int(a) < len(intelReg) && intelReg[a] != "" {
-			switch inst.Op {
-			case VMOVDQA, VMOVDQU, VMOVNTDQA, VMOVNTDQ:
-				return strings.Replace(intelReg[a], "xmm", "ymm", -1)
-			default:
-				return intelReg[a]
-			}
+			return intelReg[a]
 		}
 	}
 	return strings.ToLower(arg.String())
@@ -544,6 +539,22 @@ var intelReg = [...]string{
 	X13: "xmm13",
 	X14: "xmm14",
 	X15: "xmm15",
+	Y0:  "ymm0",
+	Y1:  "ymm1",
+	Y2:  "ymm2",
+	Y3:  "ymm3",
+	Y4:  "ymm4",
+	Y5:  "ymm5",
+	Y6:  "ymm6",
+	Y7:  "ymm7",
+	Y8:  "ymm8",
+	Y9:  "ymm9",
+	Y10: "ymm10",
+	Y11: "ymm11",
+	Y12: "ymm12",
+	Y13: "ymm13",
+	Y14: "ymm14",
+	Y15: "ymm15",
 
 	// TODO: Maybe the constants are named wrong.
 	SPB: "spl",
