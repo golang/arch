@@ -9,7 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
+	"os"
 	"path"
 	"reflect"
 	"strings"
@@ -401,7 +401,7 @@ func TestReader(t *testing.T) {
 
 	var tests []test
 	{
-		b, err := ioutil.ReadFile(path.Join("testdata", "xed_objects.txt"))
+		b, err := os.ReadFile(path.Join("testdata", "xed_objects.txt"))
 		if err != nil {
 			t.Fatal(err)
 		}
