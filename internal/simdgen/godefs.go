@@ -349,6 +349,8 @@ func writeGoDefs(path string, cl unify.Closure) error {
 		log.Printf("dedup len: %d\n", len(deduped))
 	}
 	if !*FlagNoDedup {
+		// TODO: This can hide mistakes in the API definitions, especially when
+		// multiple patterns result in the same API unintentionally. Make it stricter.
 		if deduped, err = dedupGodef(deduped); err != nil {
 			return err
 		}
