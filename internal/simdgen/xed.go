@@ -597,13 +597,11 @@ var cpuFeatureMap = map[cpuFeatureKey]string{
 	{"AVX_VNNI", "AVX_VNNI"}: "AVXVNNI",
 	{"AVX2", ""}:             "AVX2",
 
-	// AVX-512 foundational features
-	//
-	// TODO: These should all map to "AVX512".
-	{"AVX512EVEX", "AVX512F"}:  "AVX512F",
-	{"AVX512EVEX", "AVX512CD"}: "AVX512CD",
-	{"AVX512EVEX", "AVX512BW"}: "AVX512BW",
-	{"AVX512EVEX", "AVX512DQ"}: "AVX512DQ",
+	// AVX-512 foundational features. We combine all of these into one "AVX512" feature.
+	{"AVX512EVEX", "AVX512F"}:  "AVX512",
+	{"AVX512EVEX", "AVX512CD"}: "AVX512",
+	{"AVX512EVEX", "AVX512BW"}: "AVX512",
+	{"AVX512EVEX", "AVX512DQ"}: "AVX512",
 	// AVX512VL doesn't appear explicitly in the ISASet. I guess it's implied by
 	// the vector length suffix.
 
