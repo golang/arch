@@ -22,9 +22,9 @@ var (
 {{end}}
 {{define "maskInMaskOut"}}({{.GoOp}}{{.GoType}} {{.Args}} mask) => ({{.MaskOutConvert}} ({{.Asm}} {{.ArgsOut}} ({{.MaskInConvert}} <types.TypeMask> mask)))
 {{end}}
-{{define "sftimm"}}({{.GoOp}}{{.GoType}} x (MOVQconst [c])) => ({{.Asm}}const [int8(c)] x)
+{{define "sftimm"}}({{.GoOp}}{{.GoType}} x (MOVQconst [c])) => ({{.Asm}}const [uint8(c)] x)
 {{end}}
-{{define "masksftimm"}}({{.GoOp}}{{.GoType}} x (MOVQconst [c]) mask) => ({{.Asm}}const [int8(c)] x ({{.MaskInConvert}} <types.TypeMask> mask))
+{{define "masksftimm"}}({{.GoOp}}{{.GoType}} x (MOVQconst [c]) mask) => ({{.Asm}}const [uint8(c)] x ({{.MaskInConvert}} <types.TypeMask> mask))
 {{end}}
 `))
 )

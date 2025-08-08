@@ -19,7 +19,7 @@ func simdGenericOps() []opData {
 		{name: "{{.OpName}}", argLength: {{.OpInLen}}, commutative: {{.Comm}}},
 {{- end }}
 {{- range .OpsImm }}
-		{name: "{{.OpName}}", argLength: {{.OpInLen}}, commutative: {{.Comm}}, aux: "Int8"},
+		{name: "{{.OpName}}", argLength: {{.OpInLen}}, commutative: {{.Comm}}, aux: "UInt8"},
 {{- end }}
 	}
 }

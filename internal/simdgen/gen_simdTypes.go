@@ -311,7 +311,7 @@ func ({{.Op2NameAndType "x"}}) {{.Go}}({{.Op1NameAndType "y"}}, {{.Op0NameAndTyp
 {{define "op1Imm8"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
-// {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
+// {{.ImmName}} results in better performance when it's a constant, non-constant value will trigger a jump table to be generated.
 //
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func ({{.Op1NameAndType "x"}}) {{.Go}}({{.ImmName}} uint8) {{.GoType}}
@@ -320,7 +320,7 @@ func ({{.Op1NameAndType "x"}}) {{.Go}}({{.ImmName}} uint8) {{.GoType}}
 {{define "op2Imm8"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
-// {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
+// {{.ImmName}} results in better performance when it's a constant, non-constant value will trigger a jump table to be generated.
 //
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func ({{.Op1NameAndType "x"}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}}) {{.GoType}}
@@ -329,7 +329,7 @@ func ({{.Op1NameAndType "x"}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"
 {{define "op2Imm8_2I"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
-// {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
+// {{.ImmName}} results in better performance when it's a constant, non-constant value will trigger a jump table to be generated.
 //
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func ({{.Op1NameAndType "x"}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.ImmName}} uint8) {{.GoType}}
@@ -339,7 +339,7 @@ func ({{.Op1NameAndType "x"}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.ImmName}} uin
 {{define "op3Imm8"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
-// {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
+// {{.ImmName}} results in better performance when it's a constant, non-constant value will trigger a jump table to be generated.
 //
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func ({{.Op1NameAndType "x"}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}}, {{.Op3NameAndType "z"}}) {{.GoType}}
@@ -348,7 +348,7 @@ func ({{.Op1NameAndType "x"}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"
 {{define "op3Imm8_2I"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
-// {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
+// {{.ImmName}} results in better performance when it's a constant, non-constant value will trigger a jump table to be generated.
 //
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func ({{.Op1NameAndType "x"}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.ImmName}} uint8, {{.Op3NameAndType "z"}}) {{.GoType}}
@@ -358,7 +358,7 @@ func ({{.Op1NameAndType "x"}}) {{.Go}}({{.Op2NameAndType "y"}}, {{.ImmName}} uin
 {{define "op4Imm8"}}
 {{if .Documentation}}{{.Documentation}}
 //{{end}}
-// {{.ImmName}} is expected to be a constant, non-constant value will trigger a runtime panic.
+// {{.ImmName}} results in better performance when it's a constant, non-constant value will trigger a jump table to be generated.
 //
 // Asm: {{.Asm}}, CPU Feature: {{.CPUFeature}}
 func ({{.Op1NameAndType "x"}}) {{.Go}}({{.ImmName}} uint8, {{.Op2NameAndType "y"}}, {{.Op3NameAndType "z"}}, {{.Op4NameAndType "u"}}) {{.GoType}}
