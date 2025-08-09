@@ -366,6 +366,7 @@ func writeGoDefs(path string, cl unify.Closure) error {
 	typeMap := parseSIMDTypes(deduped)
 
 	formatWriteAndClose(writeSIMDTypes(typeMap), path, "src/"+simdPackage+"/types_amd64.go")
+	formatWriteAndClose(writeSIMDFeatures(deduped), path, "src/"+simdPackage+"/cpu.go")
 	formatWriteAndClose(writeSIMDStubs(deduped, typeMap), path, "src/"+simdPackage+"/ops_amd64.go")
 	formatWriteAndClose(writeSIMDIntrinsics(deduped, typeMap), path, "src/cmd/compile/internal/ssagen/simdintrinsics.go")
 	formatWriteAndClose(writeSIMDGenericOps(deduped), path, "src/cmd/compile/internal/ssa/_gen/simdgenericOps.go")

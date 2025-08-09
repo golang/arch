@@ -6,7 +6,9 @@ package main
 
 import (
 	"bytes"
+	"cmp"
 	"fmt"
+	"maps"
 	"slices"
 	"sort"
 	"strings"
@@ -137,6 +139,29 @@ type {{.Name}} struct {
 {{.Fields}}
 }
 
+{{end}}
+`
+
+const simdFeaturesTemplate = `
+import "internal/cpu"
+
+{{range .}}
+{{- if eq .Feature "AVX512"}}
+// Has{{.Feature}} returns whether the CPU supports the AVX512F+CD+BW+DQ+VL features.
+//
+// These five CPU features are bundled together, and no use of AVX-512
+// is allowed unless all of these features are supported together.
+// Nearly every CPU that has shipped with any support for AVX-512 has
+// supported all five of these features.
+{{- else -}}
+// Has{{.Feature}} returns whether the CPU supports the {{.Feature}} feature.
+{{- end}}
+//
+// Has{{.Feature}} is defined on all GOARCHes, but will only return true on
+// GOARCH {{.GoArch}}.
+func Has{{.Feature}}() bool {
+	return cpu.X86.Has{{.Feature}}
+}
 {{end}}
 `
 
@@ -516,6 +541,37 @@ func writeSIMDTypes(typeMap simdTypeMap) *bytes.Buffer {
 				}
 			}
 		}
+	}
+
+	return buffer
+}
+
+func writeSIMDFeatures(ops []Operation) *bytes.Buffer {
+	// Gather all features
+	type featureKey struct {
+		GoArch  string
+		Feature string
+	}
+	featureSet := make(map[featureKey]struct{})
+	for _, op := range ops {
+		featureSet[featureKey{op.GoArch, op.CPUFeature}] = struct{}{}
+	}
+	features := slices.SortedFunc(maps.Keys(featureSet), func(a, b featureKey) int {
+		if c := cmp.Compare(a.GoArch, b.GoArch); c != 0 {
+			return c
+		}
+		return compareNatural(a.Feature, b.Feature)
+	})
+
+	// If we ever have the same feature name on more than one GOARCH, we'll have
+	// to be more careful about this.
+	t := templateOf(simdFeaturesTemplate, "features")
+
+	buffer := new(bytes.Buffer)
+	buffer.WriteString(simdPackageHeader)
+
+	if err := t.Execute(buffer, features); err != nil {
+		panic(fmt.Errorf("failed to execute features template: %w", err))
 	}
 
 	return buffer
