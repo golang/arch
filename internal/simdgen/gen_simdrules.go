@@ -11,6 +11,17 @@ import (
 	"text/template"
 )
 
+type tplRuleData struct {
+	tplName        string // e.g. "sftimm"
+	GoOp           string // e.g. "ShiftAllLeft"
+	GoType         string // e.g. "Uint32x8"
+	Args           string // e.g. "x y"
+	Asm            string // e.g. "VPSLLD256"
+	ArgsOut        string // e.g. "x y"
+	MaskInConvert  string // e.g. "VPMOVVec32x8ToM"
+	MaskOutConvert string // e.g. "VPMOVMToVec32x8"
+}
+
 var (
 	ruleTemplates = template.Must(template.New("simdRules").Parse(`
 {{define "pureVreg"}}({{.GoOp}}{{.GoType}} {{.Args}}) => ({{.Asm}} {{.ArgsOut}})
@@ -28,19 +39,17 @@ var (
 `))
 )
 
-type tplRuleData struct {
-	tplName        string
-	GoOp           string
-	GoType         string
-	Args           string
-	Asm            string
-	ArgsOut        string
-	MaskInConvert  string
-	MaskOutConvert string
+// SSA rewrite rules need to appear in a most-to-least-specific order.  This works for that.
+var tmplOrder = map[string]int{
+	"masksftimm":    0,
+	"sftimm":        1,
+	"maskInMaskOut": 2,
+	"maskOut":       3,
+	"maskIn":        4,
+	"pureVreg":      5,
 }
 
 func compareTplRuleData(x, y tplRuleData) int {
-	// TODO should MaskedXYZ compare just after XYZ?
 	if c := compareNatural(x.GoOp, y.GoOp); c != 0 {
 		return c
 	}
@@ -50,7 +59,18 @@ func compareTplRuleData(x, y tplRuleData) int {
 	if c := compareNatural(x.Args, y.Args); c != 0 {
 		return c
 	}
-	return 0
+	if x.tplName == y.tplName {
+		return 0
+	}
+	xo, xok := tmplOrder[x.tplName]
+	yo, yok := tmplOrder[y.tplName]
+	if !xok {
+		panic(fmt.Errorf("Unexpected template name %s, please add to tmplOrder", x.tplName))
+	}
+	if !yok {
+		panic(fmt.Errorf("Unexpected template name %s, please add to tmplOrder", y.tplName))
+	}
+	return xo - yo
 }
 
 // writeSIMDRules generates the lowering and rewrite rules for ssa and writes it to simdAMD64.rules

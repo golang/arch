@@ -330,6 +330,7 @@ func writeGoDefs(path string, cl unify.Closure) error {
 	// The parsed XED data might contain duplicates, like
 	// 512 bits VPADDP.
 	deduped := dedup(ops)
+	slices.SortFunc(deduped, compareOperations)
 
 	if *Verbose {
 		log.Printf("dedup len: %d\n", len(ops))
