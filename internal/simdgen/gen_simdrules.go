@@ -32,9 +32,9 @@ var (
 {{end}}
 {{define "maskInMaskOut"}}({{.GoOp}}{{.GoType}} {{.Args}} mask) => ({{.MaskOutConvert}} ({{.Asm}} {{.ArgsOut}} ({{.MaskInConvert}} <types.TypeMask> mask)))
 {{end}}
-{{define "sftimm"}}({{.GoOp}}{{.GoType}} x (MOVQconst [c])) => ({{.Asm}}const [uint8(c)] x)
+{{define "sftimm"}}({{.Asm}} x (MOVQconst [c])) => ({{.Asm}}const [uint8(c)] x)
 {{end}}
-{{define "masksftimm"}}({{.GoOp}}{{.GoType}} x (MOVQconst [c]) mask) => ({{.Asm}}const [uint8(c)] x ({{.MaskInConvert}} <types.TypeMask> mask))
+{{define "masksftimm"}}({{.Asm}} x (MOVQconst [c]) mask) => ({{.Asm}}const [uint8(c)] x mask)
 {{end}}
 `))
 )
@@ -176,22 +176,24 @@ func writeSIMDRules(ops []Operation) *bytes.Buffer {
 
 		if gOp.SpecialLower != nil {
 			if *gOp.SpecialLower == "sftimm" {
-				sftImmData := data
-				if tplName == "maskIn" {
-					sftImmData.tplName = "masksftimm"
-				} else {
-					sftImmData.tplName = "sftimm"
+				if data.GoType[0] == 'I' {
+					// only do these for signed types, it is a duplicate rewrite for unsigned
+					sftImmData := data
+					if tplName == "maskIn" {
+						sftImmData.tplName = "masksftimm"
+					} else {
+						sftImmData.tplName = "sftimm"
+					}
+					allData = append(allData, sftImmData)
 				}
-				allData = append(allData, sftImmData)
 			} else {
 				panic("simdgen sees unknwon special lower " + *gOp.SpecialLower + ", maybe implement it?")
 			}
-		} else {
-			// SpecialLower rules cannot use "...".
-			if tplName == "pureVreg" && data.Args == data.ArgsOut {
-				data.Args = "..."
-				data.ArgsOut = "..."
-			}
+		}
+
+		if tplName == "pureVreg" && data.Args == data.ArgsOut {
+			data.Args = "..."
+			data.ArgsOut = "..."
 		}
 		data.tplName = tplName
 		allData = append(allData, data)
