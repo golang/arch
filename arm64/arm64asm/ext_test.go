@@ -422,7 +422,7 @@ var condmark bool = false
 func doFuzzy(inst *InstJson, Ninst int) {
 	var testdata uint32
 	var NonDigRE = regexp.MustCompile(`[\D]`)
-	rand.Seed(int64(Round + Ninst))
+	rand := rand.New(rand.NewSource(int64(Round + Ninst)))
 	off := 0
 	DigBit := ""
 	if condmark == true && !strings.Contains(inst.Bits, "cond") {
