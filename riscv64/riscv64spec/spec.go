@@ -68,7 +68,7 @@ func main() {
 	log.SetFlags(0)
 	log.SetPrefix("riscv64spec: ")
 
-	if len(os.Args) < 1 {
+	if len(os.Args) < 2 {
 		log.Fatal("usage: go run spec.go <opcodes-repo-path>")
 	}
 	extensionsPath := filepath.Join(os.Args[1], "extensions")
