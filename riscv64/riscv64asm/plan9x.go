@@ -188,6 +188,22 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 		FNMSUB_D, FNMSUB_H, FNMSUB_Q, FNMSUB_S:
 		args[1], args[3] = args[3], args[1]
 
+	case FMV_W_X:
+		if inst.Args[1].(Reg) == X0 {
+			args[1] = "$(0.0)"
+		}
+		fallthrough
+	case FMV_X_W:
+		op = "MOVF"
+
+	case FMV_D_X:
+		if inst.Args[1].(Reg) == X0 {
+			args[1] = "$(0.0)"
+		}
+		fallthrough
+	case FMV_X_D:
+		op = "MOVD"
+
 	case FSGNJ_S:
 		if inst.Args[2] == inst.Args[1] {
 			op = "MOVF"
@@ -259,13 +275,13 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 
 	case FLW, FSW:
 		op = "MOVF"
-		if inst.Op == FLW {
+		if inst.Op == FSW {
 			args[0], args[1] = args[1], args[0]
 		}
 
 	case FLD, FSD:
 		op = "MOVD"
-		if inst.Op == FLD {
+		if inst.Op == FSD {
 			args[0], args[1] = args[1], args[0]
 		}
 
