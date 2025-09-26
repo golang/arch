@@ -244,7 +244,7 @@ func genInst(words []string) {
 	for i := uint32(2); i <= 8; i++ {
 		segName := strings.ToUpper(fmt.Sprintf("%sSEG%d%s", segOpPrefix, i, segOpSuffix))
 		segOp := strings.Replace(segName, ".", "_", -1)
-		segOpStr := fmt.Sprintf("%-18s %q,",  segOp+":", segName)
+		segOpStr := fmt.Sprintf("%-18s %q,", segOp+":", segName)
 		segValue := value | (i-1)<<29
 		instFormatComment := "// " + segName + " " + strings.Replace(instArgsStr, "arg_", "", -1)
 		instFormat := fmt.Sprintf("{mask: %#08x, value: %#08x, op: %s, args: argTypeList{%s}},", mask, segValue, segOp, instArgsStr)
