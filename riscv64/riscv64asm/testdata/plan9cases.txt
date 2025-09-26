@@ -334,6 +334,10 @@ b35cbd49|	BEXT X27, X26, X25
 b3115228|	BSET X5, X4, X3
 1393f32b|	BSETI $63, X7, X6
 
+# 12.3: "Zicond" Extension for Integer Conditional Operations, Version 1.0.0
+b353530e|	CZEROEQZ X5, X6, X7
+b373530e|	CZERONEZ X5, X6, X7
+
 # "V" Standard Extension for Vector Operations, Version 1.0
 
 # 31.6: Configuration Setting Instructions
