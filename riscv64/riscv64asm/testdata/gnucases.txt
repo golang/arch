@@ -384,6 +384,10 @@ a260|	ld x1,8(x2)
 8624|	fld f9,64(x2)
 3eb0|	fsd f15,32(x2)
 
+# 12.3: "Zicond" Extension for Integer Conditional Operations, Version 1.0.0
+b353530e|	czero.eqz x7,x6,x5
+b373530e|	czero.nez x7,x6,x5
+
 # "V" Standard Extension for Vector Operations, Version 1.0
 
 # 31.6: Configuration Setting Instructions
