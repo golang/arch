@@ -172,7 +172,7 @@ func main() {
 
 func genInst(words []string) {
 	op := strings.ToUpper(strings.Replace(words[0], ".", "_", -1))
-	opstr := fmt.Sprintf("%-18s %q,", op+":", strings.ToUpper(words[0]))
+	opstr := fmt.Sprintf("%s:\t\"%s\",", op, strings.ToUpper(words[0]))
 
 	var value uint32
 	var mask uint32
@@ -208,7 +208,7 @@ func genInst(words []string) {
 		// Re-generate the opcode string, opcode value and mask.
 		for i, suf := range suffix {
 			aop := op + strings.Replace(suf, ".", "_", -1)
-			aopstr := fmt.Sprintf("%-18s %q,", aop+":", strings.ToUpper(words[0])+suf)
+			aopstr := fmt.Sprintf("%s:\t\"%s\",", aop, strings.ToUpper(words[0])+suf)
 			avalue := value | (uint32(i) << 25)
 			amask := mask | 0x06000000
 			ainstFormatComment := "// " + strings.Replace(aop, "_", ".", -1) + " " + strings.Replace(instArgsStr, "arg_", "", -1)
@@ -244,7 +244,7 @@ func genInst(words []string) {
 	for i := uint32(2); i <= 8; i++ {
 		segName := strings.ToUpper(fmt.Sprintf("%sSEG%d%s", segOpPrefix, i, segOpSuffix))
 		segOp := strings.Replace(segName, ".", "_", -1)
-		segOpStr := fmt.Sprintf("%-18s %q,", segOp+":", segName)
+		segOpStr := fmt.Sprintf("%s:\t\"%s\",", segOp, segName)
 		segValue := value | (i-1)<<29
 		instFormatComment := "// " + segName + " " + strings.Replace(instArgsStr, "arg_", "", -1)
 		instFormat := fmt.Sprintf("{mask: %#08x, value: %#08x, op: %s, args: argTypeList{%s}},", mask, segValue, segOp, instArgsStr)
