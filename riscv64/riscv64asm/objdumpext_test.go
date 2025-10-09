@@ -277,7 +277,7 @@ func writeELF64(f *os.File, size int) error {
 		Type:      uint32(0x70000003), // SHT_RISCV_ATTRIBUTES
 		Addr:      0,
 		Off:       uint64(off2 + (off3-off2)*4 + strtabsize),
-		Size:      114,
+		Size:      129,
 		Addralign: 1,
 	}
 	binary.Write(&buf, binary.LittleEndian, &sect)
@@ -293,7 +293,7 @@ func writeELF64(f *os.File, size int) error {
 	buf.WriteString("\x00.text\x00.riscv.attributes\x00.shstrtab\x00")
 	// Contents of .riscv.attributes section
 	// which specify the extension and priv spec version. (1.11)
-	buf.WriteString("Aq\x00\x00\x00riscv\x00\x01g\x00\x00\x00\x05rv64i2p0_m2p0_a2p0_f2p0_d2p0_q2p0_c2p0_v1p0_zmmul1p0_zfh1p0_zfhmin1p0_zba1p0_zbb1p0_zbc1p0_zbs1p0\x00\x08\x01\x0a\x0b")
+	buf.WriteString("A\x80\x00\x00\x00riscv\x00\x01\x76\x00\x00\x00\x05rv64i2p0_m2p0_a2p0_f2p0_d2p0_q2p0_c2p0_v1p0_zicond1p0_zmmul1p0_zfh1p0_zfhmin1p0_zba1p0_zbb1p0_zbc1p0_zbs1p0\x00\x08\x01\x0a\x0b")
 	f.Write(buf.Bytes())
 	return nil
 }
