@@ -7,14 +7,14 @@ package ppc64asm
 import (
 	"encoding/binary"
 	"encoding/hex"
-	"io/ioutil"
+	"os"
 	"path"
 	"strings"
 	"testing"
 )
 
 func TestDecode(t *testing.T) {
-	files, err := ioutil.ReadDir("testdata")
+	files, err := os.ReadDir("testdata")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,7 +23,7 @@ func TestDecode(t *testing.T) {
 			continue
 		}
 		filename := path.Join("testdata", f.Name())
-		data, err := ioutil.ReadFile(filename)
+		data, err := os.ReadFile(filename)
 		if err != nil {
 			t.Fatal(err)
 		}

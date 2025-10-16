@@ -22,7 +22,7 @@ import (
 	"encoding/xml"
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -124,7 +124,7 @@ func main() {
 	check(err)
 	defer out.Close()
 
-	files, err := ioutil.ReadDir(*xmlfolder)
+	files, err := os.ReadDir(*xmlfolder)
 	check(err)
 
 	var systemregs []SystemReg
@@ -133,7 +133,7 @@ func main() {
 	for _, file := range files {
 		xmlFile, err := os.Open(filepath.Join(*xmlfolder, file.Name()))
 		check(err)
-		value, err := ioutil.ReadAll(xmlFile)
+		value, err := io.ReadAll(xmlFile)
 		check(err)
 
 		var regpage RegisterPage

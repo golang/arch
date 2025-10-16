@@ -13,7 +13,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"math/rand"
 	"os"
@@ -189,7 +188,7 @@ const start = 0x8000
 // starting at offset start. That file is intended to be the input to
 // the external disassembler.
 func writeInst(generate func(func([]byte))) (file string, f *os.File, size int, err error) {
-	f, err = ioutil.TempFile("", "riscv64asm")
+	f, err = os.CreateTemp("", "riscv64asm")
 	if err != nil {
 		return
 	}
@@ -299,7 +298,7 @@ func hexCases(t *testing.T, encoded string) func(func([]byte)) {
 func testdataCases(t *testing.T, syntax string) func(func([]byte)) {
 	var codes [][]byte
 	input := filepath.Join("testdata", syntax+"cases.txt")
-	data, err := ioutil.ReadFile(input)
+	data, err := os.ReadFile(input)
 	if err != nil {
 		t.Fatal(err)
 	}

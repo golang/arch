@@ -15,7 +15,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"math/rand"
 	"os"
@@ -214,7 +213,7 @@ const start = 0x8000
 // starting at offset start. That file is intended to be the input to
 // the external disassembler.
 func writeInst(generate func(func([]byte))) (file string, f *os.File, size int, err error) {
-	f, err = ioutil.TempFile("", "arm64asm")
+	f, err = os.CreateTemp("", "arm64asm")
 	if err != nil {
 		return
 	}
@@ -501,7 +500,7 @@ func doFuzzy(inst *InstJson, Ninst int) {
 // JSONCases generates ARM64 instructions according to inst.json.
 func JSONCases(t *testing.T) func(func([]byte)) {
 	return func(try func([]byte)) {
-		data, err := ioutil.ReadFile("inst.json")
+		data, err := os.ReadFile("inst.json")
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -565,7 +564,7 @@ func hexCases(t *testing.T, encoded string) func(func([]byte)) {
 func testdataCases(t *testing.T, syntax string) func(func([]byte)) {
 	var codes [][]byte
 	input := filepath.Join("testdata", syntax+"cases.txt")
-	data, err := ioutil.ReadFile(input)
+	data, err := os.ReadFile(input)
 	if err != nil {
 		t.Fatal(err)
 	}

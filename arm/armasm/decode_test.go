@@ -6,14 +6,14 @@ package armasm
 
 import (
 	"encoding/hex"
-	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 	"testing"
 )
 
 func TestDecode(t *testing.T) {
-	data, err := ioutil.ReadFile("testdata/decode.txt")
+	data, err := os.ReadFile("testdata/decode.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
