@@ -414,7 +414,7 @@ func parsePage(p pdf.Page, pageNum int) *listing {
 
 	// Table follows; heading is NeoSansIntelMedium and rows are NeoSansIntel.
 	i := 0
-	for i < len(text) && match(text[i], "NeoSansIntelMedium", 9, "") {
+	for i < len(text) && (match(text[i], "NeoSansIntelMedium", 9, "") || match(text[i], "NeoSansIntelMedium", 7.2, "1")) {
 		i++
 	}
 	for i < len(text) && match(text[i], "NeoSansIntel", 9, "") && text[i].S != "NOTES:" {
@@ -826,6 +826,9 @@ func processListing(p *listing, insts *[]*instruction) {
 
 				case "Opcode":
 					inst.opcode = x
+
+				case "1":
+					// pass
 
 				case "Instruction":
 					inst.syntax = x
