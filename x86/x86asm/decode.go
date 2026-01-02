@@ -1617,7 +1617,7 @@ Decode:
 		}
 		// override dataMode
 		switch inst.Opcode >> 24 {
-		case 0x80:
+		case 0x38, 0x3a, 0x80, 0x88, 0xf6:
 			dataMode = 8
 		}
 	}
