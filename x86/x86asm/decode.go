@@ -1615,6 +1615,11 @@ Decode:
 		if rex&^rexUsed == 0 {
 			inst.Prefix[rexIndex] |= PrefixImplicit
 		}
+		// override dataMode
+		switch inst.Opcode >> 24 {
+		case 0x80:
+			dataMode = 8
+		}
 	}
 
 	inst.DataSize = dataMode
