@@ -341,6 +341,13 @@ b3115228|	BSET X5, X4, X3
 b353530e|	CZEROEQZ X5, X6, X7
 b373530e|	CZERONEZ X5, X6, X7
 
+# 19.6.3: Cache-Block Prefetch Instructions, Version 1.0.0
+13e0021c|	PREFETCHI 448(X5)
+13e00200|	PREFETCHI (X5)
+13e002fc|	PREFETCHI -64(X5)
+13e0121c|	PREFETCHR 448(X5)
+13e0321c|	PREFETCHW 448(X5)
+
 # "V" Standard Extension for Vector Operations, Version 1.0
 
 # 31.6: Configuration Setting Instructions
