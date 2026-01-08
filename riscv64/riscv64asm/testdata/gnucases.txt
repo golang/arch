@@ -159,7 +159,31 @@ d37200c0|	fcvt.w.s x5,f0
 53f0201c|	fdiv.h f0,f1,f2
 53f0201e|	fdiv.q f0,f1,f2
 53f02018|	fdiv.s f0,f1,f2
+0f001001|	fence w,w
+0f002001|	fence w,r
+0f004001|	fence w,o
+0f008001|	fence w,i
+0f001002|	fence r,w
+0f002002|	fence r,r
+0f004002|	fence r,o
+0f008002|	fence r,i
+0f003003|	fence rw,rw
+0f00f003|	fence rw,iorw
+0f00300f|	fence iorw,rw
+0f00300c|	fence io,rw
+0f00c003|	fence rw,io
+0f00f00e|	fence ior,iorw
+0f00f00d|	fence iow,iorw
+0f00f007|	fence orw,iorw
 0f00f00f|	fence
+0f001004|	fence o,w
+0f002004|	fence o,r
+0f004004|	fence o,o
+0f008004|	fence o,i
+0f001008|	fence i,w
+0f002008|	fence i,r
+0f004008|	fence i,o
+0f008008|	fence i,i
 0f100000|	fence.i
 d32210a2|	feq.d x5,f0,f1
 d32210a4|	feq.h x5,f0,f1
