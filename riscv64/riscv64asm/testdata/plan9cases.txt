@@ -157,7 +157,7 @@ d37200c0|	FCVTWS F0, X5
 53f0201c|	FDIVH F2, F1, F0
 53f0201e|	FDIVQ F2, F1, F0
 53f02018|	FDIVS F2, F1, F0
-// Fence instruction in plan9 doesn't have any operands.
+# Fence instruction in plan9 doesn't have any operands.
 0f001001|	FENCE
 0f002001|	FENCE
 0f004001|	FENCE
