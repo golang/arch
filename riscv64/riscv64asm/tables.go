@@ -104,6 +104,10 @@ const (
 	BNE
 	BSET
 	BSETI
+	CBO_CLEAN
+	CBO_FLUSH
+	CBO_INVAL
+	CBO_ZERO
 	CLZ
 	CLZW
 	CPOP
@@ -1100,6 +1104,10 @@ var opstr = [...]string{
 	BNE:               "BNE",
 	BSET:              "BSET",
 	BSETI:             "BSETI",
+	CBO_CLEAN:         "CBO.CLEAN",
+	CBO_FLUSH:         "CBO.FLUSH",
+	CBO_INVAL:         "CBO.INVAL",
+	CBO_ZERO:          "CBO.ZERO",
 	CLZ:               "CLZ",
 	CLZW:              "CLZW",
 	CPOP:              "CPOP",
@@ -2191,6 +2199,14 @@ var instFormats = [...]instFormat{
 	{mask: 0xfe00707f, value: 0x28001033, op: BSET, args: argTypeList{arg_rd, arg_rs1, arg_rs2}},
 	// BSETI rd, rs1, shamt6
 	{mask: 0xfc00707f, value: 0x28001013, op: BSETI, args: argTypeList{arg_rd, arg_rs1, arg_shamt6}},
+	// CBO.CLEAN rs1
+	{mask: 0xfff07fff, value: 0x0010200f, op: CBO_CLEAN, args: argTypeList{arg_rs1}},
+	// CBO.FLUSH rs1
+	{mask: 0xfff07fff, value: 0x0020200f, op: CBO_FLUSH, args: argTypeList{arg_rs1}},
+	// CBO.INVAL rs1
+	{mask: 0xfff07fff, value: 0x0000200f, op: CBO_INVAL, args: argTypeList{arg_rs1}},
+	// CBO.ZERO rs1
+	{mask: 0xfff07fff, value: 0x0040200f, op: CBO_ZERO, args: argTypeList{arg_rs1}},
 	// CLZ rd, rs1
 	{mask: 0xfff0707f, value: 0x60001013, op: CLZ, args: argTypeList{arg_rd, arg_rs1}},
 	// CLZW rd, rs1

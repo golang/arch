@@ -412,6 +412,21 @@ a260|	ld x1,8(x2)
 b353530e|	czero.eqz x7,x6,x5
 b373530e|	czero.nez x7,x6,x5
 
+# 19.6.1: Cache-Block Management Instructions (Zicbom), Version 1.0.0
+0fa01200|	cbo.clean	x5
+0fa02200|	cbo.flush	x5		 
+0fa00200|	cbo.inval	x5
+
+# 19.6.2: Cache-Block Zero Instructions (Zicboz), Version 1.0.0
+0fa04200|	cbo.zero	x5
+
+# 19.6.3: Cache-Block Prefetch Instructions (Zicbop), Version 1.0.0
+13e0021c|	prefetch.i 448(x5)
+13e00200|	prefetch.i (x5)
+13e002fc|	prefetch.i -64(x5)
+13e0121c|	prefetch.r 448(x5)
+13e0321c|	prefetch.w 448(x5)
+
 # "V" Standard Extension for Vector Operations, Version 1.0
 
 # 31.6: Configuration Setting Instructions
