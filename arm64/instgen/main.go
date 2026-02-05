@@ -75,6 +75,13 @@ func main() {
 
 	// Parse each xml file to insts.
 	insts := xmlspec.ParseXMLFiles(xmlDir)
-
-	log.Printf("len(insts) = %v\n\n\n", len(insts))
+	xmlspec.ProcessXMLFiles(insts)
+	errCnt := 0
+	for _, inst := range insts {
+		if inst.ParseError != "" {
+			errCnt++
+			log.Printf("error: %s", inst.ParseError)
+		}
+	}
+	log.Printf("len(insts) = %v, error count = %v\n", len(insts), errCnt)
 }
