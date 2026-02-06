@@ -413,12 +413,12 @@ b353530e|	czero.eqz x7,x6,x5
 b373530e|	czero.nez x7,x6,x5
 
 # 19.6.1: Cache-Block Management Instructions (Zicbom), Version 1.0.0
-0fa01200|	cbo.clean	x5
-0fa02200|	cbo.flush	x5		 
-0fa00200|	cbo.inval	x5
+0fa01200|	cbo.clean	(x5)
+0fa02200|	cbo.flush	(x5) 
+0fa00200|	cbo.inval	(x5)
 
 # 19.6.2: Cache-Block Zero Instructions (Zicboz), Version 1.0.0
-0fa04200|	cbo.zero	x5
+0fa04200|	cbo.zero	(x5)
 
 # 19.6.3: Cache-Block Prefetch Instructions (Zicbop), Version 1.0.0
 13e0021c|	prefetch.i 448(x5)
