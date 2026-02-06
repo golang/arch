@@ -414,7 +414,7 @@ b373530e|	czero.nez x7,x6,x5
 
 # 19.6.1: Cache-Block Management Instructions (Zicbom), Version 1.0.0
 0fa01200|	cbo.clean	(x5)
-0fa02200|	cbo.flush	(x5) 
+0fa02200|	cbo.flush	(x5)
 0fa00200|	cbo.inval	(x5)
 
 # 19.6.2: Cache-Block Zero Instructions (Zicboz), Version 1.0.0

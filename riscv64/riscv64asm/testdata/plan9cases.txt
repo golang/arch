@@ -368,7 +368,7 @@ b373530e|	CZERONEZ X5, X6, X7
 
 # 19.6.1: Cache-Block Management Instructions (Zicbom), Version 1.0.0
 0fa01200|	CBOCLEAN (X5)
-0fa02200|	CBOFLUSH (X5)		 
+0fa02200|	CBOFLUSH (X5)
 0fa00200|	CBOINVAL (X5)
 
 # 19.6.2: Cache-Block Zero Instructions (Zicboz), Version 1.0.0
