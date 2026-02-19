@@ -13,7 +13,7 @@ import (
 
 var remoteData = flag.Bool("remote", false, "use remote data")
 
-func getData(t *testing.T) []*Instruction {
+func getData(t *testing.T) []*InstructionParsed {
 	if *remoteData {
 		xmlDir, err := GetArm64XMLSpec(t.TempDir(), ExpectedURL, ExpectedVersion)
 		if err != nil {
@@ -66,11 +66,11 @@ outer:
 		}
 		// Check RegDiagram and Encodings all parsed
 		for _, iclass := range inst.Classes.Iclass {
-			if !iclass.RegDiagram.parsed {
+			if !iclass.RegDiagram.Parsed {
 				continue
 			}
 			for _, encoding := range iclass.Encodings {
-				if !encoding.parsed {
+				if !encoding.Parsed {
 					continue outer
 				}
 			}
@@ -78,13 +78,13 @@ outer:
 			// by some encoding elements
 			encodedBoxes := make(map[string]bool)
 			for _, encoding := range iclass.Encodings {
-				if encoding.alias {
+				if encoding.Alias {
 					// Alias encodings are not fully specified in their own section,
 					// skip them.
 					continue
 				}
-				for _, operand := range encoding.operands {
-					for _, elem := range operand.elems {
+				for _, operand := range encoding.Operands {
+					for _, elem := range operand.Elems {
 						encodedIn := elem.encodedIn
 						encodedBoxes[encodedIn] = true
 						if strings.Contains(encodedIn, ":") {

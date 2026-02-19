@@ -88,10 +88,10 @@ var operandRules = []operandRule{
 	{regexp.MustCompile(`^<P[a-z]{1}>$`), "AC_PREG"},
 	// AC_PREG: Predicate-as-counter registers (PN).
 	{regexp.MustCompile(`^<PN[a-z]{1}>$`), "AC_PREG"},
-	// AC_PREGM: Predicate registers with merging predication (/M).
-	{regexp.MustCompile(`^<P[N]?[a-z]{1}>\/M$`), "AC_PREGM"},
-	// AC_PREGZ: Predicate registers with zeroing predication (/Z).
-	{regexp.MustCompile(`^<P[N]?[a-z]{1}>\/(Z|<ZM>)$`), "AC_PREGZ"},
+	// AC_PREGZM: Predicate registers with merging predication (/M).
+	{regexp.MustCompile(`^<P[N]?[a-z]{1}>\/M$`), "AC_PREGZM"},
+	// AC_PREGZM: Predicate registers with zeroing predication (/Z).
+	{regexp.MustCompile(`^<P[N]?[a-z]{1}>\/(Z|<ZM>)$`), "AC_PREGZM"},
 	// AC_REGIDX: Registers with immediate index.
 	{regexp.MustCompile(`^(<[PZ][N]?[a-z]{1}>|ZT0)\[<[a-z]+>\]$`), "AC_REGIDX"},
 	// AC_ZREG: Scalable vector registers (Z).
@@ -148,7 +148,7 @@ var operandRules = []operandRule{
 // struct fields, and this process is not thread-safe if multiple goroutines
 // attempt to unmarshal into the same type for the first time concurrently.
 func warmUpCache() {
-	var inst Instruction
+	var inst InstructionParsed
 	// Unmarshal a more complete XML to warm up the cache for nested types.
 	// This ensures that reflection data for all referenced types is initialized
 	// sequentially before parallel workers start.
@@ -206,7 +206,7 @@ func init() {
 	warmUpCache()
 }
 
-func ParseXMLFiles(dir string) []*Instruction {
+func ParseXMLFiles(dir string) []*InstructionParsed {
 	log.Println("Start parsing the xml files")
 	files, err := os.ReadDir(dir)
 	if err != nil {
@@ -214,7 +214,7 @@ func ParseXMLFiles(dir string) []*Instruction {
 	}
 
 	var wg sync.WaitGroup
-	insts := make([]*Instruction, len(files))
+	insts := make([]*InstructionParsed, len(files))
 
 	for i, file := range files {
 		fileName := file.Name()
@@ -237,7 +237,7 @@ func ParseXMLFiles(dir string) []*Instruction {
 }
 
 // parse parses an xml file and returns the instruction.
-func parse(f string) *Instruction {
+func parse(f string) *InstructionParsed {
 	xmlFile, err := os.Open(f)
 	if err != nil {
 		log.Fatalf("Open file %s failed: %v\n", f, err)
@@ -248,7 +248,7 @@ func parse(f string) *Instruction {
 		log.Fatalf("io.ReadAll %s failed: %v\n", f, err)
 	}
 
-	var inst = new(Instruction)
+	var inst = new(InstructionParsed)
 	inst.file = f
 	if err = xml.Unmarshal(byteValue, inst); err != nil {
 		// Ignore non-instruction files.
@@ -264,7 +264,7 @@ func parse(f string) *Instruction {
 	return inst
 }
 
-func (inst *Instruction) setBinary(code, bitVal uint32, value string) uint32 {
+func (inst *InstructionParsed) setBinary(code, bitVal uint32, value string) uint32 {
 	switch value {
 	case "0", "(0)":
 		code &^= bitVal
@@ -278,7 +278,7 @@ func (inst *Instruction) setBinary(code, bitVal uint32, value string) uint32 {
 	return code
 }
 
-func (inst *Instruction) setMask(code, bitVal uint32, value string) uint32 {
+func (inst *InstructionParsed) setMask(code, bitVal uint32, value string) uint32 {
 	switch value {
 	// See the comment of [Regdiagram.mask]
 	case "0", "1", "(0)", "(1)":
@@ -291,7 +291,7 @@ func (inst *Instruction) setMask(code, bitVal uint32, value string) uint32 {
 	return code
 }
 
-func (inst *Instruction) boxEncoding(b Box, callBack func(uint32, uint32, string) uint32) uint32 {
+func (inst *InstructionParsed) boxEncoding(b Box, callBack func(uint32, uint32, string) uint32) uint32 {
 	code := uint32(0)
 	hi, err := strconv.Atoi(b.HiBit)
 	if err != nil {
@@ -307,7 +307,7 @@ func (inst *Instruction) boxEncoding(b Box, callBack func(uint32, uint32, string
 	return code
 }
 
-func (inst *Instruction) supported() bool {
+func (inst *InstructionParsed) supported() bool {
 	foundSVE := false
 	for _, doc := range inst.DocVars {
 		if doc.Key == "instr-class" {
@@ -321,7 +321,7 @@ func (inst *Instruction) supported() bool {
 
 // extractBinary extracts the known bits of instruction encoding in regdiagram,
 // and assign the binary to inst.regdiagram.binary.
-func (inst *Instruction) extractBinary() {
+func (inst *InstructionParsed) extractBinary() {
 	if !inst.supported() {
 		return
 	}
@@ -363,17 +363,33 @@ func (inst *Instruction) extractBinary() {
 		}
 		regDiagram.fixedBin = bin
 		regDiagram.mask = mask
-		regDiagram.parsed = true
+		regDiagram.Parsed = true
 		if inst.Title == "URSQRTE -- A64" || inst.Title == "URECPE -- A64" {
 			// Special case, its "size" box is actually not specified in the assembler symbol section.
 			// By reading the decoding ASL we know that this "size" box should be 0b10...
 			regDiagram.fixedBin |= uint32(1 << 23)
 		}
+		if len(inst.Classes.Iclass[i].PsSection) == 1 {
+			squashedPs := inst.Classes.Iclass[i].PsSection[0].Ps[0].PSText
+			if strings.Contains(strings.Join(squashedPs, "\n"), "if size IN {'0x'} then EndOfDecode") {
+				// Very ugly encoding specification in the decoding ASL. We have to set
+				// the high bit of the size box to 1.
+				// Example instruction is "Unsigned divide (predicated)":
+				// UDIV <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
+				if _, ok := regDiagram.varBin["size"]; !ok {
+					log.Fatalf("size box not found in %s", inst.file)
+				}
+				if regDiagram.varBin["size"].hi != 24 || regDiagram.varBin["size"].lo != 22 {
+					log.Fatalf("unexpecetd size box in %s", inst.file)
+				}
+				regDiagram.fixedBin |= uint32(1 << 23)
+			}
+		}
 	}
 }
 
 // processEncoding handles each encoding element of a inst.
-func (inst *Instruction) processEncodings() {
+func (inst *InstructionParsed) processEncodings() {
 	if !inst.supported() {
 		return
 	}
@@ -387,14 +403,14 @@ func (inst *Instruction) processEncodings() {
 				continue
 			}
 			// Set alias
-			enc.alias = inst.Type == "alias"
+			enc.Alias = inst.Type == "alias"
 			// Refine the known bits and mask of the binary.
 			bin, mask := iclass.RegDiagram.fixedBin, iclass.RegDiagram.mask
 			for _, box := range enc.Boxes {
 				bin |= inst.boxEncoding(box, inst.setBinary)
 				mask |= inst.boxEncoding(box, inst.setMask)
 			}
-			enc.binary = bin
+			enc.Binary = bin
 			enc.mask = mask
 
 			inst.parseOperands(enc)
@@ -409,17 +425,17 @@ func (inst *Instruction) processEncodings() {
 				// Special case, its "size" box is not specified in the assembler symbol
 				// section for the [B] and [W] variants, which for [B] it's 0b00 (no-op)
 				// and for [W] it's 0b11.
-				imnemonic := enc.operands[0].name
+				imnemonic := enc.Operands[0].Name
 				if imnemonic[len(imnemonic)-1] == 'W' {
-					enc.binary |= uint32(0b11 << 22)
+					enc.Binary |= uint32(0b11 << 22)
 				}
 			}
-			enc.parsed = true
+			enc.Parsed = true
 		}
 	}
 }
 
-func (inst *Instruction) findExplanation(link string) *Explanation {
+func (inst *InstructionParsed) findExplanation(link string) *Explanation {
 	for _, exp := range inst.Explanations.Explanations {
 		if exp.Symbol.Link == link {
 			return &exp
@@ -436,9 +452,9 @@ func trimXMLEscape(s string) string {
 // and the instruction that contains this fixed symbol.
 // This data is just used for debugging.
 var allFixedSymbolsLock sync.Mutex
-var allFixedSymbols = map[string]map[string]*Instruction{}
+var allFixedSymbols = map[string]map[string]*InstructionParsed{}
 
-func (inst *Instruction) parseOperands(enc *Encoding) {
+func (inst *InstructionParsed) parseOperands(enc *EncodingParsed) {
 	// This is the most vulnerable part.
 	//
 	// The mnemonic and operands of an instruction are sequentially recorded
@@ -454,11 +470,11 @@ func (inst *Instruction) parseOperands(enc *Encoding) {
 	// operand interval symbol ", " will be discarded.
 	asm, oprAsm := "", ""
 	leftCurly, leftSquare := 0, 0
-	elems := []element{}
+	elems := []Element{}
 	recordFixedSymbol := func(symbol, val string) {
 		allFixedSymbolsLock.Lock()
 		if _, ok := allFixedSymbols[symbol]; !ok {
-			allFixedSymbols[symbol] = make(map[string]*Instruction)
+			allFixedSymbols[symbol] = make(map[string]*InstructionParsed)
 		}
 		if _, ok := allFixedSymbols[symbol][val]; ok {
 			allFixedSymbolsLock.Unlock()
@@ -517,7 +533,7 @@ func (inst *Instruction) parseOperands(enc *Encoding) {
 				}
 			}
 			val = trimXMLEscape(val)
-			elem := element{encodedIn: encodedin, textExp: explanation, symbol: val}
+			elem := Element{encodedIn: encodedin, textExp: explanation, symbol: val}
 			// Some hardcoded logic to populate register type and the presence
 			// of <mod> for deduplication purposes
 			if strings.HasPrefix(val, "<X") {
@@ -579,10 +595,10 @@ func (inst *Instruction) parseOperands(enc *Encoding) {
 		asm += val
 
 		appendOperand := func() {
-			elemsCopy := make([]element, len(elems))
+			elemsCopy := make([]Element, len(elems))
 			copy(elemsCopy, elems)
-			opr := operand{name: oprAsm, elems: elemsCopy}
-			enc.operands = append(enc.operands, opr)
+			opr := Operand{Name: oprAsm, Elems: elemsCopy}
+			enc.Operands = append(enc.Operands, opr)
 			oprAsm = ""
 			elems = elems[:0]
 		}
@@ -625,33 +641,33 @@ func (inst *Instruction) parseOperands(enc *Encoding) {
 	if oprAsm != "" || len(elems) != 0 {
 		log.Fatalf("malformed Asmtemplate, oprAsm: %v, elems: %v in %s\n", oprAsm, elems, inst.file)
 	}
-	enc.asm = asm
+	enc.Asm = asm
 }
 
 // template resets the arm64 assembly template of an encoding, to make it cleaner.
-func (inst *Instruction) template(enc *Encoding) {
-	asm := enc.operands[0].name
-	if len(enc.operands) > 1 { // Has operands
+func (inst *InstructionParsed) template(enc *EncodingParsed) {
+	asm := enc.Operands[0].Name
+	if len(enc.Operands) > 1 { // Has operands
 		asm += "  "
 		i := 1
-		for ; i < len(enc.operands)-1; i++ {
-			asm += enc.operands[i].name + ", "
+		for ; i < len(enc.Operands)-1; i++ {
+			asm += enc.Operands[i].Name + ", "
 		}
-		asm += enc.operands[i].name
+		asm += enc.Operands[i].Name
 	}
-	enc.asm = asm
+	enc.Asm = asm
 }
 
 // arm64Opcode sets the arm64 opcode of an encoding.
-func (inst *Instruction) arm64Opcode(enc *Encoding) {
-	if len(enc.operands) == 0 {
+func (inst *InstructionParsed) arm64Opcode(enc *EncodingParsed) {
+	if len(enc.Operands) == 0 {
 		log.Fatalf("Miss mnemonic: %v in %s\n", enc, inst.file)
 	}
 	// Add a prefix "A64", to differ with the "A" prefix of Go opcode.
-	enc.arm64Op = "A64" + enc.operands[0].name
+	enc.arm64Op = "A64" + enc.Operands[0].Name
 }
 
-func (enc *Encoding) classString() string {
+func (enc *EncodingParsed) classString() string {
 	val := ""
 	for _, d := range enc.DocVars {
 		if d.Key == "instr-class" {
@@ -662,7 +678,7 @@ func (enc *Encoding) classString() string {
 	return val
 }
 
-func (enc *Encoding) instClass() bool {
+func (enc *EncodingParsed) instClass() bool {
 	val := enc.classString()
 	switch val {
 	case "sve":
@@ -675,16 +691,16 @@ func (enc *Encoding) instClass() bool {
 	return true
 }
 
-func (enc *Encoding) hasZREG() bool {
+func (enc *EncodingParsed) hasZREG() bool {
 	// Special case: <Pg>/<ZM>, <ZM> is not Z register.
-	return reZREG.MatchString(enc.asm)
+	return reZREG.MatchString(enc.Asm)
 }
 
-func (enc *Encoding) hasPREG() bool {
-	return rePREG.MatchString(enc.asm)
+func (enc *EncodingParsed) hasPREG() bool {
+	return rePREG.MatchString(enc.Asm)
 }
 
-func (enc *Encoding) goOpcodePrefix(inst *Instruction) string {
+func (enc *EncodingParsed) goOpcodePrefix(inst *InstructionParsed) string {
 	if enc.prefix != "" {
 		return enc.prefix
 	}
@@ -703,33 +719,33 @@ func (enc *Encoding) goOpcodePrefix(inst *Instruction) string {
 }
 
 // goOpcode determines the Go opcode representation of an encoding.
-func (inst *Instruction) goOpcode(enc *Encoding) {
-	if len(enc.operands) == 0 {
+func (inst *InstructionParsed) goOpcode(enc *EncodingParsed) {
+	if len(enc.Operands) == 0 {
 		log.Fatalf("Missing mnemonic: %v in %s\n", enc, inst.file)
 	}
-	if enc.goOp != "" {
+	if enc.GoOp != "" {
 		return
 	}
 	prefix, opcode := "A", ""
 	prefix += enc.goOpcodePrefix(inst)
-	opcode = enc.operands[0].name
-	enc.goOp = prefix + opcode
+	opcode = enc.Operands[0].Name
+	enc.GoOp = prefix + opcode
 	enc.prefix = prefix
 }
 
 // sortOperands reorders the operands of an encoding according to Go assembly syntax.
-func (enc *Encoding) sortOperands() {
+func (enc *EncodingParsed) sortOperands() {
 	// Reverse args, placing dest last.
-	for i, j := 1, len(enc.operands)-1; i < j; i, j = i+1, j-1 {
-		enc.operands[i], enc.operands[j] = enc.operands[j], enc.operands[i]
+	for i, j := 1, len(enc.Operands)-1; i < j; i, j = i+1, j-1 {
+		enc.Operands[i], enc.Operands[j] = enc.Operands[j], enc.Operands[i]
 	}
 }
 
-func (inst *Instruction) operandType(opr operand) string {
-	if opr.typ != "" {
-		return opr.typ
+func (inst *InstructionParsed) operandType(opr Operand) string {
+	if opr.Typ != "" {
+		return opr.Typ
 	}
-	name := opr.name
+	name := opr.Name
 	for i := 0; i < len(operandRules); i++ {
 		if operandRules[i].re.MatchString(name) {
 			return operandRules[i].class
@@ -740,13 +756,13 @@ func (inst *Instruction) operandType(opr operand) string {
 }
 
 // operandsType classifies all operands of an encoding.
-func (inst *Instruction) operandsType(enc *Encoding) {
-	for i := 1; i < len(enc.operands); i++ {
-		enc.operands[i].typ = inst.operandType(enc.operands[i])
+func (inst *InstructionParsed) operandsType(enc *EncodingParsed) {
+	for i := 1; i < len(enc.Operands); i++ {
+		enc.Operands[i].Typ = inst.operandType(enc.Operands[i])
 	}
 }
 
-func ProcessXMLFiles(insts []*Instruction) {
+func ProcessXMLFiles(insts []*InstructionParsed) {
 	var wg sync.WaitGroup
 	sort.Slice(insts, func(i, j int) bool {
 		if insts[i] == nil {
@@ -765,7 +781,7 @@ func ProcessXMLFiles(insts []*Instruction) {
 	}
 	for _, inst := range insts {
 		wg.Add(1)
-		go func(inst *Instruction) {
+		go func(inst *InstructionParsed) {
 			defer wg.Done()
 			inst.extractBinary()
 			inst.processEncodings()
@@ -777,18 +793,18 @@ func ProcessXMLFiles(insts []*Instruction) {
 }
 
 // The operand constraints, the value is an example instruction.
-var allOpConstraints = map[string]*Instruction{}
+var allOpConstraints = map[string]*InstructionParsed{}
 
 // The encoding function descriptions with their references to named bit ranges expanded.
 // The value is an example instruction.
-var allEncodingDescs = map[string]*Instruction{}
+var AllEncodingDescs = map[string]*InstructionParsed{}
 
 // The mapping from encoding function description to encoded-in.
-var encodingDescsToEncodedIn = map[string]string{}
+var EncodingDescsToEncodedIn = map[string]string{}
 var concatedRangeRe = regexp.MustCompile(`\((.*?) :: (.*?)(?: :: (.*?))?\)`)
 var rangeIndexRe = regexp.MustCompile(`(.*?)\[(\d+)\]`)
 
-func (inst *Instruction) expandNamedBitRanges(elm *element, varBin map[string]bitRange) string {
+func (inst *InstructionParsed) expandNamedBitRanges(elm *Element, varBin map[string]bitRange) string {
 	ranges := map[string]string{}
 	textExp := elm.textExp
 	br, ok := varBin[elm.encodedIn]
@@ -806,7 +822,7 @@ func (inst *Instruction) expandNamedBitRanges(elm *element, varBin map[string]bi
 			idx := matches[2]
 			idxI, err := strconv.Atoi(idx)
 			if err != nil {
-				panic(fmt.Sprintf("invalid index: %s in %s, available: %v in %s\n", idx, elm.encodedIn, varBin, inst.file))
+				log.Fatalf("invalid index: %s in %s, available: %v in %s\n", idx, elm.encodedIn, varBin, inst.file)
 			}
 			br, ok2 := varBin[key]
 			if ok2 {
@@ -858,19 +874,19 @@ func (inst *Instruction) expandNamedBitRanges(elm *element, varBin map[string]bi
 //
 // 2. populates the constraints field of each operand.
 // 3. bookkeep the encoding function descriptions and operand constraints.
-func validate(insts []*Instruction) {
+func validate(insts []*InstructionParsed) {
 	allEncodings := map[string][]string{}
 	for _, inst := range insts {
 		for i, iclass := range inst.Classes.Iclass {
 			for j, encoding := range iclass.Encodings {
-				if encoding.parsed == false {
+				if encoding.Parsed == false {
 					continue
 				}
 				key := encoding.arm64Op
-				for k, operand := range encoding.operands {
-					key += " " + operand.typ
-					for l, elem := range operand.elems {
-						constraints := []string{fmt.Sprintf("COP_%s__%d_", operand.typ, l)}
+				for k, operand := range encoding.Operands {
+					key += " " + operand.Typ
+					for l, elem := range operand.Elems {
+						constraints := []string{fmt.Sprintf("COP_%s__%d_", operand.Typ, l)}
 						if elem.fixedArng != "" {
 							key += "_(Arng:" + elem.fixedArng + ")"
 							constraints = append(constraints, "ARNG"+elem.fixedArng)
@@ -909,20 +925,20 @@ func validate(insts []*Instruction) {
 							cStr = strings.Join(constraints, "_")
 							allOpConstraints[cStr] = inst
 						}
-						inst.Classes.Iclass[i].Encodings[j].operands[k].constraints = append(
-							inst.Classes.Iclass[i].Encodings[j].operands[k].constraints, cStr)
+						inst.Classes.Iclass[i].Encodings[j].Operands[k].constraints = append(
+							inst.Classes.Iclass[i].Encodings[j].Operands[k].constraints, cStr)
 						textExpWithRanges := inst.expandNamedBitRanges(&elem, iclass.RegDiagram.varBin)
-						allEncodingDescs[textExpWithRanges] = inst
-						if existing, ok := encodingDescsToEncodedIn[textExpWithRanges]; ok && existing != elem.encodedIn {
+						AllEncodingDescs[textExpWithRanges] = inst
+						if existing, ok := EncodingDescsToEncodedIn[textExpWithRanges]; ok && existing != elem.encodedIn {
 							log.Fatalf("duplicate encoding description for two different encoded-ins: %s for %s and %s in %s\n",
 								textExpWithRanges, existing, elem.encodedIn, inst.file)
 						}
-						encodingDescsToEncodedIn[textExpWithRanges] = elem.encodedIn
-						inst.Classes.Iclass[i].Encodings[j].operands[k].elems[l].textExpWithRanges = textExpWithRanges
+						EncodingDescsToEncodedIn[textExpWithRanges] = elem.encodedIn
+						inst.Classes.Iclass[i].Encodings[j].Operands[k].Elems[l].TextExpWithRanges = textExpWithRanges
 					}
-					inst.Classes.Iclass[i].Encodings[j].operands[k].resolveConstraints()
+					inst.Classes.Iclass[i].Encodings[j].Operands[k].resolveConstraints()
 				}
-				allEncodings[key] = append(allEncodings[key], encoding.asm)
+				allEncodings[key] = append(allEncodings[key], encoding.Asm)
 			}
 		}
 	}
@@ -964,6 +980,21 @@ func validate(insts []*Instruction) {
 					continue
 				}
 			}
+			// If the diff is only by Pg/M or Pg/Z, it's ok to ignore, they are handled by the assembler.
+			if len(v) == 2 {
+				var hasPgM, hasPgZ bool
+				for _, s := range v {
+					if strings.Contains(s, "/M") {
+						hasPgM = true
+					}
+					if strings.Contains(s, "/Z") {
+						hasPgZ = true
+					}
+				}
+				if hasPgM && hasPgZ {
+					continue
+				}
+			}
 			sort.Strings(v)
 			log.Printf("%s:\n\t%v\n", k, strings.Join(v, "\n\t"))
 		}
@@ -976,11 +1007,10 @@ func validate(insts []*Instruction) {
 // the arrow-bracket enclosed parts are elements.
 var expectedElemCount = map[string]int{
 	// <reg>.<T>
-	"AC_ARNG":  2,
-	"AC_PREG":  2,
-	"AC_PREGZ": 2,
-	"AC_PREGM": 2,
-	"AC_ZREG":  2,
+	"AC_ARNG":   2,
+	"AC_PREG":   2,
+	"AC_PREGZM": 2,
+	"AC_ZREG":   2,
 	// <reg>.<T>[<index>]
 	"AC_ARNGIDX": 3,
 	"AC_ZREGIDX": 3,
@@ -1030,16 +1060,16 @@ var unresolvedConstraints = map[string]struct{}{}
 // to the new element's encoding function.
 // This function also checks that the operand has the expected number of elements
 // after resolving the constraints.
-func (op *operand) resolveConstraints() {
+func (op *Operand) resolveConstraints() {
 	insertElmAt := func(idx int, symbol, textExpWithRanges string) {
-		op.elems = append(op.elems[:idx], append([]element{
+		op.Elems = append(op.Elems[:idx], append([]Element{
 			{
 				encodedIn:         "nil",
-				textExpWithRanges: textExpWithRanges,
+				TextExpWithRanges: textExpWithRanges,
 				symbol:            symbol,
 			},
-		}, op.elems[idx:]...)...)
-		allEncodingDescs[textExpWithRanges] = nil
+		}, op.Elems[idx:]...)...)
+		AllEncodingDescs[textExpWithRanges] = nil
 	}
 	// Constraint format: COP_<AClass>__<index>_(_<constraintTypes>)*
 	// <AClass> is the operand class, e.g. AC_REG, AC_IMM, etc.
@@ -1120,65 +1150,65 @@ func (op *operand) resolveConstraints() {
 	}
 	noOpCheck := "No-op check, returns true"
 	// Check the number of elements
-	if el := expectedElemCount[op.typ]; len(op.elems) != el {
+	if el := expectedElemCount[op.Typ]; len(op.Elems) != el {
 		resolved := false
-		switch op.name {
+		switch op.Name {
 		case "#0.0":
-			if el == 2 && len(op.elems) == 0 {
-				op.elems = make([]element, 0, 2)
+			if el == 2 && len(op.Elems) == 0 {
+				op.Elems = make([]Element, 0, 2)
 				insertElmAt(0, "#0.0", "Check this is immediate 0.0")
 				insertElmAt(1, "nil", noOpCheck)
 				resolved = true
 			}
 		case "#<const>", "#<imm1>", "#<imm2>", "#<imm>", "<const>":
-			if el == 2 && len(op.elems) == 1 {
+			if el == 2 && len(op.Elems) == 1 {
 				insertElmAt(1, "nil", noOpCheck)
 				resolved = true
 			}
 		case "<Dd>", "<Pd>", "<Pg>", "<Pn>", "<PNg>", "<Pt>", "<Pv>", "<Zd>", "<Zm>", "<Zn>", "<Zt>":
-			if el == 2 && len(op.elems) == 1 {
+			if el == 2 && len(op.Elems) == 1 {
 				insertElmAt(1, "nil", noOpCheck)
 				resolved = true
 			}
 		case "<PNg>/Z", "<Pg>/Z":
-			if el == 2 && len(op.elems) == 1 {
+			if el == 2 && len(op.Elems) == 1 {
 				insertElmAt(1, "Z", "Check this is a zeroing predication")
 				resolved = true
 			}
 		case "<Pg>/M", "<Pv>/M":
-			if el == 2 && len(op.elems) == 1 {
+			if el == 2 && len(op.Elems) == 1 {
 				insertElmAt(1, "M", "Check this is a merging predication")
 				resolved = true
 			}
 		case "<PNn>[<imm>]":
-			if el == 3 && len(op.elems) == 2 {
+			if el == 3 && len(op.Elems) == 2 {
 				insertElmAt(1, "nil", noOpCheck)
 				resolved = true
 			}
 		case "<Pd>.<T>{, <pattern>}":
-			if el == 4 && len(op.elems) == 3 {
+			if el == 4 && len(op.Elems) == 3 {
 				insertElmAt(3, "nil", noOpCheck)
 				resolved = true
 			}
 		case "<Zd>{[<imm>]}", "<Zm>[<index>]", "<Zn>{[<imm>]}":
-			if el == 3 && len(op.elems) == 2 {
+			if el == 3 && len(op.Elems) == 2 {
 				insertElmAt(1, "nil", noOpCheck)
 				resolved = true
 			}
 		case "[<Xn|SP>, <Xm>]", "[<Xn|SP>, <Zm>.D]", "[<Xn|SP>{, <Xm>}]", "[<Zn>.D{, <Xm>}]", "[<Zn>.S{, <Xm>}]":
-			if el == 6 && len(op.elems) == 4 {
+			if el == 6 && len(op.Elems) == 4 {
 				insertElmAt(4, "nil", noOpCheck)
 				insertElmAt(5, "nil", noOpCheck)
 				resolved = true
 			}
 		case "[<Xn|SP>, <Zm>.S, <mod>]", "[<Xn|SP>, <Zm>.D, <mod>]":
-			if el == 6 && len(op.elems) == 5 {
+			if el == 6 && len(op.Elems) == 5 {
 				insertElmAt(5, "nil", noOpCheck)
 				resolved = true
 			}
 		}
 		if !resolved {
-			unresolvedConstraints[fmt.Sprintf("Operand %s has %d elements, expected %d", op.name, len(op.elems), expectedElemCount[op.typ])] = struct{}{}
+			unresolvedConstraints[fmt.Sprintf("Operand %s has %d elements, expected %d", op.Name, len(op.Elems), expectedElemCount[op.Typ])] = struct{}{}
 		}
 	}
 }
@@ -1217,17 +1247,17 @@ func debugInfo(debug int) {
 			}
 		}
 	}
-	log.Printf("len(allEncodingDescs) = %v\n", len(allEncodingDescs))
+	log.Printf("len(AllEncodingDescs) = %v\n", len(AllEncodingDescs))
 	if debug > 0 {
-		keys := make([]string, 0, len(allEncodingDescs))
-		for k := range allEncodingDescs {
+		keys := make([]string, 0, len(AllEncodingDescs))
+		for k := range AllEncodingDescs {
 			keys = append(keys, k)
 		}
 		sort.Strings(keys)
 		for _, k := range keys {
 			fmt.Printf("%s\n", k)
 			if debug > 1 {
-				fmt.Printf("Example Inst at %s\n", allEncodingDescs[k].file)
+				fmt.Printf("Example Inst at %s\n", AllEncodingDescs[k].file)
 			}
 		}
 	}

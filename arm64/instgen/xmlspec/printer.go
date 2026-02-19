@@ -11,14 +11,23 @@ import (
 
 // String methods for Instruction and its types to provide a comprehensive recursive print.
 
-func (i *Instruction) String() string {
+func (i *InstructionParsed) String() string {
 	if i == nil {
 		return "Instruction{ <nil> }"
 	}
 	var sb strings.Builder
 	sb.WriteString("Instruction{")
 	sb.WriteString(indent("Title: "+i.Title, 1))
+	if i.ParseError != "" {
+		sb.WriteString(indent("ParseError: "+i.ParseError, 1))
+	}
 	sb.WriteString(indent("Type: "+i.Type, 1))
+	sb.WriteString(indent("Desc:", 1))
+	sb.WriteString(indent(i.Desc.String(), 2))
+	sb.WriteString(indent("PsSections:", 1))
+	for _, ps := range i.PsSections {
+		sb.WriteString(indent(ps.String(), 2))
+	}
 	sb.WriteString(indent("DocVars:", 1))
 	for _, dv := range i.DocVars {
 		sb.WriteString(indent(dv.String(), 2))
@@ -57,17 +66,15 @@ func (ic Iclass) String() string {
 	var sb strings.Builder
 	sb.WriteString("Iclass{")
 	sb.WriteString(indent("Name: "+ic.Name, 1))
-	sb.WriteString(indent("OneOf: "+ic.OneOf, 1))
-	sb.WriteString(indent("ID: "+ic.ID, 1))
-	sb.WriteString(indent("NoEncodings: "+ic.NoEncodings, 1))
-	sb.WriteString(indent("ISA: "+ic.ISA, 1))
 	sb.WriteString(indent("DocVars:", 1))
 	for _, dv := range ic.DocVars {
 		sb.WriteString(indent(dv.String(), 2))
 	}
 
-	sb.WriteString(indent("ArchVariant:", 1))
-	sb.WriteString(indent(ic.ArchVariant.String(), 2))
+	sb.WriteString(indent("PsSection:", 1))
+	for _, ps := range ic.PsSection {
+		sb.WriteString(indent(ps.String(), 2))
+	}
 
 	sb.WriteString(indent("Regdiagram:", 1))
 	sb.WriteString(indent(ic.RegDiagram.String(), 2))
@@ -80,18 +87,10 @@ func (ic Iclass) String() string {
 	return sb.String()
 }
 
-func (av ArchVariant) String() string {
-	var sb strings.Builder
-	sb.WriteString("ArchVariant{")
-	sb.WriteString(indent("Name: "+av.Name, 1))
-	sb.WriteString(indent("Feature: "+av.Feature, 1))
-	sb.WriteString("\n}")
-	return sb.String()
-}
-
-func (rd RegDiagram) String() string {
+func (rd RegDiagramParsed) String() string {
 	var sb strings.Builder
 	sb.WriteString("Regdiagram{")
+	sb.WriteString(indent("PsName: "+rd.PsName, 1))
 	sb.WriteString(indent("Boxes:", 1))
 	for _, b := range rd.Boxes {
 		sb.WriteString(indent(b.String(), 2))
@@ -103,7 +102,7 @@ func (rd RegDiagram) String() string {
 	for k, v := range rd.varBin {
 		sb.WriteString(indent(fmt.Sprintf("%s: [%d, %d]", k, v.lo, v.hi), 3))
 	}
-	sb.WriteString(indent(fmt.Sprintf("parsed: %t", rd.parsed), 2))
+	sb.WriteString(indent(fmt.Sprintf("Parsed: %t", rd.Parsed), 2))
 	sb.WriteString(indent("--- Parsed Data ---", 1))
 	sb.WriteString("\n}")
 	return sb.String()
@@ -113,11 +112,7 @@ func (b Box) String() string {
 	var sb strings.Builder
 	sb.WriteString("Box{")
 	sb.WriteString(indent("HiBit: "+b.HiBit, 1))
-	sb.WriteString(indent("Width: "+b.Width, 1))
 	sb.WriteString(indent("Name: "+b.Name, 1))
-	sb.WriteString(indent("UseName: "+b.UseName, 1))
-	sb.WriteString(indent("Settings: "+b.Settings, 1))
-	sb.WriteString(indent("PsBits: "+b.PsBits, 1))
 	sb.WriteString(indent("Cs:", 1))
 	for _, c := range b.Cs {
 		sb.WriteString(indent(c.String(), 2))
@@ -135,11 +130,10 @@ func (c C) String() string {
 	return sb.String()
 }
 
-func (e Encoding) String() string {
+func (e EncodingParsed) String() string {
 	var sb strings.Builder
 	sb.WriteString("Encoding{")
 	sb.WriteString(indent("Name: "+e.Name, 1))
-	sb.WriteString(indent("Label: "+e.Label, 1))
 	sb.WriteString(indent("DocVars:", 1))
 	for _, dv := range e.DocVars {
 		sb.WriteString(indent(dv.String(), 2))
@@ -151,20 +145,20 @@ func (e Encoding) String() string {
 	sb.WriteString(indent("Asmtemplate: "+e.AsmTemplate.String(), 1))
 
 	sb.WriteString(indent("--- Parsed Data ---", 1))
-	sb.WriteString(indent(fmt.Sprintf("binary: 0x%x", e.binary), 2))
+	sb.WriteString(indent(fmt.Sprintf("Binary: 0x%x", e.Binary), 2))
 	sb.WriteString(indent(fmt.Sprintf("mask: 0x%x", e.mask), 2))
-	sb.WriteString(indent("asm: "+e.asm, 2))
-	sb.WriteString(indent("goOp: "+e.goOp, 2))
+	sb.WriteString(indent("Asm: "+e.Asm, 2))
+	sb.WriteString(indent("GoOp: "+e.GoOp, 2))
 	sb.WriteString(indent("arm64Op: "+e.arm64Op, 2))
 	sb.WriteString(indent("class: "+e.class.String(), 2))
 	sb.WriteString(indent(fmt.Sprintf("invalid: %t", e.invalid), 2))
-	sb.WriteString(indent(fmt.Sprintf("alias: %t", e.alias), 2))
+	sb.WriteString(indent(fmt.Sprintf("Alias: %t", e.Alias), 2))
 	sb.WriteString(indent("prefix: "+e.prefix, 2))
-	sb.WriteString(indent("operands:", 2))
-	for _, op := range e.operands {
+	sb.WriteString(indent("Operands:", 2))
+	for _, op := range e.Operands {
 		sb.WriteString(indent(op.String(), 3))
 	}
-	sb.WriteString(indent("parsed: "+fmt.Sprintf("%t", e.parsed), 2))
+	sb.WriteString(indent("Parsed: "+fmt.Sprintf("%t", e.Parsed), 2))
 	sb.WriteString(indent("--- Parsed Data ---", 1))
 	sb.WriteString("\n}")
 	return sb.String()
@@ -173,22 +167,21 @@ func (e Encoding) String() string {
 func (at AsmTemplate) String() string {
 	var sb strings.Builder
 	sb.WriteString("Asmtemplate{")
-	content := ""
+	sb.WriteString(indent("TextA:", 1))
 	for _, ta := range at.TextA {
-		content += ta.Value
+		sb.WriteString(indent(ta.String(), 2))
 	}
-	sb.WriteString(indent("Content: "+content, 1))
 	sb.WriteString("\n}")
 	return sb.String()
 }
 
-func (op operand) String() string {
+func (op Operand) String() string {
 	var sb strings.Builder
-	sb.WriteString("operand{")
-	sb.WriteString(indent("name: "+op.name, 1))
-	sb.WriteString(indent("typ: "+op.typ, 1))
+	sb.WriteString("Operand{")
+	sb.WriteString(indent("name: "+op.Name, 1))
+	sb.WriteString(indent("typ: "+op.Typ, 1))
 	sb.WriteString(indent("elems:", 1))
-	for _, elem := range op.elems {
+	for _, elem := range op.Elems {
 		sb.WriteString(indent(elem.String(), 2))
 	}
 	for _, v := range op.constraints {
@@ -198,12 +191,12 @@ func (op operand) String() string {
 	return sb.String()
 }
 
-func (e element) String() string {
+func (e Element) String() string {
 	var sb strings.Builder
-	sb.WriteString("element{")
+	sb.WriteString("Element{")
 	sb.WriteString(indent("encodedIn: "+e.encodedIn, 1))
 	sb.WriteString(indent("textExp: "+e.textExp, 1))
-	sb.WriteString(indent("textExpWithRanges: "+e.textExpWithRanges, 1))
+	sb.WriteString(indent("textExpWithRanges: "+e.TextExpWithRanges, 1))
 	sb.WriteString(indent("symbol: "+e.symbol, 1))
 	sb.WriteString(indent(fmt.Sprintf("fixedArng: %s", e.fixedArng), 1))
 	sb.WriteString(indent(fmt.Sprintf("fixedLSL: %s", e.fixedLSL), 1))
@@ -286,7 +279,6 @@ func (t Table) String() string {
 func (tg TGroup) String() string {
 	var sb strings.Builder
 	sb.WriteString("TGroup{")
-	sb.WriteString(indent("Cols: "+tg.Cols, 1))
 	sb.WriteString(indent("THead:", 1))
 	sb.WriteString(indent(tg.THead.String(), 2))
 	sb.WriteString(indent("TBody:", 1))
@@ -349,4 +341,77 @@ func (c class) String() string {
 func indent(s string, level int) string {
 	prefix := strings.Repeat("  ", level)
 	return "\n" + prefix + strings.ReplaceAll(s, "\n", "\n"+prefix)
+}
+
+func (d Desc) String() string {
+	var sb strings.Builder
+	sb.WriteString("Desc{")
+	sb.WriteString(indent("Brief:", 1))
+	sb.WriteString(indent(d.Brief.String(), 2))
+	sb.WriteString(indent("Authored:", 1))
+	sb.WriteString(indent(d.Authored.String(), 2))
+	sb.WriteString("\n}")
+	return sb.String()
+}
+
+func (b Brief) String() string {
+	var sb strings.Builder
+	sb.WriteString("Brief{")
+	sb.WriteString(indent("Para:", 1))
+	for _, p := range b.Para {
+		sb.WriteString(indent(p.String(), 2))
+	}
+	sb.WriteString("\n}")
+	return sb.String()
+}
+
+func (a Authored) String() string {
+	var sb strings.Builder
+	sb.WriteString("Authored{")
+	sb.WriteString(indent("Paragraphs:", 1))
+	for _, p := range a.Paragraphs {
+		sb.WriteString(indent(p.String(), 2))
+	}
+	sb.WriteString("\n}")
+	return sb.String()
+}
+
+func (p Para) String() string {
+	var sb strings.Builder
+	sb.WriteString("Para{")
+	sb.WriteString(indent("Text: "+p.Text, 1))
+	sb.WriteString("\n}")
+	return sb.String()
+}
+
+func (ps PsSection) String() string {
+	var sb strings.Builder
+	sb.WriteString("PsSection{")
+	sb.WriteString(indent("Ps:", 1))
+	for _, p := range ps.Ps {
+		sb.WriteString(indent(p.String(), 2))
+	}
+	sb.WriteString("\n}")
+	return sb.String()
+}
+
+func (p Ps) String() string {
+	var sb strings.Builder
+	sb.WriteString("Ps{")
+	for _, t := range p.PSText {
+		sb.WriteString(indent("PSText: "+t, 1))
+	}
+	sb.WriteString("\n}")
+	return sb.String()
+}
+
+func (ta TextA) String() string {
+	var sb strings.Builder
+	sb.WriteString("TextA{")
+	sb.WriteString(indent("Value: "+ta.Value, 1))
+	if ta.Link != "" {
+		sb.WriteString(indent("Link: "+ta.Link, 1))
+	}
+	sb.WriteString("\n}")
+	return sb.String()
 }

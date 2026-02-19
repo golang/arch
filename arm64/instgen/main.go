@@ -22,7 +22,10 @@
 //
 // The program parses and processes all the XML files, and generates four .go files:
 // inst_gen.go, elem_gen.go, goops_gen.go and arm64ops_gen.go to the output directory.
-// If -o option is not specified, the files will be written to the current directory.
+// The output directory is assumed to be GOROOT, these four files will be generated to
+// <outputDir>/src/cmd/internal/obj/arm64/.
+//
+// If -o option is not specified, no output files will be generated.
 //
 // Since the format of the ARM64 instruction specification document may update,
 // this parser may not work for some versions of the XML document.
@@ -47,6 +50,7 @@ import (
 
 var input = flag.String("i", "", "the input directory of the xml files, this is an optional argument")
 var output = flag.String("o", "", "the output directory of the generated files, this is an optional argument")
+var genE2E = flag.Bool("e2e", false, "generate end-to-end test data")
 
 var url = flag.String("url", xmlspec.ExpectedURL, "the url of the xml files")
 var version = flag.String("version", xmlspec.ExpectedVersion, "the version of the xml files")
@@ -76,8 +80,14 @@ func main() {
 	// Parse each xml file to insts.
 	insts := xmlspec.ParseXMLFiles(xmlDir)
 	xmlspec.ProcessXMLFiles(insts)
+	if *output != "" {
+		Generate(insts, *output, *genE2E)
+	}
 	errCnt := 0
 	for _, inst := range insts {
+		if inst == nil {
+			continue
+		}
 		if inst.ParseError != "" {
 			errCnt++
 			log.Printf("error: %s", inst.ParseError)
