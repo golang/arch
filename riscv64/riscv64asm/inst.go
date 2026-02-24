@@ -508,9 +508,6 @@ type RegOffset struct {
 }
 
 func (regofs RegOffset) String() string {
-	if regofs.Ofs.Imm == 0 {
-		return fmt.Sprintf("(%s)", regofs.OfsReg)
-	}
 	return fmt.Sprintf("%s(%s)", regofs.Ofs, regofs.OfsReg)
 }
 

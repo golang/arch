@@ -380,6 +380,7 @@ b373530e|	CZERONEZ X5, X6, X7
 13e002fc|	PREFETCHI -64(X5)
 13e0121c|	PREFETCHR 448(X5)
 13e0321c|	PREFETCHW 448(X5)
+13e07200|	ORI $7, X5, X0
 
 # "V" Standard Extension for Vector Operations, Version 1.0
 

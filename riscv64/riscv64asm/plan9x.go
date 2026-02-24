@@ -76,6 +76,7 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 
 	case ORI:
 		if inst.Args[0].(Reg) == X0 {
+			isPrefetch := true
 			imm := inst.Args[2].(Simm).Imm
 			switch imm & 0b11111 {
 			case 0:
@@ -84,12 +85,16 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 				op = "PREFETCHR"
 			case 3:
 				op = "PREFETCHW"
+			default:
+				isPrefetch = false
 			}
-			// compared to ORI, the lowest 5 bits of imm in PREFETCH should be zeros
-			simm := inst.Args[2].(Simm)
-			simm.Imm = simm.Imm &^ 0b11111
-			args[0] = plan9Arg(&inst, pc, symname, RegOffset{inst.Args[1].(Reg), simm})
-			args = args[:len(args)-2]
+			if isPrefetch {
+				// compared to ORI, the lowest 5 bits of imm in PREFETCH should be zeros
+				simm := inst.Args[2].(Simm)
+				simm.Imm = simm.Imm &^ 0b11111
+				args[0] = plan9Arg(&inst, pc, symname, RegOffset{inst.Args[1].(Reg), simm})
+				args = args[:len(args)-2]
+			}
 		}
 
 	case ANDI:
