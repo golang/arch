@@ -227,7 +227,7 @@ func GNUSyntax(inst Inst) string {
 			inst.Args[1].(MemOrder).String() == "iorw" {
 			args = nil
 		}
-		//PAUSE is encoded as a FENCE instruction with pred=W, succ=0
+		// PAUSE is encoded as a FENCE instruction with pred=W, succ=0.
 		if inst.Args[0].(MemOrder).String() == "w" &&
 			inst.Args[1].(MemOrder).String() == "" {
 			op = "pause"
