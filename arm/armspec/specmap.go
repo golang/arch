@@ -9,7 +9,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"regexp"
@@ -33,7 +32,7 @@ type Inst struct {
 }
 
 func main() {
-	data, err := ioutil.ReadFile("spec.json")
+	data, err := os.ReadFile("spec.json")
 	if err != nil {
 		log.Fatal(err)
 	}
