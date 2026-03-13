@@ -104,6 +104,9 @@ const (
 	BNE
 	BSET
 	BSETI
+	CLMUL
+	CLMULH
+	CLMULR
 	CLZ
 	CLZW
 	CPOP
@@ -1100,6 +1103,9 @@ var opstr = [...]string{
 	BNE:               "BNE",
 	BSET:              "BSET",
 	BSETI:             "BSETI",
+	CLMUL:             "CLMUL",
+	CLMULH:            "CLMULH",
+	CLMULR:            "CLMULR",
 	CLZ:               "CLZ",
 	CLZW:              "CLZW",
 	CPOP:              "CPOP",
@@ -2191,6 +2197,12 @@ var instFormats = [...]instFormat{
 	{mask: 0xfe00707f, value: 0x28001033, op: BSET, args: argTypeList{arg_rd, arg_rs1, arg_rs2}},
 	// BSETI rd, rs1, shamt6
 	{mask: 0xfc00707f, value: 0x28001013, op: BSETI, args: argTypeList{arg_rd, arg_rs1, arg_shamt6}},
+	// CLMUL rd, rs1, rs2
+	{mask: 0xfe00707f, value: 0x0a001033, op: CLMUL, args: argTypeList{arg_rd, arg_rs1, arg_rs2}},
+	// CLMULH rd, rs1, rs2
+	{mask: 0xfe00707f, value: 0x0a003033, op: CLMULH, args: argTypeList{arg_rd, arg_rs1, arg_rs2}},
+	// CLMULR rd, rs1, rs2
+	{mask: 0xfe00707f, value: 0x0a002033, op: CLMULR, args: argTypeList{arg_rd, arg_rs1, arg_rs2}},
 	// CLZ rd, rs1
 	{mask: 0xfff0707f, value: 0x60001013, op: CLZ, args: argTypeList{arg_rd, arg_rs1}},
 	// CLZW rd, rs1

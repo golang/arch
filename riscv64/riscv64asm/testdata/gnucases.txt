@@ -412,6 +412,11 @@ a260|	ld x1,8(x2)
 b353530e|	czero.eqz x7,x6,x5
 b373530e|	czero.nez x7,x6,x5
 
+# 28.4.3： Zbc: Carry-less multiplication
+b313530a|	clmul	x7,x6,x5
+b333530a|	clmulh	x7,x6,x5
+b323530a|	clmulr	x7,x6,x5
+
 # "V" Standard Extension for Vector Operations, Version 1.0
 
 # 31.6: Configuration Setting Instructions
