@@ -35,6 +35,7 @@ var extensions = []string{
 	"rv_zba",
 	"rv_zbb",
 	"rv_zbs",
+	"rv_zicbo",
 	"rv_zfh",
 	"rv_zicond",
 	"rv_zicsr",
@@ -349,6 +350,9 @@ func decodeArgs(arg string, op string) string {
 			return "arg_fs1"
 		}
 		if isVectorLoadStore(op) {
+			return "arg_rs1_ptr"
+		}
+		if strings.Contains(op, "CBO_") {
 			return "arg_rs1_ptr"
 		}
 		return "arg_rs1"
