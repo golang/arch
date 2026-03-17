@@ -92,7 +92,7 @@ func main() {
 	opstr_f.Write([]byte("}\n\n"))
 	instFormats_f.Write([]byte("}\n"))
 
-	fileTables, err := os.Create("tables.go")
+	fileTables, err := os.Create("../tables.go")
 	defer fileTables.Close()
 
 	fileTables.Write(prologue.Bytes())
