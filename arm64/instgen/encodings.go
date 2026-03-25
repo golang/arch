@@ -4,8 +4,7 @@
 
 package main
 
-var defaultEncodingTmpl string = `
-	// TODO: implement this.
+var defaultEncodingTmpl string = `// TODO: implement this.
 	// Note: the raw value v is from obj.Prog, starting at bit 0.
 	// e.g. If it's a register, then its value is following the ones defined in a.out.go
 	//      If it's a constant, then its value is the constant value.
@@ -143,7 +142,7 @@ size: [22:24)
 	`Is the name of the destination SIMD&FP register, encoded in the "Vd" field.
 bit range mappings:
 Vd: [0:5)
-`: {"encodeVd", `return v, true`, "enc_Vd"},
+`: {"encodeVd", `return v & 31, true`, "enc_Vd"},
 	`Is the name of the destination scalable predicate register PN8-PN15, with predicate-as-counter encoding, encoded in the "PNd" field.
 bit range mappings:
 PNd: [0:3)
@@ -210,7 +209,7 @@ Zm: [16:21)
 	`Is the name of the second source scalable vector register, encoded in the "Zm" field.
 bit range mappings:
 Zm: [5:10)
-`: {"encodeZm510", `return v << 5, true`, "enc_Zm"},
+`: {"encodeZm510V1", `return (v & 31) << 5, true`, "enc_Zm"},
 	`Is the name of the source and destination scalable predicate register, encoded in the "Pdn" field.
 bit range mappings:
 Pdn: [0:4)
@@ -230,7 +229,7 @@ Pn: [5:9)
 	`Is the name of the source scalable vector register, encoded in the "Zn" field.
 bit range mappings:
 Zn: [5:10)
-`: {"encodeZn510Src", `return v << 5, true`, "enc_Zn"},
+`: {"encodeZn510Src", `return (v & 31) << 5, true`, "enc_Zn"},
 	`Is the name of the third source and destination scalable vector register, encoded in the "Zda" field.
 bit range mappings:
 Zda: [0:5)
@@ -605,4 +604,92 @@ tszl: [19:21)
 	}
 	return 0, false`, "enc_tszh_tszl"},
 	`No-op check, returns true`: {"encodeNoop", `return 0, true`, "enc_NIL"},
+	`Is the 32-bit name of the source and destination general-purpose register, encoded in the "Rdn" field.
+bit range mappings:
+Rdn: [0:5)`: {"encodeWdn05", `if v == REG_RSP {
+		return 0, false
+	}
+	return v & 31, true`, "enc_Rdn"},
+	`Is the 64-bit name of the destination SIMD&FP register, encoded in the "Vd" field.
+bit range mappings:
+Vd: [0:5)`: {"encodeVd0564", `return v & 31, true`, "enc_Vd"},
+	`Is the 64-bit name of the destination general-purpose register, encoded in the "Rd" field.
+bit range mappings:
+Rd: [0:5)`: {"encodeRd05", `if v == REG_RSP {
+		return 0, false
+	}
+	return v & 31, true`, "enc_Rd"},
+	`Is the 64-bit name of the first source general-purpose register, encoded in the "Rn" field.
+bit range mappings:
+Rn: [5:10)`: {"encodeRn510", `if v == REG_RSP {
+		return 0, false
+	}
+	return (v & 31) << 5, true`, "enc_Rn"},
+	`Is the 64-bit name of the second source general-purpose register, encoded in the "Rm" field.
+bit range mappings:
+Rm: [16:21)`: {"encodeRm1621", `if v == REG_RSP {
+		return 0, false
+	}
+	return (v & 31) << 16, true`, "enc_Rm"},
+	`Is the 64-bit name of the source and destination general-purpose register, encoded in the "Rdn" field.
+bit range mappings:
+Rdn: [0:5)`: {"encodeXdn05", `if v == REG_RSP {
+		return 0, false
+	}
+	return v & 31, true`, "enc_Rdn"},
+	`Is the name of the source scalable vector register, encoded in the "Zm" field.
+bit range mappings:
+Zm: [5:10)`: {"encodeZm510V2", `return (v & 31) << 5, true`, "enc_Zm"},
+	`Is the number [0-30] of the destination general-purpose register or the name ZR (31), encoded in the "Rd" field.
+bit range mappings:
+Rd: [0:5)`: {"encodeRd05ZR", `if v == REG_RSP {
+		return 0, false
+	}
+	// ZR is just R31
+	return v & 31, true`, "enc_Rd"},
+	`Is the number [0-30] of the general-purpose source register or the name SP (31), encoded in the "Rn" field.
+bit range mappings:
+Rn: [5:10)`: {"encodeRn510SP", `if v == REG_R31 {
+		return 0, false
+	}
+	if v == REG_RSP {
+		return (REG_R31 & 31) << 5, true
+	}
+	return (v & 31) << 5, true`, "enc_Rn"},
+	`Is the number [0-30] of the source and destination general-purpose register or the name ZR (31), encoded in the "Rdn" field.
+bit range mappings:
+Rdn: [0:5)`: {"encodeRdn05ZR", `if v == REG_RSP {
+		return 0, false
+	}
+	return v & 31, true`, "enc_Rdn"},
+	`Is the number [0-30] of the source general-purpose register or the name ZR (31), encoded in the "Rm" field.
+bit range mappings:
+Rm: [16:21)`: {"encodeRm1621ZR", `if v == REG_RSP {
+		return 0, false
+	}
+	return (v & 31) << 16, true`, "enc_Rm"},
+	`Is the number [0-30] of the source general-purpose register or the name ZR (31), encoded in the "Rm" field.
+bit range mappings:
+Rm: [5:10)`: {"encodeRm510ZR", `if v == REG_RSP {
+		return 0, false
+	}
+	return (v & 31) << 5, true`, "enc_Rm"},
+	`Is the number [0-30] of the source general-purpose register or the name ZR (31), encoded in the "Rn" field.
+bit range mappings:
+Rn: [5:10)`: {"encodeRn510ZR", `if v == REG_RSP {
+		return 0, false
+	}
+	return (v & 31) << 5, true`, "enc_Rn"},
+	`Is the number [0-31] of the destination SIMD&FP register, encoded in the "Vd" field.
+bit range mappings:
+Vd: [0:5)`: {"encodeVd05", `return v & 31, true`, "enc_Vd"},
+	`Is the number [0-31] of the source SIMD&FP register, encoded in the "Vm" field.
+bit range mappings:
+Vm: [5:10)`: {"encodeVm510", `return (v & 31) << 5, true`, "enc_Vm"},
+	`Is the number [0-31] of the source SIMD&FP register, encoded in the "Vn" field.
+bit range mappings:
+Vn: [5:10)`: {"encodeVn510", `return (v & 31) << 5, true`, "enc_Vn"},
+	`Is the number [0-31] of the source and destination SIMD&FP register, encoded in the "Vdn" field.
+bit range mappings:
+Vdn: [0:5)`: {"encodeVdn05", `return v & 31, true`, "enc_Vdn"},
 }

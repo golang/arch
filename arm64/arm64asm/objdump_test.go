@@ -5,6 +5,7 @@
 package arm64asm
 
 import (
+	"strconv"
 	"strings"
 	"testing"
 )
@@ -110,9 +111,85 @@ func allowedMismatchObjdump(text string, inst *Inst, dec ExtInst) bool {
 	if newForm, ok := newMnemonics[text]; ok && newForm == dec.text {
 		return true
 	}
+	slcMismatches := map[string]string{
+		"pldslckeep": "#0x06",
+		"plislckeep": "#0x0e",
+		"pstslckeep": "#0x16",
+		"pldslcstrm": "#0x07",
+		"plislcstrm": "#0x0f",
+		"pstslcstrm": "#0x17",
+	}
+	decTextNormalized := dec.text
+	for k, v := range slcMismatches {
+		decTextNormalized = strings.Replace(decTextNormalized, k, v, -1)
+	}
+
 	// GNU objdump misses spaces between operands for some instructions (e.g., "ld1 {v10.2s, v11.2s}, [x23],#16")
-	if strings.Replace(text, " ", "", -1) == strings.Replace(dec.text, " ", "", -1) {
+	if strings.Replace(text, " ", "", -1) == strings.Replace(decTextNormalized, " ", "", -1) {
 		return true
+	}
+
+	// GNU objdump uses ranges for register lists (e.g., "{v12.8h-v13.8h}" vs "{v12.8h, v13.8h}")
+	if strings.Contains(dec.text, "{") && strings.Contains(dec.text, "}") && strings.Contains(text, "{") {
+		i1 := strings.Index(text, "{")
+		j1 := strings.Index(text, "}")
+		i2 := strings.Index(decTextNormalized, "{")
+		j2 := strings.Index(decTextNormalized, "}")
+		if i1 >= 0 && j1 > i1 && i2 >= 0 && j2 > i2 {
+			list1 := strings.Replace(text[i1+1:j1], " ", "", -1)
+			list2 := strings.Replace(decTextNormalized[i2+1:j2], " ", "", -1)
+			rest1 := strings.Replace(text[:i1], " ", "", -1) + strings.Replace(text[j1+1:], " ", "", -1)
+			rest2 := strings.Replace(decTextNormalized[:i2], " ", "", -1) + strings.Replace(decTextNormalized[j2+1:], " ", "", -1)
+			if rest1 == rest2 {
+				// The register list is the only differing part.
+				p1 := strings.Split(list1, ",")                                                    // Our list (e.g., "v31.8b, v0.8b")
+				p2 := strings.FieldsFunc(list2, func(r rune) bool { return r == ',' || r == '-' }) // Their list (e.g., "v31.8b-v0.8b")
+				// Check if the sequence of registers in the list matches the range.
+				if len(p1) > 0 && len(p2) > 0 {
+					// parseReg converts a register name like "v31.8b" into its number (31) and arrangement ("8b").
+					parseReg := func(s string) (int, string, bool) {
+						if len(s) > 1 && (s[0] == 'v') {
+							s = s[1:]
+						}
+						parts := strings.Split(s, ".")
+						if len(parts) == 0 {
+							return 0, "", false
+						}
+						num, err := strconv.Atoi(parts[0])
+						if err != nil {
+							return 0, "", false
+						}
+						arr := ""
+						if len(parts) > 1 {
+							arr = parts[1]
+						}
+						return num, arr, true
+					}
+
+					startNum, startArr, ok1 := parseReg(p2[0])
+					endNum, _, ok2 := parseReg(p2[len(p2)-1])
+
+					if ok1 && ok2 {
+						// Calculate expected count in a ring buffer wrapping modulo 32.
+						count := (endNum-startNum+32)%32 + 1
+
+						if len(p1) == count {
+							match := true
+							for i, regStr := range p1 {
+								regNum, regArr, ok := parseReg(regStr)
+								if !ok || regNum != (startNum+i)%32 || regArr != startArr {
+									match = false
+									break
+								}
+							}
+							if match {
+								return true
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	return false
 }

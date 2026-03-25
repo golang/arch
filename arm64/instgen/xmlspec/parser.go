@@ -80,10 +80,10 @@ type operandRule struct {
 }
 
 var operandRules = []operandRule{
-	// AC_REG: Standard scalar registers (W, X, R).
-	{regexp.MustCompile(`^(<[WX][a-z]+>!?|<R><[a-z]+>|X[0-9]+|{<[WX][a-z]+>})$`), "AC_REG"},
-	// AC_RSP: Scalar registers or stack pointer (SP).
-	{regexp.MustCompile(`^<([WX][a-z]{1}|R><n)\|[W]?SP>$`), "AC_RSP"},
+	// AC_SPZGREG: Standard scalar registers (W, X, R).
+	{regexp.MustCompile(`^(<[WX][a-z]+>!?|<R><[a-z]+>|X[0-9]+|{<[WX][a-z]+>})$`), "AC_SPZGREG"},
+	// AC_SPZGREG: Scalar registers or stack pointer (SP).
+	{regexp.MustCompile(`^<([WX][a-z]{1}|R><n)\|[W]?SP>$`), "AC_SPZGREG"},
 	// AC_PREG: Predicate registers (P).
 	{regexp.MustCompile(`^<P[a-z]{1}>$`), "AC_PREG"},
 	// AC_PREG: Predicate-as-counter registers (PN).
@@ -1028,8 +1028,8 @@ var expectedElemCount = map[string]int{
 	// selreg must be a W reg, so one additional encoding func to check.
 	"AC_PREGIDX": 5,
 	// <width><reg>
-	"AC_REG": 2,
-	"AC_RSP": 2,
+	"AC_SPZGREG": 2,
+	"AC_VREG":    2,
 	// {<reg>.<T>}
 	"AC_REGLIST1": 2,
 	// {<reg1>.<T1>, <reg2>.<T2>}
@@ -1042,8 +1042,6 @@ var expectedElemCount = map[string]int{
 	"AC_REGLIST_RANGE": 4,
 	// <vl> or <prfop>
 	"AC_SPECIAL": 1,
-	// <arrangement><reg>
-	"AC_VREG": 2,
 	// {<Reg>.<T>, <pattern>, MUL #<imm>}
 	"AC_PREG_PATTERN": 4,
 	"AC_REG_PATTERN":  4,
@@ -1052,6 +1050,7 @@ var expectedElemCount = map[string]int{
 
 // unresolvedConstraints stores the constraints that are not resolved.
 var unresolvedConstraints = map[string]struct{}{}
+var noOpCheck = "No-op check, returns true"
 
 // resolveConstraints resolves the constraints for the given operand,
 // It understands the logic and expands the constraints to encoding functions
@@ -1072,7 +1071,7 @@ func (op *Operand) resolveConstraints() {
 		AllEncodingDescs[textExpWithRanges] = nil
 	}
 	// Constraint format: COP_<AClass>__<index>_(_<constraintTypes>)*
-	// <AClass> is the operand class, e.g. AC_REG, AC_IMM, etc.
+	// <AClass> is the operand class, e.g. AC_SPZGREG, AC_IMM, etc.
 	// <index> is the index of the operand in the instruction, e.g. 0, 1, 2, etc.
 	// <constraintTypes> is the type of the constraint, e.g. ARNG, MODAMT, etc.
 	for _, constraint := range op.constraints {
@@ -1108,10 +1107,11 @@ func (op *Operand) resolveConstraints() {
 				insertElmAt(index+1, "S", "Check this is a S arrangement")
 				index++
 			case "R64":
-				insertElmAt(index+1, "X", "Check this is a 64-bit scalar register")
+				// Width constraints are preceeding the element.
+				insertElmAt(index, "X", "Check this is a 64-bit scalar register")
 				index++
 			case "R32":
-				insertElmAt(index+1, "W", "Check this is a 32-bit scalar register")
+				insertElmAt(index, "W", "Check this is a 32-bit scalar register")
 				index++
 			case "LSL1", "LSL2", "LSL3", "LSL4", "SXTW", "UXTW", "MODAMT1", "MODAMT2", "MODAMT3":
 				if acl == "AC_MEMEXT" {
@@ -1148,7 +1148,6 @@ func (op *Operand) resolveConstraints() {
 			}
 		}
 	}
-	noOpCheck := "No-op check, returns true"
 	// Check the number of elements
 	if el := expectedElemCount[op.Typ]; len(op.Elems) != el {
 		resolved := false
@@ -1165,9 +1164,14 @@ func (op *Operand) resolveConstraints() {
 				insertElmAt(1, "nil", noOpCheck)
 				resolved = true
 			}
-		case "<Dd>", "<Pd>", "<Pg>", "<Pn>", "<PNg>", "<Pt>", "<Pv>", "<Zd>", "<Zm>", "<Zn>", "<Zt>":
+		case "<Pd>", "<Pg>", "<Pn>", "<PNg>", "<Pt>", "<Pv>", "<Zd>", "<Zm>", "<Zn>", "<Zt>":
 			if el == 2 && len(op.Elems) == 1 {
 				insertElmAt(1, "nil", noOpCheck)
+				resolved = true
+			}
+		case "<Dd>":
+			if el == 2 && len(op.Elems) == 1 {
+				insertElmAt(0, "nil", "Check this SIMD vector register is of width 64-bit.")
 				resolved = true
 			}
 		case "<PNg>/Z", "<Pg>/Z":
@@ -1211,6 +1215,189 @@ func (op *Operand) resolveConstraints() {
 			unresolvedConstraints[fmt.Sprintf("Operand %s has %d elements, expected %d", op.Name, len(op.Elems), expectedElemCount[op.Typ])] = struct{}{}
 		}
 	}
+}
+
+var noOpWidthDescInterpreter = func(enc EncodingParsed, nonSVEIndices []int) []EncodingParsed {
+	for _, idx := range nonSVEIndices {
+		enc.Operands[idx].Elems[0].TextExpWithRanges = noOpCheck
+	}
+	return []EncodingParsed{enc}
+}
+
+var widthDescInterpreters = map[string]func(enc EncodingParsed, nonSVEIndices []int) []EncodingParsed{
+	"No-op check, returns true": noOpWidthDescInterpreter,
+	`
+	Is a width specifier,
+	size    <V>
+	00      B
+	01      H
+	10      S
+	11      D
+	bit range mappings:
+	size: [22:24)`: func(enc EncodingParsed, nonSVEIndices []int) []EncodingParsed {
+		encs := []EncodingParsed{}
+		for i, suffix := range []string{"B", "H", "S", "D"} {
+			newEnc := enc
+			// Hard code the width into the fixed binary.
+			newEnc.Binary |= uint32(i) << 22
+			newEnc.GoOp = enc.GoOp + suffix
+			// Nullify the width specifier element.
+			for _, idx := range nonSVEIndices {
+				newEnc.Operands[idx].Elems[0].TextExpWithRanges = noOpCheck
+			}
+			encs = append(encs, newEnc)
+		}
+		return encs
+	},
+	`
+	Is a width specifier,
+	size    <R>
+	00      W
+	01      W
+	10      W
+	11      X
+	bit range mappings:
+	size: [22:24)`: func(enc EncodingParsed, nonSVEIndices []int) []EncodingParsed {
+		encs := []EncodingParsed{}
+		// X doesn't need a suffix.
+		for i, suffix := range []string{"W", ""} {
+			newEnc := enc
+			// It looks like GNU assembler prefers 00 for W.
+			newEnc.Binary |= uint32(i*3) << 22
+			newEnc.GoOp = enc.GoOp + suffix
+			for _, idx := range nonSVEIndices {
+				newEnc.Operands[idx].Elems[0].TextExpWithRanges = noOpCheck
+			}
+			encs = append(encs, newEnc)
+		}
+		return encs
+	},
+	`
+	Is a width specifier,
+	sz      <R>
+	0       W
+	1       X
+	bit range mappings:
+	sz: [22:23)`: func(enc EncodingParsed, nonSVEIndices []int) []EncodingParsed {
+		encs := []EncodingParsed{}
+		for i, suffix := range []string{"W", ""} {
+			newEnc := enc
+			newEnc.Binary |= uint32(i) << 22
+			newEnc.GoOp = enc.GoOp + suffix
+			for _, idx := range nonSVEIndices {
+				newEnc.Operands[idx].Elems[0].TextExpWithRanges = noOpCheck
+			}
+			encs = append(encs, newEnc)
+		}
+		return encs
+	},
+	`
+	Is a width specifier,
+	size    <V>
+	00      RESERVED
+	01      H
+	10      S
+	11      D
+	bit range mappings:
+	size: [22:24)`: func(enc EncodingParsed, nonSVEIndices []int) []EncodingParsed {
+		encs := []EncodingParsed{}
+		for i, suffix := range []string{"H", "S", "D"} {
+			newEnc := enc
+			newEnc.Binary |= uint32(i+1) << 22
+			newEnc.GoOp = enc.GoOp + suffix
+			for _, idx := range nonSVEIndices {
+				newEnc.Operands[idx].Elems[0].TextExpWithRanges = noOpCheck
+			}
+			encs = append(encs, newEnc)
+		}
+		return encs
+	},
+	"Check this SIMD vector register is of width 64-bit.": func(enc EncodingParsed, nonSVEIndices []int) []EncodingParsed {
+		enc.GoOp = enc.GoOp + "D"
+		for _, idx := range nonSVEIndices {
+			enc.Operands[idx].Elems[0].TextExpWithRanges = noOpCheck
+		}
+		return []EncodingParsed{enc}
+	},
+	`
+	Is a width specifier,
+	sf      <R>
+	0       W
+	1       X
+	bit range mappings:
+	sf: [12:13)`: func(enc EncodingParsed, nonSVEIndices []int) []EncodingParsed {
+		encs := []EncodingParsed{}
+		for i, suffix := range []string{"W", ""} {
+			newEnc := enc
+			newEnc.Binary |= uint32(i) << 12
+			newEnc.GoOp = enc.GoOp + suffix
+			for _, idx := range nonSVEIndices {
+				newEnc.Operands[idx].Elems[0].TextExpWithRanges = noOpCheck
+			}
+			encs = append(encs, newEnc)
+		}
+		return encs
+	},
+	"Check this is a 64-bit scalar register": noOpWidthDescInterpreter,
+	"Check this is a 32-bit scalar register": func(enc EncodingParsed, nonSVEIndices []int) []EncodingParsed {
+		enc.GoOp = enc.GoOp + "W"
+		for _, idx := range nonSVEIndices {
+			enc.Operands[idx].Elems[0].TextExpWithRanges = noOpCheck
+		}
+		return []EncodingParsed{enc}
+	},
+}
+
+// SplitInstByRegWidth splits an instruction encoding into multiple instruction
+// encodings based on the register width. This takes an instruction encoding that's
+// already validated and returns a list of instruction encodings that are split by
+// register width. The expected instruction encoding should only contain one elem of
+// type AC_SPZGREG, AC_VREG, and the first element is a width specifier.
+// The width specifier needs to be understood by this function.
+func SplitInstByRegWidth(enc EncodingParsed) []EncodingParsed {
+	widthDesc := []string{}
+	nonSVEIndices := []int{}
+	for i, op := range enc.Operands {
+		if op.Typ == "AC_SPZGREG" || op.Typ == "AC_VREG" {
+			widthDesc = append(widthDesc, op.Elems[0].TextExpWithRanges)
+			nonSVEIndices = append(nonSVEIndices, i)
+		}
+	}
+	if len(widthDesc) == 0 {
+		return []EncodingParsed{enc}
+	}
+	if len(widthDesc) > 1 {
+		// Manually handle them...
+		switch enc.Name {
+		case "addpl_r_ri_", "addvl_r_ri_":
+			// They are fixed X registers, so OK to do nothing.
+			return []EncodingParsed{enc}
+		case "clasta_v_p_z_", "clasta_r_p_z_", "clastb_v_p_z_", "clastb_r_p_z_",
+			"ctermeq_rr_", "ctermne_rr_", "fadda_v_p_z_", "index_z_rr_":
+			// The 2 non-sve registers are the same width, so OK to slip it through to the interpreter.
+		case "sqdecp_r_p_r_sx", "sqincp_r_p_r_sx":
+			// These 2 instructions have 2 variants:
+			// e.g. for SQINCP:
+			// 1. SQINCP <Xdn>, <Pm>.<T>, <Wdn> (these are the ones we see in this case)
+			// 2. SQINCP <Xdn>, <Pm>.<T> (these has encoding name without _sx, and they slip through)
+			// The logic following will rename the first one as SQINCPW, the second one unchanged.
+			// So it's also safe to slip it through to the interpreter.
+		default:
+			if !strings.HasPrefix(enc.Name, "while") {
+				// The series of while instructions all have the same width for their 2 non-sve registers, so
+				// also safe to slip through.
+				log.Printf("Warning: instruction %s has %d width descriptors", enc.Name, len(widthDesc))
+				return []EncodingParsed{enc}
+			}
+		}
+	}
+	for knownWD := range widthDescInterpreters {
+		if strings.Join(strings.Fields(widthDesc[0]), " ") == strings.Join(strings.Fields(knownWD), " ") {
+			return widthDescInterpreters[knownWD](enc, nonSVEIndices)
+		}
+	}
+	log.Printf("Warning: unknown width descriptor: %s", widthDesc[0])
+	return []EncodingParsed{enc}
 }
 
 // debugInfo prints all fixed symbols, operand constraints and encoding function descriptions
