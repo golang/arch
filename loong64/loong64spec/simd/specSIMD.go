@@ -52,19 +52,19 @@ func main() {
 	}
 	tables := string(content)
 	strs := strings.Split(tables, ")")
-	curOpCon := strs[0]
-	strs = strings.Split(strs[1], "var instFormats = [...]instFormat{")
-	curOpstrs := strings.Split("var opstr = [...]string{"+strings.Split(strs[0], "var opstr = [...]string{")[1], "}")[0]
-	curInstFormats := "var instFormats = [...]instFormat{" + strings.Split(strs[1], ",\n}")[0] + ",\n"
+	baseOps := strs[0] + strs[1]
+	strs = strings.Split(strs[2], "var instFormats = [...]instFormat{")
+	baseOpstrs := strings.Split("var opstr = [...]string{"+strings.Split(strs[0], "var opstr = [...]string{")[1], "}")[0]
+	baseInstFormats := "var instFormats = [...]instFormat{" + strings.Split(strs[1], ",\n}")[0] + ",\n"
 
 	var op_f bytes.Buffer
-	op_f.Write([]byte(curOpCon))
+	op_f.Write([]byte(baseOps))
 
 	var opstr_f bytes.Buffer
-	opstr_f.Write([]byte(curOpstrs))
+	opstr_f.Write([]byte(baseOpstrs))
 
 	var instFormats_f bytes.Buffer
-	instFormats_f.Write([]byte(curInstFormats))
+	instFormats_f.Write([]byte(baseInstFormats))
 
 	f, r, err := pdf.Open(os.Args[1])
 	if err != nil {

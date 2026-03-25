@@ -415,3 +415,1508 @@ ac895738|	llacq.d $t0, $t1
 ac815738|	llacq.w $t0, $t1
 ac8d5738|	screl.d $t0, $t1
 ac855738|	screl.w $t0, $t1
+
+64881009|	vfmadd.s $vr4, $vr3, $vr2, $vr1
+64882009|	vfmadd.d $vr4, $vr3, $vr2, $vr1
+64885009|	vfmsub.s $vr4, $vr3, $vr2, $vr1
+64886009|	vfmsub.d $vr4, $vr3, $vr2, $vr1
+64889009|	vfnmadd.s $vr4, $vr3, $vr2, $vr1
+6488a009|	vfnmadd.d $vr4, $vr3, $vr2, $vr1
+6488d009|	vfnmsub.s $vr4, $vr3, $vr2, $vr1
+6488e009|	vfnmsub.d $vr4, $vr3, $vr2, $vr1
+6488100a|	xvfmadd.s $xr4, $xr3, $xr2, $xr1
+6488200a|	xvfmadd.d $xr4, $xr3, $xr2, $xr1
+6488500a|	xvfmsub.s $xr4, $xr3, $xr2, $xr1
+6488600a|	xvfmsub.d $xr4, $xr3, $xr2, $xr1
+6488900a|	xvfnmadd.s $xr4, $xr3, $xr2, $xr1
+6488a00a|	xvfnmadd.d $xr4, $xr3, $xr2, $xr1
+6488d00a|	xvfnmsub.s $xr4, $xr3, $xr2, $xr1
+6488e00a|	xvfnmsub.d $xr4, $xr3, $xr2, $xr1
+
+4304500c|	vfcmp.caf.s $vr3, $vr2, $vr1
+4304540c|	vfcmp.cun.s $vr3, $vr2, $vr1
+4304520c|	vfcmp.ceq.s $vr3, $vr2, $vr1
+4304560c|	vfcmp.cueq.s $vr3, $vr2, $vr1
+4304510c|	vfcmp.clt.s $vr3, $vr2, $vr1
+4304550c|	vfcmp.cult.s $vr3, $vr2, $vr1
+4304530c|	vfcmp.cle.s $vr3, $vr2, $vr1
+4304570c|	vfcmp.cule.s $vr3, $vr2, $vr1
+4304580c|	vfcmp.cne.s $vr3, $vr2, $vr1
+43045a0c|	vfcmp.cor.s $vr3, $vr2, $vr1
+43045c0c|	vfcmp.cune.s $vr3, $vr2, $vr1
+4384500c|	vfcmp.saf.s $vr3, $vr2, $vr1
+4384540c|	vfcmp.sun.s $vr3, $vr2, $vr1
+4384520c|	vfcmp.seq.s $vr3, $vr2, $vr1
+4384560c|	vfcmp.sueq.s $vr3, $vr2, $vr1
+4384510c|	vfcmp.slt.s $vr3, $vr2, $vr1
+4384550c|	vfcmp.sult.s $vr3, $vr2, $vr1
+4384530c|	vfcmp.sle.s $vr3, $vr2, $vr1
+4384570c|	vfcmp.sule.s $vr3, $vr2, $vr1
+4384580c|	vfcmp.sne.s $vr3, $vr2, $vr1
+43845a0c|	vfcmp.sor.s $vr3, $vr2, $vr1
+43845c0c|	vfcmp.sune.s $vr3, $vr2, $vr1
+
+4304600c|	vfcmp.caf.d $vr3, $vr2, $vr1
+4304640c|	vfcmp.cun.d $vr3, $vr2, $vr1
+4304620c|	vfcmp.ceq.d $vr3, $vr2, $vr1
+4304660c|	vfcmp.cueq.d $vr3, $vr2, $vr1
+4304610c|	vfcmp.clt.d $vr3, $vr2, $vr1
+4304650c|	vfcmp.cult.d $vr3, $vr2, $vr1
+4304630c|	vfcmp.cle.d $vr3, $vr2, $vr1
+4304670c|	vfcmp.cule.d $vr3, $vr2, $vr1
+4304680c|	vfcmp.cne.d $vr3, $vr2, $vr1
+43046a0c|	vfcmp.cor.d $vr3, $vr2, $vr1
+43046c0c|	vfcmp.cune.d $vr3, $vr2, $vr1
+4384600c|	vfcmp.saf.d $vr3, $vr2, $vr1
+4384640c|	vfcmp.sun.d $vr3, $vr2, $vr1
+4384620c|	vfcmp.seq.d $vr3, $vr2, $vr1
+4384660c|	vfcmp.sueq.d $vr3, $vr2, $vr1
+4384610c|	vfcmp.slt.d $vr3, $vr2, $vr1
+4384650c|	vfcmp.sult.d $vr3, $vr2, $vr1
+4384630c|	vfcmp.sle.d $vr3, $vr2, $vr1
+4384670c|	vfcmp.sule.d $vr3, $vr2, $vr1
+4384680c|	vfcmp.sne.d $vr3, $vr2, $vr1
+43846a0c|	vfcmp.sor.d $vr3, $vr2, $vr1
+43846c0c|	vfcmp.sune.d $vr3, $vr2, $vr1
+
+4304900c|	xvfcmp.caf.s $xr3, $xr2, $xr1
+4304940c|	xvfcmp.cun.s $xr3, $xr2, $xr1
+4304920c|	xvfcmp.ceq.s $xr3, $xr2, $xr1
+4304960c|	xvfcmp.cueq.s $xr3, $xr2, $xr1
+4304910c|	xvfcmp.clt.s $xr3, $xr2, $xr1
+4304950c|	xvfcmp.cult.s $xr3, $xr2, $xr1
+4304930c|	xvfcmp.cle.s $xr3, $xr2, $xr1
+4304970c|	xvfcmp.cule.s $xr3, $xr2, $xr1
+4304980c|	xvfcmp.cne.s $xr3, $xr2, $xr1
+43049a0c|	xvfcmp.cor.s $xr3, $xr2, $xr1
+43049c0c|	xvfcmp.cune.s $xr3, $xr2, $xr1
+4384900c|	xvfcmp.saf.s $xr3, $xr2, $xr1
+4384940c|	xvfcmp.sun.s $xr3, $xr2, $xr1
+4384920c|	xvfcmp.seq.s $xr3, $xr2, $xr1
+4384960c|	xvfcmp.sueq.s $xr3, $xr2, $xr1
+4384910c|	xvfcmp.slt.s $xr3, $xr2, $xr1
+4384950c|	xvfcmp.sult.s $xr3, $xr2, $xr1
+4384930c|	xvfcmp.sle.s $xr3, $xr2, $xr1
+4384970c|	xvfcmp.sule.s $xr3, $xr2, $xr1
+4384980c|	xvfcmp.sne.s $xr3, $xr2, $xr1
+43849a0c|	xvfcmp.sor.s $xr3, $xr2, $xr1
+43849c0c|	xvfcmp.sune.s $xr3, $xr2, $xr1
+
+4304a00c|	xvfcmp.caf.d $xr3, $xr2, $xr1
+4304a40c|	xvfcmp.cun.d $xr3, $xr2, $xr1
+4304a20c|	xvfcmp.ceq.d $xr3, $xr2, $xr1
+4304a60c|	xvfcmp.cueq.d $xr3, $xr2, $xr1
+4304a10c|	xvfcmp.clt.d $xr3, $xr2, $xr1
+4304a50c|	xvfcmp.cult.d $xr3, $xr2, $xr1
+4304a30c|	xvfcmp.cle.d $xr3, $xr2, $xr1
+4304a70c|	xvfcmp.cule.d $xr3, $xr2, $xr1
+4304a80c|	xvfcmp.cne.d $xr3, $xr2, $xr1
+4304aa0c|	xvfcmp.cor.d $xr3, $xr2, $xr1
+4304ac0c|	xvfcmp.cune.d $xr3, $xr2, $xr1
+4384a00c|	xvfcmp.saf.d $xr3, $xr2, $xr1
+4384a40c|	xvfcmp.sun.d $xr3, $xr2, $xr1
+4384a20c|	xvfcmp.seq.d $xr3, $xr2, $xr1
+4384a60c|	xvfcmp.sueq.d $xr3, $xr2, $xr1
+4384a10c|	xvfcmp.slt.d $xr3, $xr2, $xr1
+4384a50c|	xvfcmp.sult.d $xr3, $xr2, $xr1
+4384a30c|	xvfcmp.sle.d $xr3, $xr2, $xr1
+4384a70c|	xvfcmp.sule.d $xr3, $xr2, $xr1
+4384a80c|	xvfcmp.sne.d $xr3, $xr2, $xr1
+4384aa0c|	xvfcmp.sor.d $xr3, $xr2, $xr1
+4384ac0c|	xvfcmp.sune.d $xr3, $xr2, $xr1
+
+6488100d|	vbitsel.v $vr4, $vr3, $vr2, $vr1
+6488200d|	xvbitsel.v $xr4, $xr3, $xr2, $xr1
+
+6488500d|	vshuf.b $vr4, $vr3, $vr2, $vr1
+6488600d|	xvshuf.b $xr4, $xr3, $xr2, $xr1
+
+81fc3f2c|	vld $vr1, $a0, -1
+81fc7f2c|	vst $vr1, $a0, -1
+81fcbf2c|	xvld $xr1, $a0, -1
+81fcff2c|	xvst $xr1, $a0, -1
+
+# gnu objdump get the shifted result of imm.
+#vstelm.d
+#vstelm.w
+#vstelm.h
+#vstelm.b
+#xvstelm.d
+#xvstelm.w
+#xvstelm.h
+#xvstelm.b
+81e0bf30|	vldrepl.b $vr1, $a0, -8
+81f05f30|	vldrepl.h $vr1, $a0, -8
+81f82f30|	vldrepl.w $vr1, $a0, -8
+81fc1730|	vldrepl.d $vr1, $a0, -8
+81e0bf32|	xvldrepl.b $xr1, $a0, -8
+81f05f32|	xvldrepl.h $xr1, $a0, -8
+81f82f32|	xvldrepl.w $xr1, $a0, -8
+81fc1732|	xvldrepl.d $xr1, $a0, -8
+
+81144038|	vldx $vr1, $a0, $a1
+81144438|	vstx $vr1, $a0, $a1
+81144838|	xvldx $xr1, $a0, $a1
+81144c38|	xvstx $xr1, $a0, $a1
+
+410c0070|	vseq.b $vr1, $vr2, $vr3
+418c0070|	vseq.h $vr1, $vr2, $vr3
+410c0170|	vseq.w $vr1, $vr2, $vr3
+418c0170|	vseq.d $vr1, $vr2, $vr3
+410c0270|	vsle.b $vr1, $vr2, $vr3
+418c0270|	vsle.h $vr1, $vr2, $vr3
+410c0370|	vsle.w $vr1, $vr2, $vr3
+418c0370|	vsle.d $vr1, $vr2, $vr3
+410c0470|	vsle.bu $vr1, $vr2, $vr3
+418c0470|	vsle.hu $vr1, $vr2, $vr3
+410c0570|	vsle.wu $vr1, $vr2, $vr3
+418c0570|	vsle.du $vr1, $vr2, $vr3
+410c0670|	vslt.b $vr1, $vr2, $vr3
+418c0670|	vslt.h $vr1, $vr2, $vr3
+410c0770|	vslt.w $vr1, $vr2, $vr3
+418c0770|	vslt.d $vr1, $vr2, $vr3
+410c0870|	vslt.bu $vr1, $vr2, $vr3
+418c0870|	vslt.hu $vr1, $vr2, $vr3
+410c0970|	vslt.wu $vr1, $vr2, $vr3
+418c0970|	vslt.du $vr1, $vr2, $vr3
+
+410c0a70|	vadd.b $vr1, $vr2, $vr3
+418c0a70|	vadd.h $vr1, $vr2, $vr3
+410c0b70|	vadd.w $vr1, $vr2, $vr3
+418c0b70|	vadd.d $vr1, $vr2, $vr3
+410c0c70|	vsub.b $vr1, $vr2, $vr3
+418c0c70|	vsub.h $vr1, $vr2, $vr3
+410c0d70|	vsub.w $vr1, $vr2, $vr3
+418c0d70|	vsub.d $vr1, $vr2, $vr3
+
+410c1e70|	vaddwev.h.b $vr1, $vr2, $vr3
+418c1e70|	vaddwev.w.h $vr1, $vr2, $vr3
+410c1f70|	vaddwev.d.w $vr1, $vr2, $vr3
+418c1f70|	vaddwev.q.d $vr1, $vr2, $vr3
+410c2070|	vsubwev.h.b $vr1, $vr2, $vr3
+418c2070|	vsubwev.w.h $vr1, $vr2, $vr3
+410c2170|	vsubwev.d.w $vr1, $vr2, $vr3
+418c2170|	vsubwev.q.d $vr1, $vr2, $vr3
+410c2270|	vaddwod.h.b $vr1, $vr2, $vr3
+418c2270|	vaddwod.w.h $vr1, $vr2, $vr3
+410c2370|	vaddwod.d.w $vr1, $vr2, $vr3
+418c2370|	vaddwod.q.d $vr1, $vr2, $vr3
+410c2470|	vsubwod.h.b $vr1, $vr2, $vr3
+418c2470|	vsubwod.w.h $vr1, $vr2, $vr3
+410c2570|	vsubwod.d.w $vr1, $vr2, $vr3
+418c2570|	vsubwod.q.d $vr1, $vr2, $vr3
+410c2e70|	vaddwev.h.bu $vr1, $vr2, $vr3
+418c2e70|	vaddwev.w.hu $vr1, $vr2, $vr3
+410c2f70|	vaddwev.d.wu $vr1, $vr2, $vr3
+418c2f70|	vaddwev.q.du $vr1, $vr2, $vr3
+410c3070|	vsubwev.h.bu $vr1, $vr2, $vr3
+418c3070|	vsubwev.w.hu $vr1, $vr2, $vr3
+410c3170|	vsubwev.d.wu $vr1, $vr2, $vr3
+418c3170|	vsubwev.q.du $vr1, $vr2, $vr3
+410c3270|	vaddwod.h.bu $vr1, $vr2, $vr3
+418c3270|	vaddwod.w.hu $vr1, $vr2, $vr3
+410c3370|	vaddwod.d.wu $vr1, $vr2, $vr3
+418c3370|	vaddwod.q.du $vr1, $vr2, $vr3
+410c3470|	vsubwod.h.bu $vr1, $vr2, $vr3
+418c3470|	vsubwod.w.hu $vr1, $vr2, $vr3
+410c3570|	vsubwod.d.wu $vr1, $vr2, $vr3
+418c3570|	vsubwod.q.du $vr1, $vr2, $vr3
+410c3e70|	vaddwev.h.bu.b $vr1, $vr2, $vr3
+418c3e70|	vaddwev.w.hu.h $vr1, $vr2, $vr3
+410c3f70|	vaddwev.d.wu.w $vr1, $vr2, $vr3
+418c3f70|	vaddwev.q.du.d $vr1, $vr2, $vr3
+410c4070|	vaddwod.h.bu.b $vr1, $vr2, $vr3
+418c4070|	vaddwod.w.hu.h $vr1, $vr2, $vr3
+410c4170|	vaddwod.d.wu.w $vr1, $vr2, $vr3
+418c4170|	vaddwod.q.du.d $vr1, $vr2, $vr3
+
+410c4670|	vsadd.b $vr1, $vr2, $vr3
+418c4670|	vsadd.h $vr1, $vr2, $vr3
+410c4770|	vsadd.w $vr1, $vr2, $vr3
+418c4770|	vsadd.d $vr1, $vr2, $vr3
+410c4870|	vssub.b $vr1, $vr2, $vr3
+418c4870|	vssub.h $vr1, $vr2, $vr3
+410c4970|	vssub.w $vr1, $vr2, $vr3
+418c4970|	vssub.d $vr1, $vr2, $vr3
+410c4a70|	vsadd.bu $vr1, $vr2, $vr3
+418c4a70|	vsadd.hu $vr1, $vr2, $vr3
+410c4b70|	vsadd.wu $vr1, $vr2, $vr3
+418c4b70|	vsadd.du $vr1, $vr2, $vr3
+410c4c70|	vssub.bu $vr1, $vr2, $vr3
+418c4c70|	vssub.hu $vr1, $vr2, $vr3
+410c4d70|	vssub.wu $vr1, $vr2, $vr3
+418c4d70|	vssub.du $vr1, $vr2, $vr3
+
+410c5470|	vhaddw.h.b $vr1, $vr2, $vr3
+418c5470|	vhaddw.w.h $vr1, $vr2, $vr3
+410c5570|	vhaddw.d.w $vr1, $vr2, $vr3
+418c5570|	vhaddw.q.d $vr1, $vr2, $vr3
+410c5670|	vhsubw.h.b $vr1, $vr2, $vr3
+418c5670|	vhsubw.w.h $vr1, $vr2, $vr3
+410c5770|	vhsubw.d.w $vr1, $vr2, $vr3
+418c5770|	vhsubw.q.d $vr1, $vr2, $vr3
+410c5870|	vhaddw.hu.bu $vr1, $vr2, $vr3
+418c5870|	vhaddw.wu.hu $vr1, $vr2, $vr3
+410c5970|	vhaddw.du.wu $vr1, $vr2, $vr3
+418c5970|	vhaddw.qu.du $vr1, $vr2, $vr3
+410c5a70|	vhsubw.hu.bu $vr1, $vr2, $vr3
+418c5a70|	vhsubw.wu.hu $vr1, $vr2, $vr3
+410c5b70|	vhsubw.du.wu $vr1, $vr2, $vr3
+418c5b70|	vhsubw.qu.du $vr1, $vr2, $vr3
+
+410c5c70|	vadda.b $vr1, $vr2, $vr3
+418c5c70|	vadda.h $vr1, $vr2, $vr3
+410c5d70|	vadda.w $vr1, $vr2, $vr3
+418c5d70|	vadda.d $vr1, $vr2, $vr3
+410c6070|	vabsd.b $vr1, $vr2, $vr3
+418c6070|	vabsd.h $vr1, $vr2, $vr3
+410c6170|	vabsd.w $vr1, $vr2, $vr3
+418c6170|	vabsd.d $vr1, $vr2, $vr3
+410c6270|	vabsd.bu $vr1, $vr2, $vr3
+418c6270|	vabsd.hu $vr1, $vr2, $vr3
+410c6370|	vabsd.wu $vr1, $vr2, $vr3
+418c6370|	vabsd.du $vr1, $vr2, $vr3
+
+410c6470|	vavg.b $vr1, $vr2, $vr3
+418c6470|	vavg.h $vr1, $vr2, $vr3
+410c6570|	vavg.w $vr1, $vr2, $vr3
+418c6570|	vavg.d $vr1, $vr2, $vr3
+410c6670|	vavg.bu $vr1, $vr2, $vr3
+418c6670|	vavg.hu $vr1, $vr2, $vr3
+410c6770|	vavg.wu $vr1, $vr2, $vr3
+418c6770|	vavg.du $vr1, $vr2, $vr3
+410c6870|	vavgr.b $vr1, $vr2, $vr3
+418c6870|	vavgr.h $vr1, $vr2, $vr3
+410c6970|	vavgr.w $vr1, $vr2, $vr3
+418c6970|	vavgr.d $vr1, $vr2, $vr3
+410c6a70|	vavgr.bu $vr1, $vr2, $vr3
+418c6a70|	vavgr.hu $vr1, $vr2, $vr3
+410c6b70|	vavgr.wu $vr1, $vr2, $vr3
+418c6b70|	vavgr.du $vr1, $vr2, $vr3
+
+410c7070|	vmax.b $vr1, $vr2, $vr3
+418c7070|	vmax.h $vr1, $vr2, $vr3
+410c7170|	vmax.w $vr1, $vr2, $vr3
+418c7170|	vmax.d $vr1, $vr2, $vr3
+410c7270|	vmin.b $vr1, $vr2, $vr3
+418c7270|	vmin.h $vr1, $vr2, $vr3
+410c7370|	vmin.w $vr1, $vr2, $vr3
+418c7370|	vmin.d $vr1, $vr2, $vr3
+410c7470|	vmax.bu $vr1, $vr2, $vr3
+418c7470|	vmax.hu $vr1, $vr2, $vr3
+410c7570|	vmax.wu $vr1, $vr2, $vr3
+418c7570|	vmax.du $vr1, $vr2, $vr3
+410c7670|	vmin.bu $vr1, $vr2, $vr3
+418c7670|	vmin.hu $vr1, $vr2, $vr3
+410c7770|	vmin.wu $vr1, $vr2, $vr3
+418c7770|	vmin.du $vr1, $vr2, $vr3
+
+410c8470|	vmul.b $vr1, $vr2, $vr3
+418c8470|	vmul.h $vr1, $vr2, $vr3
+410c8570|	vmul.w $vr1, $vr2, $vr3
+418c8570|	vmul.d $vr1, $vr2, $vr3
+410c8670|	vmuh.b $vr1, $vr2, $vr3
+418c8670|	vmuh.h $vr1, $vr2, $vr3
+410c8770|	vmuh.w $vr1, $vr2, $vr3
+418c8770|	vmuh.d $vr1, $vr2, $vr3
+410c8870|	vmuh.bu $vr1, $vr2, $vr3
+418c8870|	vmuh.hu $vr1, $vr2, $vr3
+410c8970|	vmuh.wu $vr1, $vr2, $vr3
+418c8970|	vmuh.du $vr1, $vr2, $vr3
+
+410c9070|	vmulwev.h.b $vr1, $vr2, $vr3
+418c9070|	vmulwev.w.h $vr1, $vr2, $vr3
+410c9170|	vmulwev.d.w $vr1, $vr2, $vr3
+418c9170|	vmulwev.q.d $vr1, $vr2, $vr3
+410c9270|	vmulwod.h.b $vr1, $vr2, $vr3
+418c9270|	vmulwod.w.h $vr1, $vr2, $vr3
+410c9370|	vmulwod.d.w $vr1, $vr2, $vr3
+418c9370|	vmulwod.q.d $vr1, $vr2, $vr3
+
+410c9870|	vmulwev.h.bu $vr1, $vr2, $vr3
+418c9870|	vmulwev.w.hu $vr1, $vr2, $vr3
+410c9970|	vmulwev.d.wu $vr1, $vr2, $vr3
+418c9970|	vmulwev.q.du $vr1, $vr2, $vr3
+410c9a70|	vmulwod.h.bu $vr1, $vr2, $vr3
+418c9a70|	vmulwod.w.hu $vr1, $vr2, $vr3
+410c9b70|	vmulwod.d.wu $vr1, $vr2, $vr3
+418c9b70|	vmulwod.q.du $vr1, $vr2, $vr3
+
+410ca070|	vmulwev.h.bu.b $vr1, $vr2, $vr3
+418ca070|	vmulwev.w.hu.h $vr1, $vr2, $vr3
+410ca170|	vmulwev.d.wu.w $vr1, $vr2, $vr3
+418ca170|	vmulwev.q.du.d $vr1, $vr2, $vr3
+410ca270|	vmulwod.h.bu.b $vr1, $vr2, $vr3
+418ca270|	vmulwod.w.hu.h $vr1, $vr2, $vr3
+410ca370|	vmulwod.d.wu.w $vr1, $vr2, $vr3
+418ca370|	vmulwod.q.du.d $vr1, $vr2, $vr3
+
+410ca870|	vmadd.b $vr1, $vr2, $vr3
+418ca870|	vmadd.h $vr1, $vr2, $vr3
+410ca970|	vmadd.w $vr1, $vr2, $vr3
+418ca970|	vmadd.d $vr1, $vr2, $vr3
+410caa70|	vmsub.b $vr1, $vr2, $vr3
+418caa70|	vmsub.h $vr1, $vr2, $vr3
+410cab70|	vmsub.w $vr1, $vr2, $vr3
+418cab70|	vmsub.d $vr1, $vr2, $vr3
+410cac70|	vmaddwev.h.b $vr1, $vr2, $vr3
+418cac70|	vmaddwev.w.h $vr1, $vr2, $vr3
+410cad70|	vmaddwev.d.w $vr1, $vr2, $vr3
+418cad70|	vmaddwev.q.d $vr1, $vr2, $vr3
+410cae70|	vmaddwod.h.b $vr1, $vr2, $vr3
+418cae70|	vmaddwod.w.h $vr1, $vr2, $vr3
+410caf70|	vmaddwod.d.w $vr1, $vr2, $vr3
+418caf70|	vmaddwod.q.d $vr1, $vr2, $vr3
+
+410cb470|	vmaddwev.h.bu $vr1, $vr2, $vr3
+418cb470|	vmaddwev.w.hu $vr1, $vr2, $vr3
+410cb570|	vmaddwev.d.wu $vr1, $vr2, $vr3
+418cb570|	vmaddwev.q.du $vr1, $vr2, $vr3
+410cb670|	vmaddwod.h.bu $vr1, $vr2, $vr3
+418cb670|	vmaddwod.w.hu $vr1, $vr2, $vr3
+410cb770|	vmaddwod.d.wu $vr1, $vr2, $vr3
+418cb770|	vmaddwod.q.du $vr1, $vr2, $vr3
+
+410cbc70|	vmaddwev.h.bu.b $vr1, $vr2, $vr3
+418cbc70|	vmaddwev.w.hu.h $vr1, $vr2, $vr3
+410cbd70|	vmaddwev.d.wu.w $vr1, $vr2, $vr3
+418cbd70|	vmaddwev.q.du.d $vr1, $vr2, $vr3
+410cbe70|	vmaddwod.h.bu.b $vr1, $vr2, $vr3
+418cbe70|	vmaddwod.w.hu.h $vr1, $vr2, $vr3
+410cbf70|	vmaddwod.d.wu.w $vr1, $vr2, $vr3
+418cbf70|	vmaddwod.q.du.d $vr1, $vr2, $vr3
+
+410ce070|	vdiv.b $vr1, $vr2, $vr3
+418ce070|	vdiv.h $vr1, $vr2, $vr3
+410ce170|	vdiv.w $vr1, $vr2, $vr3
+418ce170|	vdiv.d $vr1, $vr2, $vr3
+410ce270|	vmod.b $vr1, $vr2, $vr3
+418ce270|	vmod.h $vr1, $vr2, $vr3
+410ce370|	vmod.w $vr1, $vr2, $vr3
+418ce370|	vmod.d $vr1, $vr2, $vr3
+410ce470|	vdiv.bu $vr1, $vr2, $vr3
+418ce470|	vdiv.hu $vr1, $vr2, $vr3
+410ce570|	vdiv.wu $vr1, $vr2, $vr3
+418ce570|	vdiv.du $vr1, $vr2, $vr3
+410ce670|	vmod.bu $vr1, $vr2, $vr3
+418ce670|	vmod.hu $vr1, $vr2, $vr3
+410ce770|	vmod.wu $vr1, $vr2, $vr3
+418ce770|	vmod.du $vr1, $vr2, $vr3
+410ce870|	vsll.b $vr1, $vr2, $vr3
+418ce870|	vsll.h $vr1, $vr2, $vr3
+410ce970|	vsll.w $vr1, $vr2, $vr3
+418ce970|	vsll.d $vr1, $vr2, $vr3
+410cea70|	vsrl.b $vr1, $vr2, $vr3
+418cea70|	vsrl.h $vr1, $vr2, $vr3
+410ceb70|	vsrl.w $vr1, $vr2, $vr3
+418ceb70|	vsrl.d $vr1, $vr2, $vr3
+410cec70|	vsra.b $vr1, $vr2, $vr3
+418cec70|	vsra.h $vr1, $vr2, $vr3
+410ced70|	vsra.w $vr1, $vr2, $vr3
+418ced70|	vsra.d $vr1, $vr2, $vr3
+410cee70|	vrotr.b $vr1, $vr2, $vr3
+418cee70|	vrotr.h $vr1, $vr2, $vr3
+410cef70|	vrotr.w $vr1, $vr2, $vr3
+418cef70|	vrotr.d $vr1, $vr2, $vr3
+410cf070|	vsrlr.b $vr1, $vr2, $vr3
+418cf070|	vsrlr.h $vr1, $vr2, $vr3
+410cf170|	vsrlr.w $vr1, $vr2, $vr3
+418cf170|	vsrlr.d $vr1, $vr2, $vr3
+410cf270|	vsrar.b $vr1, $vr2, $vr3
+418cf270|	vsrar.h $vr1, $vr2, $vr3
+410cf370|	vsrar.w $vr1, $vr2, $vr3
+418cf370|	vsrar.d $vr1, $vr2, $vr3
+418cf470|	vsrln.b.h $vr1, $vr2, $vr3
+410cf570|	vsrln.h.w $vr1, $vr2, $vr3
+418cf570|	vsrln.w.d $vr1, $vr2, $vr3
+418cf670|	vsran.b.h $vr1, $vr2, $vr3
+410cf770|	vsran.h.w $vr1, $vr2, $vr3
+418cf770|	vsran.w.d $vr1, $vr2, $vr3
+418cf870|	vsrlrn.b.h $vr1, $vr2, $vr3
+410cf970|	vsrlrn.h.w $vr1, $vr2, $vr3
+418cf970|	vsrlrn.w.d $vr1, $vr2, $vr3
+418cfa70|	vsrarn.b.h $vr1, $vr2, $vr3
+410cfb70|	vsrarn.h.w $vr1, $vr2, $vr3
+418cfb70|	vsrarn.w.d $vr1, $vr2, $vr3
+418cfc70|	vssrln.b.h $vr1, $vr2, $vr3
+410cfd70|	vssrln.h.w $vr1, $vr2, $vr3
+418cfd70|	vssrln.w.d $vr1, $vr2, $vr3
+418cfe70|	vssran.b.h $vr1, $vr2, $vr3
+410cff70|	vssran.h.w $vr1, $vr2, $vr3
+418cff70|	vssran.w.d $vr1, $vr2, $vr3
+418c0071|	vssrlrn.b.h $vr1, $vr2, $vr3
+410c0171|	vssrlrn.h.w $vr1, $vr2, $vr3
+418c0171|	vssrlrn.w.d $vr1, $vr2, $vr3
+418c0271|	vssrarn.b.h $vr1, $vr2, $vr3
+410c0371|	vssrarn.h.w $vr1, $vr2, $vr3
+418c0371|	vssrarn.w.d $vr1, $vr2, $vr3
+418c0471|	vssrln.bu.h $vr1, $vr2, $vr3
+410c0571|	vssrln.hu.w $vr1, $vr2, $vr3
+418c0571|	vssrln.wu.d $vr1, $vr2, $vr3
+418c0671|	vssran.bu.h $vr1, $vr2, $vr3
+410c0771|	vssran.hu.w $vr1, $vr2, $vr3
+418c0771|	vssran.wu.d $vr1, $vr2, $vr3
+418c0871|	vssrlrn.bu.h $vr1, $vr2, $vr3
+410c0971|	vssrlrn.hu.w $vr1, $vr2, $vr3
+418c0971|	vssrlrn.wu.d $vr1, $vr2, $vr3
+418c0a71|	vssrarn.bu.h $vr1, $vr2, $vr3
+410c0b71|	vssrarn.hu.w $vr1, $vr2, $vr3
+418c0b71|	vssrarn.wu.d $vr1, $vr2, $vr3
+410c0c71|	vbitclr.b $vr1, $vr2, $vr3
+418c0c71|	vbitclr.h $vr1, $vr2, $vr3
+410c0d71|	vbitclr.w $vr1, $vr2, $vr3
+418c0d71|	vbitclr.d $vr1, $vr2, $vr3
+410c0e71|	vbitset.b $vr1, $vr2, $vr3
+418c0e71|	vbitset.h $vr1, $vr2, $vr3
+410c0f71|	vbitset.w $vr1, $vr2, $vr3
+418c0f71|	vbitset.d $vr1, $vr2, $vr3
+410c1071|	vbitrev.b $vr1, $vr2, $vr3
+418c1071|	vbitrev.h $vr1, $vr2, $vr3
+410c1171|	vbitrev.w $vr1, $vr2, $vr3
+418c1171|	vbitrev.d $vr1, $vr2, $vr3
+410c1671|	vpackev.b $vr1, $vr2, $vr3
+418c1671|	vpackev.h $vr1, $vr2, $vr3
+410c1771|	vpackev.w $vr1, $vr2, $vr3
+418c1771|	vpackev.d $vr1, $vr2, $vr3
+410c1871|	vpackod.b $vr1, $vr2, $vr3
+418c1871|	vpackod.h $vr1, $vr2, $vr3
+410c1971|	vpackod.w $vr1, $vr2, $vr3
+418c1971|	vpackod.d $vr1, $vr2, $vr3
+410c1a71|	vilvl.b $vr1, $vr2, $vr3
+418c1a71|	vilvl.h $vr1, $vr2, $vr3
+410c1b71|	vilvl.w $vr1, $vr2, $vr3
+418c1b71|	vilvl.d $vr1, $vr2, $vr3
+410c1c71|	vilvh.b $vr1, $vr2, $vr3
+418c1c71|	vilvh.h $vr1, $vr2, $vr3
+410c1d71|	vilvh.w $vr1, $vr2, $vr3
+418c1d71|	vilvh.d $vr1, $vr2, $vr3
+410c1e71|	vpickev.b $vr1, $vr2, $vr3
+418c1e71|	vpickev.h $vr1, $vr2, $vr3
+410c1f71|	vpickev.w $vr1, $vr2, $vr3
+418c1f71|	vpickev.d $vr1, $vr2, $vr3
+410c2071|	vpickod.b $vr1, $vr2, $vr3
+418c2071|	vpickod.h $vr1, $vr2, $vr3
+410c2171|	vpickod.w $vr1, $vr2, $vr3
+418c2171|	vpickod.d $vr1, $vr2, $vr3
+41102271|	vreplve.b $vr1, $vr2, $a0
+41902271|	vreplve.h $vr1, $vr2, $a0
+41102371|	vreplve.w $vr1, $vr2, $a0
+41902371|	vreplve.d $vr1, $vr2, $a0
+410c2671|	vand.v $vr1, $vr2, $vr3
+418c2671|	vor.v $vr1, $vr2, $vr3
+410c2771|	vxor.v $vr1, $vr2, $vr3
+418c2771|	vnor.v $vr1, $vr2, $vr3
+410c2871|	vandn.v $vr1, $vr2, $vr3
+418c2871|	vorn.v $vr1, $vr2, $vr3
+410c2b71|	vfrstp.b $vr1, $vr2, $vr3
+418c2b71|	vfrstp.h $vr1, $vr2, $vr3
+410c2d71|	vadd.q $vr1, $vr2, $vr3
+418c2d71|	vsub.q $vr1, $vr2, $vr3
+410c2e71|	vsigncov.b $vr1, $vr2, $vr3
+418c2e71|	vsigncov.h $vr1, $vr2, $vr3
+410c2f71|	vsigncov.w $vr1, $vr2, $vr3
+418c2f71|	vsigncov.d $vr1, $vr2, $vr3
+418c3071|	vfadd.s $vr1, $vr2, $vr3
+410c3171|	vfadd.d $vr1, $vr2, $vr3
+418c3271|	vfsub.s $vr1, $vr2, $vr3
+410c3371|	vfsub.d $vr1, $vr2, $vr3
+418c3871|	vfmul.s $vr1, $vr2, $vr3
+410c3971|	vfmul.d $vr1, $vr2, $vr3
+418c3a71|	vfdiv.s $vr1, $vr2, $vr3
+410c3b71|	vfdiv.d $vr1, $vr2, $vr3
+418c3c71|	vfmax.s $vr1, $vr2, $vr3
+410c3d71|	vfmax.d $vr1, $vr2, $vr3
+418c3e71|	vfmin.s $vr1, $vr2, $vr3
+410c3f71|	vfmin.d $vr1, $vr2, $vr3
+418c4071|	vfmaxa.s $vr1, $vr2, $vr3
+410c4171|	vfmaxa.d $vr1, $vr2, $vr3
+418c4271|	vfmina.s $vr1, $vr2, $vr3
+410c4371|	vfmina.d $vr1, $vr2, $vr3
+410c4671|	vfcvt.h.s $vr1, $vr2, $vr3
+418c4671|	vfcvt.s.d $vr1, $vr2, $vr3
+410c4871|	vffint.s.l $vr1, $vr2, $vr3
+418c4971|	vftint.w.d $vr1, $vr2, $vr3
+410c4a71|	vftintrm.w.d $vr1, $vr2, $vr3
+418c4a71|	vftintrp.w.d $vr1, $vr2, $vr3
+410c4b71|	vftintrz.w.d $vr1, $vr2, $vr3
+418c4b71|	vftintrne.w.d $vr1, $vr2, $vr3
+418c7a71|	vshuf.h $vr1, $vr2, $vr3
+410c7b71|	vshuf.w $vr1, $vr2, $vr3
+418c7b71|	vshuf.d $vr1, $vr2, $vr3
+
+417c8072|	vseqi.b $vr1, $vr2, -1
+41fc8072|	vseqi.h $vr1, $vr2, -1
+417c8172|	vseqi.w $vr1, $vr2, -1
+41fc8172|	vseqi.d $vr1, $vr2, -1
+417c8272|	vslei.b $vr1, $vr2, -1
+41fc8272|	vslei.h $vr1, $vr2, -1
+417c8372|	vslei.w $vr1, $vr2, -1
+41fc8372|	vslei.d $vr1, $vr2, -1
+
+41048472|	vslei.bu $vr1, $vr2, 0x1
+41848472|	vslei.hu $vr1, $vr2, 0x1
+41048572|	vslei.wu $vr1, $vr2, 0x1
+41848572|	vslei.du $vr1, $vr2, 0x1
+41048672|	vslti.b $vr1, $vr2, 1
+41848672|	vslti.h $vr1, $vr2, 1
+41048772|	vslti.w $vr1, $vr2, 1
+41848772|	vslti.d $vr1, $vr2, 1
+41048872|	vslti.bu $vr1, $vr2, 0x1
+41848872|	vslti.hu $vr1, $vr2, 0x1
+41048972|	vslti.wu $vr1, $vr2, 0x1
+41848972|	vslti.du $vr1, $vr2, 0x1
+41048a72|	vaddi.bu $vr1, $vr2, 0x1
+41848a72|	vaddi.hu $vr1, $vr2, 0x1
+41048b72|	vaddi.wu $vr1, $vr2, 0x1
+41848b72|	vaddi.du $vr1, $vr2, 0x1
+41048c72|	vsubi.bu $vr1, $vr2, 0x1
+41848c72|	vsubi.hu $vr1, $vr2, 0x1
+41048d72|	vsubi.wu $vr1, $vr2, 0x1
+41848d72|	vsubi.du $vr1, $vr2, 0x1
+41048e72|	vbsll.v $vr1, $vr2, 0x1
+41848e72|	vbsrl.v $vr1, $vr2, 0x1
+
+417c9072|	vmaxi.b $vr1, $vr2, -1
+41fc9072|	vmaxi.h $vr1, $vr2, -1
+417c9172|	vmaxi.w $vr1, $vr2, -1
+41fc9172|	vmaxi.d $vr1, $vr2, -1
+417c9272|	vmini.b $vr1, $vr2, -1
+41fc9272|	vmini.h $vr1, $vr2, -1
+417c9372|	vmini.w $vr1, $vr2, -1
+41fc9372|	vmini.d $vr1, $vr2, -1
+
+41049472|	vmaxi.bu $vr1, $vr2, 0x1
+41849472|	vmaxi.hu $vr1, $vr2, 0x1
+41049572|	vmaxi.wu $vr1, $vr2, 0x1
+41849572|	vmaxi.du $vr1, $vr2, 0x1
+41049672|	vmini.bu $vr1, $vr2, 0x1
+41849672|	vmini.hu $vr1, $vr2, 0x1
+41049772|	vmini.wu $vr1, $vr2, 0x1
+41849772|	vmini.du $vr1, $vr2, 0x1
+41049a72|	vfrstpi.b $vr1, $vr2, 0x1
+41849a72|	vfrstpi.h $vr1, $vr2, 0x1
+
+41009c72|	vclo.b $vr1, $vr2
+41049c72|	vclo.h $vr1, $vr2
+41089c72|	vclo.w $vr1, $vr2
+410c9c72|	vclo.d $vr1, $vr2
+41109c72|	vclz.b $vr1, $vr2
+41149c72|	vclz.h $vr1, $vr2
+41189c72|	vclz.w $vr1, $vr2
+411c9c72|	vclz.d $vr1, $vr2
+41209c72|	vpcnt.b $vr1, $vr2
+41249c72|	vpcnt.h $vr1, $vr2
+41289c72|	vpcnt.w $vr1, $vr2
+412c9c72|	vpcnt.d $vr1, $vr2
+41309c72|	vneg.b $vr1, $vr2
+41349c72|	vneg.h $vr1, $vr2
+41389c72|	vneg.w $vr1, $vr2
+413c9c72|	vneg.d $vr1, $vr2
+41409c72|	vmskltz.b $vr1, $vr2
+41449c72|	vmskltz.h $vr1, $vr2
+41489c72|	vmskltz.w $vr1, $vr2
+414c9c72|	vmskltz.d $vr1, $vr2
+41509c72|	vmskgez.b $vr1, $vr2
+41609c72|	vmsknz.b $vr1, $vr2
+
+21989c72|	vseteqz.v $fcc1, $vr1
+219c9c72|	vsetnez.v $fcc1, $vr1
+21a09c72|	vsetanyeqz.b $fcc1, $vr1
+21a49c72|	vsetanyeqz.h $fcc1, $vr1
+21a89c72|	vsetanyeqz.w $fcc1, $vr1
+21ac9c72|	vsetanyeqz.d $fcc1, $vr1
+21b09c72|	vsetallnez.b $fcc1, $vr1
+21b49c72|	vsetallnez.h $fcc1, $vr1
+21b89c72|	vsetallnez.w $fcc1, $vr1
+21bc9c72|	vsetallnez.d $fcc1, $vr1
+
+41c49c72|	vflogb.s $vr1, $vr2
+41c89c72|	vflogb.d $vr1, $vr2
+41d49c72|	vfclass.s $vr1, $vr2
+41d89c72|	vfclass.d $vr1, $vr2
+41e49c72|	vfsqrt.s $vr1, $vr2
+41e89c72|	vfsqrt.d $vr1, $vr2
+41f49c72|	vfrecip.s $vr1, $vr2
+41f89c72|	vfrecip.d $vr1, $vr2
+41049d72|	vfrsqrt.s $vr1, $vr2
+41089d72|	vfrsqrt.d $vr1, $vr2
+41149d72|	vfrecipe.s $vr1, $vr2
+41189d72|	vfrecipe.d $vr1, $vr2
+41249d72|	vfrsqrte.s $vr1, $vr2
+41289d72|	vfrsqrte.d $vr1, $vr2
+41349d72|	vfrint.s $vr1, $vr2
+41389d72|	vfrint.d $vr1, $vr2
+41449d72|	vfrintrm.s $vr1, $vr2
+41489d72|	vfrintrm.d $vr1, $vr2
+41549d72|	vfrintrp.s $vr1, $vr2
+41589d72|	vfrintrp.d $vr1, $vr2
+41649d72|	vfrintrz.s $vr1, $vr2
+41689d72|	vfrintrz.d $vr1, $vr2
+41749d72|	vfrintrne.s $vr1, $vr2
+41789d72|	vfrintrne.d $vr1, $vr2
+41e89d72|	vfcvtl.s.h $vr1, $vr2
+41ec9d72|	vfcvth.s.h $vr1, $vr2
+41f09d72|	vfcvtl.d.s $vr1, $vr2
+41f49d72|	vfcvth.d.s $vr1, $vr2
+41009e72|	vffint.s.w $vr1, $vr2
+41049e72|	vffint.s.wu $vr1, $vr2
+41089e72|	vffint.d.l $vr1, $vr2
+410c9e72|	vffint.d.lu $vr1, $vr2
+41109e72|	vffintl.d.w $vr1, $vr2
+41149e72|	vffinth.d.w $vr1, $vr2
+41309e72|	vftint.w.s $vr1, $vr2
+41349e72|	vftint.l.d $vr1, $vr2
+41389e72|	vftintrm.w.s $vr1, $vr2
+413c9e72|	vftintrm.l.d $vr1, $vr2
+41409e72|	vftintrp.w.s $vr1, $vr2
+41449e72|	vftintrp.l.d $vr1, $vr2
+41489e72|	vftintrz.w.s $vr1, $vr2
+414c9e72|	vftintrz.l.d $vr1, $vr2
+41509e72|	vftintrne.w.s $vr1, $vr2
+41549e72|	vftintrne.l.d $vr1, $vr2
+41589e72|	vftint.wu.s $vr1, $vr2
+415c9e72|	vftint.lu.d $vr1, $vr2
+41709e72|	vftintrz.wu.s $vr1, $vr2
+41749e72|	vftintrz.lu.d $vr1, $vr2
+41809e72|	vftintl.l.s $vr1, $vr2
+41849e72|	vftinth.l.s $vr1, $vr2
+41889e72|	vftintrml.l.s $vr1, $vr2
+418c9e72|	vftintrmh.l.s $vr1, $vr2
+41909e72|	vftintrpl.l.s $vr1, $vr2
+41949e72|	vftintrph.l.s $vr1, $vr2
+41989e72|	vftintrzl.l.s $vr1, $vr2
+419c9e72|	vftintrzh.l.s $vr1, $vr2
+41a09e72|	vftintrnel.l.s $vr1, $vr2
+41a49e72|	vftintrneh.l.s $vr1, $vr2
+41e09e72|	vexth.h.b $vr1, $vr2
+41e49e72|	vexth.w.h $vr1, $vr2
+41e89e72|	vexth.d.w $vr1, $vr2
+41ec9e72|	vexth.q.d $vr1, $vr2
+41f09e72|	vexth.hu.bu $vr1, $vr2
+41f49e72|	vexth.wu.hu $vr1, $vr2
+41f89e72|	vexth.du.wu $vr1, $vr2
+41fc9e72|	vexth.qu.du $vr1, $vr2
+
+81009f72|	vreplgr2vr.b $vr1, $a0
+81049f72|	vreplgr2vr.h $vr1, $a0
+81089f72|	vreplgr2vr.w $vr1, $a0
+810c9f72|	vreplgr2vr.d $vr1, $a0
+
+4124a072|	vrotri.b $vr1, $vr2, 0x1
+4144a072|	vrotri.h $vr1, $vr2, 0x1
+4184a072|	vrotri.w $vr1, $vr2, 0x1
+4104a172|	vrotri.d $vr1, $vr2, 0x1
+4124a472|	vsrlri.b $vr1, $vr2, 0x1
+4144a472|	vsrlri.h $vr1, $vr2, 0x1
+4184a472|	vsrlri.w $vr1, $vr2, 0x1
+4104a572|	vsrlri.d $vr1, $vr2, 0x1
+4124a872|	vsrari.b $vr1, $vr2, 0x1
+4144a872|	vsrari.h $vr1, $vr2, 0x1
+4184a872|	vsrari.w $vr1, $vr2, 0x1
+4104a972|	vsrari.d $vr1, $vr2, 0x1
+8184eb72|	vinsgr2vr.b $vr1, $a0, 0x1
+81c4eb72|	vinsgr2vr.h $vr1, $a0, 0x1
+81e4eb72|	vinsgr2vr.w $vr1, $a0, 0x1
+81f4eb72|	vinsgr2vr.d $vr1, $a0, 0x1
+2484ef72|	vpickve2gr.b $a0, $vr1, 0x1
+24c4ef72|	vpickve2gr.h $a0, $vr1, 0x1
+24e4ef72|	vpickve2gr.w $a0, $vr1, 0x1
+24f4ef72|	vpickve2gr.d $a0, $vr1, 0x1
+2484f372|	vpickve2gr.bu $a0, $vr1, 0x1
+24c4f372|	vpickve2gr.hu $a0, $vr1, 0x1
+24e4f372|	vpickve2gr.wu $a0, $vr1, 0x1
+24f4f372|	vpickve2gr.du $a0, $vr1, 0x1
+4184f772|	vreplvei.b $vr1, $vr2, 0x1
+41c4f772|	vreplvei.h $vr1, $vr2, 0x1
+41e4f772|	vreplvei.w $vr1, $vr2, 0x1
+41f4f772|	vreplvei.d $vr1, $vr2, 0x1
+41240873|	vsllwil.h.b $vr1, $vr2, 0x1
+41440873|	vsllwil.w.h $vr1, $vr2, 0x1
+41840873|	vsllwil.d.w $vr1, $vr2, 0x1
+41240c73|	vsllwil.hu.bu $vr1, $vr2, 0x1
+41440c73|	vsllwil.wu.hu $vr1, $vr2, 0x1
+41840c73|	vsllwil.du.wu $vr1, $vr2, 0x1
+
+41000973|	vextl.q.d $vr1, $vr2
+41000d73|	vextl.qu.du $vr1, $vr2
+
+41241073|	vbitclri.b $vr1, $vr2, 0x1
+41441073|	vbitclri.h $vr1, $vr2, 0x1
+41841073|	vbitclri.w $vr1, $vr2, 0x1
+41041173|	vbitclri.d $vr1, $vr2, 0x1
+41241473|	vbitseti.b $vr1, $vr2, 0x1
+41441473|	vbitseti.h $vr1, $vr2, 0x1
+41841473|	vbitseti.w $vr1, $vr2, 0x1
+41041573|	vbitseti.d $vr1, $vr2, 0x1
+41241873|	vbitrevi.b $vr1, $vr2, 0x1
+41441873|	vbitrevi.h $vr1, $vr2, 0x1
+41841873|	vbitrevi.w $vr1, $vr2, 0x1
+41041973|	vbitrevi.d $vr1, $vr2, 0x1
+41242473|	vsat.b $vr1, $vr2, 0x1
+41442473|	vsat.h $vr1, $vr2, 0x1
+41842473|	vsat.w $vr1, $vr2, 0x1
+41042573|	vsat.d $vr1, $vr2, 0x1
+41242873|	vsat.bu $vr1, $vr2, 0x1
+41442873|	vsat.hu $vr1, $vr2, 0x1
+41842873|	vsat.wu $vr1, $vr2, 0x1
+41042973|	vsat.du $vr1, $vr2, 0x1
+41242c73|	vslli.b $vr1, $vr2, 0x1
+41442c73|	vslli.h $vr1, $vr2, 0x1
+41842c73|	vslli.w $vr1, $vr2, 0x1
+41042d73|	vslli.d $vr1, $vr2, 0x1
+41243073|	vsrli.b $vr1, $vr2, 0x1
+41443073|	vsrli.h $vr1, $vr2, 0x1
+41843073|	vsrli.w $vr1, $vr2, 0x1
+41043173|	vsrli.d $vr1, $vr2, 0x1
+41243473|	vsrai.b $vr1, $vr2, 0x1
+41443473|	vsrai.h $vr1, $vr2, 0x1
+41843473|	vsrai.w $vr1, $vr2, 0x1
+41043573|	vsrai.d $vr1, $vr2, 0x1
+41444073|	vsrlni.b.h $vr1, $vr2, 0x1
+41844073|	vsrlni.h.w $vr1, $vr2, 0x1
+41044173|	vsrlni.w.d $vr1, $vr2, 0x1
+41044273|	vsrlni.d.q $vr1, $vr2, 0x1
+41444473|	vsrlrni.b.h $vr1, $vr2, 0x1
+41844473|	vsrlrni.h.w $vr1, $vr2, 0x1
+41044573|	vsrlrni.w.d $vr1, $vr2, 0x1
+41044673|	vsrlrni.d.q $vr1, $vr2, 0x1
+41444873|	vssrlni.b.h $vr1, $vr2, 0x1
+41844873|	vssrlni.h.w $vr1, $vr2, 0x1
+41044973|	vssrlni.w.d $vr1, $vr2, 0x1
+41044a73|	vssrlni.d.q $vr1, $vr2, 0x1
+41444c73|	vssrlni.bu.h $vr1, $vr2, 0x1
+41844c73|	vssrlni.hu.w $vr1, $vr2, 0x1
+41044d73|	vssrlni.wu.d $vr1, $vr2, 0x1
+41044e73|	vssrlni.du.q $vr1, $vr2, 0x1
+41445073|	vssrlrni.b.h $vr1, $vr2, 0x1
+41845073|	vssrlrni.h.w $vr1, $vr2, 0x1
+41045173|	vssrlrni.w.d $vr1, $vr2, 0x1
+41045273|	vssrlrni.d.q $vr1, $vr2, 0x1
+41445473|	vssrlrni.bu.h $vr1, $vr2, 0x1
+41845473|	vssrlrni.hu.w $vr1, $vr2, 0x1
+41045573|	vssrlrni.wu.d $vr1, $vr2, 0x1
+41045673|	vssrlrni.du.q $vr1, $vr2, 0x1
+41445873|	vsrani.b.h $vr1, $vr2, 0x1
+41845873|	vsrani.h.w $vr1, $vr2, 0x1
+41045973|	vsrani.w.d $vr1, $vr2, 0x1
+41045a73|	vsrani.d.q $vr1, $vr2, 0x1
+41445c73|	vsrarni.b.h $vr1, $vr2, 0x1
+41845c73|	vsrarni.h.w $vr1, $vr2, 0x1
+41045d73|	vsrarni.w.d $vr1, $vr2, 0x1
+41045e73|	vsrarni.d.q $vr1, $vr2, 0x1
+41446073|	vssrani.b.h $vr1, $vr2, 0x1
+41846073|	vssrani.h.w $vr1, $vr2, 0x1
+41046173|	vssrani.w.d $vr1, $vr2, 0x1
+41046273|	vssrani.d.q $vr1, $vr2, 0x1
+41446473|	vssrani.bu.h $vr1, $vr2, 0x1
+41846473|	vssrani.hu.w $vr1, $vr2, 0x1
+41046573|	vssrani.wu.d $vr1, $vr2, 0x1
+41046673|	vssrani.du.q $vr1, $vr2, 0x1
+41446873|	vssrarni.b.h $vr1, $vr2, 0x1
+41846873|	vssrarni.h.w $vr1, $vr2, 0x1
+41046973|	vssrarni.w.d $vr1, $vr2, 0x1
+41046a73|	vssrarni.d.q $vr1, $vr2, 0x1
+41446c73|	vssrarni.bu.h $vr1, $vr2, 0x1
+41846c73|	vssrarni.hu.w $vr1, $vr2, 0x1
+41046d73|	vssrarni.wu.d $vr1, $vr2, 0x1
+41046e73|	vssrarni.du.q $vr1, $vr2, 0x1
+41048073|	vextrins.d $vr1, $vr2, 0x1
+41048473|	vextrins.w $vr1, $vr2, 0x1
+41048873|	vextrins.h $vr1, $vr2, 0x1
+41048c73|	vextrins.b $vr1, $vr2, 0x1
+41049073|	vshuf4i.b $vr1, $vr2, 0x1
+41049473|	vshuf4i.h $vr1, $vr2, 0x1
+41049873|	vshuf4i.w $vr1, $vr2, 0x1
+41049c73|	vshuf4i.d $vr1, $vr2, 0x1
+4104c473|	vbitseli.b $vr1, $vr2, 0x1
+4104d073|	vandi.b $vr1, $vr2, 0x1
+4104d473|	vori.b $vr1, $vr2, 0x1
+4104d873|	vxori.b $vr1, $vr2, 0x1
+4104dc73|	vnori.b $vr1, $vr2, 0x1
+2100e073|	vldi $vr1, 1
+4104e473|	vpermi.w $vr1, $vr2, 0x1
+
+410c0074|	xvseq.b $xr1, $xr2, $xr3
+418c0074|	xvseq.h $xr1, $xr2, $xr3
+410c0174|	xvseq.w $xr1, $xr2, $xr3
+418c0174|	xvseq.d $xr1, $xr2, $xr3
+410c0274|	xvsle.b $xr1, $xr2, $xr3
+418c0274|	xvsle.h $xr1, $xr2, $xr3
+410c0374|	xvsle.w $xr1, $xr2, $xr3
+418c0374|	xvsle.d $xr1, $xr2, $xr3
+410c0474|	xvsle.bu $xr1, $xr2, $xr3
+418c0474|	xvsle.hu $xr1, $xr2, $xr3
+410c0574|	xvsle.wu $xr1, $xr2, $xr3
+418c0574|	xvsle.du $xr1, $xr2, $xr3
+410c0674|	xvslt.b $xr1, $xr2, $xr3
+418c0674|	xvslt.h $xr1, $xr2, $xr3
+410c0774|	xvslt.w $xr1, $xr2, $xr3
+418c0774|	xvslt.d $xr1, $xr2, $xr3
+410c0874|	xvslt.bu $xr1, $xr2, $xr3
+418c0874|	xvslt.hu $xr1, $xr2, $xr3
+410c0974|	xvslt.wu $xr1, $xr2, $xr3
+418c0974|	xvslt.du $xr1, $xr2, $xr3
+410c0a74|	xvadd.b $xr1, $xr2, $xr3
+418c0a74|	xvadd.h $xr1, $xr2, $xr3
+410c0b74|	xvadd.w $xr1, $xr2, $xr3
+418c0b74|	xvadd.d $xr1, $xr2, $xr3
+410c0c74|	xvsub.b $xr1, $xr2, $xr3
+418c0c74|	xvsub.h $xr1, $xr2, $xr3
+410c0d74|	xvsub.w $xr1, $xr2, $xr3
+418c0d74|	xvsub.d $xr1, $xr2, $xr3
+410c1e74|	xvaddwev.h.b $xr1, $xr2, $xr3
+418c1e74|	xvaddwev.w.h $xr1, $xr2, $xr3
+410c1f74|	xvaddwev.d.w $xr1, $xr2, $xr3
+418c1f74|	xvaddwev.q.d $xr1, $xr2, $xr3
+410c2074|	xvsubwev.h.b $xr1, $xr2, $xr3
+418c2074|	xvsubwev.w.h $xr1, $xr2, $xr3
+410c2174|	xvsubwev.d.w $xr1, $xr2, $xr3
+418c2174|	xvsubwev.q.d $xr1, $xr2, $xr3
+
+410c2274|	xvaddwod.h.b $xr1, $xr2, $xr3
+418c2274|	xvaddwod.w.h $xr1, $xr2, $xr3
+410c2374|	xvaddwod.d.w $xr1, $xr2, $xr3
+418c2374|	xvaddwod.q.d $xr1, $xr2, $xr3
+410c2474|	xvsubwod.h.b $xr1, $xr2, $xr3
+418c2474|	xvsubwod.w.h $xr1, $xr2, $xr3
+410c2574|	xvsubwod.d.w $xr1, $xr2, $xr3
+418c2574|	xvsubwod.q.d $xr1, $xr2, $xr3
+410c2e74|	xvaddwev.h.bu $xr1, $xr2, $xr3
+418c2e74|	xvaddwev.w.hu $xr1, $xr2, $xr3
+410c2f74|	xvaddwev.d.wu $xr1, $xr2, $xr3
+418c2f74|	xvaddwev.q.du $xr1, $xr2, $xr3
+410c3074|	xvsubwev.h.bu $xr1, $xr2, $xr3
+418c3074|	xvsubwev.w.hu $xr1, $xr2, $xr3
+410c3174|	xvsubwev.d.wu $xr1, $xr2, $xr3
+418c3174|	xvsubwev.q.du $xr1, $xr2, $xr3
+410c3274|	xvaddwod.h.bu $xr1, $xr2, $xr3
+418c3274|	xvaddwod.w.hu $xr1, $xr2, $xr3
+410c3374|	xvaddwod.d.wu $xr1, $xr2, $xr3
+418c3374|	xvaddwod.q.du $xr1, $xr2, $xr3
+410c3474|	xvsubwod.h.bu $xr1, $xr2, $xr3
+418c3474|	xvsubwod.w.hu $xr1, $xr2, $xr3
+410c3574|	xvsubwod.d.wu $xr1, $xr2, $xr3
+418c3574|	xvsubwod.q.du $xr1, $xr2, $xr3
+410c3e74|	xvaddwev.h.bu.b $xr1, $xr2, $xr3
+418c3e74|	xvaddwev.w.hu.h $xr1, $xr2, $xr3
+410c3f74|	xvaddwev.d.wu.w $xr1, $xr2, $xr3
+418c3f74|	xvaddwev.q.du.d $xr1, $xr2, $xr3
+410c4074|	xvaddwod.h.bu.b $xr1, $xr2, $xr3
+418c4074|	xvaddwod.w.hu.h $xr1, $xr2, $xr3
+410c4174|	xvaddwod.d.wu.w $xr1, $xr2, $xr3
+418c4174|	xvaddwod.q.du.d $xr1, $xr2, $xr3
+410c4674|	xvsadd.b $xr1, $xr2, $xr3
+418c4674|	xvsadd.h $xr1, $xr2, $xr3
+410c4774|	xvsadd.w $xr1, $xr2, $xr3
+418c4774|	xvsadd.d $xr1, $xr2, $xr3
+410c4874|	xvssub.b $xr1, $xr2, $xr3
+418c4874|	xvssub.h $xr1, $xr2, $xr3
+410c4974|	xvssub.w $xr1, $xr2, $xr3
+418c4974|	xvssub.d $xr1, $xr2, $xr3
+410c4a74|	xvsadd.bu $xr1, $xr2, $xr3
+418c4a74|	xvsadd.hu $xr1, $xr2, $xr3
+410c4b74|	xvsadd.wu $xr1, $xr2, $xr3
+418c4b74|	xvsadd.du $xr1, $xr2, $xr3
+410c4c74|	xvssub.bu $xr1, $xr2, $xr3
+418c4c74|	xvssub.hu $xr1, $xr2, $xr3
+410c4d74|	xvssub.wu $xr1, $xr2, $xr3
+418c4d74|	xvssub.du $xr1, $xr2, $xr3
+410c5474|	xvhaddw.h.b $xr1, $xr2, $xr3
+418c5474|	xvhaddw.w.h $xr1, $xr2, $xr3
+410c5574|	xvhaddw.d.w $xr1, $xr2, $xr3
+418c5574|	xvhaddw.q.d $xr1, $xr2, $xr3
+410c5674|	xvhsubw.h.b $xr1, $xr2, $xr3
+418c5674|	xvhsubw.w.h $xr1, $xr2, $xr3
+410c5774|	xvhsubw.d.w $xr1, $xr2, $xr3
+418c5774|	xvhsubw.q.d $xr1, $xr2, $xr3
+410c5874|	xvhaddw.hu.bu $xr1, $xr2, $xr3
+418c5874|	xvhaddw.wu.hu $xr1, $xr2, $xr3
+410c5974|	xvhaddw.du.wu $xr1, $xr2, $xr3
+418c5974|	xvhaddw.qu.du $xr1, $xr2, $xr3
+410c5a74|	xvhsubw.hu.bu $xr1, $xr2, $xr3
+418c5a74|	xvhsubw.wu.hu $xr1, $xr2, $xr3
+410c5b74|	xvhsubw.du.wu $xr1, $xr2, $xr3
+418c5b74|	xvhsubw.qu.du $xr1, $xr2, $xr3
+410c5c74|	xvadda.b $xr1, $xr2, $xr3
+418c5c74|	xvadda.h $xr1, $xr2, $xr3
+410c5d74|	xvadda.w $xr1, $xr2, $xr3
+418c5d74|	xvadda.d $xr1, $xr2, $xr3
+410c6074|	xvabsd.b $xr1, $xr2, $xr3
+418c6074|	xvabsd.h $xr1, $xr2, $xr3
+410c6174|	xvabsd.w $xr1, $xr2, $xr3
+418c6174|	xvabsd.d $xr1, $xr2, $xr3
+410c6274|	xvabsd.bu $xr1, $xr2, $xr3
+418c6274|	xvabsd.hu $xr1, $xr2, $xr3
+410c6374|	xvabsd.wu $xr1, $xr2, $xr3
+418c6374|	xvabsd.du $xr1, $xr2, $xr3
+410c6474|	xvavg.b $xr1, $xr2, $xr3
+418c6474|	xvavg.h $xr1, $xr2, $xr3
+410c6574|	xvavg.w $xr1, $xr2, $xr3
+418c6574|	xvavg.d $xr1, $xr2, $xr3
+410c6674|	xvavg.bu $xr1, $xr2, $xr3
+418c6674|	xvavg.hu $xr1, $xr2, $xr3
+
+410c6774|	xvavg.wu $xr1, $xr2, $xr3
+418c6774|	xvavg.du $xr1, $xr2, $xr3
+410c6874|	xvavgr.b $xr1, $xr2, $xr3
+418c6874|	xvavgr.h $xr1, $xr2, $xr3
+410c6974|	xvavgr.w $xr1, $xr2, $xr3
+418c6974|	xvavgr.d $xr1, $xr2, $xr3
+410c6a74|	xvavgr.bu $xr1, $xr2, $xr3
+418c6a74|	xvavgr.hu $xr1, $xr2, $xr3
+410c6b74|	xvavgr.wu $xr1, $xr2, $xr3
+418c6b74|	xvavgr.du $xr1, $xr2, $xr3
+410c7074|	xvmax.b $xr1, $xr2, $xr3
+418c7074|	xvmax.h $xr1, $xr2, $xr3
+410c7174|	xvmax.w $xr1, $xr2, $xr3
+418c7174|	xvmax.d $xr1, $xr2, $xr3
+410c7274|	xvmin.b $xr1, $xr2, $xr3
+418c7274|	xvmin.h $xr1, $xr2, $xr3
+410c7374|	xvmin.w $xr1, $xr2, $xr3
+418c7374|	xvmin.d $xr1, $xr2, $xr3
+410c7474|	xvmax.bu $xr1, $xr2, $xr3
+418c7474|	xvmax.hu $xr1, $xr2, $xr3
+410c7574|	xvmax.wu $xr1, $xr2, $xr3
+418c7574|	xvmax.du $xr1, $xr2, $xr3
+410c7674|	xvmin.bu $xr1, $xr2, $xr3
+418c7674|	xvmin.hu $xr1, $xr2, $xr3
+410c7774|	xvmin.wu $xr1, $xr2, $xr3
+418c7774|	xvmin.du $xr1, $xr2, $xr3
+410c8474|	xvmul.b $xr1, $xr2, $xr3
+418c8474|	xvmul.h $xr1, $xr2, $xr3
+410c8574|	xvmul.w $xr1, $xr2, $xr3
+418c8574|	xvmul.d $xr1, $xr2, $xr3
+410c8674|	xvmuh.b $xr1, $xr2, $xr3
+418c8674|	xvmuh.h $xr1, $xr2, $xr3
+410c8774|	xvmuh.w $xr1, $xr2, $xr3
+418c8774|	xvmuh.d $xr1, $xr2, $xr3
+410c8874|	xvmuh.bu $xr1, $xr2, $xr3
+418c8874|	xvmuh.hu $xr1, $xr2, $xr3
+410c8974|	xvmuh.wu $xr1, $xr2, $xr3
+418c8974|	xvmuh.du $xr1, $xr2, $xr3
+410c9074|	xvmulwev.h.b $xr1, $xr2, $xr3
+418c9074|	xvmulwev.w.h $xr1, $xr2, $xr3
+410c9174|	xvmulwev.d.w $xr1, $xr2, $xr3
+
+418c9174|	xvmulwev.q.d $xr1, $xr2, $xr3
+410c9274|	xvmulwod.h.b $xr1, $xr2, $xr3
+418c9274|	xvmulwod.w.h $xr1, $xr2, $xr3
+410c9374|	xvmulwod.d.w $xr1, $xr2, $xr3
+418c9374|	xvmulwod.q.d $xr1, $xr2, $xr3
+410c9874|	xvmulwev.h.bu $xr1, $xr2, $xr3
+418c9874|	xvmulwev.w.hu $xr1, $xr2, $xr3
+410c9974|	xvmulwev.d.wu $xr1, $xr2, $xr3
+418c9974|	xvmulwev.q.du $xr1, $xr2, $xr3
+410c9a74|	xvmulwod.h.bu $xr1, $xr2, $xr3
+418c9a74|	xvmulwod.w.hu $xr1, $xr2, $xr3
+410c9b74|	xvmulwod.d.wu $xr1, $xr2, $xr3
+418c9b74|	xvmulwod.q.du $xr1, $xr2, $xr3
+410ca074|	xvmulwev.h.bu.b $xr1, $xr2, $xr3
+418ca074|	xvmulwev.w.hu.h $xr1, $xr2, $xr3
+410ca174|	xvmulwev.d.wu.w $xr1, $xr2, $xr3
+418ca174|	xvmulwev.q.du.d $xr1, $xr2, $xr3
+410ca274|	xvmulwod.h.bu.b $xr1, $xr2, $xr3
+418ca274|	xvmulwod.w.hu.h $xr1, $xr2, $xr3
+410ca374|	xvmulwod.d.wu.w $xr1, $xr2, $xr3
+418ca374|	xvmulwod.q.du.d $xr1, $xr2, $xr3
+410ca874|	xvmadd.b $xr1, $xr2, $xr3
+418ca874|	xvmadd.h $xr1, $xr2, $xr3
+410ca974|	xvmadd.w $xr1, $xr2, $xr3
+418ca974|	xvmadd.d $xr1, $xr2, $xr3
+410caa74|	xvmsub.b $xr1, $xr2, $xr3
+418caa74|	xvmsub.h $xr1, $xr2, $xr3
+410cab74|	xvmsub.w $xr1, $xr2, $xr3
+418cab74|	xvmsub.d $xr1, $xr2, $xr3
+410cac74|	xvmaddwev.h.b $xr1, $xr2, $xr3
+418cac74|	xvmaddwev.w.h $xr1, $xr2, $xr3
+410cad74|	xvmaddwev.d.w $xr1, $xr2, $xr3
+418cad74|	xvmaddwev.q.d $xr1, $xr2, $xr3
+410cae74|	xvmaddwod.h.b $xr1, $xr2, $xr3
+418cae74|	xvmaddwod.w.h $xr1, $xr2, $xr3
+410caf74|	xvmaddwod.d.w $xr1, $xr2, $xr3
+418caf74|	xvmaddwod.q.d $xr1, $xr2, $xr3
+410cb474|	xvmaddwev.h.bu $xr1, $xr2, $xr3
+418cb474|	xvmaddwev.w.hu $xr1, $xr2, $xr3
+410cb574|	xvmaddwev.d.wu $xr1, $xr2, $xr3
+418cb574|	xvmaddwev.q.du $xr1, $xr2, $xr3
+410cb674|	xvmaddwod.h.bu $xr1, $xr2, $xr3
+418cb674|	xvmaddwod.w.hu $xr1, $xr2, $xr3
+410cb774|	xvmaddwod.d.wu $xr1, $xr2, $xr3
+418cb774|	xvmaddwod.q.du $xr1, $xr2, $xr3
+410cbc74|	xvmaddwev.h.bu.b $xr1, $xr2, $xr3
+418cbc74|	xvmaddwev.w.hu.h $xr1, $xr2, $xr3
+410cbd74|	xvmaddwev.d.wu.w $xr1, $xr2, $xr3
+418cbd74|	xvmaddwev.q.du.d $xr1, $xr2, $xr3
+410cbe74|	xvmaddwod.h.bu.b $xr1, $xr2, $xr3
+418cbe74|	xvmaddwod.w.hu.h $xr1, $xr2, $xr3
+410cbf74|	xvmaddwod.d.wu.w $xr1, $xr2, $xr3
+418cbf74|	xvmaddwod.q.du.d $xr1, $xr2, $xr3
+410ce074|	xvdiv.b $xr1, $xr2, $xr3
+418ce074|	xvdiv.h $xr1, $xr2, $xr3
+410ce174|	xvdiv.w $xr1, $xr2, $xr3
+418ce174|	xvdiv.d $xr1, $xr2, $xr3
+410ce274|	xvmod.b $xr1, $xr2, $xr3
+418ce274|	xvmod.h $xr1, $xr2, $xr3
+410ce374|	xvmod.w $xr1, $xr2, $xr3
+418ce374|	xvmod.d $xr1, $xr2, $xr3
+410ce474|	xvdiv.bu $xr1, $xr2, $xr3
+418ce474|	xvdiv.hu $xr1, $xr2, $xr3
+410ce574|	xvdiv.wu $xr1, $xr2, $xr3
+418ce574|	xvdiv.du $xr1, $xr2, $xr3
+410ce674|	xvmod.bu $xr1, $xr2, $xr3
+418ce674|	xvmod.hu $xr1, $xr2, $xr3
+410ce774|	xvmod.wu $xr1, $xr2, $xr3
+418ce774|	xvmod.du $xr1, $xr2, $xr3
+410ce874|	xvsll.b $xr1, $xr2, $xr3
+418ce874|	xvsll.h $xr1, $xr2, $xr3
+410ce974|	xvsll.w $xr1, $xr2, $xr3
+418ce974|	xvsll.d $xr1, $xr2, $xr3
+410cea74|	xvsrl.b $xr1, $xr2, $xr3
+418cea74|	xvsrl.h $xr1, $xr2, $xr3
+410ceb74|	xvsrl.w $xr1, $xr2, $xr3
+418ceb74|	xvsrl.d $xr1, $xr2, $xr3
+410cec74|	xvsra.b $xr1, $xr2, $xr3
+418cec74|	xvsra.h $xr1, $xr2, $xr3
+410ced74|	xvsra.w $xr1, $xr2, $xr3
+418ced74|	xvsra.d $xr1, $xr2, $xr3
+410cee74|	xvrotr.b $xr1, $xr2, $xr3
+418cee74|	xvrotr.h $xr1, $xr2, $xr3
+410cef74|	xvrotr.w $xr1, $xr2, $xr3
+418cef74|	xvrotr.d $xr1, $xr2, $xr3
+410cf074|	xvsrlr.b $xr1, $xr2, $xr3
+418cf074|	xvsrlr.h $xr1, $xr2, $xr3
+410cf174|	xvsrlr.w $xr1, $xr2, $xr3
+418cf174|	xvsrlr.d $xr1, $xr2, $xr3
+410cf274|	xvsrar.b $xr1, $xr2, $xr3
+418cf274|	xvsrar.h $xr1, $xr2, $xr3
+410cf374|	xvsrar.w $xr1, $xr2, $xr3
+418cf374|	xvsrar.d $xr1, $xr2, $xr3
+418cf474|	xvsrln.b.h $xr1, $xr2, $xr3
+410cf574|	xvsrln.h.w $xr1, $xr2, $xr3
+418cf574|	xvsrln.w.d $xr1, $xr2, $xr3
+418cf674|	xvsran.b.h $xr1, $xr2, $xr3
+410cf774|	xvsran.h.w $xr1, $xr2, $xr3
+418cf774|	xvsran.w.d $xr1, $xr2, $xr3
+418cf874|	xvsrlrn.b.h $xr1, $xr2, $xr3
+410cf974|	xvsrlrn.h.w $xr1, $xr2, $xr3
+418cf974|	xvsrlrn.w.d $xr1, $xr2, $xr3
+418cfa74|	xvsrarn.b.h $xr1, $xr2, $xr3
+410cfb74|	xvsrarn.h.w $xr1, $xr2, $xr3
+418cfb74|	xvsrarn.w.d $xr1, $xr2, $xr3
+418cfc74|	xvssrln.b.h $xr1, $xr2, $xr3
+410cfd74|	xvssrln.h.w $xr1, $xr2, $xr3
+418cfd74|	xvssrln.w.d $xr1, $xr2, $xr3
+418cfe74|	xvssran.b.h $xr1, $xr2, $xr3
+410cff74|	xvssran.h.w $xr1, $xr2, $xr3
+418cff74|	xvssran.w.d $xr1, $xr2, $xr3
+418c0075|	xvssrlrn.b.h $xr1, $xr2, $xr3
+410c0175|	xvssrlrn.h.w $xr1, $xr2, $xr3
+418c0175|	xvssrlrn.w.d $xr1, $xr2, $xr3
+418c0275|	xvssrarn.b.h $xr1, $xr2, $xr3
+410c0375|	xvssrarn.h.w $xr1, $xr2, $xr3
+418c0375|	xvssrarn.w.d $xr1, $xr2, $xr3
+418c0475|	xvssrln.bu.h $xr1, $xr2, $xr3
+410c0575|	xvssrln.hu.w $xr1, $xr2, $xr3
+418c0575|	xvssrln.wu.d $xr1, $xr2, $xr3
+418c0675|	xvssran.bu.h $xr1, $xr2, $xr3
+410c0775|	xvssran.hu.w $xr1, $xr2, $xr3
+418c0775|	xvssran.wu.d $xr1, $xr2, $xr3
+
+418c0875|	xvssrlrn.bu.h $xr1, $xr2, $xr3
+410c0975|	xvssrlrn.hu.w $xr1, $xr2, $xr3
+418c0975|	xvssrlrn.wu.d $xr1, $xr2, $xr3
+418c0a75|	xvssrarn.bu.h $xr1, $xr2, $xr3
+410c0b75|	xvssrarn.hu.w $xr1, $xr2, $xr3
+418c0b75|	xvssrarn.wu.d $xr1, $xr2, $xr3
+410c0c75|	xvbitclr.b $xr1, $xr2, $xr3
+418c0c75|	xvbitclr.h $xr1, $xr2, $xr3
+410c0d75|	xvbitclr.w $xr1, $xr2, $xr3
+418c0d75|	xvbitclr.d $xr1, $xr2, $xr3
+410c0e75|	xvbitset.b $xr1, $xr2, $xr3
+418c0e75|	xvbitset.h $xr1, $xr2, $xr3
+410c0f75|	xvbitset.w $xr1, $xr2, $xr3
+418c0f75|	xvbitset.d $xr1, $xr2, $xr3
+410c1075|	xvbitrev.b $xr1, $xr2, $xr3
+418c1075|	xvbitrev.h $xr1, $xr2, $xr3
+410c1175|	xvbitrev.w $xr1, $xr2, $xr3
+418c1175|	xvbitrev.d $xr1, $xr2, $xr3
+410c1675|	xvpackev.b $xr1, $xr2, $xr3
+418c1675|	xvpackev.h $xr1, $xr2, $xr3
+410c1775|	xvpackev.w $xr1, $xr2, $xr3
+418c1775|	xvpackev.d $xr1, $xr2, $xr3
+410c1875|	xvpackod.b $xr1, $xr2, $xr3
+418c1875|	xvpackod.h $xr1, $xr2, $xr3
+410c1975|	xvpackod.w $xr1, $xr2, $xr3
+418c1975|	xvpackod.d $xr1, $xr2, $xr3
+410c1a75|	xvilvl.b $xr1, $xr2, $xr3
+418c1a75|	xvilvl.h $xr1, $xr2, $xr3
+410c1b75|	xvilvl.w $xr1, $xr2, $xr3
+418c1b75|	xvilvl.d $xr1, $xr2, $xr3
+410c1c75|	xvilvh.b $xr1, $xr2, $xr3
+418c1c75|	xvilvh.h $xr1, $xr2, $xr3
+410c1d75|	xvilvh.w $xr1, $xr2, $xr3
+418c1d75|	xvilvh.d $xr1, $xr2, $xr3
+410c1e75|	xvpickev.b $xr1, $xr2, $xr3
+418c1e75|	xvpickev.h $xr1, $xr2, $xr3
+410c1f75|	xvpickev.w $xr1, $xr2, $xr3
+418c1f75|	xvpickev.d $xr1, $xr2, $xr3
+410c2075|	xvpickod.b $xr1, $xr2, $xr3
+418c2075|	xvpickod.h $xr1, $xr2, $xr3
+410c2175|	xvpickod.w $xr1, $xr2, $xr3
+
+418c2175|	xvpickod.d $xr1, $xr2, $xr3
+41102275|	xvreplve.b $xr1, $xr2, $a0
+41902275|	xvreplve.h $xr1, $xr2, $a0
+41102375|	xvreplve.w $xr1, $xr2, $a0
+41902375|	xvreplve.d $xr1, $xr2, $a0
+410c2675|	xvand.v $xr1, $xr2, $xr3
+418c2675|	xvor.v $xr1, $xr2, $xr3
+410c2775|	xvxor.v $xr1, $xr2, $xr3
+418c2775|	xvnor.v $xr1, $xr2, $xr3
+410c2875|	xvandn.v $xr1, $xr2, $xr3
+418c2875|	xvorn.v $xr1, $xr2, $xr3
+410c2b75|	xvfrstp.b $xr1, $xr2, $xr3
+418c2b75|	xvfrstp.h $xr1, $xr2, $xr3
+410c2d75|	xvadd.q $xr1, $xr2, $xr3
+418c2d75|	xvsub.q $xr1, $xr2, $xr3
+410c2e75|	xvsigncov.b $xr1, $xr2, $xr3
+418c2e75|	xvsigncov.h $xr1, $xr2, $xr3
+410c2f75|	xvsigncov.w $xr1, $xr2, $xr3
+418c2f75|	xvsigncov.d $xr1, $xr2, $xr3
+418c3075|	xvfadd.s $xr1, $xr2, $xr3
+410c3175|	xvfadd.d $xr1, $xr2, $xr3
+418c3275|	xvfsub.s $xr1, $xr2, $xr3
+410c3375|	xvfsub.d $xr1, $xr2, $xr3
+418c3875|	xvfmul.s $xr1, $xr2, $xr3
+410c3975|	xvfmul.d $xr1, $xr2, $xr3
+418c3a75|	xvfdiv.s $xr1, $xr2, $xr3
+410c3b75|	xvfdiv.d $xr1, $xr2, $xr3
+418c3c75|	xvfmax.s $xr1, $xr2, $xr3
+410c3d75|	xvfmax.d $xr1, $xr2, $xr3
+418c3e75|	xvfmin.s $xr1, $xr2, $xr3
+410c3f75|	xvfmin.d $xr1, $xr2, $xr3
+418c4075|	xvfmaxa.s $xr1, $xr2, $xr3
+410c4175|	xvfmaxa.d $xr1, $xr2, $xr3
+418c4275|	xvfmina.s $xr1, $xr2, $xr3
+410c4375|	xvfmina.d $xr1, $xr2, $xr3
+410c4675|	xvfcvt.h.s $xr1, $xr2, $xr3
+418c4675|	xvfcvt.s.d $xr1, $xr2, $xr3
+410c4875|	xvffint.s.l $xr1, $xr2, $xr3
+418c4975|	xvftint.w.d $xr1, $xr2, $xr3
+410c4a75|	xvftintrm.w.d $xr1, $xr2, $xr3
+418c4a75|	xvftintrp.w.d $xr1, $xr2, $xr3
+410c4b75|	xvftintrz.w.d $xr1, $xr2, $xr3
+418c4b75|	xvftintrne.w.d $xr1, $xr2, $xr3
+418c7a75|	xvshuf.h $xr1, $xr2, $xr3
+410c7b75|	xvshuf.w $xr1, $xr2, $xr3
+418c7b75|	xvshuf.d $xr1, $xr2, $xr3
+410c7d75|	xvperm.w $xr1, $xr2, $xr3
+
+417c8076|	xvseqi.b $xr1, $xr2, -1
+41fc8076|	xvseqi.h $xr1, $xr2, -1
+417c8176|	xvseqi.w $xr1, $xr2, -1
+41fc8176|	xvseqi.d $xr1, $xr2, -1
+417c8276|	xvslei.b $xr1, $xr2, -1
+41fc8276|	xvslei.h $xr1, $xr2, -1
+417c8376|	xvslei.w $xr1, $xr2, -1
+41fc8376|	xvslei.d $xr1, $xr2, -1
+41048476|	xvslei.bu $xr1, $xr2, 0x1
+41848476|	xvslei.hu $xr1, $xr2, 0x1
+41048576|	xvslei.wu $xr1, $xr2, 0x1
+41848576|	xvslei.du $xr1, $xr2, 0x1
+417c8676|	xvslti.b $xr1, $xr2, -1
+41fc8676|	xvslti.h $xr1, $xr2, -1
+417c8776|	xvslti.w $xr1, $xr2, -1
+41fc8776|	xvslti.d $xr1, $xr2, -1
+41048876|	xvslti.bu $xr1, $xr2, 0x1
+41848876|	xvslti.hu $xr1, $xr2, 0x1
+41048976|	xvslti.wu $xr1, $xr2, 0x1
+41848976|	xvslti.du $xr1, $xr2, 0x1
+41048a76|	xvaddi.bu $xr1, $xr2, 0x1
+41848a76|	xvaddi.hu $xr1, $xr2, 0x1
+41048b76|	xvaddi.wu $xr1, $xr2, 0x1
+41848b76|	xvaddi.du $xr1, $xr2, 0x1
+41048c76|	xvsubi.bu $xr1, $xr2, 0x1
+41848c76|	xvsubi.hu $xr1, $xr2, 0x1
+41048d76|	xvsubi.wu $xr1, $xr2, 0x1
+41848d76|	xvsubi.du $xr1, $xr2, 0x1
+41048e76|	xvbsll.v $xr1, $xr2, 0x1
+41848e76|	xvbsrl.v $xr1, $xr2, 0x1
+417c9076|	xvmaxi.b $xr1, $xr2, -1
+41fc9076|	xvmaxi.h $xr1, $xr2, -1
+417c9176|	xvmaxi.w $xr1, $xr2, -1
+41fc9176|	xvmaxi.d $xr1, $xr2, -1
+417c9276|	xvmini.b $xr1, $xr2, -1
+41fc9276|	xvmini.h $xr1, $xr2, -1
+417c9376|	xvmini.w $xr1, $xr2, -1
+41fc9376|	xvmini.d $xr1, $xr2, -1
+41049476|	xvmaxi.bu $xr1, $xr2, 0x1
+41849476|	xvmaxi.hu $xr1, $xr2, 0x1
+41049576|	xvmaxi.wu $xr1, $xr2, 0x1
+41849576|	xvmaxi.du $xr1, $xr2, 0x1
+41049676|	xvmini.bu $xr1, $xr2, 0x1
+41849676|	xvmini.hu $xr1, $xr2, 0x1
+41049776|	xvmini.wu $xr1, $xr2, 0x1
+41849776|	xvmini.du $xr1, $xr2, 0x1
+41049a76|	xvfrstpi.b $xr1, $xr2, 0x1
+41849a76|	xvfrstpi.h $xr1, $xr2, 0x1
+
+41009c76|	xvclo.b $xr1, $xr2
+41049c76|	xvclo.h $xr1, $xr2
+41089c76|	xvclo.w $xr1, $xr2
+410c9c76|	xvclo.d $xr1, $xr2
+41109c76|	xvclz.b $xr1, $xr2
+41149c76|	xvclz.h $xr1, $xr2
+41189c76|	xvclz.w $xr1, $xr2
+411c9c76|	xvclz.d $xr1, $xr2
+41209c76|	xvpcnt.b $xr1, $xr2
+41249c76|	xvpcnt.h $xr1, $xr2
+41289c76|	xvpcnt.w $xr1, $xr2
+412c9c76|	xvpcnt.d $xr1, $xr2
+41309c76|	xvneg.b $xr1, $xr2
+41349c76|	xvneg.h $xr1, $xr2
+41389c76|	xvneg.w $xr1, $xr2
+413c9c76|	xvneg.d $xr1, $xr2
+41409c76|	xvmskltz.b $xr1, $xr2
+41449c76|	xvmskltz.h $xr1, $xr2
+41489c76|	xvmskltz.w $xr1, $xr2
+414c9c76|	xvmskltz.d $xr1, $xr2
+41509c76|	xvmskgez.b $xr1, $xr2
+41609c76|	xvmsknz.b $xr1, $xr2
+
+21989c76|	xvseteqz.v $fcc1, $xr1
+219c9c76|	xvsetnez.v $fcc1, $xr1
+21a09c76|	xvsetanyeqz.b $fcc1, $xr1
+21a49c76|	xvsetanyeqz.h $fcc1, $xr1
+21a89c76|	xvsetanyeqz.w $fcc1, $xr1
+21ac9c76|	xvsetanyeqz.d $fcc1, $xr1
+21b09c76|	xvsetallnez.b $fcc1, $xr1
+21b49c76|	xvsetallnez.h $fcc1, $xr1
+21b89c76|	xvsetallnez.w $fcc1, $xr1
+21bc9c76|	xvsetallnez.d $fcc1, $xr1
+
+41c49c76|	xvflogb.s $xr1, $xr2
+41c89c76|	xvflogb.d $xr1, $xr2
+41d49c76|	xvfclass.s $xr1, $xr2
+41d89c76|	xvfclass.d $xr1, $xr2
+41e49c76|	xvfsqrt.s $xr1, $xr2
+41e89c76|	xvfsqrt.d $xr1, $xr2
+41f49c76|	xvfrecip.s $xr1, $xr2
+41f89c76|	xvfrecip.d $xr1, $xr2
+41049d76|	xvfrsqrt.s $xr1, $xr2
+41089d76|	xvfrsqrt.d $xr1, $xr2
+41149d76|	xvfrecipe.s $xr1, $xr2
+41189d76|	xvfrecipe.d $xr1, $xr2
+41249d76|	xvfrsqrte.s $xr1, $xr2
+41289d76|	xvfrsqrte.d $xr1, $xr2
+41349d76|	xvfrint.s $xr1, $xr2
+41389d76|	xvfrint.d $xr1, $xr2
+41449d76|	xvfrintrm.s $xr1, $xr2
+41489d76|	xvfrintrm.d $xr1, $xr2
+41549d76|	xvfrintrp.s $xr1, $xr2
+41589d76|	xvfrintrp.d $xr1, $xr2
+41649d76|	xvfrintrz.s $xr1, $xr2
+41689d76|	xvfrintrz.d $xr1, $xr2
+41749d76|	xvfrintrne.s $xr1, $xr2
+41789d76|	xvfrintrne.d $xr1, $xr2
+
+41e89d76|	xvfcvtl.s.h $xr1, $xr2
+41ec9d76|	xvfcvth.s.h $xr1, $xr2
+41f09d76|	xvfcvtl.d.s $xr1, $xr2
+41f49d76|	xvfcvth.d.s $xr1, $xr2
+41009e76|	xvffint.s.w $xr1, $xr2
+41049e76|	xvffint.s.wu $xr1, $xr2
+41089e76|	xvffint.d.l $xr1, $xr2
+410c9e76|	xvffint.d.lu $xr1, $xr2
+41109e76|	xvffintl.d.w $xr1, $xr2
+41149e76|	xvffinth.d.w $xr1, $xr2
+41309e76|	xvftint.w.s $xr1, $xr2
+41349e76|	xvftint.l.d $xr1, $xr2
+41389e76|	xvftintrm.w.s $xr1, $xr2
+413c9e76|	xvftintrm.l.d $xr1, $xr2
+41409e76|	xvftintrp.w.s $xr1, $xr2
+41449e76|	xvftintrp.l.d $xr1, $xr2
+41489e76|	xvftintrz.w.s $xr1, $xr2
+414c9e76|	xvftintrz.l.d $xr1, $xr2
+41509e76|	xvftintrne.w.s $xr1, $xr2
+41549e76|	xvftintrne.l.d $xr1, $xr2
+41589e76|	xvftint.wu.s $xr1, $xr2
+415c9e76|	xvftint.lu.d $xr1, $xr2
+41709e76|	xvftintrz.wu.s $xr1, $xr2
+41749e76|	xvftintrz.lu.d $xr1, $xr2
+41809e76|	xvftintl.l.s $xr1, $xr2
+41849e76|	xvftinth.l.s $xr1, $xr2
+41889e76|	xvftintrml.l.s $xr1, $xr2
+418c9e76|	xvftintrmh.l.s $xr1, $xr2
+41909e76|	xvftintrpl.l.s $xr1, $xr2
+41949e76|	xvftintrph.l.s $xr1, $xr2
+41989e76|	xvftintrzl.l.s $xr1, $xr2
+419c9e76|	xvftintrzh.l.s $xr1, $xr2
+41a09e76|	xvftintrnel.l.s $xr1, $xr2
+41a49e76|	xvftintrneh.l.s $xr1, $xr2
+41e09e76|	xvexth.h.b $xr1, $xr2
+41e49e76|	xvexth.w.h $xr1, $xr2
+41e89e76|	xvexth.d.w $xr1, $xr2
+41ec9e76|	xvexth.q.d $xr1, $xr2
+41f09e76|	xvexth.hu.bu $xr1, $xr2
+41f49e76|	xvexth.wu.hu $xr1, $xr2
+41f89e76|	xvexth.du.wu $xr1, $xr2
+41fc9e76|	xvexth.qu.du $xr1, $xr2
+81009f76|	xvreplgr2vr.b $xr1, $a0
+81049f76|	xvreplgr2vr.h $xr1, $a0
+81089f76|	xvreplgr2vr.w $xr1, $a0
+810c9f76|	xvreplgr2vr.d $xr1, $a0
+41109f76|	vext2xv.h.b $xr1, $xr2
+41149f76|	vext2xv.w.b $xr1, $xr2
+41189f76|	vext2xv.d.b $xr1, $xr2
+411c9f76|	vext2xv.w.h $xr1, $xr2
+41209f76|	vext2xv.d.h $xr1, $xr2
+41249f76|	vext2xv.d.w $xr1, $xr2
+41289f76|	vext2xv.hu.bu $xr1, $xr2
+412c9f76|	vext2xv.wu.bu $xr1, $xr2
+41309f76|	vext2xv.du.bu $xr1, $xr2
+41349f76|	vext2xv.wu.hu $xr1, $xr2
+41389f76|	vext2xv.du.hu $xr1, $xr2
+413c9f76|	vext2xv.du.wu $xr1, $xr2
+
+41849f76|	xvhseli.d $xr1, $xr2, 0x1
+4124a076|	xvrotri.b $xr1, $xr2, 0x1
+4144a076|	xvrotri.h $xr1, $xr2, 0x1
+4184a076|	xvrotri.w $xr1, $xr2, 0x1
+4104a176|	xvrotri.d $xr1, $xr2, 0x1
+4124a476|	xvsrlri.b $xr1, $xr2, 0x1
+4144a476|	xvsrlri.h $xr1, $xr2, 0x1
+4184a476|	xvsrlri.w $xr1, $xr2, 0x1
+4104a576|	xvsrlri.d $xr1, $xr2, 0x1
+4124a876|	xvsrari.b $xr1, $xr2, 0x1
+4144a876|	xvsrari.h $xr1, $xr2, 0x1
+4184a876|	xvsrari.w $xr1, $xr2, 0x1
+4104a976|	xvsrari.d $xr1, $xr2, 0x1
+81c4eb76|	xvinsgr2vr.w $xr1, $a0, 0x1
+81e4eb76|	xvinsgr2vr.d $xr1, $a0, 0x1
+24c4ef76|	xvpickve2gr.w $a0, $xr1, 0x1
+24e4ef76|	xvpickve2gr.d $a0, $xr1, 0x1
+24c4f376|	xvpickve2gr.wu $a0, $xr1, 0x1
+24e4f376|	xvpickve2gr.du $a0, $xr1, 0x1
+4184f776|	xvrepl128vei.b $xr1, $xr2, 0x1
+41c4f776|	xvrepl128vei.h $xr1, $xr2, 0x1
+41e4f776|	xvrepl128vei.w $xr1, $xr2, 0x1
+41f4f776|	xvrepl128vei.d $xr1, $xr2, 0x1
+41c4ff76|	xvinsve0.w $xr1, $xr2, 0x1
+41e4ff76|	xvinsve0.d $xr1, $xr2, 0x1
+41c40377|	xvpickve.w $xr1, $xr2, 0x1
+41e40377|	xvpickve.d $xr1, $xr2, 0x1
+
+41000777|	xvreplve0.b $xr1, $xr2
+41800777|	xvreplve0.h $xr1, $xr2
+41c00777|	xvreplve0.w $xr1, $xr2
+41e00777|	xvreplve0.d $xr1, $xr2
+41f00777|	xvreplve0.q $xr1, $xr2
+
+41240877|	xvsllwil.h.b $xr1, $xr2, 0x1
+41440877|	xvsllwil.w.h $xr1, $xr2, 0x1
+41840877|	xvsllwil.d.w $xr1, $xr2, 0x1
+41000977|	xvextl.q.d $xr1, $xr2
+41240c77|	xvsllwil.hu.bu $xr1, $xr2, 0x1
+41440c77|	xvsllwil.wu.hu $xr1, $xr2, 0x1
+41840c77|	xvsllwil.du.wu $xr1, $xr2, 0x1
+41000d77|	xvextl.qu.du $xr1, $xr2
+41241077|	xvbitclri.b $xr1, $xr2, 0x1
+41441077|	xvbitclri.h $xr1, $xr2, 0x1
+41841077|	xvbitclri.w $xr1, $xr2, 0x1
+41041177|	xvbitclri.d $xr1, $xr2, 0x1
+41241477|	xvbitseti.b $xr1, $xr2, 0x1
+41441477|	xvbitseti.h $xr1, $xr2, 0x1
+41841477|	xvbitseti.w $xr1, $xr2, 0x1
+41041577|	xvbitseti.d $xr1, $xr2, 0x1
+41241877|	xvbitrevi.b $xr1, $xr2, 0x1
+41441877|	xvbitrevi.h $xr1, $xr2, 0x1
+41841877|	xvbitrevi.w $xr1, $xr2, 0x1
+41041977|	xvbitrevi.d $xr1, $xr2, 0x1
+41242477|	xvsat.b $xr1, $xr2, 0x1
+41442477|	xvsat.h $xr1, $xr2, 0x1
+41842477|	xvsat.w $xr1, $xr2, 0x1
+41042577|	xvsat.d $xr1, $xr2, 0x1
+41242877|	xvsat.bu $xr1, $xr2, 0x1
+41442877|	xvsat.hu $xr1, $xr2, 0x1
+41842877|	xvsat.wu $xr1, $xr2, 0x1
+41042977|	xvsat.du $xr1, $xr2, 0x1
+41242c77|	xvslli.b $xr1, $xr2, 0x1
+41442c77|	xvslli.h $xr1, $xr2, 0x1
+41842c77|	xvslli.w $xr1, $xr2, 0x1
+41042d77|	xvslli.d $xr1, $xr2, 0x1
+41243077|	xvsrli.b $xr1, $xr2, 0x1
+41443077|	xvsrli.h $xr1, $xr2, 0x1
+41843077|	xvsrli.w $xr1, $xr2, 0x1
+41043177|	xvsrli.d $xr1, $xr2, 0x1
+41243477|	xvsrai.b $xr1, $xr2, 0x1
+41443477|	xvsrai.h $xr1, $xr2, 0x1
+41843477|	xvsrai.w $xr1, $xr2, 0x1
+41043577|	xvsrai.d $xr1, $xr2, 0x1
+41444077|	xvsrlni.b.h $xr1, $xr2, 0x1
+41844077|	xvsrlni.h.w $xr1, $xr2, 0x1
+41044177|	xvsrlni.w.d $xr1, $xr2, 0x1
+41044277|	xvsrlni.d.q $xr1, $xr2, 0x1
+41444477|	xvsrlrni.b.h $xr1, $xr2, 0x1
+41844477|	xvsrlrni.h.w $xr1, $xr2, 0x1
+
+41044577|	xvsrlrni.w.d $xr1, $xr2, 0x1
+41044677|	xvsrlrni.d.q $xr1, $xr2, 0x1
+41444877|	xvssrlni.b.h $xr1, $xr2, 0x1
+41844877|	xvssrlni.h.w $xr1, $xr2, 0x1
+41044977|	xvssrlni.w.d $xr1, $xr2, 0x1
+41044a77|	xvssrlni.d.q $xr1, $xr2, 0x1
+41444c77|	xvssrlni.bu.h $xr1, $xr2, 0x1
+41844c77|	xvssrlni.hu.w $xr1, $xr2, 0x1
+41044d77|	xvssrlni.wu.d $xr1, $xr2, 0x1
+41044e77|	xvssrlni.du.q $xr1, $xr2, 0x1
+41445077|	xvssrlrni.b.h $xr1, $xr2, 0x1
+41845077|	xvssrlrni.h.w $xr1, $xr2, 0x1
+41045177|	xvssrlrni.w.d $xr1, $xr2, 0x1
+41045277|	xvssrlrni.d.q $xr1, $xr2, 0x1
+41445477|	xvssrlrni.bu.h $xr1, $xr2, 0x1
+41845477|	xvssrlrni.hu.w $xr1, $xr2, 0x1
+41045577|	xvssrlrni.wu.d $xr1, $xr2, 0x1
+41045677|	xvssrlrni.du.q $xr1, $xr2, 0x1
+41445877|	xvsrani.b.h $xr1, $xr2, 0x1
+41845877|	xvsrani.h.w $xr1, $xr2, 0x1
+41045977|	xvsrani.w.d $xr1, $xr2, 0x1
+41045a77|	xvsrani.d.q $xr1, $xr2, 0x1
+41445c77|	xvsrarni.b.h $xr1, $xr2, 0x1
+41845c77|	xvsrarni.h.w $xr1, $xr2, 0x1
+41045d77|	xvsrarni.w.d $xr1, $xr2, 0x1
+41045e77|	xvsrarni.d.q $xr1, $xr2, 0x1
+41446077|	xvssrani.b.h $xr1, $xr2, 0x1
+41846077|	xvssrani.h.w $xr1, $xr2, 0x1
+41046177|	xvssrani.w.d $xr1, $xr2, 0x1
+41046277|	xvssrani.d.q $xr1, $xr2, 0x1
+41446477|	xvssrani.bu.h $xr1, $xr2, 0x1
+41846477|	xvssrani.hu.w $xr1, $xr2, 0x1
+41046577|	xvssrani.wu.d $xr1, $xr2, 0x1
+41046677|	xvssrani.du.q $xr1, $xr2, 0x1
+41446877|	xvssrarni.b.h $xr1, $xr2, 0x1
+41846877|	xvssrarni.h.w $xr1, $xr2, 0x1
+41046977|	xvssrarni.w.d $xr1, $xr2, 0x1
+41046a77|	xvssrarni.d.q $xr1, $xr2, 0x1
+41446c77|	xvssrarni.bu.h $xr1, $xr2, 0x1
+41846c77|	xvssrarni.hu.w $xr1, $xr2, 0x1
+41046d77|	xvssrarni.wu.d $xr1, $xr2, 0x1
+
+41046e77|	xvssrarni.du.q $xr1, $xr2, 0x1
+41048077|	xvextrins.d $xr1, $xr2, 0x1
+41048477|	xvextrins.w $xr1, $xr2, 0x1
+41048877|	xvextrins.h $xr1, $xr2, 0x1
+41048c77|	xvextrins.b $xr1, $xr2, 0x1
+41049077|	xvshuf4i.b $xr1, $xr2, 0x1
+41049477|	xvshuf4i.h $xr1, $xr2, 0x1
+41049877|	xvshuf4i.w $xr1, $xr2, 0x1
+41049c77|	xvshuf4i.d $xr1, $xr2, 0x1
+4104c477|	xvbitseli.b $xr1, $xr2, 0x1
+4104d077|	xvandi.b $xr1, $xr2, 0x1
+4104d477|	xvori.b $xr1, $xr2, 0x1
+4104d877|	xvxori.b $xr1, $xr2, 0x1
+4104dc77|	xvnori.b $xr1, $xr2, 0x1
+2100e077|	xvldi $xr1, 1
+4104e477|	xvpermi.w $xr1, $xr2, 0x1
+4104e877|	xvpermi.d $xr1, $xr2, 0x1
+4104ec77|	xvpermi.q $xr1, $xr2, 0x1
