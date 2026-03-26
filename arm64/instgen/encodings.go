@@ -692,4 +692,290 @@ Vn: [5:10)`: {"encodeVn510", `return (v & 31) << 5, true`, "enc_Vn"},
 	`Is the number [0-31] of the source and destination SIMD&FP register, encoded in the "Vdn" field.
 bit range mappings:
 Vdn: [0:5)`: {"encodeVdn05", `return v & 31, true`, "enc_Vdn"},
+	`For the "16-bit to 32-bit" variant: is the immediate index of a pair of 16-bit elements within each 128-bit vector segment, in the range 0 to 3, encoded in the "i2" field.
+bit range mappings:
+i2: [19:21)
+`: {"encodeI2_1921_16To32Bit", `if v > 3 {
+		return 0, false
+	}
+	return v << 19, true`, "enc_i2"},
+	`For the "16-bit to 64-bit" variant: is the immediate index of a 64-bit group of four 16-bit values within each 128-bit vector segment, in the range 0 to 1, encoded in the "i1" field.
+bit range mappings:
+i1: [20:21)
+`: {"encodeI1_2021_16To64Bit", `if v > 1 {
+		return 0, false
+	}
+	return v << 20, true`, "enc_i1"},
+	`For the "16-bit to 64-bit" variant: is the name of the second source scalable vector register Z0-Z15, encoded in the "Zm" field.
+bit range mappings:
+Zm: [16:20)
+`: {"encodeZm1620_16To64Bit", `if v > 15 {
+		return 0, false
+	}
+	return v << 16, true`, "enc_Zm"},
+	`For the "16-bit" and "32-bit" variants: is the name of the second source scalable vector register Z0-Z7, encoded in the "Zm" field.
+bit range mappings:
+Zm: [16:19)
+`: {"encodeZm1619_16Bit32Bit", `if v > 7 {
+		return 0, false
+	}
+	return v << 16, true`, "enc_Zm"},
+	`For the "16-bit" variant: is the element index, in the range 0 to 7, encoded in the "i3h:i3l" fields.
+bit range mappings:
+i3h: [22:23)
+i3l: [19:21)
+`: {"encodeI3hI3l_1923_16Bit", `if v > 7 {
+		return 0, false
+	}
+	return (v&3)<<19 | (v>>2)<<22, true`, "enc_i3h_i3l"},
+	`For the "32-bit" variant: is the element index, in the range 0 to 3, encoded in the "i2" field.
+bit range mappings:
+i2: [19:21)
+`: {"encodeI2_1921_32Bit", `if v > 3 {
+		return 0, false
+	}
+	return v << 19, true`, "enc_i2"},
+	`For the "32-bit" variant: is the element index, in the range 0 to 7, encoded in the "i3h:i3l" fields.
+bit range mappings:
+i3h: [19:21)
+i3l: [11:12)
+`: {"encodeI3hI3l_1119_32Bit", `if v > 7 {
+		return 0, false
+	}
+	return (v&1)<<11 | (v>>1)<<19, true`, "enc_i3h_i3l"},
+	`For the "32-bit" variant: is the name of the second source scalable vector register Z0-Z7, encoded in the "Zm" field.
+bit range mappings:
+Zm: [16:19)
+`: {"encodeZm1619_32Bit", `if v > 7 {
+		return 0, false
+	}
+	return v << 16, true`, "enc_Zm"},
+	`For the "64-bit" variant: is the element index, in the range 0 to 1, encoded in the "i1" field.
+bit range mappings:
+i1: [20:21)
+`: {"encodeI1_2021_64Bit", `if v > 1 {
+		return 0, false
+	}
+	return v << 20, true`, "enc_i1"},
+	`For the "64-bit" variant: is the element index, in the range 0 to 3, encoded in the "i2h:i2l" fields.
+bit range mappings:
+i2h: [20:21)
+i2l: [11:12)
+`: {"encodeI2hI2l_1120_64Bit", `if v > 3 {
+		return 0, false
+	}
+	return (v&1)<<11 | (v>>1)<<20, true`, "enc_i2h_i2l"},
+	`For the "64-bit" variant: is the name of the second source scalable vector register Z0-Z15, encoded in the "Zm" field.
+bit range mappings:
+Zm: [16:20)
+`: {"encodeZm1620_64Bit", `if v > 15 {
+		return 0, false
+	}
+	return v << 16, true`, "enc_Zm"},
+	`For the "8-bit to 16-bit" variant: is the immediate index of a pair of 8-bit elements within each 128-bit vector segment, in the range 0 to 7, encoded in the "i3h:i3l" fields.
+bit range mappings:
+i3h: [22:23)
+i3l: [19:21)
+`: {"encodeI3hI3l_1923_8To16Bit", `if v > 7 {
+		return 0, false
+	}
+	return (v&3)<<19 | (v>>2)<<22, true`, "enc_i3h_i3l"},
+	`For the "8-bit to 32-bit" variant: is the immediate index of a 32-bit group of four 8-bit values within each 128-bit vector segment, in the range 0 to 3, encoded in the "i2" field.
+bit range mappings:
+i2: [19:21)
+`: {"encodeI2_1921_8To32Bit", `if v > 3 {
+		return 0, false
+	}
+	return v << 19, true`, "enc_i2"},
+	`For the "8-bit to 32-bit" variant: is the name of the second source scalable vector register Z0-Z7, encoded in the "Zm" field.
+bit range mappings:
+Zm: [16:19)
+`: {"encodeZm1619_8To32Bit", `if v > 7 {
+		return 0, false
+	}
+	return v << 16, true`, "enc_Zm"},
+	`For the "Double-precision" variant: is the immediate index, in the range 0 to 1, encoded in the "i1" field.
+bit range mappings:
+i1: [20:21)
+`: {"encodeI1_2021_DoublePrecision", `if v > 1 {
+		return 0, false
+	}
+	return v << 20, true`, "enc_i1"},
+	`For the "Double-precision" variant: is the name of the second source scalable vector register Z0-Z15, encoded in the "Zm" field.
+bit range mappings:
+Zm: [16:20)
+`: {"encodeZm1620_DoublePrecision", `if v > 15 {
+		return 0, false
+	}
+	return v << 16, true`, "enc_Zm"},
+	`For the "Doubleword" variant: is the optional portion index, in the range 0 to 7, defaulting to 0, encoded in the "i3h:i3l" fields.
+bit range mappings:
+i3h: [22:23)
+i3l: [17:19)
+`: {"encodeI3hI3l_1722_Doubleword", `if v > 7 {
+		return 0, false
+	}
+	return (v&3)<<17 | (v>>2)<<22, true`, "enc_i3h_i3l"},
+	`For the "Half-precision" and "Single-precision" variants: is the name of the second source scalable vector register Z0-Z7, encoded in the "Zm" field.
+bit range mappings:
+Zm: [16:19)
+`: {"encodeZm1619_HalfSinglePrecision", `if v > 7 {
+		return 0, false
+	}
+	return v << 16, true`, "enc_Zm"},
+	`For the "Half-precision" variant: is the immediate index, in the range 0 to 7, encoded in the "i3h:i3l" fields.
+bit range mappings:
+i3h: [22:23)
+i3l: [19:21)
+`: {"encodeI3hI3l_1923_HalfPrecision", `if v > 7 {
+		return 0, false
+	}
+	return (v&3)<<19 | (v>>2)<<22, true`, "enc_i3h_i3l"},
+	`For the "Halfword" variant: is the optional portion index, in the range 0 to 1, defaulting to 0, encoded in the "i1" field.
+bit range mappings:
+i1: [17:18)
+`: {"encodeI1_1718_Halfword", `if v > 1 {
+		return 0, false
+	}
+	return v << 17, true`, "enc_i1"},
+	`For the "Single-precision" variant: is the immediate index, in the range 0 to 3, encoded in the "i2" field.
+bit range mappings:
+i2: [19:21)
+`: {"encodeI2_1921_SinglePrecision", `if v > 3 {
+		return 0, false
+	}
+	return v << 19, true`, "enc_i2"},
+	`For the "Word" variant: is the optional portion index, in the range 0 to 3, defaulting to 0, encoded in the "i2" field.
+bit range mappings:
+i2: [17:19)
+`: {"encodeI2_1719_Word", `if v > 3 {
+		return 0, false
+	}
+	return v << 17, true`, "enc_i2"},
+	`Is the immediate index of a 32-bit group of four 8-bit values within each 128-bit vector segment, in the range 0 to 3, encoded in the "i2" field.
+bit range mappings:
+i2: [19:21)
+`: {"encodeI2_1921_8BitGroup", `if v > 3 {
+		return 0, false
+	}
+	return v << 19, true`, "enc_i2"},
+	`Is the immediate index of a pair of 16-bit elements within each 128-bit vector segment, in the range 0 to 3, encoded in the "i2" field.
+bit range mappings:
+i2: [19:21)
+`: {"encodeI2_1921_Pair16Bit", `if v > 3 {
+		return 0, false
+	}
+	return v << 19, true`, "enc_i2"},
+	`Is the immediate index of a pair of 8-bit elements within each 128-bit vector segment, in the range 0 to 7, encoded in the "i3h:i3l" fields.
+bit range mappings:
+i3h: [19:21)
+i3l: [11:12)
+`: {"encodeI3hI3l_1119_Pair8Bit", `if v > 7 {
+		return 0, false
+	}
+	return (v&1)<<11 | (v>>1)<<19, true`, "enc_i3h_i3l"},
+	`Is the immediate index, in the range 0 to 15, encoded in the "i4h:i4l" fields.
+bit range mappings:
+i4h: [19:21)
+i4l: [10:12)
+`: {"encodeI4hI4l_1019", `if v > 15 {
+		return 0, false
+	}
+	return (v&3)<<10 | (v>>2)<<19, true`, "enc_i4h_i4l"},
+	`Is the immediate index, in the range 0 to 7, encoded in the "i3h:i3l" fields.
+bit range mappings:
+i3h: [19:21)
+i3l: [11:12)
+`: {"encodeI3hI3l_1119", `if v > 7 {
+		return 0, false
+	}
+	return (v&1)<<11 | (v>>1)<<19, true`, "enc_i3h_i3l"},
+	`Is the immediate index, in the range 0 to 7, encoded in the "i3h:i3l" fields.
+bit range mappings:
+i3h: [22:23)
+i3l: [19:21)
+`: {"encodeI3hI3l_1922", `if v > 7 {
+		return 0, false
+	}
+	return (v&3)<<19 | (v>>2)<<22, true`, "enc_i3h_i3l"},
+	`Is the immediate index, in the range 0 to one less than the number of elements in 128 bits, encoded in "i1:tsz".
+bit range mappings:
+i1: [20:21)
+tsz: [16:20)
+`: {"encodeI1Tsz_Delegate", `// The statement "range 0 to one less than the number of elements in 128 bits"
+	// is not possible to handle here, we delegate this to the caller.
+	return codeI1Tsz, false`, "enc_i1_tsz"},
+	`Is the immediate index, in the range 0 to one less than the number of elements in 512 bits, encoded in "imm2:tsz".
+bit range mappings:
+imm2: [22:24)
+tsz: [16:21)
+`: {"encodeImm2Tsz_Delegate", `// The statement "range 0 to one less than the number of elements in 512 bits"
+	// is not possible to handle here, we delegate this to the caller.
+	return codeImm2Tsz, false`, "enc_imm2_tsz"},
+	`Is the name of the first source scalable predicate register PN8-PN15, with predicate-as-counter encoding, encoded in the "PNn" field.
+bit range mappings:
+PNn: [5:8)
+`: {"encodePnN_58", `if v >= 24 && v <= 31 {
+		// PN registers starts from 16.
+		return (v - 24) << 5, true
+	}
+	return 0, false`, "enc_PNn"},
+	`Is the name of the second source scalable vector register Z0-Z7, encoded in the "Zm" field.
+bit range mappings:
+Zm: [16:19)
+`: {"encodeZm_1619_Range0_7", `if v <= 7 {
+		return v << 16, true
+	}
+	return 0, false`, "enc_Zm"},
+	`Is the portion index, in the range 0 to 3, encoded in the "imm2" field.
+bit range mappings:
+imm2: [8:10)
+`: {"encodeImm2_810", `if v > 3 {
+		return 0, false
+	}
+	return v << 8, true`, "enc_imm2"},
+	`Is the size specifier,
+tsz	<T>
+0000	RESERVED
+xxx1	B
+xx10	H
+x100	S
+1000	D
+bit range mappings:
+tsz: [16:20)
+`: {"encodeTsz_1620_SizeSpecifier4", `switch v {
+	case ARNG_B:
+		return 1 << 16, true
+	case ARNG_H:
+		return 2 << 16, true
+	case ARNG_S:
+		return 4 << 16, true
+	case ARNG_D:
+		return 8 << 16, true
+	}
+	return 0, false`, "enc_tsz"},
+
+	`Is the size specifier,
+tsz	<T>
+00000	RESERVED
+xxxx1	B
+xxx10	H
+xx100	S
+x1000	D
+10000	Q
+bit range mappings:
+tsz: [16:21)
+`: {"encodeTsz_1621_SizeSpecifier5", `switch v {
+	case ARNG_B:
+		return 1 << 16, true
+	case ARNG_H:
+		return 2 << 16, true
+	case ARNG_S:
+		return 4 << 16, true
+	case ARNG_D:
+		return 8 << 16, true
+	case ARNG_Q:
+		return 16 << 16, true
+	}
+	return 0, false`, "enc_tsz"},
 }

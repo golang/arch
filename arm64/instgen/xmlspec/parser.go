@@ -80,10 +80,10 @@ type operandRule struct {
 }
 
 var operandRules = []operandRule{
-	// AC_SPZGREG: Standard scalar registers (W, X, R).
-	{regexp.MustCompile(`^(<[WX][a-z]+>!?|<R><[a-z]+>|X[0-9]+|{<[WX][a-z]+>})$`), "AC_SPZGREG"},
-	// AC_SPZGREG: Scalar registers or stack pointer (SP).
-	{regexp.MustCompile(`^<([WX][a-z]{1}|R><n)\|[W]?SP>$`), "AC_SPZGREG"},
+	// AC_ARNG: Registers with arrangement (e.g. .B, .D, .S) or type variable (<T>).
+	{regexp.MustCompile(`^<[PVZ][a-zA-Z]+>\.([1-9]*[BDHQS]|<T[a-z]*>)$`), "AC_ARNG"},
+	// AC_ZREG: Scalable vector registers (Z).
+	{regexp.MustCompile(`^<Z[a-z]+>$`), "AC_ZREG"},
 	// AC_PREG: Predicate registers (P).
 	{regexp.MustCompile(`^<P[a-z]{1}>$`), "AC_PREG"},
 	// AC_PREG: Predicate-as-counter registers (PN).
@@ -92,15 +92,19 @@ var operandRules = []operandRule{
 	{regexp.MustCompile(`^<P[N]?[a-z]{1}>\/M$`), "AC_PREGZM"},
 	// AC_PREGZM: Predicate registers with zeroing predication (/Z).
 	{regexp.MustCompile(`^<P[N]?[a-z]{1}>\/(Z|<ZM>)$`), "AC_PREGZM"},
-	// AC_REGIDX: Registers with immediate index.
-	{regexp.MustCompile(`^(<[PZ][N]?[a-z]{1}>|ZT0)\[<[a-z]+>\]$`), "AC_REGIDX"},
-	// AC_ZREG: Scalable vector registers (Z).
-	{regexp.MustCompile(`^<Z[a-z]+>$`), "AC_ZREG"},
-	// AC_ARNG: Registers with arrangement (e.g. .B, .D, .S) or type variable (<T>).
-	{regexp.MustCompile(`^<[PVZ][a-zA-Z]+>\.([1-9]*[BDHQS]|<T[a-z]*>)$`), "AC_ARNG"},
+	// AC_SPZGREG: Standard scalar registers (W, X, R).
+	{regexp.MustCompile(`^(<[WX][a-z]+>!?|<R><[a-z]+>|X[0-9]+|{<[WX][a-z]+>})$`), "AC_SPZGREG"},
+	// AC_SPZGREG: Scalar registers or stack pointer (SP).
+	{regexp.MustCompile(`^<([WX][a-z]{1}|R><n)\|[W]?SP>$`), "AC_SPZGREG"},
+	// AC_VREG: V registers (SIMD).
+	{regexp.MustCompile(`(^<Dd>|^<V>.*)$`), "AC_VREG"},
 	// AC_ARNGIDX: Register arrangement with index.
 	{regexp.MustCompile(`^<[VZ][a-zA-Z]*>\.([1-9]*[BDHQS]|<T[a-z]*>)\[(<(index|imm)[1-9]*>|[0-9]+)\]$`), "AC_ARNGIDX"},
 	{regexp.MustCompile(`^{[\s]+<[PVZ][a-z]+[1-4]*>\.[BDHQS],*[\s]*}\[<index>\]$`), "AC_ARNGIDX"},
+	// AC_PREGIDX: P Registers with immediate index.
+	{regexp.MustCompile(`^(<P[N]?[a-z]{1}>)\[<[a-z]+>\]$`), "AC_PREGIDX"},
+	// AC_ZREGIDX: Z Registers with (optional) immediate index.
+	{regexp.MustCompile(`^(<Z[a-z]{1}>)\{?\[<[a-z]+>\]\}?$`), "AC_ZREGIDX"},
 	// AC_REGLIST1: List of 1 register with arrangement.
 	{regexp.MustCompile(`^{[\s]+<[PVZ][a-z]+>\.([1-9]*[BDHQS]|<T[a-z]*>)[\s]+}$`), "AC_REGLIST1"},
 	// AC_REGLIST2: List of 2 registers with arrangement.
@@ -131,16 +135,12 @@ var operandRules = []operandRule{
 	{regexp.MustCompile(`^<[WX][dn]+>(\{\s*,\s*<pattern>(\{\s*,\s*MUL\s+#<imm>\s*\})?\s*\})?$`), "AC_REG_PATTERN"},
 	// AC_ZREG_PATTERN: Z register with rotate/replication pattern.
 	{regexp.MustCompile(`^<Z[dn]+>\.(<T>|[BDHQS])(\{\s*,\s*<pattern>(\{\s*,\s*MUL\s+#<imm>\s*\})?\s*\})?$`), "AC_ZREG_PATTERN"},
-	// AC_PREGIDX: Predicate register with index.
-	{regexp.MustCompile(`^<P[nm]>\.<T>\[\s*<Wv>\s*,\s*<imm>\s*\]$`), "AC_PREGIDX"},
+	// AC_PREGSEL: Predicate register with selector register and immediate index.
+	{regexp.MustCompile(`^<P[nm]>\.<T>\[\s*<Wv>\s*,\s*<imm>\s*\]$`), "AC_PREGSEL"},
 	// AC_PREG_PATTERN: Predicate register with pattern.
 	{regexp.MustCompile(`^<P[dn]>\.<T>(\{\s*,\s*<pattern>\s*\})?$`), "AC_PREG_PATTERN"},
-	// AC_ZREGIDX: Z register with optional index.
-	{regexp.MustCompile(`^<Z[dn]>(\{\s*\[<imm>\]\s*\})?$`), "AC_ZREGIDX"},
 	// AC_IMM: Immediate value.
 	{regexp.MustCompile(`(^#.*)|(<const>)$`), "AC_IMM"},
-	// AC_VREG: V registers (SIMD).
-	{regexp.MustCompile(`(^<Dd>|^<V>.*)$`), "AC_VREG"},
 }
 
 // warmUpCache initializes the XML decoding cache for the Instruction type.
@@ -1014,7 +1014,7 @@ var expectedElemCount = map[string]int{
 	// <reg>.<T>[<index>]
 	"AC_ARNGIDX": 3,
 	"AC_ZREGIDX": 3,
-	"AC_REGIDX":  3,
+	"AC_PREGIDX": 3,
 	// #<imm>, <shift>
 	"AC_IMM": 2,
 	// [<reg1>.<T1>, <reg2>.<T2>, <mod> <amount>]
@@ -1026,7 +1026,7 @@ var expectedElemCount = map[string]int{
 	"AC_MEMOFFMULVL": 3,
 	// <preg>.<T>[<selreg>, <imm>]
 	// selreg must be a W reg, so one additional encoding func to check.
-	"AC_PREGIDX": 5,
+	"AC_PREGSEL": 5,
 	// <width><reg>
 	"AC_SPZGREG": 2,
 	"AC_VREG":    2,

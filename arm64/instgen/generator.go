@@ -202,6 +202,9 @@ var operandTypeOrders = map[string]int{
 	"AC_ZREG":    0,
 	"AC_SPZGREG": 1,
 	"AC_VREG":    1,
+	"AC_ARNGIDX": 2,
+	"AC_ZREGIDX": 2,
+	"AC_PREGIDX": 2,
 }
 
 func readExistingGoOps(aoutPath string) map[string]bool {
@@ -556,6 +559,10 @@ func Generate(insts []*xmlspec.InstructionParsed, outputDir string, genE2E bool)
 		s = strings.Replace(s, ".", "_", -1)
 		s = strings.Replace(s, " ", "_", -1)
 		s = strings.Replace(s, "|", "", -1)
+		s = strings.Replace(s, "[", "_", -1)
+		s = strings.Replace(s, "]", "_", -1)
+		s = strings.Replace(s, "{", "", -1)
+		s = strings.Replace(s, "}", "", -1)
 		return s
 	}
 
@@ -712,6 +719,7 @@ var regMap = map[string]string{
 	"Pm":  "P",
 	"Pg":  "P",
 	"PNd": "PN",
+	"PNn": "PN",
 	"Pv":  "P",
 
 	"Vd": "V",
@@ -914,6 +922,64 @@ func constructInstance(enc *xmlspec.EncodingParsed) (*e2eData, *e2eData) {
 						log.Fatalf("Unexpected V with fixed arrangement: %s", opName)
 					}
 				}
+			} else if op.Typ == "AC_ARNGIDX" || op.Typ == "AC_ZREGIDX" || op.Typ == "AC_PREGIDX" {
+				// Operands that takes SVE/SIMD registers and arrangement with index.
+				// reg.T[index]
+				var regPrefix string
+				var regName string
+				var arrangement string
+				index := rng.IntN(4)
+
+				if op.Typ == "AC_ARNGIDX" {
+					parts := strings.Split(opName, ".")
+					regName = strings.TrimSuffix(strings.TrimPrefix(parts[0], "<"), ">")
+					regPrefix = regMap[regName]
+					if regPrefix == "" {
+						log.Fatalf("Unknown register prefix: %s", regName)
+					}
+
+					parts2 := strings.Split(parts[1], "[")
+					arrangement = strings.TrimSuffix(strings.TrimPrefix(parts2[0], "<"), ">")
+				} else if op.Typ == "AC_ZREGIDX" || op.Typ == "AC_PREGIDX" {
+					re := regexp.MustCompile(`<([A-Z][A-Za-z0-9]*)>`)
+					matches := re.FindStringSubmatch(opName)
+					if len(matches) > 1 {
+						regName = matches[1]
+						regPrefix = regMap[regName]
+						if regPrefix == "" {
+							log.Fatalf("Unknown register: %s", regName)
+						}
+					} else {
+						log.Fatalf("Unknown AC_[PZ]REGIDX: %s", opName)
+					}
+				}
+
+				var goAsmOp, gnuAsmOp string
+				limit := 32
+				if regPrefix == "P" || regPrefix == "PN" {
+					limit = 16
+				}
+				regIdx := cachedOrNew(regCache, regName, limit)
+				if regPrefix == "V" {
+					log.Fatalf("Unexpected V with index: %s", opName)
+				}
+
+				if arrangement != "" {
+					if arrMap[arrangement] {
+						arrIdx := cachedOrNew(arrCache, arrangement, len(sveArr))
+						goAsmOp = fmt.Sprintf("%s%d.%s[%d]", regPrefix, regIdx, sveArr[arrIdx], index)
+						gnuAsmOp = goAsmOp
+					} else {
+						// Fixed arrangement
+						goAsmOp = fmt.Sprintf("%s%d.%s[%d]", regPrefix, regIdx, arrangement, index)
+						gnuAsmOp = goAsmOp
+					}
+				} else {
+					goAsmOp = fmt.Sprintf("%s%d[%d]", regPrefix, regIdx, index)
+					gnuAsmOp = goAsmOp
+				}
+				gnuAsmOps = append([]string{gnuAsmOp}, gnuAsmOps...)
+				goAsmOps = append(goAsmOps, goAsmOp)
 			} else if op.Typ == "AC_SPZGREG" || op.Typ == "AC_VREG" {
 				// Operands that takes scalar or NEON vector registers.
 				// There arn't that much of shapes, just enumerate them...
@@ -1043,7 +1109,9 @@ func constructInstance(enc *xmlspec.EncodingParsed) (*e2eData, *e2eData) {
 		enc.Asm == "SUBP  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>" ||
 		enc.Asm == "UABAL  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>" ||
 		enc.Asm == "UCVTF  <Zd>.<T>, <Zn>.<Tb>" ||
-		enc.Asm == "UDOT  <Zda>.H, <Zn>.B, <Zm>.B" {
+		enc.Asm == "UDOT  <Zda>.H, <Zn>.B, <Zm>.B" ||
+		enc.Asm == "SDOT  <Zda>.H, <Zn>.B, <Zm>.B[<imm>]" ||
+		enc.Asm == "UDOT  <Zda>.H, <Zn>.B, <Zm>.B[<imm>]" {
 		// Very new instruction encodings
 		// GNU toolchain 2.45 doesn't know about these specific encodings yet.
 		todoCase := e2eData{GoOp: enc.GoOp[1:], Asm: fmt.Sprintf("// TODO: %s", enc.Asm), highFeat: highFeat}
