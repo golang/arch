@@ -1,0 +1,159 @@
+<?xml version="1.0" ?><?xml-stylesheet type="text/xsl" encoding="UTF-8" href="iform.xsl" version="1.0"?>
+<!DOCTYPE instructionsection  Sample1>
+<instructionsection id="add" title="add" type="instruction">
+  <docvars>
+    <docvar key="key1" value="value1"/>
+    <docvar key="key2" value="value2"/>
+  </docvars>
+  <heading>add</heading>
+  <desc>
+    <brief>
+      <para>add</para>
+    </brief>
+    <authored>
+      <para>add</para>
+    </authored>
+    <predicated>False</predicated>
+    <uses_dit condition="sample1">True</uses_dit>
+  </desc>
+  <operationalnotes>
+    <operationalnote>
+      <operationalnote_content>
+        <para>sample1</para>
+      </operationalnote_content>
+    </operationalnote>
+  </operationalnotes>
+  <alias_list howmany="0"/>
+  <classes>
+    <iclass name="SVE" oneof="1" id="iclass_sve" no_encodings="1" isa="A64">
+      <docvars>
+        <docvar key="instr-class" value="sve"/>
+        <docvar key="isa" value="A64"/>
+        <docvar key="mnemonic" value="ADD"/>
+      </docvars>
+      <iclassintro count="1"/>
+      <arch_variants>
+        <arch_variant feature="sample1" name="sample1"/>
+      </arch_variants>
+      <regdiagram form="32" psname="sample1" tworows="1">
+        <box hibit="31" width="3" settings="3">
+          <c>0</c>
+          <c>0</c>
+          <c>0</c>
+        </box>
+        <box hibit="28" width="4" settings="4">
+          <c>0</c>
+          <c>0</c>
+          <c>1</c>
+          <c>0</c>
+        </box>
+        <box hibit="24" width="1" settings="1">
+          <c>0</c>
+        </box>
+        <box hibit="23" width="2" name="size" usename="1">
+          <c colspan="2"/>
+        </box>
+        <box hibit="21" width="1" settings="1">
+          <c>1</c>
+        </box>
+        <box hibit="20" width="5" name="Zm" usename="1">
+          <c colspan="5"/>
+        </box>
+        <box hibit="15" width="3" settings="3">
+          <c>0</c>
+          <c>0</c>
+          <c>0</c>
+        </box>
+        <box hibit="12" width="3" name="opc" usename="1" settings="3" psbits="xxx">
+          <c>0</c>
+          <c>0</c>
+          <c>0</c>
+        </box>
+        <box hibit="9" width="5" name="Zn" usename="1">
+          <c colspan="5"/>
+        </box>
+        <box hibit="4" width="5" name="Zd" usename="1">
+          <c colspan="5"/>
+        </box>
+      </regdiagram>
+      <encoding name="add" oneofinclass="1" oneof="1" label="">
+        <docvars>
+          <docvar key="sample1" value="sample1"/>
+        </docvars>
+        <asmtemplate><text>add  </text><a hover="Is the name of the destination scalable vector register, encoded in the &quot;Zd&quot; field." link="Zd">&lt;Zd&gt;</a><text>.</text><a hover="Is the size specifier, " link="T__5">&lt;T&gt;</a><text>, </text><a hover="Is the name of the first source scalable vector register, encoded in the &quot;Zn&quot; field." link="Zn__2">&lt;Zn&gt;</a><text>.</text><a hover="Is the size specifier, " link="T__5">&lt;T&gt;</a><text>, </text><a hover="Is the name of the second source scalable vector register, encoded in the &quot;Zm&quot; field." link="Zm">&lt;Zm&gt;</a><text>.</text><a hover="Is the size specifier, " link="T__5">&lt;T&gt;</a></asmtemplate>
+      </encoding>
+      <ps_section howmany="1">
+        <ps name="sample1" sections="1" secttype="noheading">
+          <pstext mayhavelinks="1" section="sample1" rep_section="sample1">
+            sample1
+          </pstext>
+        </ps>
+      </ps_section>
+    </iclass>
+  </classes>
+  <explanations scope="all">
+    <explanation enclist="add_z_zz_" symboldefcount="1">
+      <symbol link="Zd">&lt;Zd&gt;</symbol>
+      <account encodedin="Zd">
+        <intro>
+          <para>Is the name of the destination scalable vector register, encoded in the &quot;Zd&quot; field.</para>
+        </intro>
+      </account>
+    </explanation>
+    <explanation enclist="add_z_zz_" symboldefcount="1">
+      <symbol link="T__5">&lt;T&gt;</symbol>
+      <definition encodedin="size">
+        <intro>Is the size specifier, </intro>
+        <table class="valuetable">
+          <tgroup cols="2">
+            <thead>
+              <row>
+                <entry class="bitfield">size</entry>
+                <entry class="symbol">&lt;T&gt;</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry class="bitfield">00</entry>
+                <entry class="symbol">B</entry>
+              </row>
+              <row>
+                <entry class="bitfield">01</entry>
+                <entry class="symbol">H</entry>
+              </row>
+              <row>
+                <entry class="bitfield">10</entry>
+                <entry class="symbol">S</entry>
+              </row>
+              <row>
+                <entry class="bitfield">11</entry>
+                <entry class="symbol">D</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </definition>
+    </explanation>
+    <explanation enclist="add_z_zz_" symboldefcount="1">
+      <symbol link="Zn__2">&lt;Zn&gt;</symbol>
+      <account encodedin="Zn">
+        <intro>
+          <para>Is the name of the first source scalable vector register, encoded in the &quot;Zn&quot; field.</para>
+        </intro>
+      </account>
+    </explanation>
+    <explanation enclist="add_z_zz_" symboldefcount="1">
+      <symbol link="Zm">&lt;Zm&gt;</symbol>
+      <account encodedin="Zm">
+        <intro>
+          <para>Is the name of the second source scalable vector register, encoded in the &quot;Zm&quot; field.</para>
+        </intro>
+      </account>
+    </explanation>
+  </explanations>
+  <ps_section howmany="1">
+    <ps name="sample1" sections="1" secttype="Operation">
+      <pstext mayhavelinks="1" section="sample1" rep_section="sample1">sample1;</pstext>
+    </ps>
+  </ps_section>
+</instructionsection>
