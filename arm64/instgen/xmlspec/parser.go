@@ -1016,7 +1016,7 @@ var expectedElemCount = map[string]int{
 	"AC_ZREGIDX": 3,
 	"AC_PREGIDX": 3,
 	// #<imm>, <shift>
-	"AC_IMM": 2,
+	"AC_IMM": 1,
 	// [<reg1>.<T1>, <reg2>.<T2>, <mod> <amount>]
 	"AC_MEMEXT": 6,
 	// [<reg>.<T>, #<imm>]
@@ -1153,15 +1153,16 @@ func (op *Operand) resolveConstraints() {
 		resolved := false
 		switch op.Name {
 		case "#0.0":
-			if el == 2 && len(op.Elems) == 0 {
-				op.Elems = make([]Element, 0, 2)
+			if el == 1 && len(op.Elems) == 0 {
+				op.Elems = make([]Element, 0, 1)
 				insertElmAt(0, "#0.0", "Check this is immediate 0.0")
-				insertElmAt(1, "nil", noOpCheck)
 				resolved = true
 			}
-		case "#<const>", "#<imm1>", "#<imm2>", "#<imm>", "<const>":
-			if el == 2 && len(op.Elems) == 1 {
-				insertElmAt(1, "nil", noOpCheck)
+		case "#<imm>{, <shift>}":
+			if el == 1 && len(op.Elems) == 2 {
+				// The 2 elements explanation need to be merged
+				insertElmAt(0, "#<imm>{, <shift>}", op.Elems[0].TextExpWithRanges+"\n"+op.Elems[1].TextExpWithRanges)
+				op.Elems = op.Elems[:1]
 				resolved = true
 			}
 		case "<Pd>", "<Pg>", "<Pn>", "<PNg>", "<Pt>", "<Pv>", "<Zd>", "<Zm>", "<Zn>", "<Zt>":

@@ -58,6 +58,7 @@ type instData struct {
 	Args      []argData
 	Ops       opCombData
 	Asm       string
+	highFeat  int
 }
 
 type argData struct {
@@ -205,6 +206,7 @@ var operandTypeOrders = map[string]int{
 	"AC_ARNGIDX": 2,
 	"AC_ZREGIDX": 2,
 	"AC_PREGIDX": 2,
+	"AC_IMM":     3,
 }
 
 func readExistingGoOps(aoutPath string) map[string]bool {
@@ -364,10 +366,15 @@ func Generate(insts []*xmlspec.InstructionParsed, outputDir string, genE2E bool)
 					if errData != nil {
 						e2eErrorData = append(e2eErrorData, *errData)
 					}
+					highFeat := 0
+					for _, op := range encoding.Operands[1:] {
+						highFeat = max(highFeat, operandTypeOrders[op.Typ])
+					}
 					instData := instData{
 						Asm:       encoding.GoOp[1:],
 						GoOp:      encoding.GoOp,
 						FixedBits: fmt.Sprintf("%#x", encoding.Binary),
+						highFeat:  highFeat,
 					}
 
 					for _, op := range encoding.Operands[1:] {
@@ -397,6 +404,7 @@ func Generate(insts []*xmlspec.InstructionParsed, outputDir string, genE2E bool)
 										v = strings.ReplaceAll(v, ")", "")
 										v = strings.ReplaceAll(v, "[", "")
 										v = strings.ReplaceAll(v, "]", "")
+										v = strings.ReplaceAll(v, "#", "c")
 										enc = fmt.Sprintf("enc_%s", v)
 									}
 								}
@@ -454,6 +462,7 @@ func Generate(insts []*xmlspec.InstructionParsed, outputDir string, genE2E bool)
 		v = strings.ReplaceAll(v, ")", "")
 		v = strings.ReplaceAll(v, "[", "")
 		v = strings.ReplaceAll(v, "]", "")
+		v = strings.ReplaceAll(v, "#", "c")
 		name := fmt.Sprintf("enc_%s", v)
 		encodedInMap[v0] = name
 		// Only add to output if used
@@ -563,6 +572,7 @@ func Generate(insts []*xmlspec.InstructionParsed, outputDir string, genE2E bool)
 		s = strings.Replace(s, "]", "_", -1)
 		s = strings.Replace(s, "{", "", -1)
 		s = strings.Replace(s, "}", "", -1)
+		s = strings.Replace(s, "#", "c", -1)
 		return s
 	}
 
@@ -641,9 +651,21 @@ func Generate(insts []*xmlspec.InstructionParsed, outputDir string, genE2E bool)
 	})
 
 	// Group instructions by name
-	// Also sort them by their Go mnemonic.
-	sort.Slice(data.Insts, func(i, j int) bool {
-		return data.Insts[i].GoOp < data.Insts[j].GoOp
+	// Also sort them by their Go mnemonic, stably.
+	slices.SortFunc(data.Insts, func(i, j instData) int {
+		if c := strings.Compare(i.GoOp, j.GoOp); c != 0 {
+			return c
+		}
+		if i.highFeat != j.highFeat {
+			return i.highFeat - j.highFeat
+		}
+		if c := strings.Compare(i.Ops.BetterName, j.Ops.BetterName); c != 0 {
+			return c
+		}
+		if c := strings.Compare(i.Ops.OpAsms, j.Ops.OpAsms); c != 0 {
+			return c
+		}
+		return strings.Compare(i.FixedBits, j.FixedBits)
 	})
 	ibn := []instsByName{}
 	prevGoOp := ""
@@ -821,6 +843,7 @@ func constructInstance(enc *xmlspec.EncodingParsed) (*e2eData, *e2eData) {
 		// Key is the random number selected.
 		regCache := map[string]int{}
 		arrCache := map[string]int{}
+		immCache := map[string]int{}
 		cachedOrNew := func(cache map[string]int, key string, n int) int {
 			if v, ok := cache[key]; ok {
 				if errCase != nil || len(enc.Operands) == 0 {
@@ -1052,6 +1075,39 @@ func constructInstance(enc *xmlspec.EncodingParsed) (*e2eData, *e2eData) {
 				}
 				gnuAsmOps = append([]string{gnuAsmOp}, gnuAsmOps...)
 				goAsmOps = append(goAsmOps, goAsmOp)
+			} else if op.Typ == "AC_IMM" {
+				var imm string
+				var isFloat bool
+				// Check if this is a float imm or an integer imm.
+				if op.Name == "#0.0" {
+					imm = "0.0"
+					isFloat = true
+				} else {
+					for _, e := range op.Elems {
+						if strings.Contains(e.TextExpWithRanges, "float") {
+							isFloat = true
+							break
+						}
+					}
+					if isFloat {
+						// Usually these floats are 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5...
+						imm = fmt.Sprintf("%.1f", float64(cachedOrNew(immCache, op.Name, 20))/5.0)
+					} else {
+						intImm := cachedOrNew(immCache, op.Name, 16)
+						if intImm > 12 {
+							// Some instructions likes 90, 270; let's generate them to make those instructions happy.
+							imm = fmt.Sprintf("%d", (intImm-12)*90)
+						} else {
+							imm = fmt.Sprintf("%d", intImm)
+						}
+					}
+				}
+				if isFloat {
+					goAsmOps = append(goAsmOps, fmt.Sprintf("$(%s)", imm))
+				} else {
+					goAsmOps = append(goAsmOps, fmt.Sprintf("$%s", imm))
+				}
+				gnuAsmOps = append([]string{fmt.Sprintf("#%s", imm)}, gnuAsmOps...)
 			}
 		}
 		// Try to assemble the GNU version.
@@ -1093,6 +1149,12 @@ func constructInstance(enc *xmlspec.EncodingParsed) (*e2eData, *e2eData) {
 			continue
 		}
 
+		if enc.Asm == "INDEX  <Zd>.<T>, <R><n>, #<imm>" {
+			// Don't generate error case for this, the GNU assembler has a strict scalar and vector register width
+			// constraint, i.e. <R> must be W if <T> is B, H, S. The Go assembler doesn't have this constraint.
+			// So we can't generate an error case for this.
+			errCase = &e2eData{GoOp: enc.GoOp[1:], Asm: fmt.Sprintf("// TODO: %s", name), highFeat: highFeat}
+		}
 		return validCase, errCase
 	}
 	if name == "ADDQP" || name == "ADDSUBP" || name == "SCVTFLT" || name == "UCVTFLT" {
