@@ -269,31 +269,7 @@ func add(root *Prog, text, opcode, valid32, valid64, cpuid, tags string) {
 
 	// Ignore VEX instructions for now.
 	if strings.HasPrefix(opcode, "VEX") {
-		if !strings.HasPrefix(text, "VMOVNTDQ") &&
-			!strings.HasPrefix(text, "VMOVDQA") &&
-			!strings.HasPrefix(text, "VMOVDQU") &&
-			!strings.HasPrefix(text, "VZEROUPPER") {
-			return
-		}
-		if !strings.HasPrefix(opcode, "VEX.256") && !strings.HasPrefix(text, "VZEROUPPER") {
-			return
-		}
-		if !strings.Contains(tags, "VEXC4") {
-			add(root, text, opcode, valid32, valid64, cpuid, tags+",VEXC4")
-		}
-		encoding := strings.Fields(opcode)
-		walk("decode", encoding[1])
-		walk("is64", "any")
-		if strings.Contains(tags, "VEXC4") {
-			walk("prefix", "C4")
-		} else {
-			walk("prefix", "C5")
-		}
-		for _, pref := range strings.Split(encoding[0], ".") {
-			if isVexEncodablePrefix[pref] {
-				walk("prefix", pref)
-			}
-		}
+		return
 	}
 
 	var rex, prefix string
@@ -687,7 +663,7 @@ func printDecoder(p *Prog) {
 		last = op
 	}
 	fmt.Printf(")\n\n")
-	fmt.Printf("const maxOp = %s\n\n", last)
+	fmt.Printf("const maxNonAVXOp = %s\n\n", last)
 
 	fmt.Printf("var opNames = [...]string{\n")
 	for _, op := range ops {
