@@ -176,6 +176,7 @@ d37200c0|	fcvt.w.s x5,f0
 0f00f00d|	fence iow,iorw
 0f00f007|	fence orw,iorw
 0f00f00f|	fence
+0f000000|	fence
 0f001004|	fence o,w
 0f002004|	fence o,r
 0f004004|	fence o,o
@@ -184,6 +185,7 @@ d37200c0|	fcvt.w.s x5,f0
 0f002008|	fence i,r
 0f004008|	fence i,o
 0f008008|	fence i,i
+0f003083|	fence.tso
 0f100000|	fence.i
 d32210a2|	feq.d x5,f0,f1
 d32210a4|	feq.h x5,f0,f1

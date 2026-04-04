@@ -199,14 +199,26 @@ goSyntaxSwitch:
 			}
 		}
 
-	// Fence instruction in plan9 doesn't have any operands.
 	case FENCE:
-		// PAUSE is encoded as a FENCE instruction with pred=W, succ=0.
-		if inst.Args[0].(MemOrder).String() == "w" &&
-			inst.Args[1].(MemOrder).String() == "" {
-			op = "PAUSE"
+		fm := inst.Enc >> 28
+		pred := inst.Args[0].(MemOrder).String()
+		succ := inst.Args[1].(MemOrder).String()
+		if fm == 0b1000 {
+			if pred == "rw" && succ == "rw" {
+				return "FENCE.TSO"
+			}
+			return op
 		}
-		args = nil
+		// PAUSE is encoded as a FENCE instruction with pred=W, succ=0.
+		if pred == "w" && succ == "" {
+			return "PAUSE"
+		}
+		if fm != 0 || pred == "" || succ == "" || (pred == "iorw" && succ == "iorw") {
+			// We've either got a full fence or a reserved encoding which should be
+			// treated as a full fence.
+			return op
+		}
+		args[0], args[1] = args[1], args[0]
 
 	case FMADD_D, FMADD_H, FMADD_Q, FMADD_S, FMSUB_D, FMSUB_H,
 		FMSUB_Q, FMSUB_S, FNMADD_D, FNMADD_H, FNMADD_Q, FNMADD_S,

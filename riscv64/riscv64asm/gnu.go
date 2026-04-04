@@ -241,17 +241,25 @@ gnuSyntaxSwitch:
 			args = args[:len(args)-1]
 		}
 
-	// When both pred and succ equals to iorw, the GNU objdump will omit them.
 	case FENCE:
-		if inst.Args[0].(MemOrder).String() == "iorw" &&
-			inst.Args[1].(MemOrder).String() == "iorw" {
-			args = nil
+		fm := inst.Enc >> 28
+		pred := inst.Args[0].(MemOrder).String()
+		succ := inst.Args[1].(MemOrder).String()
+		if fm == 0b1000 {
+			if pred == "rw" && succ == "rw" {
+				return "fence.tso"
+			}
+			return op
 		}
 		// PAUSE is encoded as a FENCE instruction with pred=W, succ=0.
-		if inst.Args[0].(MemOrder).String() == "w" &&
-			inst.Args[1].(MemOrder).String() == "" {
-			op = "pause"
-			args = nil
+		if pred == "w" && succ == "" {
+			return "pause"
+		}
+		if fm != 0 || pred == "" || succ == "" || (pred == "iorw" && succ == "iorw") {
+			// We've either got a full fence or a reserved encoding which should be
+			// treated as a full fence. When both pred and succ equals to iorw, GNU
+			// objdump will omit them.
+			return op
 		}
 
 	case FSGNJX_D:
