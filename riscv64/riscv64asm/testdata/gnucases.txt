@@ -1781,6 +1781,37 @@ d730209e|	vmv1r.v v1,v2
 57b2819e|	vmv4r.v v4,v8
 57b0839e|	vmv8r.v v0,v8
 
+# 32.2.4: Vector GCM/GMAC
+f7a120b2|	vghsh.vv v3,v2,v1
+f7a128a2|	vgmul.vv v3,v2
+
+# 32.2.5: NIST Suite: Vector AES Block Cipher
+f7a120a2|	vaesdf.vv v3,v2
+f7a120a6|	vaesdf.vs v3,v2
+f72120a2|	vaesdm.vv v3,v2
+f72120a6|	vaesdm.vs v3,v2
+f7a121a2|	vaesef.vv v3,v2
+f7a121a6|	vaesef.vs v3,v2
+f72121a2|	vaesem.vv v3,v2
+f72121a6|	vaesem.vs v3,v2
+f7a1208a|	vaeskf1.vi v3,v2,1
+f7a120aa|	vaeskf2.vi v3,v2,1
+f7a123a6|	vaesz.vs v3,v2
+
+# 32.2.6: NIST Suite: Vector SHA-2 Secure Hash
+f7a120ba|	vsha2ch.vv v3,v2,v1
+f7a120be|	vsha2cl.vv v3,v2,v1
+f7a120b6|	vsha2ms.vv v3,v2,v1
+
+# 32.2.7: ShangMi Suite: SM4 Block Cipher
+f7a12086|	vsm4k.vi v3,v2,1
+f72128a2|	vsm4r.vv v3,v2
+f72128a6|	vsm4r.vs v3,v2
+
+# 32.2.8: ShangMi Suite: SM3 Secure Hash
+f7a120ae|	vsm3c.vi v3,v2,1
+f7a12082|	vsm3me.vv v3,v2,v1
+
 0000|	unimp
 ab|	illegalins
 f3|	illegalins

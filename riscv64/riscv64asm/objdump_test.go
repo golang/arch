@@ -5,6 +5,7 @@
 package riscv64asm
 
 import (
+	"strconv"
 	"strings"
 	"testing"
 )
@@ -63,7 +64,7 @@ f32210c8
 
 // allowedMismatchObjdump reports whether the mismatch between text and dec
 // should be allowed by the test.
-func allowedMismatchObjdump(text string, inst *Inst, dec ExtInst) bool {
+func allowedMismatchObjdump(text string, inst *Inst, dec ExtInst, version string) bool {
 	// Allow the mismatch of Branch/Jump instruction's offset.
 	decsp := strings.Split(dec.text, ",")
 
@@ -82,5 +83,48 @@ func allowedMismatchObjdump(text string, inst *Inst, dec ExtInst) bool {
 		}
 	}
 
+	// Zvk instructions are supported by objdump 2.41 and later.
+	if strings.HasPrefix(dec.text, ".insn") && isZvkOp(inst.Op) && !objdumpVersionAtLeast(version, "2.41") {
+		return true
+	}
+
+	return false
+}
+
+func objdumpVersionAtLeast(version, m string) bool {
+	v, ok := versionMajorMinor(version)
+	if !ok {
+		return false
+	}
+	w, ok := versionMajorMinor(m)
+	return ok && v >= w
+}
+
+func versionMajorMinor(s string) (int, bool) {
+	maj, minv, ok := strings.Cut(s, ".")
+	if !ok {
+		return 0, false
+	}
+	v, err := strconv.Atoi(maj)
+	if err != nil {
+		return 0, false
+	}
+	w, err := strconv.Atoi(minv)
+	if err != nil {
+		return 0, false
+	}
+	return v*10000 + w, true
+}
+
+func isZvkOp(op Op) bool {
+	switch op {
+	case VAESDF_VV, VAESDF_VS, VAESDM_VV, VAESDM_VS,
+		VAESEF_VV, VAESEF_VS, VAESEM_VV, VAESEM_VS,
+		VAESKF1_VI, VAESKF2_VI, VAESZ_VS,
+		VGHSH_VV, VGMUL_VV,
+		VSHA2CH_VV, VSHA2CL_VV, VSHA2MS_VV,
+		VSM3C_VI, VSM3ME_VV, VSM4K_VI, VSM4R_VV, VSM4R_VS:
+		return true
+	}
 	return false
 }

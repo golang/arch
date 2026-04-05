@@ -13,6 +13,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"regexp"
 	"strconv"
 	"strings"
 	"testing"
@@ -25,12 +26,16 @@ func testObjdumpRISCV64(t *testing.T, generate func(func([]byte))) {
 }
 
 func testObjdumpArch(t *testing.T, generate func(func([]byte))) {
-	checkObjdumpRISCV64(t)
-	testExtDis(t, "gnu", objdump, generate, allowedMismatchObjdump)
-	testExtDis(t, "plan9", objdump, generate, allowedMismatchObjdump)
+	version := checkObjdumpRISCV64(t)
+	testExtDis(t, "gnu", objdump, generate, func(text string, inst *Inst, dec ExtInst) bool {
+		return allowedMismatchObjdump(text, inst, dec, version)
+	})
+	testExtDis(t, "plan9", objdump, generate, func(text string, inst *Inst, dec ExtInst) bool {
+		return allowedMismatchObjdump(text, inst, dec, version)
+	})
 }
 
-func checkObjdumpRISCV64(t *testing.T) {
+func checkObjdumpRISCV64(t *testing.T) string {
 	objdumpPath, err := exec.LookPath(objdumpPath)
 	if err != nil {
 		objdumpPath = "objdump"
@@ -42,6 +47,18 @@ func checkObjdumpRISCV64(t *testing.T) {
 	if !strings.Contains(string(out), "riscv") {
 		t.Skip("objdump does not have RISC-V support")
 	}
+	return parseObjdumpVersion(string(out))
+}
+
+var objdumpVersionRx = regexp.MustCompile(`\b(\d+\.\d+)`)
+
+// parseObjdumpVersion extracts the version number from objdump -i output.
+func parseObjdumpVersion(out string) string {
+	m := objdumpVersionRx.FindStringSubmatch(out)
+	if m != nil && len(m) > 1 {
+		return m[1]
+	}
+	return ""
 }
 
 func objdump(ext *ExtDis) error {
@@ -270,16 +287,18 @@ func writeELF64(f *os.File, size int) error {
 	}
 	binary.Write(&buf, binary.LittleEndian, &sect) // .text
 	strtabsize := len("\x00.text\x00.riscv.attributes\x00.shstrtab\x00")
-	// RISC-V objdump needs the .riscv.attributes section to identify
-	// the RV64G (not include compressed) extensions.
-	attributesContent := "A\x9e\x00\x00\x00riscv\x00\x01\x94\x00\x00\x00\x05rv64i2p0_m2p0_a2p0_f2p0_d2p0_q2p0_c2p0_v1p0_zicbom1p0_zicbop1p0_zicboz1p0_zicond1p0_zmmul1p0_zfh1p0_zfhmin1p0_zba1p0_zbb1p0_zbc1p0_zbs1p0\x00\x08\x01\x0a\x0b"
-	attributesSize := len(attributesContent)
+	// RISC-V objdump needs the .riscv.attributes section to identify extensions.
+	exts := "rv64i2p0_m2p0_a2p0_f2p0_d2p0_q2p0_c2p0_v1p0_" +
+		"zicbom1p0_zicbop1p0_zicboz1p0_zicond1p0_zmmul1p0_" +
+		"zfh1p0_zfhmin1p0_zba1p0_zbb1p0_zbc1p0_zbs1p0_" +
+		"zvkg1p0_zvkned1p0_zvknha1p0_zvknhb1p0_zvksed1p0_zvksh1p0"
+	b := buildRISCVAttributes(exts)
 	sect = elf.Section64{
 		Name:      uint32(len("\x00.text\x00")),
 		Type:      uint32(0x70000003), // SHT_RISCV_ATTRIBUTES
 		Addr:      0,
 		Off:       uint64(off2 + (off3-off2)*4 + strtabsize),
-		Size:      uint64(attributesSize),
+		Size:      uint64(len(b)),
 		Addralign: 1,
 	}
 	binary.Write(&buf, binary.LittleEndian, &sect)
@@ -293,9 +312,30 @@ func writeELF64(f *os.File, size int) error {
 	}
 	binary.Write(&buf, binary.LittleEndian, &sect)
 	buf.WriteString("\x00.text\x00.riscv.attributes\x00.shstrtab\x00")
-	// Contents of .riscv.attributes section
-	// which specify the extension and priv spec version. (1.11)
-	buf.WriteString(attributesContent)
+	buf.Write(b)
 	f.Write(buf.Bytes())
 	return nil
+}
+
+func buildRISCVAttributes(exts string) []byte {
+	// Subsection content
+	content := []byte{5}                       // Tag_RISCV_arch
+	content = append(content, []byte(exts)...) // extensions
+	content = append(content, 0)               // NULL
+	content = append(content, 8, 1, 10, 11)    // priv_spec
+
+	// Subsection
+	sub := new(bytes.Buffer)
+	sub.WriteByte(1)                                                 // Tag_File
+	binary.Write(sub, binary.LittleEndian, uint32(1+4+len(content))) // size
+	sub.Write(content)                                               // content
+
+	// Full section
+	buf := new(bytes.Buffer)
+	buf.WriteByte('A')                                            // Fixed prefix
+	binary.Write(buf, binary.LittleEndian, uint32(4+6+sub.Len())) // size
+	buf.WriteString("riscv\x00")                                  // vendor
+	buf.Write(sub.Bytes())                                        // subsection
+
+	return buf.Bytes()
 }
