@@ -356,9 +356,6 @@ func decodeArgs(arg string, op string) string {
 		if isVectorLoadStore(op) {
 			return "arg_rs1_ptr"
 		}
-		if strings.Contains(op, "CBO_") {
-			return "arg_rs1_ptr"
-		}
 		return "arg_rs1"
 
 	case strings.Contains("arg_rs2", arg):
