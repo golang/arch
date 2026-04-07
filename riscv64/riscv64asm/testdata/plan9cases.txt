@@ -369,6 +369,21 @@ b3115228|	BSET X5, X4, X3
 b353530e|	CZEROEQZ X5, X6, X7
 b373530e|	CZERONEZ X5, X6, X7
 
+# 19.6.1: Cache-Block Management Instructions (Zicbom), Version 1.0.0
+0fa01200|	CBOCLEAN (X5)
+0fa02200|	CBOFLUSH (X5)
+0fa00200|	CBOINVAL (X5)
+
+# 19.6.2: Cache-Block Zero Instructions (Zicboz), Version 1.0.0
+0fa04200|	CBOZERO	(X5)
+
+# 19.6.3: Cache-Block Prefetch Instructions (Zicbop), Version 1.0.0
+13e0021c|	PREFETCHI 448(X5)
+13e00200|	PREFETCHI (X5)
+13e002fc|	PREFETCHI -64(X5)
+13e0121c|	PREFETCHR 448(X5)
+13e0321c|	PREFETCHW 448(X5)
+13e07200|	ORI $7, X5, X0
 # 28.4.3： Zbc: Carry-less multiplication
 b313530a|	CLMUL	X5, X6, X7
 b333530a|	CLMULH	X5, X6, X7

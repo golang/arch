@@ -36,6 +36,7 @@ var extensions = []string{
 	"rv_zbb",
 	"rv_zbc",
 	"rv_zbs",
+	"rv_zicbo",
 	"rv_zfh",
 	"rv_zicond",
 	"rv_zicsr",
@@ -287,6 +288,9 @@ func inferFormats(argTypeList []string, op string) string {
 	switch {
 	case strings.Contains(op, "AMO") || strings.Contains(op, "SC_"):
 		return "arg_rd, arg_rs2, arg_rs1_ptr"
+
+	case strings.Contains(op, "CBO_"):
+		return "arg_rs1_ptr"
 
 	case strings.Contains(op, "LR_"):
 		return "arg_rd, arg_rs1_ptr"
