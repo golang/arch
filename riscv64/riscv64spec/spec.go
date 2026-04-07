@@ -289,6 +289,9 @@ func inferFormats(argTypeList []string, op string) string {
 	case strings.Contains(op, "AMO") || strings.Contains(op, "SC_"):
 		return "arg_rd, arg_rs2, arg_rs1_ptr"
 
+	case strings.Contains(op, "CBO_"):
+		return "arg_rs1_ptr"
+
 	case strings.Contains(op, "LR_"):
 		return "arg_rd, arg_rs1_ptr"
 
