@@ -205,7 +205,7 @@ Pm: [16:20)
 	`Is the name of the second source scalable vector register, encoded in the "Zm" field.
 bit range mappings:
 Zm: [16:21)
-`: {"encodeZm1621", `return v << 16, true`, "enc_Zm"},
+`: {"encodeZm1621V2", `return v << 16, true`, "enc_Zm"},
 	`Is the name of the second source scalable vector register, encoded in the "Zm" field.
 bit range mappings:
 Zm: [5:10)
@@ -1490,4 +1490,97 @@ tszl: [19:21)
 		return 1 << 23, true
 	}
 	return 0, false`, "enc_tszh_tszl"},
+	`For the "Byte" variant: is the vector segment index, in the range 0 to 3, encoded in the "i2" field.
+bit range mappings:
+i2: [22:24)
+`: {"encodeI22224", `if v > 3 {
+		return 0, false
+	}
+	return v << 22, true`, "enc_i2"},
+	`For the "Byte, single register table" variant: is the vector segment index, in the range 0 to 1, encoded in the "i1" field.
+bit range mappings:
+i1: [23:24)
+`: {"encodeI12324B", `if v > 1 {
+		return 0, false
+	}
+	return v << 23, true`, "enc_i1"},
+	`For the "Halfword" variant: is the vector segment index, in the range 0 to 7, encoded in the "i3h:i3l" fields.
+bit range mappings:
+i3h: [22:24)
+i3l: [12:13)
+`: {"encodeI3224I31213", `if v > 7 {
+		return 0, false
+	}
+	return (v&1)<<12 | (v>>1)<<22, true`, "enc_i3h_i3l"},
+	`For the "Halfword, single register table" and "Halfword, two register table" variants: is the vector segment index, in the range 0 to 3, encoded in the "i2" field.
+bit range mappings:
+i2: [22:24)
+`: {"encodeI22224HW", `if v > 3 {
+		return 0, false
+	}
+	return v << 22, true`, "enc_i2"},
+	`Is the name of the first destination scalable predicate register, encoded as "Pd" times 2.
+bit range mappings:
+Pd: [1:4)
+`: {"encodePd14", `if v > 14 {
+		return 0, false
+	}
+	if v&1 != 0 {
+		return 0, false
+	}
+	return v, true`, "enc_Pd"},
+	`Is the name of the first destination scalable predicate register, encoded in the "Pd" field.
+bit range mappings:
+Pd: [0:4)
+`: {"encodePd04", `return v, true`, "enc_Pd"},
+	`Is the name of the first scalable vector register of the source multi-vector group, encoded in the "Zn" field.
+bit range mappings:
+Zn: [5:10)
+`: {"encodeZn510MultiSrc1", `return v << 5, true`, "enc_Zn"},
+	`Is the name of the first table vector register, encoded as "Zn".
+bit range mappings:
+Zn: [5:10)
+`: {"encodeZn510Table1", `return v << 5, true`, "enc_Zn"},
+	`Is the name of the second destination scalable predicate register, encoded as "Pd" times 2 plus 1.
+bit range mappings:
+Pd: [1:4)
+`: {"encodePd14Plus1", `if v&1 == 0 {
+		return 0, false
+	}
+	return v - 1, true`, "enc_Pd"},
+	`Is the name of the second destination scalable predicate register, encoded in the "Pd" field.
+bit range mappings:
+Pd: [0:4)
+`: {"encodePd04Plus1", `// This "second destination" incurs Pd + 1 == v
+	return v - 1, true`, "enc_Pd"},
+	`Is the name of the second scalable vector register of the source multi-vector group, encoded in the "Zn" field.
+bit range mappings:
+Zn: [5:10)
+`: {"encodeZn510MultiSrc2", `return (v - 1) << 5, true`, "enc_Zn"},
+	`Is the name of the second table vector register, encoded as "Zn" plus 1 modulo 32.
+bit range mappings:
+Zn: [5:10)
+`: {"encodeZn510Table2", `return ((v - 1) & 0x1f) << 5, true`, "enc_Zn"},
+	`Is the name of the source scalable vector register, encoded in the "Zm" field.
+bit range mappings:
+Zm: [16:21)
+`: {"encodeZm1621V1", `return v << 16, true`, "enc_Zm"},
+	`Is the name of the table vector register, encoded in the "Zn" field.
+bit range mappings:
+Zn: [5:10)
+`: {"encodeZn510Table3", `return v << 5, true`, "enc_Zn"},
+	`Is the portion index, in the range 0 to 1, encoded in the "i1" field.
+bit range mappings:
+i1: [8:9)
+`: {"encodeI189", `if v > 1 {
+		return 0, false
+	}
+	return v << 8, true`, "enc_i1"},
+	`Is the vector segment index, in the range 0 to 1, encoded in the "i1" field.
+bit range mappings:
+i1: [23:24)
+`: {"encodeI12324", `if v > 1 {
+		return 0, false
+	}
+	return v << 23, true`, "enc_i1"},
 }

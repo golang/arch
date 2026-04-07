@@ -1060,7 +1060,18 @@ var noOpCheck = "No-op check, returns true"
 // This function also checks that the operand has the expected number of elements
 // after resolving the constraints.
 func (op *Operand) resolveConstraints() {
-	insertElmAt := func(idx int, symbol, textExpWithRanges string) {
+	// insertElmAt takes idx as the index in the old op.Elems slice.
+	// we need to keep track of the index shifts brought by prior insertions.
+	insertionHistory := make([]int, expectedElemCount[op.Typ])
+	insertElmAt := func(idx int, symbol, textExpWithRanges string, needOffset bool) {
+		if needOffset {
+			offset := 0
+			for i := range idx {
+				offset += insertionHistory[i]
+			}
+			insertionHistory[idx]++
+			idx += offset
+		}
 		op.Elems = append(op.Elems[:idx], append([]Element{
 			{
 				encodedIn:         "nil",
@@ -1072,7 +1083,7 @@ func (op *Operand) resolveConstraints() {
 	}
 	// Constraint format: COP_<AClass>__<index>_(_<constraintTypes>)*
 	// <AClass> is the operand class, e.g. AC_SPZGREG, AC_IMM, etc.
-	// <index> is the index of the operand in the instruction, e.g. 0, 1, 2, etc.
+	// <index> is the index of the constrained element in the operand, e.g. 0, 1, 2, etc.
 	// <constraintTypes> is the type of the constraint, e.g. ARNG, MODAMT, etc.
 	for _, constraint := range op.constraints {
 		constraint = strings.TrimPrefix(constraint, "COP_")
@@ -1092,53 +1103,39 @@ func (op *Operand) resolveConstraints() {
 		for _, constraintType := range constraintTypes {
 			switch constraintType {
 			case "ARNGB":
-				insertElmAt(index+1, "B", "Check this is a B arrangement")
-				index++
+				insertElmAt(index+1, "B", "Check this is a B arrangement", true)
 			case "ARNGD":
-				insertElmAt(index+1, "D", "Check this is a D arrangement")
-				index++
+				insertElmAt(index+1, "D", "Check this is a D arrangement", true)
 			case "ARNGH":
-				insertElmAt(index+1, "H", "Check this is a H arrangement")
-				index++
+				insertElmAt(index+1, "H", "Check this is a H arrangement", true)
 			case "ARNGQ":
-				insertElmAt(index+1, "Q", "Check this is a Q arrangement")
-				index++
+				insertElmAt(index+1, "Q", "Check this is a Q arrangement", true)
 			case "ARNGS":
-				insertElmAt(index+1, "S", "Check this is a S arrangement")
-				index++
+				insertElmAt(index+1, "S", "Check this is a S arrangement", true)
 			case "R64":
 				// Width constraints are preceeding the element.
-				insertElmAt(index, "X", "Check this is a 64-bit scalar register")
-				index++
+				insertElmAt(index, "X", "Check this is a 64-bit scalar register", true)
 			case "R32":
-				insertElmAt(index, "W", "Check this is a 32-bit scalar register")
-				index++
+				insertElmAt(index, "W", "Check this is a 32-bit scalar register", true)
 			case "LSL1", "LSL2", "LSL3", "LSL4", "SXTW", "UXTW", "MODAMT1", "MODAMT2", "MODAMT3":
 				if acl == "AC_MEMEXT" {
 					switch constraintType {
 					case "LSL1", "LSL2", "LSL3", "LSL4":
-						insertElmAt(index+1, "LSL", "Check this is mod and is LSL")
-						index++
+						insertElmAt(index+1, "LSL", "Check this is mod and is LSL", true)
 					case "UXTW":
-						insertElmAt(index+1, "UXTW", "Check this is mod and is UXTW")
-						index++
+						insertElmAt(index+1, "UXTW", "Check this is mod and is UXTW", true)
 					case "SXTW":
-						insertElmAt(index+1, "SXTW", "Check this is mod and is SXTW")
-						index++
+						insertElmAt(index+1, "SXTW", "Check this is mod and is SXTW", true)
 					}
 					switch constraintType {
 					case "LSL1", "MODAMT1":
-						insertElmAt(index+1, "#1", "Check this is mod amount and is 1")
-						index++
+						insertElmAt(index+1, "#1", "Check this is mod amount and is 1", true)
 					case "LSL2", "MODAMT2":
-						insertElmAt(index+1, "#2", "Check this is mod amount and is 2")
-						index++
+						insertElmAt(index+1, "#2", "Check this is mod amount and is 2", true)
 					case "LSL3", "MODAMT3":
-						insertElmAt(index+1, "#3", "Check this is mod amount and is 3")
-						index++
+						insertElmAt(index+1, "#3", "Check this is mod amount and is 3", true)
 					case "LSL4":
-						insertElmAt(index+1, "#4", "Check this is mod amount and is 4")
-						index++
+						insertElmAt(index+1, "#4", "Check this is mod amount and is 4", true)
 					}
 				} else {
 					log.Printf("Unknown constraint: %s", constraint)
@@ -1155,60 +1152,60 @@ func (op *Operand) resolveConstraints() {
 		case "#0.0":
 			if el == 1 && len(op.Elems) == 0 {
 				op.Elems = make([]Element, 0, 1)
-				insertElmAt(0, "#0.0", "Check this is immediate 0.0")
+				insertElmAt(0, "#0.0", "Check this is immediate 0.0", false)
 				resolved = true
 			}
 		case "#<imm>{, <shift>}":
 			if el == 1 && len(op.Elems) == 2 {
 				// The 2 elements explanation need to be merged
-				insertElmAt(0, "#<imm>{, <shift>}", op.Elems[0].TextExpWithRanges+"\n"+op.Elems[1].TextExpWithRanges)
+				insertElmAt(0, "#<imm>{, <shift>}", op.Elems[0].TextExpWithRanges+"\n"+op.Elems[1].TextExpWithRanges, false)
 				op.Elems = op.Elems[:1]
 				resolved = true
 			}
 		case "<Pd>", "<Pg>", "<Pn>", "<PNg>", "<Pt>", "<Pv>", "<Zd>", "<Zm>", "<Zn>", "<Zt>":
 			if el == 2 && len(op.Elems) == 1 {
-				insertElmAt(1, "nil", noOpCheck)
+				insertElmAt(1, "nil", noOpCheck, false)
 				resolved = true
 			}
 		case "<Dd>":
 			if el == 2 && len(op.Elems) == 1 {
-				insertElmAt(0, "nil", "Check this SIMD vector register is of width 64-bit.")
+				insertElmAt(0, "nil", "Check this SIMD vector register is of width 64-bit.", false)
 				resolved = true
 			}
 		case "<PNg>/Z", "<Pg>/Z":
 			if el == 2 && len(op.Elems) == 1 {
-				insertElmAt(1, "Z", "Check this is a zeroing predication")
+				insertElmAt(1, "Z", "Check this is a zeroing predication", false)
 				resolved = true
 			}
 		case "<Pg>/M", "<Pv>/M":
 			if el == 2 && len(op.Elems) == 1 {
-				insertElmAt(1, "M", "Check this is a merging predication")
+				insertElmAt(1, "M", "Check this is a merging predication", false)
 				resolved = true
 			}
 		case "<PNn>[<imm>]":
 			if el == 3 && len(op.Elems) == 2 {
-				insertElmAt(1, "nil", noOpCheck)
+				insertElmAt(1, "nil", noOpCheck, false)
 				resolved = true
 			}
 		case "<Pd>.<T>{, <pattern>}":
 			if el == 4 && len(op.Elems) == 3 {
-				insertElmAt(3, "nil", noOpCheck)
+				insertElmAt(3, "nil", noOpCheck, false)
 				resolved = true
 			}
 		case "<Zd>{[<imm>]}", "<Zm>[<index>]", "<Zn>{[<imm>]}":
 			if el == 3 && len(op.Elems) == 2 {
-				insertElmAt(1, "nil", noOpCheck)
+				insertElmAt(1, "nil", noOpCheck, false)
 				resolved = true
 			}
 		case "[<Xn|SP>, <Xm>]", "[<Xn|SP>, <Zm>.D]", "[<Xn|SP>{, <Xm>}]", "[<Zn>.D{, <Xm>}]", "[<Zn>.S{, <Xm>}]":
 			if el == 6 && len(op.Elems) == 4 {
-				insertElmAt(4, "nil", noOpCheck)
-				insertElmAt(5, "nil", noOpCheck)
+				insertElmAt(4, "nil", noOpCheck, false)
+				insertElmAt(5, "nil", noOpCheck, false)
 				resolved = true
 			}
 		case "[<Xn|SP>, <Zm>.S, <mod>]", "[<Xn|SP>, <Zm>.D, <mod>]":
 			if el == 6 && len(op.Elems) == 5 {
-				insertElmAt(5, "nil", noOpCheck)
+				insertElmAt(5, "nil", noOpCheck, false)
 				resolved = true
 			}
 		}

@@ -196,17 +196,21 @@ TEXT asmtest(SB),DUPOK|NOSPLIT,$-8
 `
 
 var operandTypeOrders = map[string]int{
-	"AC_ARNG":    0,
-	"AC_PREG":    0,
-	"AC_PREGZ":   0,
-	"AC_PREGZM":  0,
-	"AC_ZREG":    0,
-	"AC_SPZGREG": 1,
-	"AC_VREG":    1,
-	"AC_ARNGIDX": 2,
-	"AC_ZREGIDX": 2,
-	"AC_PREGIDX": 2,
-	"AC_IMM":     3,
+	"AC_ARNG":     0,
+	"AC_PREG":     0,
+	"AC_PREGZ":    0,
+	"AC_PREGZM":   0,
+	"AC_ZREG":     0,
+	"AC_SPZGREG":  1,
+	"AC_VREG":     1,
+	"AC_ARNGIDX":  2,
+	"AC_ZREGIDX":  2,
+	"AC_PREGIDX":  2,
+	"AC_IMM":      3,
+	"AC_REGLIST1": 4,
+	"AC_REGLIST2": 4,
+	"AC_REGLIST3": 4,
+	"AC_REGLIST4": 4,
 }
 
 func readExistingGoOps(aoutPath string) map[string]bool {
@@ -866,9 +870,7 @@ func constructInstance(enc *xmlspec.EncodingParsed) (*e2eData, *e2eData) {
 				log.Fatalf("Unsupported operand type in constructInstance: %s, enc: %s", op.Typ, enc.String())
 			}
 			highFeat = max(highFeat, operandTypeOrders[op.Typ])
-			if op.Typ == "AC_ARNG" || op.Typ == "AC_PREG" || op.Typ == "AC_PREGZM" || op.Typ == "AC_ZREG" {
-				// Operands that takes SVE registers and arrangement.
-
+			generateSVERegOp := func(opName string) (string, string, string, int, string) {
 				var parts []string
 				var isPred bool
 				if strings.Contains(opName, ".") {
@@ -885,66 +887,79 @@ func constructInstance(enc *xmlspec.EncodingParsed) (*e2eData, *e2eData) {
 				if len(parts) > 1 {
 					arrName = strings.TrimSuffix(strings.TrimPrefix(parts[1], "<"), ">")
 				}
-				reg := regMap[regName]
+				resolvedArr := arrName
+				regNameSanitized := strings.TrimRight(regName, "0123456789")
+				reg := regMap[regNameSanitized]
+				if reg == "" {
+					reg = regMap[regName]
+				}
+				var goAsmOp, gnuAsmOp string
+				var regIdx int
 				if arrMap[arrName] || errCase == nil {
 					// Give error case a random mutation to trigger an error.
 					// Variables, needs mutation
 					switch reg {
 					case "Z":
-						regIdx := cachedOrNew(regCache, regName, 32)
+						regIdx = cachedOrNew(regCache, regName, 32)
 						arrIdx := cachedOrNew(arrCache, arrName, len(sveArr))
-						asmOp := fmt.Sprintf("Z%d.%s", regIdx, sveArr[arrIdx])
-						gnuAsmOps = append([]string{asmOp}, gnuAsmOps...)
-						// go operand order is gnu reversed
-						goAsmOps = append(goAsmOps, asmOp)
+						resolvedArr = sveArr[arrIdx]
+						goAsmOp = fmt.Sprintf("Z%d.%s", regIdx, resolvedArr)
+						gnuAsmOp = goAsmOp
 					case "P", "PN":
-						regIdx := cachedOrNew(regCache, regName, 15)
+						regIdx = cachedOrNew(regCache, regName, 15)
 						if isPred {
 							arrIdx := cachedOrNew(arrCache, arrName, len(svePred))
-							// Go use "." for predication, GNU use "/"
-							gnuAsmOps = append([]string{fmt.Sprintf("%s%d/%s", reg, regIdx, svePred[arrIdx])}, gnuAsmOps...)
-							goAsmOps = append(goAsmOps, fmt.Sprintf("%s%d.%s", reg, regIdx, svePred[arrIdx]))
+							resolvedArr = svePred[arrIdx]
+							gnuAsmOp = fmt.Sprintf("%s%d/%s", reg, regIdx, resolvedArr)
+							goAsmOp = fmt.Sprintf("%s%d.%s", reg, regIdx, resolvedArr)
 						} else {
 							arrIdx := cachedOrNew(arrCache, arrName, len(sveArr))
-							asmOp := fmt.Sprintf("%s%d.%s", reg, regIdx, sveArr[arrIdx])
-							gnuAsmOps = append([]string{asmOp}, gnuAsmOps...)
-							goAsmOps = append(goAsmOps, asmOp)
+							resolvedArr = sveArr[arrIdx]
+							goAsmOp = fmt.Sprintf("%s%d.%s", reg, regIdx, resolvedArr)
+							gnuAsmOp = goAsmOp
 						}
 					case "V":
-						regIdx := cachedOrNew(regCache, regName, 32)
+						regIdx = cachedOrNew(regCache, regName, 32)
 						arrIdx := cachedOrNew(arrCache, arrName, len(neonArrGNU))
-						gnuAsmOps = append([]string{fmt.Sprintf("V%d.%s", regIdx, neonArrGNU[arrIdx])}, gnuAsmOps...)
-						goAsmOps = append(goAsmOps, fmt.Sprintf("V%d.%s", regIdx, neonArrGo[arrIdx]))
+						resolvedArr = neonArrGNU[arrIdx]
+						gnuAsmOp = fmt.Sprintf("V%d.%s", regIdx, neonArrGNU[arrIdx])
+						goAsmOp = fmt.Sprintf("V%d.%s", regIdx, neonArrGo[arrIdx])
 					}
 				} else {
 					// Fixed arrangement or predications
+					var dotArr string
 					if arrName != "" {
-						arrName = "." + arrName
+						dotArr = "." + arrName
 					}
 					switch reg {
 					case "Z":
-						regIdx := cachedOrNew(regCache, regName, 32)
-						asmOp := fmt.Sprintf("Z%d%s", regIdx, arrName)
-						gnuAsmOps = append([]string{asmOp}, gnuAsmOps...)
-						goAsmOps = append(goAsmOps, asmOp)
+						regIdx = cachedOrNew(regCache, regName, 32)
+						goAsmOp = fmt.Sprintf("Z%d%s", regIdx, dotArr)
+						gnuAsmOp = goAsmOp
 					case "P", "PN":
-						regIdx := cachedOrNew(regCache, regName, 15)
+						regIdx = cachedOrNew(regCache, regName, 15)
 						if isPred {
 							var arrNameGNU string
 							if arrName != "" {
-								arrNameGNU = "/" + arrName[1:]
+								arrNameGNU = "/" + arrName
 							}
-							gnuAsmOps = append([]string{fmt.Sprintf("%s%d%s", reg, regIdx, arrNameGNU)}, gnuAsmOps...)
-							goAsmOps = append(goAsmOps, fmt.Sprintf("%s%d%s", reg, regIdx, arrName))
+							gnuAsmOp = fmt.Sprintf("%s%d%s", reg, regIdx, arrNameGNU)
+							goAsmOp = fmt.Sprintf("%s%d%s", reg, regIdx, dotArr)
 						} else {
-							asmOp := fmt.Sprintf("%s%d%s", reg, regIdx, arrName)
-							gnuAsmOps = append([]string{asmOp}, gnuAsmOps...)
-							goAsmOps = append(goAsmOps, asmOp)
+							goAsmOp = fmt.Sprintf("%s%d%s", reg, regIdx, dotArr)
+							gnuAsmOp = goAsmOp
 						}
 					case "V":
 						log.Fatalf("Unexpected V with fixed arrangement: %s", opName)
 					}
 				}
+				return goAsmOp, gnuAsmOp, reg, regIdx, resolvedArr
+			}
+
+			if op.Typ == "AC_ARNG" || op.Typ == "AC_PREG" || op.Typ == "AC_PREGZM" || op.Typ == "AC_ZREG" {
+				goAsmOp, gnuAsmOp, _, _, _ := generateSVERegOp(opName)
+				gnuAsmOps = append([]string{gnuAsmOp}, gnuAsmOps...)
+				goAsmOps = append(goAsmOps, goAsmOp)
 			} else if op.Typ == "AC_ARNGIDX" || op.Typ == "AC_ZREGIDX" || op.Typ == "AC_PREGIDX" {
 				// Operands that takes SVE/SIMD registers and arrangement with index.
 				// reg.T[index]
@@ -1108,6 +1123,59 @@ func constructInstance(enc *xmlspec.EncodingParsed) (*e2eData, *e2eData) {
 					goAsmOps = append(goAsmOps, fmt.Sprintf("$%s", imm))
 				}
 				gnuAsmOps = append([]string{fmt.Sprintf("#%s", imm)}, gnuAsmOps...)
+			} else if op.Typ == "AC_REGLIST1" || op.Typ == "AC_REGLIST2" || op.Typ == "AC_REGLIST3" || op.Typ == "AC_REGLIST4" {
+				// Register list, they must be contiguous modulo 32 (16 for P registers).
+				// Only AC_REGLIST2 has a P register variant though.
+				// { <Zn>.<T> }
+				// { <Pd1>.<T>, <Pd2>.<T> }
+				// { <Zn1>.B, <Zn2>.B }
+				// { <Zt1>.B, <Zt2>.B, <Zt3>.B }
+				// { <Zt1>.B, <Zt2>.B, <Zt3>.B, <Zt4>.B }
+				// We can probably reuse the logic for these registers in AC_ARNG case.
+				// In Go, the register list is wrapped around [], while in GNU it's wrapped around {}.
+				nRegs := 1
+				switch op.Typ {
+				case "AC_REGLIST2":
+					nRegs = 2
+				case "AC_REGLIST3":
+					nRegs = 3
+				case "AC_REGLIST4":
+					nRegs = 4
+				}
+
+				// Extract the first operand inside the list.
+				trimmedName := strings.Trim(op.Name, "{} ")
+				parts := strings.Split(trimmedName, ",")
+				firstOp := strings.TrimSpace(parts[0])
+
+				_, _, regPrefix, regIdx, arr := generateSVERegOp(firstOp)
+
+				limit := 32
+				if regPrefix == "P" || regPrefix == "PN" {
+					limit = 16
+				}
+
+				goRegs := []string{}
+				gnuRegs := []string{}
+				for i := 0; i < nRegs; i++ {
+					currIdx := (regIdx + i) % limit
+					var goReg, gnuReg string
+					if arr != "" {
+						goReg = fmt.Sprintf("%s%d.%s", regPrefix, currIdx, arr)
+						gnuReg = goReg
+					} else {
+						goReg = fmt.Sprintf("%s%d", regPrefix, currIdx)
+						gnuReg = goReg
+					}
+					goRegs = append(goRegs, goReg)
+					gnuRegs = append(gnuRegs, gnuReg)
+				}
+
+				goAsmOp := "[" + strings.Join(goRegs, ", ") + "]"
+				gnuAsmOp := "{" + strings.Join(gnuRegs, ", ") + "}"
+
+				goAsmOps = append(goAsmOps, goAsmOp)
+				gnuAsmOps = append([]string{gnuAsmOp}, gnuAsmOps...)
 			}
 		}
 		// Try to assemble the GNU version.
@@ -1157,7 +1225,7 @@ func constructInstance(enc *xmlspec.EncodingParsed) (*e2eData, *e2eData) {
 		}
 		return validCase, errCase
 	}
-	if name == "ADDQP" || name == "ADDSUBP" || name == "SCVTFLT" || name == "UCVTFLT" {
+	if name == "ADDQP" || name == "ADDSUBP" || name == "SCVTFLT" || name == "UCVTFLT" || name == "LUTI6" {
 		// Very new instructions
 		// GNU toolchain 2.45 doesn't know about these instruction yet.
 		todoCase := e2eData{GoOp: enc.GoOp[1:], Asm: fmt.Sprintf("// TODO: %s", name), highFeat: highFeat}
