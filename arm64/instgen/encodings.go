@@ -158,7 +158,10 @@ Pd: [0:4)
 	`Is the name of the destination scalable vector register, encoded in the "Zd" field.
 bit range mappings:
 Zd: [0:5)
-`: {"encodeZd", `return v, true`, "enc_Zd"},
+`: {"encodeZd", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return v, true`, "enc_Zd"},
 	`Is the name of the first source and destination scalable predicate register, encoded in the "Pdn" field.
 bit range mappings:
 Pdn: [0:4)
@@ -166,7 +169,10 @@ Pdn: [0:4)
 	`Is the name of the first source and destination scalable vector register, encoded in the "Zdn" field.
 bit range mappings:
 Zdn: [0:5)
-`: {"encodeZdnDest", `return v, true`, "enc_Zdn"},
+`: {"encodeZdnDest", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return v, true`, "enc_Zdn"},
 	`Is the name of the first source scalable predicate register, encoded in the "Pn" field.
 bit range mappings:
 Pn: [5:9)
@@ -174,7 +180,10 @@ Pn: [5:9)
 	`Is the name of the first source scalable vector register, encoded in the "Zn" field.
 bit range mappings:
 Zn: [5:10)
-`: {"encodeZn510", `return v << 5, true`, "enc_Zn"},
+`: {"encodeZn510V1", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return v << 5, true`, "enc_Zn"},
 	`Is the name of the governing scalable predicate register P0-P7, encoded in the "Pg" field.
 bit range mappings:
 Pg: [10:13)
@@ -197,7 +206,10 @@ Pdm: [0:4)
 	`Is the name of the second source and destination scalable vector register, encoded in the "Zda" field.
 bit range mappings:
 Zda: [0:5)
-`: {"encodeZdaDest", `return v, true`, "enc_Zda"},
+`: {"encodeZdaDest", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return v, true`, "enc_Zda"},
 	`Is the name of the second source scalable predicate register, encoded in the "Pm" field.
 bit range mappings:
 Pm: [16:20)
@@ -205,11 +217,17 @@ Pm: [16:20)
 	`Is the name of the second source scalable vector register, encoded in the "Zm" field.
 bit range mappings:
 Zm: [16:21)
-`: {"encodeZm1621V2", `return v << 16, true`, "enc_Zm"},
+`: {"encodeZm1621V2", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return v << 16, true`, "enc_Zm"},
 	`Is the name of the second source scalable vector register, encoded in the "Zm" field.
 bit range mappings:
 Zm: [5:10)
-`: {"encodeZm510V1", `return (v & 31) << 5, true`, "enc_Zm"},
+`: {"encodeZm510V1", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return (v & 31) << 5, true`, "enc_Zm"},
 	`Is the name of the source and destination scalable predicate register, encoded in the "Pdn" field.
 bit range mappings:
 Pdn: [0:4)
@@ -217,7 +235,10 @@ Pdn: [0:4)
 	`Is the name of the source and destination scalable vector register, encoded in the "Zdn" field.
 bit range mappings:
 Zdn: [0:5)
-`: {"encodeZdnSrcDst", `return v, true`, "enc_Zdn"},
+`: {"encodeZdnSrcDst", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return v, true`, "enc_Zdn"},
 	`Is the name of the source scalable predicate register, encoded in the "Pm" field.
 bit range mappings:
 Pm: [5:9)
@@ -229,23 +250,38 @@ Pn: [5:9)
 	`Is the name of the source scalable vector register, encoded in the "Zn" field.
 bit range mappings:
 Zn: [5:10)
-`: {"encodeZn510Src", `return (v & 31) << 5, true`, "enc_Zn"},
+`: {"encodeZn510Src", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return (v & 31) << 5, true`, "enc_Zn"},
 	`Is the name of the third source and destination scalable vector register, encoded in the "Zda" field.
 bit range mappings:
 Zda: [0:5)
-`: {"encodeZda3RdSrcDst", `return v, true`, "enc_Zda"},
+`: {"encodeZda3RdSrcDst", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return v, true`, "enc_Zda"},
 	`Is the name of the third source scalable vector register, encoded in the "Za" field.
 bit range mappings:
 Za: [16:21)
-`: {"encodeZa16213Rd", `return v << 16, true`, "enc_Za"},
+`: {"encodeZa16213Rd", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return v << 16, true`, "enc_Za"},
 	`Is the name of the third source scalable vector register, encoded in the "Za" field.
 bit range mappings:
 Za: [5:10)
-`: {"encodeZa5103Rd", `return v << 5, true`, "enc_Za"},
+`: {"encodeZa5103Rd", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return v << 5, true`, "enc_Za"},
 	`Is the name of the third source scalable vector register, encoded in the "Zk" field.
 bit range mappings:
 Zk: [5:10)
-`: {"encodeZk5103Rd", `return v << 5, true`, "enc_Zk"},
+`: {"encodeZk5103Rd", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return v << 5, true`, "enc_Zk"},
 	`Is the name of the vector select predicate register P0-P7, encoded in the "Pv" field.
 bit range mappings:
 Pv: [10:13)
@@ -606,7 +642,10 @@ tszl: [19:21)
 	`No-op check, returns true`: {"encodeNoop", `return 0, true`, "enc_NIL"},
 	`Is the 32-bit name of the source and destination general-purpose register, encoded in the "Rdn" field.
 bit range mappings:
-Rdn: [0:5)`: {"encodeWdn05", `if v == REG_RSP {
+Rdn: [0:5)`: {"encodeWdn05", `if !checkIsR(v) {
+		return 0, false
+	}
+	if v == REG_RSP {
 		return 0, false
 	}
 	return v & 31, true`, "enc_Rdn"},
@@ -615,41 +654,62 @@ bit range mappings:
 Vd: [0:5)`: {"encodeVd0564", `return v & 31, true`, "enc_Vd"},
 	`Is the 64-bit name of the destination general-purpose register, encoded in the "Rd" field.
 bit range mappings:
-Rd: [0:5)`: {"encodeRd05", `if v == REG_RSP {
+Rd: [0:5)`: {"encodeRd05", `if !checkIsR(v) {
+		return 0, false
+	}
+	if v == REG_RSP {
 		return 0, false
 	}
 	return v & 31, true`, "enc_Rd"},
 	`Is the 64-bit name of the first source general-purpose register, encoded in the "Rn" field.
 bit range mappings:
-Rn: [5:10)`: {"encodeRn510", `if v == REG_RSP {
+Rn: [5:10)`: {"encodeRn510", `if !checkIsR(v) {
+		return 0, false
+	}
+	if v == REG_RSP {
 		return 0, false
 	}
 	return (v & 31) << 5, true`, "enc_Rn"},
 	`Is the 64-bit name of the second source general-purpose register, encoded in the "Rm" field.
 bit range mappings:
-Rm: [16:21)`: {"encodeRm1621", `if v == REG_RSP {
+Rm: [16:21)`: {"encodeRm1621V1", `if !checkIsR(v) {
+		return 0, false
+	}
+	if v == REG_RSP {
 		return 0, false
 	}
 	return (v & 31) << 16, true`, "enc_Rm"},
 	`Is the 64-bit name of the source and destination general-purpose register, encoded in the "Rdn" field.
 bit range mappings:
-Rdn: [0:5)`: {"encodeXdn05", `if v == REG_RSP {
+Rdn: [0:5)`: {"encodeXdn05", `if !checkIsR(v) {
+		return 0, false
+	}
+	if v == REG_RSP {
 		return 0, false
 	}
 	return v & 31, true`, "enc_Rdn"},
 	`Is the name of the source scalable vector register, encoded in the "Zm" field.
 bit range mappings:
-Zm: [5:10)`: {"encodeZm510V2", `return (v & 31) << 5, true`, "enc_Zm"},
+Zm: [5:10)`: {"encodeZm510V2", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return (v & 31) << 5, true`, "enc_Zm"},
 	`Is the number [0-30] of the destination general-purpose register or the name ZR (31), encoded in the "Rd" field.
 bit range mappings:
-Rd: [0:5)`: {"encodeRd05ZR", `if v == REG_RSP {
+Rd: [0:5)`: {"encodeRd05ZR", `if !checkIsR(v) {
+		return 0, false
+	}
+	if v == REG_RSP {
 		return 0, false
 	}
 	// ZR is just R31
 	return v & 31, true`, "enc_Rd"},
 	`Is the number [0-30] of the general-purpose source register or the name SP (31), encoded in the "Rn" field.
 bit range mappings:
-Rn: [5:10)`: {"encodeRn510SP", `if v == REG_R31 {
+Rn: [5:10)`: {"encodeRn510SPV1", `if !checkIsR(v) {
+		return 0, false
+	}
+	if v == REG_R31 {
 		return 0, false
 	}
 	if v == REG_RSP {
@@ -658,25 +718,37 @@ Rn: [5:10)`: {"encodeRn510SP", `if v == REG_R31 {
 	return (v & 31) << 5, true`, "enc_Rn"},
 	`Is the number [0-30] of the source and destination general-purpose register or the name ZR (31), encoded in the "Rdn" field.
 bit range mappings:
-Rdn: [0:5)`: {"encodeRdn05ZR", `if v == REG_RSP {
+Rdn: [0:5)`: {"encodeRdn05ZR", `if !checkIsR(v) {
+		return 0, false
+	}
+	if v == REG_RSP {
 		return 0, false
 	}
 	return v & 31, true`, "enc_Rdn"},
 	`Is the number [0-30] of the source general-purpose register or the name ZR (31), encoded in the "Rm" field.
 bit range mappings:
-Rm: [16:21)`: {"encodeRm1621ZR", `if v == REG_RSP {
+Rm: [16:21)`: {"encodeRm1621ZR", `if !checkIsR(v) {
+		return 0, false
+	}
+	if v == REG_RSP {
 		return 0, false
 	}
 	return (v & 31) << 16, true`, "enc_Rm"},
 	`Is the number [0-30] of the source general-purpose register or the name ZR (31), encoded in the "Rm" field.
 bit range mappings:
-Rm: [5:10)`: {"encodeRm510ZR", `if v == REG_RSP {
+Rm: [5:10)`: {"encodeRm510ZR", `if !checkIsR(v) {
+		return 0, false
+	}
+	if v == REG_RSP {
 		return 0, false
 	}
 	return (v & 31) << 5, true`, "enc_Rm"},
 	`Is the number [0-30] of the source general-purpose register or the name ZR (31), encoded in the "Rn" field.
 bit range mappings:
-Rn: [5:10)`: {"encodeRn510ZR", `if v == REG_RSP {
+Rn: [5:10)`: {"encodeRn510ZR", `if !checkIsR(v) {
+		return 0, false
+	}
+	if v == REG_RSP {
 		return 0, false
 	}
 	return (v & 31) << 5, true`, "enc_Rn"},
@@ -709,17 +781,23 @@ i1: [20:21)
 	`For the "16-bit to 64-bit" variant: is the name of the second source scalable vector register Z0-Z15, encoded in the "Zm" field.
 bit range mappings:
 Zm: [16:20)
-`: {"encodeZm1620_16To64Bit", `if v > 15 {
-		return 0, false
-	}
-	return v << 16, true`, "enc_Zm"},
+`: {"encodeZm1620_16To64Bit", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		if v > 15 {
+			return 0, false
+		}
+		return v << 16, true`, "enc_Zm"},
 	`For the "16-bit" and "32-bit" variants: is the name of the second source scalable vector register Z0-Z7, encoded in the "Zm" field.
 bit range mappings:
 Zm: [16:19)
-`: {"encodeZm1619_16Bit32Bit", `if v > 7 {
-		return 0, false
-	}
-	return v << 16, true`, "enc_Zm"},
+`: {"encodeZm1619_16Bit32Bit", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		if v > 7 {
+			return 0, false
+		}
+		return v << 16, true`, "enc_Zm"},
 	`For the "16-bit" variant: is the element index, in the range 0 to 7, encoded in the "i3h:i3l" fields.
 bit range mappings:
 i3h: [22:23)
@@ -746,10 +824,13 @@ i3l: [11:12)
 	`For the "32-bit" variant: is the name of the second source scalable vector register Z0-Z7, encoded in the "Zm" field.
 bit range mappings:
 Zm: [16:19)
-`: {"encodeZm1619_32Bit", `if v > 7 {
-		return 0, false
-	}
-	return v << 16, true`, "enc_Zm"},
+`: {"encodeZm1619_32Bit", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		if v > 7 {
+			return 0, false
+		}
+		return v << 16, true`, "enc_Zm"},
 	`For the "64-bit" variant: is the element index, in the range 0 to 1, encoded in the "i1" field.
 bit range mappings:
 i1: [20:21)
@@ -768,10 +849,13 @@ i2l: [11:12)
 	`For the "64-bit" variant: is the name of the second source scalable vector register Z0-Z15, encoded in the "Zm" field.
 bit range mappings:
 Zm: [16:20)
-`: {"encodeZm1620_64Bit", `if v > 15 {
-		return 0, false
-	}
-	return v << 16, true`, "enc_Zm"},
+`: {"encodeZm1620_64Bit", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		if v > 15 {
+			return 0, false
+		}
+		return v << 16, true`, "enc_Zm"},
 	`For the "8-bit to 16-bit" variant: is the immediate index of a pair of 8-bit elements within each 128-bit vector segment, in the range 0 to 7, encoded in the "i3h:i3l" fields.
 bit range mappings:
 i3h: [22:23)
@@ -790,10 +874,13 @@ i2: [19:21)
 	`For the "8-bit to 32-bit" variant: is the name of the second source scalable vector register Z0-Z7, encoded in the "Zm" field.
 bit range mappings:
 Zm: [16:19)
-`: {"encodeZm1619_8To32Bit", `if v > 7 {
-		return 0, false
-	}
-	return v << 16, true`, "enc_Zm"},
+`: {"encodeZm1619_8To32Bit", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		if v > 7 {
+			return 0, false
+		}
+		return v << 16, true`, "enc_Zm"},
 	`For the "Double-precision" variant: is the immediate index, in the range 0 to 1, encoded in the "i1" field.
 bit range mappings:
 i1: [20:21)
@@ -804,10 +891,13 @@ i1: [20:21)
 	`For the "Double-precision" variant: is the name of the second source scalable vector register Z0-Z15, encoded in the "Zm" field.
 bit range mappings:
 Zm: [16:20)
-`: {"encodeZm1620_DoublePrecision", `if v > 15 {
-		return 0, false
-	}
-	return v << 16, true`, "enc_Zm"},
+`: {"encodeZm1620_DoublePrecision", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		if v > 15 {
+			return 0, false
+		}
+		return v << 16, true`, "enc_Zm"},
 	`For the "Doubleword" variant: is the optional portion index, in the range 0 to 7, defaulting to 0, encoded in the "i3h:i3l" fields.
 bit range mappings:
 i3h: [22:23)
@@ -819,10 +909,13 @@ i3l: [17:19)
 	`For the "Half-precision" and "Single-precision" variants: is the name of the second source scalable vector register Z0-Z7, encoded in the "Zm" field.
 bit range mappings:
 Zm: [16:19)
-`: {"encodeZm1619_HalfSinglePrecision", `if v > 7 {
-		return 0, false
-	}
-	return v << 16, true`, "enc_Zm"},
+`: {"encodeZm1619_HalfSinglePrecision", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		if v > 7 {
+			return 0, false
+		}
+		return v << 16, true`, "enc_Zm"},
 	`For the "Half-precision" variant: is the immediate index, in the range 0 to 7, encoded in the "i3h:i3l" fields.
 bit range mappings:
 i3h: [22:23)
@@ -993,10 +1086,13 @@ i2: [19:21)
 	`For the "16-bit" variant: is the name of the second source scalable vector register Z0-Z7, encoded in the "Zm" field.
 bit range mappings:
 Zm: [16:19)
-`: {"encodeZm_1619_Range0_7V1", `if v <= 7 {
-		return v << 16, true
-	}
-	return 0, false`, "enc_Zm"},
+`: {"encodeZm_1619_Range0_7V1", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		if v <= 7 {
+			return v << 16, true
+		}
+		return 0, false`, "enc_Zm"},
 	`For the "32-bit" variant: is the element index, in the range 0 to 1, encoded in the "i1" field.
 bit range mappings:
 i1: [20:21)
@@ -1007,10 +1103,13 @@ i1: [20:21)
 	`For the "32-bit" variant: is the name of the second source scalable vector register Z0-Z15, encoded in the "Zm" field.
 bit range mappings:
 Zm: [16:20)
-`: {"encodeZm_1620_Range0_15", `if v <= 15 {
-		return v << 16, true
-	}
-	return 0, false`, "enc_Zm"},
+`: {"encodeZm_1620_Range0_15", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		if v <= 15 {
+			return v << 16, true
+		}
+		return 0, false`, "enc_Zm"},
 	`For the "Equal", "Greater than or equal", "Greater than", "Less than or equal", "Less than", and "Not equal" variants: is the signed immediate operand, in the range -16 to 15, encoded in the "imm5" field.
 bit range mappings:
 imm5: [16:21)
@@ -1028,10 +1127,13 @@ i2: [19:21)
 	`For the "Half-precision" variant: is the name of the second source scalable vector register Z0-Z7, encoded in the "Zm" field.
 bit range mappings:
 Zm: [16:19)
-`: {"encodeZm_1619_Half", `if v <= 7 {
-		return v << 16, true
-	}
-	return 0, false`, "enc_Zm"},
+`: {"encodeZm_1619_Half", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		if v <= 7 {
+			return v << 16, true
+		}
+		return 0, false`, "enc_Zm"},
 	`For the "Higher or same", "Higher", "Lower or same", and "Lower" variants: is the unsigned immediate operand, in the range 0 to 127, encoded in the "imm7" field.
 bit range mappings:
 imm7: [14:21)
@@ -1049,10 +1151,13 @@ i1: [20:21)
 	`For the "Single-precision" variant: is the name of the second source scalable vector register Z0-Z15, encoded in the "Zm" field.
 bit range mappings:
 Zm: [16:20)
-`: {"encodeZm_1620_Single", `if v <= 15 {
-		return v << 16, true
-	}
-	return 0, false`, "enc_Zm"},
+`: {"encodeZm_1620_Single", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		if v <= 15 {
+			return v << 16, true
+		}
+		return 0, false`, "enc_Zm"},
 	`Is a 64, 32, 16 or 8-bit bitmask consisting of replicated 2, 4, 8, 16, 32 or 64 bit fields, each field containing a rotated run of non-zero bits, encoded in the "imm13" field.
 bit range mappings:
 imm13: [5:18)
@@ -1110,7 +1215,10 @@ sh: [13:14)
 	`Is the 64-bit name of the destination general-purpose register or stack pointer, encoded in the "Rd" field.
 bit range mappings:
 Rd: [0:5)
-`: {"encodeRd05_SPAllowed", `if v == REG_R31 {
+`: {"encodeRd05_SPAllowed", `if !checkIsR(v) {
+		return 0, false
+	}
+	if v == REG_R31 {
 		return 0, false
 	}
 	if v == REG_RSP {
@@ -1120,7 +1228,10 @@ Rd: [0:5)
 	`Is the 64-bit name of the source general-purpose register or stack pointer, encoded in the "Rn" field.
 bit range mappings:
 Rn: [16:21)
-`: {"encodeRn1621_SPAllowed", `if v == REG_R31 {
+`: {"encodeRn1621_SPAllowed", `if !checkIsR(v) {
+		return 0, false
+	}
+	if v == REG_R31 {
 		return 0, false
 	}
 	if v == REG_RSP {
@@ -1536,7 +1647,10 @@ Pd: [0:4)
 	`Is the name of the first scalable vector register of the source multi-vector group, encoded in the "Zn" field.
 bit range mappings:
 Zn: [5:10)
-`: {"encodeZn510MultiSrc1", `return v << 5, true`, "enc_Zn"},
+`: {"encodeZn510MultiSrc1", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return v << 5, true`, "enc_Zn"},
 	`Is the name of the first table vector register, encoded as "Zn".
 bit range mappings:
 Zn: [5:10)
@@ -1556,7 +1670,10 @@ Pd: [0:4)
 	`Is the name of the second scalable vector register of the source multi-vector group, encoded in the "Zn" field.
 bit range mappings:
 Zn: [5:10)
-`: {"encodeZn510MultiSrc2", `return (v - 1) << 5, true`, "enc_Zn"},
+`: {"encodeZn510MultiSrc2", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return (v - 1) << 5, true`, "enc_Zn"},
 	`Is the name of the second table vector register, encoded as "Zn" plus 1 modulo 32.
 bit range mappings:
 Zn: [5:10)
@@ -1564,7 +1681,10 @@ Zn: [5:10)
 	`Is the name of the source scalable vector register, encoded in the "Zm" field.
 bit range mappings:
 Zm: [16:21)
-`: {"encodeZm1621V1", `return v << 16, true`, "enc_Zm"},
+`: {"encodeZm1621V1", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return v << 16, true`, "enc_Zm"},
 	`Is the name of the table vector register, encoded in the "Zn" field.
 bit range mappings:
 Zn: [5:10)
@@ -1583,4 +1703,211 @@ i1: [23:24)
 		return 0, false
 	}
 	return v << 23, true`, "enc_i1"},
+	`Check this is mod amount and is 1
+`: {"encodeModAmt1Check", `if v == 1 {
+		return 0, true
+	}
+	return 0, false`, "enc_NIL"},
+	`Check this is mod amount and is 2
+`: {"encodeModAmt2Check", `if v == 2 {
+		return 0, true
+	}
+	return 0, false`, "enc_NIL"},
+	`Check this is mod amount and is 3
+`: {"encodeModAmt3Check", `if v == 3 {
+		return 0, true
+	}
+	return 0, false`, "enc_NIL"},
+	`Check this is mod amount and is 4
+`: {"encodeModAmt4Check", `if v == 4 {
+		return 0, true
+	}
+	return 0, false`, "enc_NIL"},
+	`Check this is mod and is LSL
+`: {"encodeModLSLCheck", `if v&0b100 != 0 {
+		return 0, true
+	}
+	return 0, false`, "enc_NIL"},
+	`Check this is mod and is SXTW
+`: {"encodeModSXTWCheck", `if v&0b10 != 0 {
+		return 0, true
+	}
+	return 0, false`, "enc_NIL"},
+	`Check this is mod and is UXTW
+`: {"encodeModUXTWCheck", `if v&0b1 != 0 {
+		return 0, true
+	}
+	return 0, false`, "enc_NIL"},
+	`Is the 64-bit name of the general-purpose base register or stack pointer, encoded in the "Rn" field.
+bit range mappings:
+Rn: [5:10)
+`: {"encodeRn510SPV2", `if !checkIsR(v) {
+		return 0, false
+	}
+	if v == REG_R31 {
+		return 0, false
+	}
+	if v == REG_RSP {
+		return 31 << 5, true
+	}
+	return (v & 31) << 5, true`, "enc_Rn"},
+	`Is the 64-bit name of the general-purpose offset register, encoded in the "Rm" field.
+bit range mappings:
+Rm: [16:21)
+`: {"encodeRm1621V2", `if !checkIsR(v) {
+		return 0, false
+	}
+	if v == REG_RSP {
+		return 0, false
+	}
+	return (v & 31) << 16, true`, "enc_Rm"},
+	`Is the index extend and shift specifier,
+msz	<mod>
+00	[absent]
+x1	LSL
+10	LSL
+bit range mappings:
+msz: [10:12)
+`: {"encodeMsz1012", `// This does not accept UXTW and SXTW, check that
+	if v&0b11 != 0 {
+		return 0, false
+	}
+	// Note: this encoding function's semantic is entailed by its peer that
+	// encode <amount>, so just do nothing.
+	return codeNoOp, false`, "enc_msz"},
+	`Is the index extend and shift specifier,
+xs	<mod>
+0	UXTW
+1	SXTW
+bit range mappings:
+xs: [14:15)
+`: {"encodeXs1415", `if v&0b1 != 0 {
+		return 0, true
+	} else if v&0b10 != 0 {
+		return 1 << 14, true
+	}
+	return 0, false`, "enc_xs"},
+	`Is the index extend and shift specifier,
+xs	<mod>
+0	UXTW
+1	SXTW
+bit range mappings:
+xs: [22:23)
+`: {"encodeXs2223", `if v&0b1 != 0 {
+		return 0, true
+	} else if v&0b10 != 0 {
+		return 1 << 22, true
+	}
+	return 0, false`, "enc_xs"},
+	`Is the index shift amount,
+msz	<amount>
+00	[absent]
+01	#1
+10	#2
+11	#3
+bit range mappings:
+msz: [10:12)
+`: {"encodeMsz1012Amount", `if v <= 3 {
+		return v << 10, true
+	}
+	return 0, false`, "enc_msz"},
+	`Is the name of the base scalable vector register, encoded in the "Zn" field.
+bit range mappings:
+Zn: [5:10)
+`: {"encodeZn510V2", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return v << 5, true`, "enc_Zn"},
+	`Is the name of the first scalable vector register to be transferred, encoded in the "Zt" field.
+bit range mappings:
+Zt: [0:5)
+`: {"encodeZt051", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return v, true`, "enc_Zt"},
+	`Is the name of the fourth scalable vector register to be transferred, encoded as "Zt" plus 3 modulo 32.
+bit range mappings:
+Zt: [0:5)
+`: {"encodeZt054", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return (v - 3) % 32, true`, "enc_Zt"},
+	`Is the name of the offset scalable vector register, encoded in the "Zm" field.
+bit range mappings:
+Zm: [16:21)
+`: {"encodeZm1621V3", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return v << 16, true`, "enc_Zm"},
+	`Is the name of the scalable vector register to be transferred, encoded in the "Zt" field.
+bit range mappings:
+Zt: [0:5)
+`: {"encodeZt05", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return v, true`, "enc_Zt"},
+	`Is the name of the second scalable vector register to be transferred, encoded as "Zt" plus 1 modulo 32.
+bit range mappings:
+Zt: [0:5)
+`: {"encodeZt052", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return (v - 1) % 32, true`, "enc_Zt"},
+	`Is the name of the third scalable vector register to be transferred, encoded as "Zt" plus 2 modulo 32.
+bit range mappings:
+Zt: [0:5)
+`: {"encodeZt053", `if !stripRawZ(&v) {
+			return 0, false
+		}
+		return (v - 2) % 32, true`, "enc_Zt"},
+	`Is the optional 64-bit name of the general-purpose offset register, defaulting to XZR, encoded in the "Rm" field.
+bit range mappings:
+Rm: [16:21)
+`: {"encodeRm1621XZR", `if v == 0 {
+		// absent case, according to the spec this should be ZR (R31)
+		return 31, true
+	}
+	if !checkIsR(v) {
+		return 0, false
+	}
+	return (v & 31) << 16, true`, "enc_Rm"},
+	`Is the size specifier,
+size	<T>
+00	B
+01	H
+10	S
+11	D
+bit range mappings:
+size: [21:23)
+`: {"encodeSize2123V1", `switch v {
+	case ARNG_B:
+		return 0, true
+	case ARNG_H:
+		return 1 << 21, true
+	case ARNG_S:
+		return 2 << 21, true
+	case ARNG_D:
+		return 3 << 21, true
+	default:
+		return 0, false
+	}`, "enc_size"},
+	`Is the size specifier,
+size	<T>
+00	RESERVED
+01	H
+10	S
+11	D
+bit range mappings:
+size: [21:23)
+`: {"encodeSize2123V2", `switch v {
+	case ARNG_H:
+		return 1 << 21, true
+	case ARNG_S:
+		return 2 << 21, true
+	case ARNG_D:
+		return 3 << 21, true
+	}
+	return 0, false`, "enc_size"},
+	"Check that there is no modifier (UXTW, SXTW, LSL)": {"encodeNoModCheck", "return 0, v == 0", "enc_NIL"},
+	"Check that there is no modifier amount":            {"encodeNoAmtCheck", "return 0, v == 0", "enc_NIL"},
 }

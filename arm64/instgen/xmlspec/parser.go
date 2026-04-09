@@ -1066,7 +1066,7 @@ func (op *Operand) resolveConstraints() {
 	insertElmAt := func(idx int, symbol, textExpWithRanges string, needOffset bool) {
 		if needOffset {
 			offset := 0
-			for i := range idx {
+			for i := range idx + 1 {
 				offset += insertionHistory[i]
 			}
 			insertionHistory[idx]++
@@ -1113,10 +1113,19 @@ func (op *Operand) resolveConstraints() {
 			case "ARNGS":
 				insertElmAt(index+1, "S", "Check this is a S arrangement", true)
 			case "R64":
-				// Width constraints are preceeding the element.
-				insertElmAt(index, "X", "Check this is a 64-bit scalar register", true)
+				if acl == "AC_SPZGREG" {
+					// Width constraints are preceeding the element.
+					insertElmAt(index, "X", "Check this is a 64-bit scalar register", true)
+				} else {
+					insertElmAt(index+1, "nil", noOpCheck, true)
+				}
 			case "R32":
-				insertElmAt(index, "W", "Check this is a 32-bit scalar register", true)
+				if acl == "AC_SPZGREG" {
+					// Width constraints are preceeding the element.
+					insertElmAt(index, "W", "Check this is a 32-bit scalar register", true)
+				} else {
+					insertElmAt(index+1, "nil", noOpCheck, true)
+				}
 			case "LSL1", "LSL2", "LSL3", "LSL4", "SXTW", "UXTW", "MODAMT1", "MODAMT2", "MODAMT3":
 				if acl == "AC_MEMEXT" {
 					switch constraintType {
@@ -1199,13 +1208,13 @@ func (op *Operand) resolveConstraints() {
 			}
 		case "[<Xn|SP>, <Xm>]", "[<Xn|SP>, <Zm>.D]", "[<Xn|SP>{, <Xm>}]", "[<Zn>.D{, <Xm>}]", "[<Zn>.S{, <Xm>}]":
 			if el == 6 && len(op.Elems) == 4 {
-				insertElmAt(4, "nil", noOpCheck, false)
-				insertElmAt(5, "nil", noOpCheck, false)
+				insertElmAt(4, "nil", "Check that there is no modifier (UXTW, SXTW, LSL)", false)
+				insertElmAt(5, "nil", "Check that there is no modifier amount", false)
 				resolved = true
 			}
 		case "[<Xn|SP>, <Zm>.S, <mod>]", "[<Xn|SP>, <Zm>.D, <mod>]":
 			if el == 6 && len(op.Elems) == 5 {
-				insertElmAt(5, "nil", noOpCheck, false)
+				insertElmAt(5, "nil", "Check that there is no modifier amount", false)
 				resolved = true
 			}
 		}
