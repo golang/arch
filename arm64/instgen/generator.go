@@ -240,6 +240,7 @@ var operandTypeOrders = map[string]int{
 	"AC_REGLIST3": 4,
 	"AC_REGLIST4": 4,
 	"AC_MEMEXT":   5,
+	"AC_SPECIAL":  6,
 }
 
 func readExistingGoOps(aoutPath string) map[string]bool {
@@ -872,6 +873,13 @@ func reverseHex(h string) string {
 	return h[6:8] + h[4:6] + h[2:4] + h[0:2]
 }
 
+var prefetchOps = []string{
+	"PLDL1KEEP", "PLDL1STRM", "PLDL2KEEP", "PLDL2STRM",
+	"PLDL3KEEP", "PLDL3STRM", "PSTL1KEEP", "PSTL1STRM",
+	"PSTL2KEEP", "PSTL2STRM", "PSTL3KEEP", "PSTL3STRM",
+}
+var vlOps = []string{"VLx2", "VLx4"}
+
 // constructInstance takes an [Encoding] and tries to generate a
 // valid Go assembly instance of it and returns the e2eData for this instance.
 // The construction is deterministic.
@@ -1177,6 +1185,19 @@ func constructInstance(enc *xmlspec.EncodingParsed) (*e2eData, *e2eData) {
 					goAsmOps = append(goAsmOps, fmt.Sprintf("$%s", imm))
 				}
 				gnuAsmOps = append([]string{fmt.Sprintf("#%s", imm)}, gnuAsmOps...)
+			} else if op.Typ == "AC_SPECIAL" {
+				var opStr string
+				if op.Name == "<prfop>" {
+					idx := cachedOrNew(immCache, op.Name, len(prefetchOps))
+					opStr = prefetchOps[idx]
+				} else if op.Name == "<vl>" {
+					idx := cachedOrNew(immCache, op.Name, len(vlOps))
+					opStr = vlOps[idx]
+				} else {
+					log.Fatalf("Unrecognized AC_SPECIAL operand: %s", op.Name)
+				}
+				goAsmOps = append(goAsmOps, opStr)
+				gnuAsmOps = append([]string{opStr}, gnuAsmOps...)
 			} else if op.Typ == "AC_REGLIST1" || op.Typ == "AC_REGLIST2" || op.Typ == "AC_REGLIST3" || op.Typ == "AC_REGLIST4" {
 				// Register list, they must be contiguous modulo 32 (16 for P registers).
 				// Only AC_REGLIST2 has a P register variant though.

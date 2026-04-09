@@ -1910,4 +1910,84 @@ size: [21:23)
 	return 0, false`, "enc_size"},
 	"Check that there is no modifier (UXTW, SXTW, LSL)": {"encodeNoModCheck", "return 0, v == 0", "enc_NIL"},
 	"Check that there is no modifier amount":            {"encodeNoAmtCheck", "return 0, v == 0", "enc_NIL"},
+	`Is the name of the source scalable predicate register, with predicate-as-counter encoding, encoded in the "PNn" field.
+bit range mappings:
+PNn: [5:9)
+`: {"encodePNn59", `if v > 15 {
+		return (v - 16) << 5, true
+	}
+	return 0, false`, "enc_PNn"},
+	`Is the prefetch operation specifier,
+prfop	<prfop>
+0000	PLDL1KEEP
+0001	PLDL1STRM
+0010	PLDL2KEEP
+0011	PLDL2STRM
+0100	PLDL3KEEP
+0101	PLDL3STRM
+x11x	#uimm4
+1000	PSTL1KEEP
+1001	PSTL1STRM
+1010	PSTL2KEEP
+1011	PSTL2STRM
+1100	PSTL3KEEP
+1101	PSTL3STRM
+bit range mappings:
+prfop: [0:4)
+`: {"encodePrfop04", `switch SpecialOperand(v) {
+	case SPOP_PLDL1KEEP:
+		return 0, true
+	case SPOP_PLDL1STRM:
+		return 1, true
+	case SPOP_PLDL2KEEP:
+		return 2, true
+	case SPOP_PLDL2STRM:
+		return 3, true
+	case SPOP_PLDL3KEEP:
+		return 4, true
+	case SPOP_PLDL3STRM:
+		return 5, true
+	case SPOP_PSTL1KEEP:
+		return 8, true
+	case SPOP_PSTL1STRM:
+		return 9, true
+	case SPOP_PSTL2KEEP:
+		return 10, true
+	case SPOP_PSTL2STRM:
+		return 11, true
+	case SPOP_PSTL3KEEP:
+		return 12, true
+	case SPOP_PSTL3STRM:
+		return 13, true
+	default:
+		return 0, false
+	}`, "enc_prfop"},
+	`Is the vl specifier,
+vl	<vl>
+0	VLx2
+1	VLx4
+bit range mappings:
+vl: [10:11)
+`: {"encodeVl1011", `switch SpecialOperand(v) {
+	case SPOP_VLx2:
+		return 0, true
+	case SPOP_VLx4:
+		return 1 << 10, true
+	default:
+		return 0, false
+	}`, "enc_vl"},
+	`Is the vl specifier,
+vl	<vl>
+0	VLx2
+1	VLx4
+bit range mappings:
+vl: [13:14)
+`: {"encodeVl1314", `switch SpecialOperand(v) {
+	case SPOP_VLx2:
+		return 0, true
+	case SPOP_VLx4:
+		return 1 << 13, true
+	default:
+		return 0, false
+	}`, "enc_vl"},
 }
