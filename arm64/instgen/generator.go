@@ -240,6 +240,7 @@ var operandTypeOrders = map[string]int{
 	"AC_REGLIST3": 4,
 	"AC_REGLIST4": 4,
 	"AC_MEMEXT":   5,
+	"AC_MEMOFF":   7,
 	"AC_SPECIAL":  6,
 }
 
@@ -1376,6 +1377,56 @@ func constructInstance(enc *xmlspec.EncodingParsed) (*e2eData, *e2eData) {
 					goAsmOp = fmt.Sprintf("(%s)(%s)", goOffset, goReg1)
 				} else {
 					goAsmOp = fmt.Sprintf("(%s)", goReg1)
+				}
+
+				goAsmOps = append(goAsmOps, goAsmOp)
+				gnuAsmOps = append([]string{gnuAsmOp}, gnuAsmOps...)
+			} else if op.Typ == "AC_MEMOFF" {
+				var goReg, gnuReg string
+				var imm string
+
+				if strings.Contains(op.Name, "<Xn|SP>") {
+					regIdx := cachedOrNew(regCache, "Xn|SP", 40)
+					if regIdx > 31 {
+						goReg = "RSP"
+						gnuReg = "SP"
+					} else {
+						if regIdx == 18 {
+							regIdx = 19
+						}
+						if regIdx == 28 {
+							// R28 is G...
+							regIdx = 29
+						}
+						goReg = fmt.Sprintf("R%d", regIdx)
+						gnuReg = fmt.Sprintf("X%d", regIdx)
+					}
+				} else if strings.Contains(op.Name, "<Zn>") {
+					regIdx := cachedOrNew(regCache, "Zn", 32)
+					arr := "D"
+					if strings.Contains(op.Name, ".S") {
+						arr = "S"
+					} else if strings.Contains(op.Name, ".D") {
+						arr = "D"
+					}
+					goReg = fmt.Sprintf("Z%d.%s", regIdx, arr)
+					gnuReg = goReg
+				}
+
+				intImm := rng.IntN(16)
+				if intImm == 0 {
+					imm = ""
+				} else {
+					imm = fmt.Sprintf("%d", intImm)
+				}
+
+				var goAsmOp, gnuAsmOp string
+				if imm != "" {
+					goAsmOp = fmt.Sprintf("%s(%s)", imm, goReg)
+					gnuAsmOp = fmt.Sprintf("[%s, #%s]", gnuReg, imm)
+				} else {
+					goAsmOp = fmt.Sprintf("(%s)", goReg)
+					gnuAsmOp = fmt.Sprintf("[%s]", gnuReg)
 				}
 
 				goAsmOps = append(goAsmOps, goAsmOp)
