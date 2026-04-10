@@ -224,24 +224,25 @@ TEXT asmtest(SB),DUPOK|NOSPLIT,$-8
 `
 
 var operandTypeOrders = map[string]int{
-	"AC_ARNG":     0,
-	"AC_PREG":     0,
-	"AC_PREGZ":    0,
-	"AC_PREGZM":   0,
-	"AC_ZREG":     0,
-	"AC_SPZGREG":  1,
-	"AC_VREG":     1,
-	"AC_ARNGIDX":  2,
-	"AC_ZREGIDX":  2,
-	"AC_PREGIDX":  2,
-	"AC_IMM":      3,
-	"AC_REGLIST1": 4,
-	"AC_REGLIST2": 4,
-	"AC_REGLIST3": 4,
-	"AC_REGLIST4": 4,
-	"AC_MEMEXT":   5,
-	"AC_MEMOFF":   7,
-	"AC_SPECIAL":  6,
+	"AC_ARNG":        0,
+	"AC_PREG":        0,
+	"AC_PREGZ":       0,
+	"AC_PREGZM":      0,
+	"AC_ZREG":        0,
+	"AC_SPZGREG":     1,
+	"AC_VREG":        1,
+	"AC_ARNGIDX":     2,
+	"AC_ZREGIDX":     2,
+	"AC_PREGIDX":     2,
+	"AC_IMM":         3,
+	"AC_REGLIST1":    4,
+	"AC_REGLIST2":    4,
+	"AC_REGLIST3":    4,
+	"AC_REGLIST4":    4,
+	"AC_MEMEXT":      5,
+	"AC_SPECIAL":     6,
+	"AC_MEMOFF":      7,
+	"AC_MEMOFFMULVL": 8,
 }
 
 func readExistingGoOps(aoutPath string) map[string]bool {
@@ -800,6 +801,7 @@ var regMap = map[string]string{
 	"Pn":  "P",
 	"Pm":  "P",
 	"Pg":  "P",
+	"Pt":  "P",
 	"PNd": "PN",
 	"PNn": "PN",
 	"Pv":  "P",
@@ -1428,6 +1430,43 @@ func constructInstance(enc *xmlspec.EncodingParsed) (*e2eData, *e2eData) {
 					goAsmOp = fmt.Sprintf("(%s)", goReg)
 					gnuAsmOp = fmt.Sprintf("[%s]", gnuReg)
 				}
+
+				goAsmOps = append(goAsmOps, goAsmOp)
+				gnuAsmOps = append([]string{gnuAsmOp}, gnuAsmOps...)
+			} else if op.Typ == "AC_MEMOFFMULVL" {
+				var goReg, gnuReg string
+				var imm string
+
+				if strings.Contains(op.Name, "<Xn|SP>") {
+					regIdx := cachedOrNew(regCache, "Xn|SP", 40)
+					if regIdx > 31 {
+						goReg = "RSP"
+						gnuReg = "SP"
+					} else {
+						if regIdx == 18 {
+							regIdx = 19
+						}
+						if regIdx == 28 {
+							regIdx = 29
+						}
+						goReg = fmt.Sprintf("R%d", regIdx)
+						gnuReg = fmt.Sprintf("X%d", regIdx)
+					}
+				}
+
+				intImm := rng.IntN(16) - 8
+				if intImm == 0 {
+					intImm = 1
+				}
+				imm = fmt.Sprintf("%d", intImm)
+
+				var goAsmOp, gnuAsmOp string
+				if intImm < 0 {
+					goAsmOp = fmt.Sprintf("(-VL*%d)(%s)", -intImm, goReg)
+				} else {
+					goAsmOp = fmt.Sprintf("(VL*%d)(%s)", intImm, goReg)
+				}
+				gnuAsmOp = fmt.Sprintf("[%s, #%s, MUL VL]", gnuReg, imm)
 
 				goAsmOps = append(goAsmOps, goAsmOp)
 				gnuAsmOps = append([]string{gnuAsmOp}, gnuAsmOps...)

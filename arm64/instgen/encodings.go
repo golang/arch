@@ -2062,4 +2062,70 @@ imm6: [16:22)
 		return v << 16, true
 	}
 	return 0, false`, "enc_imm6"},
+	`Is the name of the destination scalable predicate register, encoded in the "Pt" field.
+bit range mappings:
+Pt: [0:4)
+`: {"encodePt04V1", `if v > 15 {
+		return 0, false
+	}
+	return v, true`, "enc_Pt"},
+	`Is the name of the scalable predicate transfer register, encoded in the "Pt" field.
+bit range mappings:
+Pt: [0:4)
+`: {"encodePt04V2", `if v > 15 {
+		return 0, false
+	}
+	return v, true`, "enc_Pt"},
+	`Is the optional signed immediate vector offset, a multiple of 3 in the range -24 to 21, defaulting to 0, encoded in the "imm4" field.
+bit range mappings:
+imm4: [16:20)
+`: {"encodeImm41620V3", `vi := int32(v)
+	if vi >= -24 && vi <= 21 && vi%3 == 0 {
+		return uint32((vi/3)&15) << 16, true
+	}
+	return 0, false`, "enc_imm4"},
+	`Is the optional signed immediate vector offset, a multiple of 4 in the range -32 to 28, defaulting to 0, encoded in the "imm4" field.
+bit range mappings:
+imm4: [16:20)
+`: {"encodeImm41620V4", `vi := int32(v)
+	if vi >= -32 && vi <= 28 && vi%4 == 0 {
+		return uint32((vi/4)&15) << 16, true
+	}
+	return 0, false`, "enc_imm4"},
+	`Is the optional signed immediate vector offset, in the range -256 to 255, defaulting to 0, encoded in the "imm9h:imm9l" fields.
+bit range mappings:
+imm9h: [16:22)
+imm9l: [10:13)
+`: {"encodeImm9h1622L1013", `vi := int32(v)
+	if vi >= -256 && vi <= 255 {
+		val := uint32(vi) & 0x1FF
+		return ((val & 7) << 10) | ((val >> 3) << 16), true
+	}
+	return 0, false`, "enc_imm9h_imm9l"},
+	`Is the optional signed immediate vector offset, in the range -32 to 31, defaulting to 0, encoded in the "imm6" field.
+bit range mappings:
+imm6: [16:22)
+`: {"encodeImm61622V5", `vi := int32(v)
+	if vi >= -32 && vi <= 31 {
+		return (uint32(vi) & 0x3F) << 16, true
+	}
+	return 0, false`, "enc_imm6"},
+	`Is the optional signed immediate vector offset, in the range -8 to 7, defaulting to 0, encoded in the "imm4" field.
+bit range mappings:
+imm4: [16:20)
+`: {"encodeImm41620V5", `vi := int32(v)
+	if vi >= -8 && vi <= 7 {
+		return (uint32(vi) & 0xF) << 16, true
+	}
+	return 0, false`, "enc_imm4"},
+	`Is the optional signed immediate vector offset, a multiple of 2 in the range -16 to 14, defaulting to 0, encoded in the "imm4" field.
+bit range mappings:
+imm4: [16:20)`: {"encodeImm41620V6", `if v&1 != 0 {
+		return 0, false
+	}
+	vi := int32(v)
+	if vi>=-16 && vi<=14 {
+		return (uint32(vi/2)&15)<<16, true
+	}
+	return 0, false`, "enc_imm4"},
 }
