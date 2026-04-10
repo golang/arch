@@ -224,25 +224,26 @@ TEXT asmtest(SB),DUPOK|NOSPLIT,$-8
 `
 
 var operandTypeOrders = map[string]int{
-	"AC_ARNG":        0,
-	"AC_PREG":        0,
-	"AC_PREGZ":       0,
-	"AC_PREGZM":      0,
-	"AC_ZREG":        0,
-	"AC_SPZGREG":     1,
-	"AC_VREG":        1,
-	"AC_ARNGIDX":     2,
-	"AC_ZREGIDX":     2,
-	"AC_PREGIDX":     2,
-	"AC_IMM":         3,
-	"AC_REGLIST1":    4,
-	"AC_REGLIST2":    4,
-	"AC_REGLIST3":    4,
-	"AC_REGLIST4":    4,
-	"AC_MEMEXT":      5,
-	"AC_SPECIAL":     6,
-	"AC_MEMOFF":      7,
-	"AC_MEMOFFMULVL": 8,
+	"AC_ARNG":          0,
+	"AC_PREG":          0,
+	"AC_PREGZ":         0,
+	"AC_PREGZM":        0,
+	"AC_ZREG":          0,
+	"AC_SPZGREG":       1,
+	"AC_VREG":          1,
+	"AC_ARNGIDX":       2,
+	"AC_ZREGIDX":       2,
+	"AC_PREGIDX":       2,
+	"AC_IMM":           3,
+	"AC_REGLIST1":      4,
+	"AC_REGLIST2":      4,
+	"AC_REGLIST3":      4,
+	"AC_REGLIST4":      4,
+	"AC_MEMEXT":        5,
+	"AC_SPECIAL":       6,
+	"AC_MEMOFF":        7,
+	"AC_MEMOFFMULVL":   8,
+	"AC_REGLIST_RANGE": 9,
 }
 
 func readExistingGoOps(aoutPath string) map[string]bool {
@@ -257,6 +258,17 @@ func readExistingGoOps(aoutPath string) map[string]bool {
 		ops[m[1]] = true
 	}
 	return ops
+}
+
+func convertToGoID(v string) string {
+	v = strings.ReplaceAll(v, " :: ", "_")
+	v = strings.ReplaceAll(v, "(", "")
+	v = strings.ReplaceAll(v, ")", "")
+	v = strings.ReplaceAll(v, "[", "")
+	v = strings.ReplaceAll(v, "]", "")
+	v = strings.ReplaceAll(v, "#", "c")
+	v = strings.ReplaceAll(v, "-", "_")
+	return v
 }
 
 // formatAndFlush executes the given template and writes it to the given file,
@@ -434,14 +446,7 @@ func Generate(insts []*xmlspec.InstructionParsed, outputDir string, genE2E bool)
 									if sym == "" || sym == "nil" {
 										enc = "enc_NIL"
 									} else {
-										v := sym
-										v = strings.ReplaceAll(v, " :: ", "_")
-										v = strings.ReplaceAll(v, "(", "")
-										v = strings.ReplaceAll(v, ")", "")
-										v = strings.ReplaceAll(v, "[", "")
-										v = strings.ReplaceAll(v, "]", "")
-										v = strings.ReplaceAll(v, "#", "c")
-										enc = fmt.Sprintf("enc_%s", v)
+										enc = fmt.Sprintf("enc_%s", convertToGoID(sym))
 									}
 								}
 								arg.Elms = append(arg.Elms, elmData{
@@ -492,20 +497,13 @@ func Generate(insts []*xmlspec.InstructionParsed, outputDir string, genE2E bool)
 
 	var constants []constantData
 	for _, v := range uniqueEncodedIn {
-		v0 := v
-		v = strings.ReplaceAll(v, " :: ", "_")
-		v = strings.ReplaceAll(v, "(", "")
-		v = strings.ReplaceAll(v, ")", "")
-		v = strings.ReplaceAll(v, "[", "")
-		v = strings.ReplaceAll(v, "]", "")
-		v = strings.ReplaceAll(v, "#", "c")
-		name := fmt.Sprintf("enc_%s", v)
-		encodedInMap[v0] = name
+		name := fmt.Sprintf("enc_%s", convertToGoID(v))
+		encodedInMap[v] = name
 		// Only add to output if used
-		if neededEncodedIn[v0] {
+		if neededEncodedIn[v] {
 			constants = append(constants, constantData{
 				ConstName: name,
-				BinName:   v0,
+				BinName:   v,
 			})
 		}
 	}
@@ -609,6 +607,7 @@ func Generate(insts []*xmlspec.InstructionParsed, outputDir string, genE2E bool)
 		s = strings.Replace(s, "{", "", -1)
 		s = strings.Replace(s, "}", "", -1)
 		s = strings.Replace(s, "#", "c", -1)
+		s = strings.Replace(s, "-", "_", -1)
 		s = strings.TrimPrefix(s, "_")
 		return s
 	}
@@ -804,6 +803,7 @@ var regMap = map[string]string{
 	"Pt":  "P",
 	"PNd": "PN",
 	"PNn": "PN",
+	"PNg": "PN",
 	"Pv":  "P",
 
 	"Vd": "V",
@@ -1254,6 +1254,43 @@ func constructInstance(enc *xmlspec.EncodingParsed) (*e2eData, *e2eData) {
 
 				goAsmOps = append(goAsmOps, goAsmOp)
 				gnuAsmOps = append([]string{gnuAsmOp}, gnuAsmOps...)
+			} else if op.Typ == "AC_REGLIST_RANGE" {
+				nRegs := 2
+				if strings.Contains(op.Name, "4") {
+					nRegs = 4
+				}
+
+				trimmedName := strings.Trim(op.Name, "{} ")
+				parts := strings.Split(trimmedName, "-")
+				firstOp := strings.TrimSpace(parts[0])
+
+				_, _, regPrefix, regIdx, arr := generateSVERegOp(firstOp)
+				limit := 32
+				if regPrefix == "P" || regPrefix == "PN" {
+					limit = 16
+				}
+
+				reg1Idx := regIdx
+				reg2Idx := (regIdx + nRegs - 1) % limit
+
+				var goReg1, goReg2, gnuReg1, gnuReg2 string
+				if arr != "" {
+					goReg1 = fmt.Sprintf("%s%d.%s", regPrefix, reg1Idx, arr)
+					goReg2 = fmt.Sprintf("%s%d.%s", regPrefix, reg2Idx, arr)
+					gnuReg1 = goReg1
+					gnuReg2 = goReg2
+				} else {
+					goReg1 = fmt.Sprintf("%s%d", regPrefix, reg1Idx)
+					goReg2 = fmt.Sprintf("%s%d", regPrefix, reg2Idx)
+					gnuReg1 = goReg1
+					gnuReg2 = goReg2
+				}
+
+				goAsmOp := fmt.Sprintf("[%s-%s]", goReg1, goReg2)
+				gnuAsmOp := fmt.Sprintf("{%s-%s}", gnuReg1, gnuReg2)
+
+				goAsmOps = append(goAsmOps, goAsmOp)
+				gnuAsmOps = append([]string{gnuAsmOp}, gnuAsmOps...)
 			} else if op.Typ == "AC_MEMEXT" {
 				var goReg1, gnuReg1 string
 				var goReg2, gnuReg2 string
@@ -1519,7 +1556,8 @@ func constructInstance(enc *xmlspec.EncodingParsed) (*e2eData, *e2eData) {
 		}
 		return validCase, errCase
 	}
-	if name == "ADDQP" || name == "ADDSUBP" || name == "SCVTFLT" || name == "UCVTFLT" || name == "LUTI6" {
+	if name == "ADDQP" || name == "ADDSUBP" || name == "SCVTFLT" || name == "UCVTFLT" || name == "LUTI6" || name == "FCVTZSN" ||
+		name == "FCVTZUN" {
 		// Very new instructions
 		// GNU toolchain 2.45 doesn't know about these instruction yet.
 		todoCase := e2eData{GoOp: enc.GoOp[1:], Asm: fmt.Sprintf("// TODO: %s", name), highFeat: highFeat}
@@ -1535,7 +1573,13 @@ func constructInstance(enc *xmlspec.EncodingParsed) (*e2eData, *e2eData) {
 		enc.Asm == "UCVTF  <Zd>.<T>, <Zn>.<Tb>" ||
 		enc.Asm == "UDOT  <Zda>.H, <Zn>.B, <Zm>.B" ||
 		enc.Asm == "SDOT  <Zda>.H, <Zn>.B, <Zm>.B[<imm>]" ||
-		enc.Asm == "UDOT  <Zda>.H, <Zn>.B, <Zm>.B[<imm>]" {
+		enc.Asm == "UDOT  <Zda>.H, <Zn>.B, <Zm>.B[<imm>]" ||
+		enc.Asm == "SQRSHRN  <Zd>.B, { <Zn1>.H-<Zn2>.H }, #<const>" ||
+		enc.Asm == "SQRSHRUN  <Zd>.B, { <Zn1>.H-<Zn2>.H }, #<const>" ||
+		enc.Asm == "SQSHRN  <Zd>.<T>, { <Zn1>.<Tb>-<Zn2>.<Tb> }, #<const>" ||
+		enc.Asm == "SQSHRUN  <Zd>.<T>, { <Zn1>.<Tb>-<Zn2>.<Tb> }, #<const>" ||
+		enc.Asm == "UQRSHRN  <Zd>.B, { <Zn1>.H-<Zn2>.H }, #<const>" ||
+		enc.Asm == "UQSHRN  <Zd>.<T>, { <Zn1>.<Tb>-<Zn2>.<Tb> }, #<const>" {
 		// Very new instruction encodings
 		// GNU toolchain 2.45 doesn't know about these specific encodings yet.
 		todoCase := e2eData{GoOp: enc.GoOp[1:], Asm: fmt.Sprintf("// TODO: %s", enc.Asm), highFeat: highFeat}

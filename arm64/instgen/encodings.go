@@ -2128,4 +2128,225 @@ imm4: [16:20)`: {"encodeImm41620V6", `if v&1 != 0 {
 		return (uint32(vi/2)&15)<<16, true
 	}
 	return 0, false`, "enc_imm4"},
+	`For the "16-bit" variant: is the immediate shift amount, in the range 1 to 16, encoded in the "imm4" field.
+bit range mappings:
+imm4: [16:20)
+`: {"encodeImm41620V7", `if v < 1 || v > 16 {
+		return 0, false
+	}
+	// From ARM ASL: let shift : integer = esize - UInt(imm3);
+	// very weird design.
+	return (16 - v) << 16, true`, "enc_imm4"},
+	`For the "8-bit" variant: is the immediate shift amount, in the range 1 to 8, encoded in the "imm3" field.
+bit range mappings:
+imm3: [16:19)
+`: {"encodeImm31619", `if v < 1 || v > 8 {
+		return 0, false
+	}
+	return v << 16, true`, "enc_imm3"},
+	`For the "Four registers" variant: is the name of the first scalable vector register of the destination and first source multi-vector group, encoded as "Zdn" times 4.
+bit range mappings:
+Zdn: [2:5)
+`: {"encodeZdn25V1", `if !stripRawZ(&v) {
+		return 0, false
+	}
+	if v%4 != 0 {
+		return 0, false
+	}
+	return (v / 4) << 2, true`, "enc_Zdn"},
+	`For the "Four registers" variant: is the name of the first scalable vector register to be transferred, encoded as "Zt" times 4.
+bit range mappings:
+Zt: [2:5)
+`: {"encodeZt25V1", `if !stripRawZ(&v) {
+		return 0, false
+	}
+	if v%4 != 0 {
+		return 0, false
+	}
+	return (v / 4) << 2, true`, "enc_Zt"},
+	`For the "Four registers" variant: is the optional signed immediate vector offset, a multiple of 4 in the range -32 to 28, defaulting to 0, encoded in the "imm4" field.
+bit range mappings:
+imm4: [16:20)
+`: {"encodeImm41620V8", `val := int32(v)
+	if val < -32 || val > 28 || val%4 != 0 {
+		return 0, false
+	}
+	encoded := uint32((val >> 2) & 0xf)
+	return encoded << 16, true`, "enc_imm4"},
+	`For the "Two registers" variant: is the name of the first scalable vector register of the destination and first source multi-vector group, encoded as "Zdn" times 2.
+bit range mappings:
+Zdn: [1:5)
+`: {"encodeZdn15V1", `if !stripRawZ(&v) {
+		return 0, false
+	}
+	if v%2 != 0 {
+		return 0, false
+	}
+	return (v / 2) << 1, true`, "enc_Zdn"},
+	`For the "Two registers" variant: is the name of the first scalable vector register to be transferred, encoded as "Zt" times 2.
+bit range mappings:
+Zt: [1:5)
+`: {"encodeZt15V1", `if !stripRawZ(&v) {
+		return 0, false
+	}
+	if v%2 != 0 {
+		return 0, false
+	}
+	return (v / 2) << 1, true`, "enc_Zt"},
+	`For the "Two registers" variant: is the optional signed immediate vector offset, a multiple of 2 in the range -16 to 14, defaulting to 0, encoded in the "imm4" field.
+bit range mappings:
+imm4: [16:20)
+`: {"encodeImm41620V9", `val := int32(v)
+	if val < -16 || val > 14 || val%2 != 0 {
+		return 0, false
+	}
+	encoded := uint32((val>>1)&0xf) << 16
+	return encoded, true`, "enc_imm4"},
+	`Is the immediate shift amount, in the range 1 to number of bits per element, encoded in "tsize:imm3".
+bit range mappings:
+imm3: [16:19)
+tsize: [19:21)
+`: {"encodeImm3Tsize1621Stub", `return codeImm3Tsize1621, false`, "enc_tsize_imm3"},
+	`Is the name of the first scalable vector register of the destination multi-vector group, encoded as "Zd" times 2.
+bit range mappings:
+Zd: [1:5)
+`: {"encodeZd15V1", `if !stripRawZ(&v) {
+		return 0, false
+	}
+	if v%2 != 0 {
+		return 0, false
+	}
+	return (v / 2) << 1, true`, "enc_Zd"},
+	`Is the name of the first scalable vector register of the destination multi-vector group, encoded as "Zda" times 2.
+bit range mappings:
+Zda: [1:5)
+`: {"encodeZda15V1", `if !stripRawZ(&v) {
+		return 0, false
+	}
+	if v%2 != 0 {
+		return 0, false
+	}
+	return (v / 2) << 1, true`, "enc_Zda"},
+	`Is the name of the first scalable vector register of the source multi-vector group, encoded as "Zn" times 2.
+bit range mappings:
+Zn: [6:10)
+`: {"encodeZn610V1", `if !stripRawZ(&v) {
+		return 0, false
+	}
+	if v%2 != 0 {
+		return 0, false
+	}
+	return (v / 2) << 6, true`, "enc_Zn"},
+	`Is the name of the fourth scalable vector register of the destination and first source multi-vector group, encoded as "Zdn" times 4 plus 3.
+bit range mappings:
+Zdn: [2:5)
+`: {"encodeZdn25V2", `if !stripRawZ(&v) {
+		return 0, false
+	}
+	if v < 3 || (v-3)%4 != 0 {
+		return 0, false
+	}
+	return ((v - 3) / 4) << 2, true`, "enc_Zdn"},
+	`Is the name of the fourth scalable vector register to be transferred, encoded as "Zt" times 4 plus 3.
+bit range mappings:
+Zt: [2:5)
+`: {"encodeZt25V2", `if !stripRawZ(&v) {
+		return 0, false
+	}
+	if v < 3 || (v-3)%4 != 0 {
+		return 0, false
+	}
+	return ((v - 3) / 4) << 2, true`, "enc_Zt"},
+	`Is the name of the governing scalable predicate register PN8-PN15, with predicate-as-counter encoding, encoded in the "PNg" field.
+bit range mappings:
+PNg: [10:13)
+`: {"encodePNg1013", `if v < 24 {
+		return 0, false
+	}
+	return (v - 24) << 10, true`, "enc_PNg"},
+	`Is the name of the second scalable vector register of the destination and first source multi-vector group, encoded as "Zdn" times 2 plus 1.
+bit range mappings:
+Zdn: [1:5)
+`: {"encodeZdn15V2", `if !stripRawZ(&v) {
+		return 0, false
+	}
+	if v < 1 || (v-1)%2 != 0 {
+		return 0, false
+	}
+	return ((v - 1) / 2) << 1, true`, "enc_Zdn"},
+	`Is the name of the second scalable vector register of the destination multi-vector group, encoded as "Zd" times 2 plus 1.
+bit range mappings:
+Zd: [1:5)
+`: {"encodeZd15V2", `if !stripRawZ(&v) {
+		return 0, false
+	}
+	if v%2 == 0 {
+		return 0, false
+	}
+	return ((v - 1) / 2) << 1, true`, "enc_Zd"},
+	`Is the name of the second scalable vector register of the destination multi-vector group, encoded as "Zda" times 2 plus 1.
+bit range mappings:
+Zda: [1:5)
+`: {"encodeZda15V2", `if !stripRawZ(&v) {
+		return 0, false
+	}
+	if v%2 == 0 {
+		return 0, false
+	}
+	return ((v - 1) / 2) << 1, true`, "enc_Zda"},
+	`Is the name of the second scalable vector register of the source multi-vector group, encoded as "Zn" times 2 plus 1.
+bit range mappings:
+Zn: [6:10)
+`: {"encodeZn610V2", `if !stripRawZ(&v) {
+		return 0, false
+	}
+	if v%2 == 0 {
+		return 0, false
+	}
+	return ((v - 1) / 2) << 6, true`, "enc_Zn"},
+	`Is the name of the second scalable vector register to be transferred, encoded as "Zt" times 2 plus 1.
+bit range mappings:
+Zt: [1:5)
+`: {"encodeZt15V2", `if !stripRawZ(&v) {
+		return 0, false
+	}
+	if v < 1 || (v-1)%2 != 0 {
+		return 0, false
+	}
+	return ((v - 1) / 2) << 1, true`, "enc_Zt"},
+	`Is the round key index, in the range 0 to 3, encoded in the "i2" field.
+bit range mappings:
+i2: [19:21)
+`: {"encodeI21921", `if v > 3 {
+		return 0, false
+	}
+	return v << 19, true`, "enc_i2"},
+	`Is the size specifier,
+tsize	<T>
+00	RESERVED
+01	B
+1x	H
+bit range mappings:
+tsize: [19:21)
+`: {"encodeTsize1921V1", `if v == uint32(ARNG_B) {
+		return 1 << 19, true
+	}
+	if v == uint32(ARNG_H) {
+		return 2 << 19, true // 2 is bit pattern 10 (1x)
+	}
+	return 0, false`, "enc_tsize"},
+	`Is the size specifier,
+tsize	<Tb>
+00	RESERVED
+01	H
+1x	S
+bit range mappings:
+tsize: [19:21)
+`: {"encodeTsize1921V2", `if v == uint32(ARNG_H) {
+		return 1 << 19, true
+	}
+	if v == uint32(ARNG_S) {
+		return 2 << 19, true // 2 is bit pattern 10 (1x)
+	}
+	return 0, false`, "enc_tsize"},
 }
