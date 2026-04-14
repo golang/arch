@@ -242,11 +242,11 @@ Zdn: [0:5)
 	`Is the name of the source scalable predicate register, encoded in the "Pm" field.
 bit range mappings:
 Pm: [5:9)
-`: {"encodePm59v1", `return v << 5, true`, "enc_Pm"},
+`: {"encodePm59V1", `return v << 5, true`, "enc_Pm"},
 	`Is the name of the source scalable predicate register, encoded in the "Pn" field.
 bit range mappings:
 Pn: [5:9)
-`: {"encodePn59v2", `return v << 5, true`, "enc_Pn"},
+`: {"encodePn59V2", `return v << 5, true`, "enc_Pn"},
 	`Is the name of the source scalable vector register, encoded in the "Zn" field.
 bit range mappings:
 Zn: [5:10)
@@ -2349,4 +2349,52 @@ tsize: [19:21)
 		return 2 << 19, true // 2 is bit pattern 10 (1x)
 	}
 	return 0, false`, "enc_tsize"},
+	`Is the 32-bit name of the vector select register W12-W15, encoded in the "Rv" field.
+bit range mappings:
+Rv: [16:18)
+`: {"encodeRv1618", `if v < uint32(REG_R12) || v > uint32(REG_R15) {
+		return 0, false
+	}
+	return (v & 3) << 16, true`, "enc_Rv"},
+	`Is the element index, in the range 0 to one less than the number of vector elements in a 128-bit vector register, encoded in "i1:tszh:tszl".
+bit range mappings:
+i1: [23:24)
+tszh: [22:23)
+tszl: [18:21)
+`: {"encodeI1TszhTszl1824", `return codeShiftI1TszhTszl, false`, "enc_i1_tszh_tszl"},
+	`Is the name of the first source scalable predicate register, encoded in the "Pn" field.
+bit range mappings:
+Pn: [10:14)
+`: {"encodePn1014", `if v < 16 {
+		return v << 10, true
+	}
+	return 0, false`, "enc_Pn"},
+	`Is the name of the second source scalable predicate register, encoded in the "Pm" field.
+bit range mappings:
+Pm: [5:9)
+`: {"encodePm59V2", `if v > 16 {
+		return 0, false
+	}
+	return (v & 15) << 5, true`, "enc_Pm"},
+	`Is the size specifier,
+tszh	tszl	<T>
+0	000	RESERVED
+x	xx1	B
+x	x10	H
+x	100	S
+1	000	D
+bit range mappings:
+tszh: [22:23)
+tszl: [18:21)
+`: {"encodeTszhTszl1823", `switch v {
+	case 9: // B
+		return 1 << 18, true
+	case 10: // H
+		return 1 << 19, true
+	case 11: // S
+		return 1 << 20, true
+	case 12: // D
+		return 1 << 22, true
+	}
+	return 0, false`, "enc_tszh_tszl"},
 }

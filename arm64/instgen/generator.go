@@ -244,6 +244,7 @@ var operandTypeOrders = map[string]int{
 	"AC_MEMOFF":        7,
 	"AC_MEMOFFMULVL":   8,
 	"AC_REGLIST_RANGE": 9,
+	"AC_PREGSEL":       10,
 }
 
 func readExistingGoOps(aoutPath string) map[string]bool {
@@ -1291,6 +1292,21 @@ func constructInstance(enc *xmlspec.EncodingParsed) (*e2eData, *e2eData) {
 
 				goAsmOps = append(goAsmOps, goAsmOp)
 				gnuAsmOps = append([]string{gnuAsmOp}, gnuAsmOps...)
+			} else if op.Typ == "AC_PREGSEL" {
+				// GNU: <preg>.<T>[<selreg>, <imm>]
+				// Go:  [selreg.T1, $idximm](preg.T2)
+				regIdx := cachedOrNew(regCache, "P_pregsel", 16)
+				arrIdx := rng.IntN(len(sveArr))
+				resolvedArr := sveArr[arrIdx]
+				selIdx := cachedOrNew(regCache, "sel_pregsel", 32)
+				if selIdx == 18 {
+					selIdx = 19
+				}
+				immVal := cachedOrNew(immCache, "imm_pregsel", 4)
+				gnuAsmOp := fmt.Sprintf("P%d.%s[W%d, %d]", regIdx, resolvedArr, selIdx, immVal)
+				goAsmOp := fmt.Sprintf("[R%d, $%d](P%d.%s)", selIdx, immVal, regIdx, resolvedArr)
+				gnuAsmOps = append([]string{gnuAsmOp}, gnuAsmOps...)
+				goAsmOps = append(goAsmOps, goAsmOp)
 			} else if op.Typ == "AC_MEMEXT" {
 				var goReg1, gnuReg1 string
 				var goReg2, gnuReg2 string
