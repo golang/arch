@@ -2397,4 +2397,31 @@ tszl: [18:21)
 		return 1 << 22, true
 	}
 	return 0, false`, "enc_tszh_tszl"},
+	`Is the name of the first scalable vector register of the first source multi-vector group, encoded in the "Zn" field.
+bit range mappings:
+Zn: [5:10)
+`: {"encodeGenZn510V1", `if !stripRawZ(&v) {
+		return 0, false
+	}
+	return v << 5, true`, "enc_Zn"},
+	`Is the name of the second scalable vector register of the first source multi-vector group, encoded in the "Zn" field.
+bit range mappings:
+Zn: [5:10)
+`: {"encodeGenZn510V2", `if !stripRawZ(&v) {
+		return 0, false
+	}
+	return (v - 1) << 5, true`, "enc_Zn"},
+	`Is the size specifier,
+sz	<T>
+0	S
+1	D
+bit range mappings:
+sz: [21:22)
+`: {"encodeSz2122", `switch v {
+	case ARNG_S:
+		return 0, true
+	case ARNG_D:
+		return 1 << 21, true
+	}
+	return 0, false`, "enc_sz"},
 }

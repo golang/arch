@@ -309,12 +309,28 @@ func (inst *InstructionParsed) boxEncoding(b Box, callBack func(uint32, uint32, 
 
 func (inst *InstructionParsed) supported() bool {
 	foundSVE := false
+	hasInstClass := false
 	for _, doc := range inst.DocVars {
 		if doc.Key == "instr-class" {
+			hasInstClass = true
 			if doc.Value == "sve" || doc.Value == "sve2" {
 				foundSVE = true
 			}
 		}
+	}
+	if !foundSVE && !hasInstClass {
+		// A fall back solution, check all encodings has arch variants FEAT_SVE
+		hasNonSVE := false
+	Outer:
+		for _, ic := range inst.Classes.Iclass {
+			for _, av := range ic.ArchVariants {
+				if !strings.Contains(av.Feature, "FEAT_SVE") {
+					hasNonSVE = true
+					break Outer
+				}
+			}
+		}
+		return !hasNonSVE
 	}
 	return foundSVE
 }

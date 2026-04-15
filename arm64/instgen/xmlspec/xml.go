@@ -56,13 +56,18 @@ type Encoding struct {
 	AsmTemplate AsmTemplate `xml:"asmtemplate"`
 }
 
+type ArchVariant struct {
+	Feature string `xml:"feature,attr"`
+}
+
 // Iclass represents an <iclass> element, grouping instruction encodings that share a register diagram.
 type Iclass struct {
-	Name       string           `xml:"name,attr"`
-	DocVars    []DocVar         `xml:"docvars>docvar"`
-	RegDiagram RegDiagramParsed `xml:"regdiagram"`
-	Encodings  []EncodingParsed `xml:"encoding"`
-	PsSection  []PsSection      `xml:"ps_section"`
+	Name         string           `xml:"name,attr"`
+	DocVars      []DocVar         `xml:"docvars>docvar"`
+	ArchVariants []ArchVariant    `xml:"arch_variant"`
+	RegDiagram   RegDiagramParsed `xml:"regdiagram"`
+	Encodings    []EncodingParsed `xml:"encoding"`
+	PsSection    []PsSection      `xml:"ps_section"`
 }
 
 // Classes represents a <classes> element, grouping instruction classes.
