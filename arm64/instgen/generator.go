@@ -244,7 +244,6 @@ var operandTypeOrders = map[string]int{
 	"AC_MEMOFF":        7,
 	"AC_MEMOFFMULVL":   8,
 	"AC_REGLIST_RANGE": 9,
-	"AC_PREGSEL":       10,
 }
 
 func readExistingGoOps(aoutPath string) map[string]bool {
