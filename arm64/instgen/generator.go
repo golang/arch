@@ -1525,6 +1525,12 @@ func constructInstance(enc *xmlspec.EncodingParsed) (*e2eData, *e2eData) {
 			}
 		}
 		// Try to assemble the GNU version.
+		// Stores are not reversed in Go, so we reverse them back.
+		if strings.HasPrefix(name, "ST") {
+			for i, j := 0, len(gnuAsmOps)-1; i < j; i, j = i+1, j-1 {
+				gnuAsmOps[i], gnuAsmOps[j] = gnuAsmOps[j], gnuAsmOps[i]
+			}
+		}
 		gnuAsm := fmt.Sprintf(".arch_extension sve2p1\n%s %s", name, strings.Join(gnuAsmOps, ", "))
 		hex, err := assembleGNU(gnuAsm)
 		goAsmStr := fmt.Sprintf("%s %s", enc.GoOp[1:], strings.Join(goAsmOps, ", "))

@@ -751,6 +751,11 @@ func (inst *InstructionParsed) goOpcode(enc *EncodingParsed) {
 
 // sortOperands reorders the operands of an encoding according to Go assembly syntax.
 func (enc *EncodingParsed) sortOperands() {
+	// For stores, we need to make sure the memory is the destination.
+	// The original order fits just naturally, so no-op.
+	if strings.HasPrefix(enc.Operands[0].Name, "ST") {
+		return
+	}
 	// Reverse args, placing dest last.
 	for i, j := 1, len(enc.Operands)-1; i < j; i, j = i+1, j-1 {
 		enc.Operands[i], enc.Operands[j] = enc.Operands[j], enc.Operands[i]
