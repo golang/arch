@@ -56,8 +56,8 @@ func main() {
 				if plan9 == "" || strings.HasPrefix(plan9, "//") {
 					continue
 				}
-				if !strings.HasPrefix(plan9, "V") && !strings.HasPrefix(plan9, "K") {
-					// Test only AVX instructions for now. (There exist tests for
+				if !strings.HasPrefix(plan9, "V") && !strings.HasPrefix(plan9, "K") && !strings.HasPrefix(plan9, "SHA") {
+					// Test only AVX and SHA instructions for now. (There exist tests for
 					// non-AVX ones).
 					continue
 				}

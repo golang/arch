@@ -222,8 +222,6 @@ var unsupported = strings.Fields(`
 	pswap
 	ptest
 	rdseed
-	sha1
-	sha256
 	skinit
 	stac
 	stgi
