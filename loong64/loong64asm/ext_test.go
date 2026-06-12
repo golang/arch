@@ -228,7 +228,7 @@ func disasm(syntax string, src []byte) (inst Inst, text string) {
 		text = "error: " + err.Error()
 		return
 	}
-	text = inst.String()
+
 	switch syntax {
 	case "gnu":
 		text = GNUSyntax(inst)
