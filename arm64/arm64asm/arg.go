@@ -489,6 +489,9 @@ const (
 	arg_Xns_mem_wb_imm7_8_signed
 	arg_Xns_mem_wb_imm9_1_signed
 	arg_Xs
+	arg_Xd_mops_mem // [Xd]! destination pointer write-back (MOPS)
+	arg_Xn_mops_wb  // Xn!  count register write-back (MOPS)
+	arg_Xs_mops_wb  // Xs!  source/fill register write-back (MOPS)
 	arg_Xt
 	arg_Xt2
 )
