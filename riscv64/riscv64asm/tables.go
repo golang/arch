@@ -1025,6 +1025,8 @@ const (
 	VZEXT_VF2
 	VZEXT_VF4
 	VZEXT_VF8
+	WRS_NTO
+	WRS_STO
 	XNOR
 	XOR
 	XORI
@@ -2049,6 +2051,8 @@ var opstr = [...]string{
 	VZEXT_VF2:         "VZEXT.VF2",
 	VZEXT_VF4:         "VZEXT.VF4",
 	VZEXT_VF8:         "VZEXT.VF8",
+	WRS_NTO:           "WRS.NTO",
+	WRS_STO:           "WRS.STO",
 	XNOR:              "XNOR",
 	XOR:               "XOR",
 	XORI:              "XORI",
@@ -4090,6 +4094,10 @@ var instFormats = [...]instFormat{
 	{mask: 0xfc0ff07f, value: 0x48022057, op: VZEXT_VF4, args: argTypeList{arg_vm, arg_vs2, arg_vd}},
 	// VZEXT.VF8 vm, vs2, vd
 	{mask: 0xfc0ff07f, value: 0x48012057, op: VZEXT_VF8, args: argTypeList{arg_vm, arg_vs2, arg_vd}},
+	// WRS.NTO
+	{mask: 0xffffffff, value: 0x00d00073, op: WRS_NTO, args: argTypeList{}},
+	// WRS.STO
+	{mask: 0xffffffff, value: 0x01d00073, op: WRS_STO, args: argTypeList{}},
 	// XNOR rd, rs1, rs2
 	{mask: 0xfe00707f, value: 0x40004033, op: XNOR, args: argTypeList{arg_rd, arg_rs1, arg_rs2}},
 	// XOR rd, rs1, rs2
