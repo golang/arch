@@ -15,12 +15,19 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"runtime"
 	"strconv"
 	"strings"
 	"testing"
 )
 
-const objdumpPath = "/usr/bin/objdump"
+var objdumpPath = "/usr/bin/objdump"
+
+func init() {
+	if runtime.GOOS == "openbsd" {
+		objdumpPath = "/usr/bin/llvm-objdump"
+	}
+}
 
 func testObjdumpARM64(t *testing.T, generate func(func([]byte))) {
 	testObjdumpArch(t, generate, ModeARM64)
