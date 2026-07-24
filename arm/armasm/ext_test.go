@@ -130,9 +130,15 @@ func testExtDis(
 
 		errors = make([]string, 0, 100) // sampled errors, at most cap
 	)
+
 	go func() {
-		errc <- extdis(ext)
+		err := extdis(ext)
+		if err != nil {
+			close(ext.Dec)
+		}
+		errc <- err
 	}()
+
 	generate(func(enc []byte) {
 		dec, ok := <-ext.Dec
 		if !ok {

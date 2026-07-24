@@ -149,8 +149,13 @@ func testExtDis(
 
 		errors = make([]string, 0, 100) // Sampled errors, at most cap
 	)
+
 	go func() {
-		errc <- extdis(ext)
+		err := extdis(ext)
+		if err != nil {
+			close(ext.Dec)
+		}
+		errc <- err
 	}()
 
 	generate(func(enc []byte) {
@@ -204,7 +209,6 @@ func testExtDis(
 	if err := <-errc; err != nil {
 		t.Fatalf("external disassembler: %v", err)
 	}
-
 }
 
 // Start address of text.
