@@ -2,18 +2,15 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// This file is an automatic parser program that parses arm64
-// system register XML files to get the encoding information
-// and writes them to the sysRegEnc.go file. The sysRegEnc.go
-// file is used for the system register encoding.
-// Follow the following steps to run the automatic parser program:
-// 1. The system register XML files are from
-// https://developer.arm.com/-/media/Files/ATG/Beta10/SysReg_xml_v85A-2019-06.tar.gz
-// 2. Extract SysReg_xml_v85A-2019-06.tar/SysReg_xml_v85A-2019-06/SysReg_xml_v85A-2019-06/AArch64-*.xml
-// to a "xmlfolder" folder.
-// 3. Run the command: ./sysrengen -i "xmlfolder" -o "filename"
-// By default, the xmlfolder is "./files" and the filename is "sysRegEnc.go".
-// 4. Put the automaically generated file into $GOROOT/src/cmd/internal/obj/arm64 directory.
+// arm64gen parses Arm A-profile system register XML files and writes the
+// system register encoding table used by the Go assembler.
+//
+// Download the system register XML from
+// https://developer.arm.com/downloads/-/exploration-tools, extract it, and run:
+//
+//	arm64gen -i SysReg_xml_A_profile-2026-03 -o sysRegEnc.go
+//
+// The output belongs in $GOROOT/src/cmd/internal/obj/arm64.
 
 package main
 
@@ -22,7 +19,7 @@ import (
 	"encoding/xml"
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -57,6 +54,7 @@ type RegVariables struct {
 type RegVariable struct {
 	XMLName  xml.Name `xml:"reg_variable"`
 	Variable string   `xml:"variable,attr"`
+	Min      string   `xml:"min,attr"`
 	Max      string   `xml:"max,attr"`
 }
 
@@ -113,6 +111,73 @@ func (a accessFlag) String() string {
 	}
 }
 
+// encodingValue evaluates an XML encoding expression for register index n.
+// Expressions are concatenations of binary constants and bit slices, for
+// example "0b010:m[3]" and "m[2:0]".
+func encodingValue(expr string, n int) (uint64, error) {
+	var value uint64
+	for len(expr) > 0 {
+		if expr[0] == ':' {
+			expr = expr[1:]
+			continue
+		}
+
+		var part uint64
+		var width int
+		switch {
+		case strings.HasPrefix(expr, "0b"):
+			i := 2
+			for i < len(expr) && expr[i] != ':' {
+				if expr[i] != '0' && expr[i] != '1' {
+					return 0, fmt.Errorf("unsupported encoding %q", expr)
+				}
+				i++
+			}
+			if i == 2 {
+				return 0, fmt.Errorf("empty binary constant in %q", expr)
+			}
+			var err error
+			part, err = strconv.ParseUint(expr[2:i], 2, 64)
+			if err != nil {
+				return 0, err
+			}
+			width = i - 2
+			expr = expr[i:]
+
+		case strings.HasPrefix(expr, "m[") || strings.HasPrefix(expr, "n["):
+			end := strings.IndexByte(expr, ']')
+			if end < 0 {
+				return 0, fmt.Errorf("unterminated bit slice in %q", expr)
+			}
+			bits := strings.Split(expr[2:end], ":")
+			hi, err := strconv.Atoi(bits[0])
+			if err != nil {
+				return 0, err
+			}
+			lo := hi
+			if len(bits) == 2 {
+				lo, err = strconv.Atoi(bits[1])
+				if err != nil {
+					return 0, err
+				}
+			} else if len(bits) != 1 {
+				return 0, fmt.Errorf("invalid bit slice in %q", expr)
+			}
+			if hi < lo || lo < 0 {
+				return 0, fmt.Errorf("invalid bit range %d:%d", hi, lo)
+			}
+			width = hi - lo + 1
+			part = uint64(n>>lo) & (1<<width - 1)
+			expr = expr[end+1:]
+
+		default:
+			return 0, fmt.Errorf("unsupported encoding %q", expr)
+		}
+		value = value<<width | part
+	}
+	return value, nil
+}
+
 func main() {
 	// Write system register encoding to the sysRegEnc.go file.
 	// This file should be put into $GOROOT/src/cmd/internal/obj/arm64/ directory.
@@ -124,16 +189,19 @@ func main() {
 	check(err)
 	defer out.Close()
 
-	files, err := ioutil.ReadDir(*xmlfolder)
+	files, err := os.ReadDir(*xmlfolder)
 	check(err)
 
 	var systemregs []SystemReg
 	regNum := 0
 
 	for _, file := range files {
+		if file.IsDir() || !strings.HasPrefix(file.Name(), "AArch64-") || filepath.Ext(file.Name()) != ".xml" {
+			continue
+		}
 		xmlFile, err := os.Open(filepath.Join(*xmlfolder, file.Name()))
 		check(err)
-		value, err := ioutil.ReadAll(xmlFile)
+		value, err := io.ReadAll(xmlFile)
 		check(err)
 
 		var regpage RegisterPage
@@ -162,15 +230,20 @@ func main() {
 			continue
 		}
 
-		m0 := sysreg.AccessMechanisms.AccessMechanism[0]
-		ins := m0.Accessor
-		if !(strings.Contains(ins, "MRS") || strings.Contains(ins, "MSR")) {
+		m := sysreg.AccessMechanisms.AccessMechanism
+		var m0 *AccessMechanism
+		for i := range m {
+			if strings.Contains(m[i].Accessor, "MRS") || strings.Contains(m[i].Accessor, "MSR") {
+				m0 = &m[i]
+				break
+			}
+		}
+		if m0 == nil {
 			log.Printf("%s: \"%s\" is not a system register for MSR and MRS instructions.\n", file.Name(), sysregName)
 			xmlFile.Close()
 			continue
 		}
 
-		m := sysreg.AccessMechanisms.AccessMechanism
 		accessF := accessFlag(0)
 		for j := range m {
 			accessor := m[j].Accessor
@@ -183,83 +256,43 @@ func main() {
 		}
 		aFlags := accessF.String()
 
-		max := 0
-		var enc [5]uint64
 		if len(m0.Encoding.Enc) != 5 {
 			log.Printf("%s: The data of this file does not fit into S<op0>_<op1>_<Cn>_<Cm>_<op2> encoding\n", file.Name())
 			xmlFile.Close()
 			continue
 		}
-		// Special handling for system register name containing <n>.
+
+		min, max := 0, 0
 		if strings.Contains(sysregName, "<n>") {
+			if sysreg.RegVariables.RegVariable.Min != "" {
+				min, err = strconv.Atoi(sysreg.RegVariables.RegVariable.Min)
+				check(err)
+			}
 			max, err = strconv.Atoi(sysreg.RegVariables.RegVariable.Max)
 			check(err)
-			for n := 0; n <= max; n++ {
-				name := strings.Replace(sysregName, "<n>", strconv.Itoa(n), -1)
-				systemregs = append(systemregs, SystemReg{name, 0, aFlags})
-				regNum++
-			}
-		} else {
-			systemregs = append(systemregs, SystemReg{sysregName, 0, aFlags})
-			regNum++
 		}
-		for i := 0; i <= max; i++ {
-			index := regNum - 1 - max + i
-			for j := 0; j < len(m0.Encoding.Enc); j++ {
-				value := m0.Encoding.Enc[j].V
-				// value="0b010:n[3]"
-				// value="0b1:n[1:0]"
-				// value="ob10:n[4:3]"
-				if strings.Contains(value, "n") && strings.Contains(value, "b") {
-					v0 := strings.Split(value, "b")
-					v1 := strings.Split(v0[1], "n")
-					v2 := strings.Trim(v1[1], "[]")
-					bits, err := strconv.ParseUint(strings.Trim(v1[0], ":"), 2, 32)
-					check(err)
-					if strings.Contains(v1[1], ":") {
-						// v1[1]="[1:0]", v2="1:0"
-						// Get the index.
-						first, err := strconv.Atoi(strings.Split(v2, ":")[0])
-						check(err)
-						last, err := strconv.Atoi(strings.Split(v2, ":")[1])
-						check(err)
-						// Get the corresponding appended bits.
-						bitsAppend := (i >> uint(last) & (1<<uint(first-last+1) - 1))
-						// Join the bits to get the final bits.
-						finalBits := int(bits)<<uint(first-last+1) | bitsAppend
-						enc[j] = uint64(finalBits)
-					} else {
-						// v1[1]="[3]", v2="3"
-						// Get the corresponding appended bits.
-						first, err := strconv.Atoi(v2)
-						check(err)
-						bitsAppend := (i >> uint(first)) & 1
-						// Join the bits to get the final bits.
-						finalBits := int(bits)<<1 | bitsAppend
-						enc[j] = uint64(finalBits)
-					}
-				} else if strings.Contains(value, "n") && !strings.Contains(value, "b") {
-					// value="n[3:0]" | value="n[2:0]"
-					v0 := strings.Split(value, "n")
-					v1 := strings.Trim(v0[1], "[]")
-					v2 := strings.Split(v1, ":")
-					// Convert string format to integer.
-					first, err := strconv.Atoi(v2[0])
-					check(err)
-					last, err := strconv.Atoi(v2[1])
-					check(err)
-					finalBits := (i >> uint(last) & (1<<uint(first-last+1) - 1))
-					enc[j] = uint64(finalBits)
-				} else {
-					// value="0b110"
-					v := strings.Split(value, "b")
-					var err error = nil
-					enc[j], err = strconv.ParseUint(v[1], 2, 64)
-					check(err)
+		var regs []SystemReg
+		for n := min; n <= max; n++ {
+			var enc [5]uint64
+			valid := true
+			for j := range m0.Encoding.Enc {
+				enc[j], err = encodingValue(m0.Encoding.Enc[j].V, n)
+				if err != nil {
+					log.Printf("%s: %v", file.Name(), err)
+					valid = false
+					break
 				}
 			}
-			systemregs[index].EncBinary = uint32(enc[0]<<19 | enc[1]<<16 | enc[2]<<12 | enc[3]<<8 | enc[4]<<5)
+			if !valid {
+				regs = nil
+				break
+			}
+			name := strings.ReplaceAll(sysregName, "<n>", strconv.Itoa(n))
+			binary := uint32(enc[0]<<19 | enc[1]<<16 | enc[2]<<12 | enc[3]<<8 | enc[4]<<5)
+			regs = append(regs, SystemReg{name, binary, aFlags})
 		}
+		systemregs = append(systemregs, regs...)
+		regNum += len(regs)
 		// Close the xml file.
 		xmlFile.Close()
 	}
