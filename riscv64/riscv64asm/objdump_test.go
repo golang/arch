@@ -88,6 +88,12 @@ func allowedMismatchObjdump(text string, inst *Inst, dec ExtInst, version string
 		return true
 	}
 
+	// Zacas instructions are supported by objdump 2.43 and later.
+	// Note: amocas.q requires rd and rs2 to be even-numbered registers.
+	if strings.HasPrefix(dec.text, ".insn") && isZacasOp(inst.Op) && !objdumpVersionAtLeast(version, "2.43") {
+		return true
+	}
+
 	return false
 }
 
@@ -124,6 +130,16 @@ func isZvkOp(op Op) bool {
 		VGHSH_VV, VGMUL_VV,
 		VSHA2CH_VV, VSHA2CL_VV, VSHA2MS_VV,
 		VSM3C_VI, VSM3ME_VV, VSM4K_VI, VSM4R_VV, VSM4R_VS:
+		return true
+	}
+	return false
+}
+
+func isZacasOp(op Op) bool {
+	switch op {
+	case AMOCAS_D, AMOCAS_D_AQ, AMOCAS_D_AQRL, AMOCAS_D_RL,
+		AMOCAS_Q, AMOCAS_Q_AQ, AMOCAS_Q_AQRL, AMOCAS_Q_RL,
+		AMOCAS_W, AMOCAS_W_AQ, AMOCAS_W_AQRL, AMOCAS_W_RL:
 		return true
 	}
 	return false
