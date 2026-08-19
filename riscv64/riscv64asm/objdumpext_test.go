@@ -289,6 +289,7 @@ func writeELF64(f *os.File, size int) error {
 	strtabsize := len("\x00.text\x00.riscv.attributes\x00.shstrtab\x00")
 	// RISC-V objdump needs the .riscv.attributes section to identify extensions.
 	exts := "rv64i2p0_m2p0_a2p0_f2p0_d2p0_q2p0_c2p0_v1p0_" +
+		"zawrs1p0_" +
 		"zicbom1p0_zicbop1p0_zicboz1p0_zicond1p0_zmmul1p0_" +
 		"zfh1p0_zfhmin1p0_zba1p0_zbb1p0_zbc1p0_zbs1p0_" +
 		"zvkg1p0_zvkned1p0_zvknha1p0_zvknhb1p0_zvksed1p0_zvksh1p0"

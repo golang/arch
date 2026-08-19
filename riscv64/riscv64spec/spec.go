@@ -32,6 +32,7 @@ var extensions = []string{
 	"rv_m",
 	"rv_q",
 	"rv_v",
+	"rv_zawrs",
 	"rv_zba",
 	"rv_zbb",
 	"rv_zbc",

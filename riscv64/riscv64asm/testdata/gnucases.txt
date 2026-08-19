@@ -417,6 +417,10 @@ a260|	ld x1,8(x2)
 b353530e|	czero.eqz x7,x6,x5
 b373530e|	czero.nez x7,x6,x5
 
+# 15. "Zawrs" Extension for Wait-on-Reservation-Set instructions, Version 1.01
+7300d000|	wrs.nto
+7300d001|	wrs.sto
+
 # 19.6.1: Cache-Block Management Instructions (Zicbom), Version 1.0.0
 0fa01200|	cbo.clean	(x5)
 0fa02200|	cbo.flush	(x5)
