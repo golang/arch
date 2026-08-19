@@ -88,6 +88,12 @@ func allowedMismatchObjdump(text string, inst *Inst, dec ExtInst, version string
 		return true
 	}
 
+	// Zabha instructions (amocas.b/h) require both zabha and zacas
+	// in the ELF attributes, supported by objdump 2.43 and later.
+	if strings.HasPrefix(dec.text, ".insn") && isZabhaOp(inst.Op) && !objdumpVersionAtLeast(version, "2.43") {
+		return true
+	}
+
 	return false
 }
 
@@ -127,4 +133,12 @@ func isZvkOp(op Op) bool {
 		return true
 	}
 	return false
+}
+
+func isZabhaOp(op Op) bool {
+	// All Zabha instructions are AMO* byte (.B) or halfword (.H) operations,
+	// including .AQ/.RL/.AQRL variants (e.g. AMOADD.B.AQ contains ".B").
+	name := opstr[op]
+	return (strings.Contains(name, ".B") || strings.Contains(name, ".H")) &&
+		strings.HasPrefix(name, "AMO")
 }
