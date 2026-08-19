@@ -410,6 +410,12 @@ a260|	ld x1,8(x2)
 8624|	fld f9,64(x2)
 3eb0|	fsd f15,32(x2)
 
+# 9. "Zihintntl" Extension for Non-Temporal Locality Hints, Version 1.0
+33002000|	ntl.p1
+33003000|	ntl.pall
+33004000|	ntl.s1
+33005000|	ntl.all
+
 # 10.1: "Zihintpause" Extension for Pause Hint, Version 1.0.0
 0f000001|	pause
 

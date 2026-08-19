@@ -87,6 +87,22 @@ gnuSyntaxSwitch:
 
 	case ADD:
 		if inst.Args[1].(Reg) == X0 {
+			if inst.Args[0].(Reg) == X0 {
+				switch inst.Args[2].(Reg) {
+				case X2:
+					op = "ntl.p1"
+				case X3:
+					op = "ntl.pall"
+				case X4:
+					op = "ntl.s1"
+				case X5:
+					op = "ntl.all"
+				}
+				if op != "add" {
+					args = nil
+					break gnuSyntaxSwitch
+				}
+			}
 			op = "mv"
 			args[1] = args[2]
 			args = args[:len(args)-1]

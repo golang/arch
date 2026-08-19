@@ -363,6 +363,12 @@ b35cbd49|	BEXT X27, X26, X25
 b3115228|	BSET X5, X4, X3
 1393f32b|	BSETI $63, X7, X6
 
+# 9. "Zihintntl" Extension for Non-Temporal Locality Hints, Version 1.0
+33002000|	NTLP1
+33003000|	NTLPALL
+33004000|	NTLS1
+33005000|	NTLALL
+
 # 10.1: "Zihintpause" Extension for Pause Hint, Version 1.0.0
 0f000001|	PAUSE
 

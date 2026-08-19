@@ -63,6 +63,23 @@ goSyntaxSwitch:
 		// Atomic instructions have special operand order.
 		args[2], args[1] = args[1], args[2]
 
+	case ADD:
+		if inst.Args[0].(Reg) == X0 && inst.Args[1].(Reg) == X0 {
+			switch inst.Args[2].(Reg) {
+			case X2:
+				op = "NTLP1"
+			case X3:
+				op = "NTLPALL"
+			case X4:
+				op = "NTLS1"
+			case X5:
+				op = "NTLALL"
+			default:
+				break goSyntaxSwitch
+			}
+			args = nil
+		}
+
 	case ADDI:
 		if inst.Args[2].(Simm).Imm == 0 {
 			op = "MOV"
