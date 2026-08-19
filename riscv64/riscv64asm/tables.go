@@ -142,17 +142,26 @@ const (
 	C_J
 	C_JALR
 	C_JR
+	C_LBU
 	C_LD
 	C_LDSP
+	C_LH
+	C_LHU
 	C_LI
 	C_LUI
 	C_LW
 	C_LWSP
+	C_MUL
 	C_MV
 	C_NOP
+	C_NOT
 	C_OR
+	C_SB
 	C_SD
 	C_SDSP
+	C_SEXT_B
+	C_SEXT_H
+	C_SH
 	C_SLLI
 	C_SRAI
 	C_SRLI
@@ -162,6 +171,9 @@ const (
 	C_SWSP
 	C_UNIMP
 	C_XOR
+	C_ZEXT_B
+	C_ZEXT_H
+	C_ZEXT_W
 	DIV
 	DIVU
 	DIVUW
@@ -1166,17 +1178,26 @@ var opstr = [...]string{
 	C_J:               "C.J",
 	C_JALR:            "C.JALR",
 	C_JR:              "C.JR",
+	C_LBU:             "C.LBU",
 	C_LD:              "C.LD",
 	C_LDSP:            "C.LDSP",
+	C_LH:              "C.LH",
+	C_LHU:             "C.LHU",
 	C_LI:              "C.LI",
 	C_LUI:             "C.LUI",
 	C_LW:              "C.LW",
 	C_LWSP:            "C.LWSP",
+	C_MUL:             "C.MUL",
 	C_MV:              "C.MV",
 	C_NOP:             "C.NOP",
+	C_NOT:             "C.NOT",
 	C_OR:              "C.OR",
+	C_SB:              "C.SB",
 	C_SD:              "C.SD",
 	C_SDSP:            "C.SDSP",
+	C_SEXT_B:          "C.SEXT.B",
+	C_SEXT_H:          "C.SEXT.H",
+	C_SH:              "C.SH",
 	C_SLLI:            "C.SLLI",
 	C_SRAI:            "C.SRAI",
 	C_SRLI:            "C.SRLI",
@@ -1186,6 +1207,9 @@ var opstr = [...]string{
 	C_SWSP:            "C.SWSP",
 	C_UNIMP:           "C.UNIMP",
 	C_XOR:             "C.XOR",
+	C_ZEXT_B:          "C.ZEXT.B",
+	C_ZEXT_H:          "C.ZEXT.H",
+	C_ZEXT_W:          "C.ZEXT.W",
 	DIV:               "DIV",
 	DIVU:              "DIVU",
 	DIVUW:             "DIVUW",
@@ -2324,10 +2348,16 @@ var instFormats = [...]instFormat{
 	{mask: 0x0000f07f, value: 0x00009002, op: C_JALR, args: argTypeList{arg_c_rs1_n0}},
 	// C.JR rs1_n0
 	{mask: 0x0000f07f, value: 0x00008002, op: C_JR, args: argTypeList{arg_rs1_n0}},
+	// C.LBU rd_p, rs1_p, c_uimm2
+	{mask: 0x0000fc03, value: 0x00008000, op: C_LBU, args: argTypeList{arg_rd_p, arg_rs1_p, arg_c_uimm2}},
 	// C.LD rd_p, rs1_p, c_uimm8
 	{mask: 0x0000e003, value: 0x00006000, op: C_LD, args: argTypeList{arg_rd_p, arg_rs1_p, arg_c_uimm8}},
 	// C.LDSP rd_n0, c_uimm9sp
 	{mask: 0x0000e003, value: 0x00006002, op: C_LDSP, args: argTypeList{arg_rd_n0, arg_c_uimm9sp}},
+	// C.LH rd_p, rs1_p, c_uimm1
+	{mask: 0x0000fc43, value: 0x00008440, op: C_LH, args: argTypeList{arg_rd_p, arg_rs1_p, arg_c_uimm1}},
+	// C.LHU rd_p, rs1_p, c_uimm1
+	{mask: 0x0000fc43, value: 0x00008400, op: C_LHU, args: argTypeList{arg_rd_p, arg_rs1_p, arg_c_uimm1}},
 	// C.LI rd_n0, c_imm6
 	{mask: 0x0000e003, value: 0x00004001, op: C_LI, args: argTypeList{arg_rd_n0, arg_c_imm6}},
 	// C.LUI rd_n2, c_nzimm18
@@ -2336,16 +2366,28 @@ var instFormats = [...]instFormat{
 	{mask: 0x0000e003, value: 0x00004000, op: C_LW, args: argTypeList{arg_rd_p, arg_rs1_p, arg_c_uimm7}},
 	// C.LWSP rd_n0, c_uimm8sp
 	{mask: 0x0000e003, value: 0x00004002, op: C_LWSP, args: argTypeList{arg_rd_n0, arg_c_uimm8sp}},
+	// C.MUL rd_rs1_p, rs2_p
+	{mask: 0x0000fc63, value: 0x00009c41, op: C_MUL, args: argTypeList{arg_rd_rs1_p, arg_rs2_p}},
 	// C.MV rd_n0, c_rs2_n0
 	{mask: 0x0000f003, value: 0x00008002, op: C_MV, args: argTypeList{arg_rd_n0, arg_c_rs2_n0}},
 	// C.NOP c_nzimm6
 	{mask: 0x0000ef83, value: 0x00000001, op: C_NOP, args: argTypeList{arg_c_nzimm6}},
+	// C.NOT rd_rs1_p
+	{mask: 0x0000fc7f, value: 0x00009c75, op: C_NOT, args: argTypeList{arg_rd_rs1_p}},
 	// C.OR rd_rs1_p, rs2_p
 	{mask: 0x0000fc63, value: 0x00008c41, op: C_OR, args: argTypeList{arg_rd_rs1_p, arg_rs2_p}},
+	// C.SB rs2_p, rs1_p, c_uimm2
+	{mask: 0x0000fc03, value: 0x00008800, op: C_SB, args: argTypeList{arg_rs2_p, arg_rs1_p, arg_c_uimm2}},
 	// C.SD rs1_p, rs2_p, c_uimm8
 	{mask: 0x0000e003, value: 0x0000e000, op: C_SD, args: argTypeList{arg_rs1_p, arg_rs2_p, arg_c_uimm8}},
 	// C.SDSP c_rs2, c_uimm9sp_s
 	{mask: 0x0000e003, value: 0x0000e002, op: C_SDSP, args: argTypeList{arg_c_rs2, arg_c_uimm9sp_s}},
+	// C.SEXT.B rd_rs1_p
+	{mask: 0x0000fc7f, value: 0x00009c65, op: C_SEXT_B, args: argTypeList{arg_rd_rs1_p}},
+	// C.SEXT.H rd_rs1_p
+	{mask: 0x0000fc7f, value: 0x00009c6d, op: C_SEXT_H, args: argTypeList{arg_rd_rs1_p}},
+	// C.SH rs2_p, rs1_p, c_uimm1
+	{mask: 0x0000fc43, value: 0x00008c00, op: C_SH, args: argTypeList{arg_rs2_p, arg_rs1_p, arg_c_uimm1}},
 	// C.SLLI rd_rs1_n0, c_nzuimm6
 	{mask: 0x0000e003, value: 0x00000002, op: C_SLLI, args: argTypeList{arg_rd_rs1_n0, arg_c_nzuimm6}},
 	// C.SRAI rd_rs1_p, c_nzuimm6
@@ -2364,6 +2406,12 @@ var instFormats = [...]instFormat{
 	{mask: 0x0000ffff, value: 0x00000000, op: C_UNIMP, args: argTypeList{}},
 	// C.XOR rd_rs1_p, rs2_p
 	{mask: 0x0000fc63, value: 0x00008c21, op: C_XOR, args: argTypeList{arg_rd_rs1_p, arg_rs2_p}},
+	// C.ZEXT.B rd_rs1_p
+	{mask: 0x0000fc7f, value: 0x00009c61, op: C_ZEXT_B, args: argTypeList{arg_rd_rs1_p}},
+	// C.ZEXT.H rd_rs1_p
+	{mask: 0x0000fc7f, value: 0x00009c69, op: C_ZEXT_H, args: argTypeList{arg_rd_rs1_p}},
+	// C.ZEXT.W rd_rs1_p
+	{mask: 0x0000fc7f, value: 0x00009c71, op: C_ZEXT_W, args: argTypeList{arg_rd_rs1_p}},
 	// DIV rd, rs1, rs2
 	{mask: 0xfe00707f, value: 0x02004033, op: DIV, args: argTypeList{arg_rd, arg_rs1, arg_rs2}},
 	// DIVU rd, rs1, rs2

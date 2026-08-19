@@ -432,6 +432,23 @@ b373530e|	czero.nez x7,x6,x5
 13e0121c|	prefetch.r 448(x5)
 13e0321c|	prefetch.w 448(x5)
 13e07200|	ori x0,x5,7
+# "Zc*" Extension for Code Size Reduction, Version 1.0.0
+
+# 27.8: "zcb" Extension
+6c81|	lbu	x11,3(x10)
+2c85|	lhu	x11,2(x10)
+6c85|	lh	x11,2(x10)
+2c89|	sb	x11,2(x10)
+2c8d|	sh	x11,2(x10)
+619d|	zext.b	x10,x10
+659d|	sext.b	x10,x10
+699d|	zext.h	x10,x10
+6d9d|	sext.h	x10,x10
+759d|	not	x10,x10
+4d9d|	mul	x10,x10,x11
+719d|	zext.w	x10,x10
+0125|	sext.w	x10,x10
+
 # 28.4.3： Zbc: Carry-less multiplication
 b313530a|	clmul	x7,x6,x5
 b333530a|	clmulh	x7,x6,x5

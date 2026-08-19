@@ -140,4 +140,7 @@ const (
 	arg_c_nzuimm10
 	arg_c_imm12
 	arg_c_nzimm18
+
+	arg_c_uimm1
+	arg_c_uimm2
 )
