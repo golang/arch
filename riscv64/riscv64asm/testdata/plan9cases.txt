@@ -79,16 +79,16 @@ b3727300|	AND X7, X6, X5
 9372f30f|	MOVBU X6, X5
 97020000|	AUIPC $0, X5
 97028000|	AUIPC $2048, X5
-e38062f0|	BEQ X5, X6, -64(PC)
-e3de62ee|	BGE X5, X6, -65(PC)
-e3fc62ee|	BGEU X5, X6, -66(PC)
-e3ca62ee|	BLT X5, X6, -67(PC)
-e3e862ee|	BLTU X5, X6, -68(PC)
-e39662ee|	BNE X5, X6, -69(PC)
-e30403ee|	BEQZ X6, -70(PC)
-e35203ee|	BGEZ X6, -71(PC)
-e34003ee|	BLTZ X6, -72(PC)
-e31e03ec|	BNEZ X6, -73(PC)
+e38062f0|	BEQ X5, X6, 0xffffffffffffff00
+e3de62ee|	BGE X5, X6, 0xfffffffffffffefc
+e3fc62ee|	BGEU X5, X6, 0xfffffffffffffef8
+e3ca62ee|	BLT X5, X6, 0xfffffffffffffef4
+e3e862ee|	BLTU X5, X6, 0xfffffffffffffef0
+e39662ee|	BNE X5, X6, 0xfffffffffffffeec
+e30403ee|	BEQZ X6, 0xfffffffffffffee8
+e35203ee|	BGEZ X6, 0xfffffffffffffee4
+e34003ee|	BLTZ X6, 0xfffffffffffffee0
+e31e03ec|	BNEZ X6, 0xfffffffffffffedc
 f33213c0|	CSRRC X6, TIME, X5
 f3f21fc0|	CSRRCI $31, TIME, X5
 f32213c0|	CSRRS X6, TIME, X5
@@ -273,9 +273,9 @@ a7cf027e|	FSQ 2047(X5), F0
 53f0200e|	FSUBQ F2, F1, F0
 53f02008|	FSUBS F2, F1, F0
 a7af027e|	MOVF F0, 2047(X5)
-6ff0dfcb|	JMP -209(PC)
-eff09fcb|	CALL -210(PC)
-eff25fcb|	JAL X5, -211(PC)
+6ff0dfcb|	JMP 0xfffffffffffffcbc
+eff09fcb|	CALL 0xfffffffffffffcb8
+eff25fcb|	JAL X5, 0xfffffffffffffcb4
 67800202|	JMP 32(X5)
 e7800202|	CALL 32(X5)
 e7820202|	JALR X5, 32(X5)

@@ -415,11 +415,14 @@ func plan9Arg(inst *Inst, pc uint64, symname func(uint64) (string, uint64), arg 
 	case Simm:
 		imm, _ := strconv.Atoi(a.String())
 		if a.Width == 13 || a.Width == 21 {
-			addr := int64(pc) + int64(imm)
-			if s, base := symname(uint64(addr)); s != "" && uint64(addr) == base {
+			addr := pc + uint64(imm)
+			if s, base := symname(addr); s != "" && addr == base {
 				return fmt.Sprintf("%s(SB)", s)
 			}
-			return fmt.Sprintf("%d(PC)", imm/4)
+			// As RISC-V instructions do not have a fixed size,
+			// we cannot use the n(PC) syntax. There's no way to compute
+			// n here, so we have to fall back to using absolute addresses.
+			return fmt.Sprintf("%#x", addr)
 		}
 		return fmt.Sprintf("$%d", int32(imm))
 
