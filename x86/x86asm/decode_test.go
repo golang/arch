@@ -75,6 +75,11 @@ func TestDecodeDoesNotCrash(t *testing.T) {
 		[]byte{},
 		[]byte{0xc5},
 		[]byte{0xc4},
+		// Streams ending exactly at the end of a VEX or EVEX prefix,
+		// leaving no opcode byte.
+		[]byte{0xc5, 0xfc},
+		[]byte{0xc4, 0xe2, 0x7d},
+		[]byte{0x62, 0xf1, 0x7c, 0x48},
 	}
 	for _, test := range cases {
 		_, err := Decode([]byte(test), 64) // the only goal is that this line does not panic
