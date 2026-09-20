@@ -56,12 +56,15 @@ func main() {
 				if plan9 == "" || strings.HasPrefix(plan9, "//") {
 					continue
 				}
-				if !strings.HasPrefix(plan9, "V") && !strings.HasPrefix(plan9, "K") && !strings.HasPrefix(plan9, "SHA") {
-					// Test only AVX and SHA instructions for now. (There exist tests for
-					// non-AVX ones).
+				h := strings.ToLower(m[2])
+				vex := strings.HasPrefix(h, "c5") || /* 2-byte VEX */
+					strings.HasPrefix(h, "c4") || /* 3-byte VEX */
+					strings.HasPrefix(h, "62") /* EVEX  */
+				if !vex && !strings.HasPrefix(plan9, "SHA") {
+					// Test only AVX, BMI1/BMI2 and SHA instructions for now.
+					// (There exist tests for non-AVX ones).
 					continue
 				}
-				h := strings.ToLower(m[2])
 				if !seen[h] {
 					seen[h] = true
 					testCases = append(testCases, testCase{hex: h, plan9: plan9})

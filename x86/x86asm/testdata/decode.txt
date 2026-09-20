@@ -6784,6 +6784,558 @@ f3ab|11223344556677885f5f5f5f5f5f	32	gnu	rep stos %eax,%es:(%edi)
 f3ab|11223344556677885f5f5f5f5f5f	32	intel	rep stosd dword ptr [edi]
 f3ab|11223344556677885f5f5f5f5f5f	32	plan9	REP; STOSD AX, ES:0(DI)
 f201c1|223344556677885f5f5f5f5f5f	64	plan9	REPNE; ADDL AX, CX
+c4e230f213|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	ANDNL 0(BX), R9, DX
+c4e230f213|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	andnl (%rbx),%r9d,%edx
+c4e230f213|5f5f5f5f5f5f5f5f5f5f5f	64	intel	andn edx, r9d, dword ptr [rbx]
+c4c230f213|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	ANDNL 0(R11), R9, DX
+c4c230f213|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	andnl (%r11),%r9d,%edx
+c4c230f213|5f5f5f5f5f5f5f5f5f5f5f	64	intel	andn edx, r9d, dword ptr [r11]
+c4e230f2d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	ANDNL DX, R9, DX
+c4e230f2d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	andnl %edx,%r9d,%edx
+c4e230f2d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	andn edx, r9d, edx
+c4c230f2d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	ANDNL R11, R9, DX
+c4c230f2d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	andnl %r11d,%r9d,%edx
+c4c230f2d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	andn edx, r9d, r11d
+c46230f21b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	ANDNL 0(BX), R9, R11
+c46230f21b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	andnl (%rbx),%r9d,%r11d
+c46230f21b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	andn r11d, r9d, dword ptr [rbx]
+c44230f21b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	ANDNL 0(R11), R9, R11
+c44230f21b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	andnl (%r11),%r9d,%r11d
+c44230f21b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	andn r11d, r9d, dword ptr [r11]
+c46230f2da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	ANDNL DX, R9, R11
+c46230f2da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	andnl %edx,%r9d,%r11d
+c46230f2da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	andn r11d, r9d, edx
+c44230f2db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	ANDNL R11, R9, R11
+c44230f2db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	andnl %r11d,%r9d,%r11d
+c44230f2db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	andn r11d, r9d, r11d
+c4e288f213|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	ANDNQ 0(BX), R14, DX
+c4e288f213|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	andnq (%rbx),%r14,%rdx
+c4e288f213|5f5f5f5f5f5f5f5f5f5f5f	64	intel	andn rdx, r14, qword ptr [rbx]
+c4c288f213|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	ANDNQ 0(R11), R14, DX
+c4c288f213|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	andnq (%r11),%r14,%rdx
+c4c288f213|5f5f5f5f5f5f5f5f5f5f5f	64	intel	andn rdx, r14, qword ptr [r11]
+c4e288f2d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	ANDNQ DX, R14, DX
+c4e288f2d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	andnq %rdx,%r14,%rdx
+c4e288f2d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	andn rdx, r14, rdx
+c4c288f2d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	ANDNQ R11, R14, DX
+c4c288f2d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	andnq %r11,%r14,%rdx
+c4c288f2d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	andn rdx, r14, r11
+c46288f21b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	ANDNQ 0(BX), R14, R11
+c46288f21b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	andnq (%rbx),%r14,%r11
+c46288f21b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	andn r11, r14, qword ptr [rbx]
+c44288f21b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	ANDNQ 0(R11), R14, R11
+c44288f21b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	andnq (%r11),%r14,%r11
+c44288f21b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	andn r11, r14, qword ptr [r11]
+c46288f2da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	ANDNQ DX, R14, R11
+c46288f2da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	andnq %rdx,%r14,%r11
+c46288f2da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	andn r11, r14, rdx
+c44288f2db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	ANDNQ R11, R14, R11
+c44288f2db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	andnq %r11,%r14,%r11
+c44288f2db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	andn r11, r14, r11
+c4e230f713|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BEXTRL R9, 0(BX), DX
+c4e230f713|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bextrl %r9d,(%rbx),%edx
+c4e230f713|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bextr edx, dword ptr [rbx], r9d
+c4c230f713|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BEXTRL R9, 0(R11), DX
+c4c230f713|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bextrl %r9d,(%r11),%edx
+c4c230f713|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bextr edx, dword ptr [r11], r9d
+c4e230f7d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BEXTRL R9, DX, DX
+c4e230f7d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bextrl %r9d,%edx,%edx
+c4e230f7d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bextr edx, edx, r9d
+c4c230f7d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BEXTRL R9, R11, DX
+c4c230f7d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bextrl %r9d,%r11d,%edx
+c4c230f7d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bextr edx, r11d, r9d
+c46230f71b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BEXTRL R9, 0(BX), R11
+c46230f71b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bextrl %r9d,(%rbx),%r11d
+c46230f71b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bextr r11d, dword ptr [rbx], r9d
+c44230f71b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BEXTRL R9, 0(R11), R11
+c44230f71b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bextrl %r9d,(%r11),%r11d
+c44230f71b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bextr r11d, dword ptr [r11], r9d
+c46230f7da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BEXTRL R9, DX, R11
+c46230f7da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bextrl %r9d,%edx,%r11d
+c46230f7da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bextr r11d, edx, r9d
+c44230f7db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BEXTRL R9, R11, R11
+c44230f7db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bextrl %r9d,%r11d,%r11d
+c44230f7db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bextr r11d, r11d, r9d
+c4e288f713|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BEXTRQ R14, 0(BX), DX
+c4e288f713|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bextrq %r14,(%rbx),%rdx
+c4e288f713|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bextr rdx, qword ptr [rbx], r14
+c4c288f713|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BEXTRQ R14, 0(R11), DX
+c4c288f713|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bextrq %r14,(%r11),%rdx
+c4c288f713|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bextr rdx, qword ptr [r11], r14
+c4e288f7d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BEXTRQ R14, DX, DX
+c4e288f7d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bextrq %r14,%rdx,%rdx
+c4e288f7d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bextr rdx, rdx, r14
+c4c288f7d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BEXTRQ R14, R11, DX
+c4c288f7d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bextrq %r14,%r11,%rdx
+c4c288f7d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bextr rdx, r11, r14
+c46288f71b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BEXTRQ R14, 0(BX), R11
+c46288f71b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bextrq %r14,(%rbx),%r11
+c46288f71b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bextr r11, qword ptr [rbx], r14
+c44288f71b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BEXTRQ R14, 0(R11), R11
+c44288f71b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bextrq %r14,(%r11),%r11
+c44288f71b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bextr r11, qword ptr [r11], r14
+c46288f7da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BEXTRQ R14, DX, R11
+c46288f7da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bextrq %r14,%rdx,%r11
+c46288f7da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bextr r11, rdx, r14
+c44288f7db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BEXTRQ R14, R11, R11
+c44288f7db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bextrq %r14,%r11,%r11
+c44288f7db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bextr r11, r11, r14
+c4e230f31b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSIL 0(BX), R9
+c4e230f31b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsil (%rbx),%r9d
+c4e230f31b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsi r9d, dword ptr [rbx]
+c4c230f31b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSIL 0(R11), R9
+c4c230f31b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsil (%r11),%r9d
+c4c230f31b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsi r9d, dword ptr [r11]
+c4e230f3da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSIL DX, R9
+c4e230f3da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsil %edx,%r9d
+c4e230f3da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsi r9d, edx
+c4c230f3db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSIL R11, R9
+c4c230f3db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsil %r11d,%r9d
+c4c230f3db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsi r9d, r11d
+c4e288f31b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSIQ 0(BX), R14
+c4e288f31b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsiq (%rbx),%r14
+c4e288f31b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsi r14, qword ptr [rbx]
+c4c288f31b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSIQ 0(R11), R14
+c4c288f31b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsiq (%r11),%r14
+c4c288f31b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsi r14, qword ptr [r11]
+c4e288f3da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSIQ DX, R14
+c4e288f3da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsiq %rdx,%r14
+c4e288f3da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsi r14, rdx
+c4c288f3db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSIQ R11, R14
+c4c288f3db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsiq %r11,%r14
+c4c288f3db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsi r14, r11
+c4e230f313|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSMSKL 0(BX), R9
+c4e230f313|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsmskl (%rbx),%r9d
+c4e230f313|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsmsk r9d, dword ptr [rbx]
+c4c230f313|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSMSKL 0(R11), R9
+c4c230f313|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsmskl (%r11),%r9d
+c4c230f313|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsmsk r9d, dword ptr [r11]
+c4e230f3d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSMSKL DX, R9
+c4e230f3d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsmskl %edx,%r9d
+c4e230f3d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsmsk r9d, edx
+c4c230f3d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSMSKL R11, R9
+c4c230f3d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsmskl %r11d,%r9d
+c4c230f3d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsmsk r9d, r11d
+c4e288f313|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSMSKQ 0(BX), R14
+c4e288f313|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsmskq (%rbx),%r14
+c4e288f313|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsmsk r14, qword ptr [rbx]
+c4c288f313|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSMSKQ 0(R11), R14
+c4c288f313|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsmskq (%r11),%r14
+c4c288f313|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsmsk r14, qword ptr [r11]
+c4e288f3d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSMSKQ DX, R14
+c4e288f3d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsmskq %rdx,%r14
+c4e288f3d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsmsk r14, rdx
+c4c288f3d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSMSKQ R11, R14
+c4c288f3d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsmskq %r11,%r14
+c4c288f3d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsmsk r14, r11
+c4e230f30b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSRL 0(BX), R9
+c4e230f30b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsrl (%rbx),%r9d
+c4e230f30b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsr r9d, dword ptr [rbx]
+c4c230f30b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSRL 0(R11), R9
+c4c230f30b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsrl (%r11),%r9d
+c4c230f30b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsr r9d, dword ptr [r11]
+c4e230f3ca|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSRL DX, R9
+c4e230f3ca|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsrl %edx,%r9d
+c4e230f3ca|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsr r9d, edx
+c4c230f3cb|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSRL R11, R9
+c4c230f3cb|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsrl %r11d,%r9d
+c4c230f3cb|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsr r9d, r11d
+c4e288f30b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSRQ 0(BX), R14
+c4e288f30b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsrq (%rbx),%r14
+c4e288f30b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsr r14, qword ptr [rbx]
+c4c288f30b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSRQ 0(R11), R14
+c4c288f30b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsrq (%r11),%r14
+c4c288f30b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsr r14, qword ptr [r11]
+c4e288f3ca|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSRQ DX, R14
+c4e288f3ca|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsrq %rdx,%r14
+c4e288f3ca|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsr r14, rdx
+c4c288f3cb|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BLSRQ R11, R14
+c4c288f3cb|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	blsrq %r11,%r14
+c4c288f3cb|5f5f5f5f5f5f5f5f5f5f5f	64	intel	blsr r14, r11
+c4e230f513|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BZHIL R9, 0(BX), DX
+c4e230f513|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bzhil %r9d,(%rbx),%edx
+c4e230f513|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bzhi edx, dword ptr [rbx], r9d
+c4c230f513|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BZHIL R9, 0(R11), DX
+c4c230f513|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bzhil %r9d,(%r11),%edx
+c4c230f513|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bzhi edx, dword ptr [r11], r9d
+c4e230f5d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BZHIL R9, DX, DX
+c4e230f5d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bzhil %r9d,%edx,%edx
+c4e230f5d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bzhi edx, edx, r9d
+c4c230f5d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BZHIL R9, R11, DX
+c4c230f5d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bzhil %r9d,%r11d,%edx
+c4c230f5d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bzhi edx, r11d, r9d
+c46230f51b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BZHIL R9, 0(BX), R11
+c46230f51b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bzhil %r9d,(%rbx),%r11d
+c46230f51b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bzhi r11d, dword ptr [rbx], r9d
+c44230f51b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BZHIL R9, 0(R11), R11
+c44230f51b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bzhil %r9d,(%r11),%r11d
+c44230f51b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bzhi r11d, dword ptr [r11], r9d
+c46230f5da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BZHIL R9, DX, R11
+c46230f5da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bzhil %r9d,%edx,%r11d
+c46230f5da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bzhi r11d, edx, r9d
+c44230f5db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BZHIL R9, R11, R11
+c44230f5db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bzhil %r9d,%r11d,%r11d
+c44230f5db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bzhi r11d, r11d, r9d
+c4e288f513|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BZHIQ R14, 0(BX), DX
+c4e288f513|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bzhiq %r14,(%rbx),%rdx
+c4e288f513|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bzhi rdx, qword ptr [rbx], r14
+c4c288f513|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BZHIQ R14, 0(R11), DX
+c4c288f513|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bzhiq %r14,(%r11),%rdx
+c4c288f513|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bzhi rdx, qword ptr [r11], r14
+c4e288f5d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BZHIQ R14, DX, DX
+c4e288f5d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bzhiq %r14,%rdx,%rdx
+c4e288f5d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bzhi rdx, rdx, r14
+c4c288f5d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BZHIQ R14, R11, DX
+c4c288f5d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bzhiq %r14,%r11,%rdx
+c4c288f5d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bzhi rdx, r11, r14
+c46288f51b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BZHIQ R14, 0(BX), R11
+c46288f51b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bzhiq %r14,(%rbx),%r11
+c46288f51b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bzhi r11, qword ptr [rbx], r14
+c44288f51b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BZHIQ R14, 0(R11), R11
+c44288f51b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bzhiq %r14,(%r11),%r11
+c44288f51b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bzhi r11, qword ptr [r11], r14
+c46288f5da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BZHIQ R14, DX, R11
+c46288f5da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bzhiq %r14,%rdx,%r11
+c46288f5da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bzhi r11, rdx, r14
+c44288f5db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	BZHIQ R14, R11, R11
+c44288f5db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	bzhiq %r14,%r11,%r11
+c44288f5db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	bzhi r11, r11, r14
+c4e233f613|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	MULXL 0(BX), R9, DX
+c4e233f613|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	mulxl (%rbx),%r9d,%edx
+c4e233f613|5f5f5f5f5f5f5f5f5f5f5f	64	intel	mulx edx, r9d, dword ptr [rbx]
+c4c233f613|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	MULXL 0(R11), R9, DX
+c4c233f613|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	mulxl (%r11),%r9d,%edx
+c4c233f613|5f5f5f5f5f5f5f5f5f5f5f	64	intel	mulx edx, r9d, dword ptr [r11]
+c4e233f6d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	MULXL DX, R9, DX
+c4e233f6d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	mulxl %edx,%r9d,%edx
+c4e233f6d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	mulx edx, r9d, edx
+c4c233f6d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	MULXL R11, R9, DX
+c4c233f6d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	mulxl %r11d,%r9d,%edx
+c4c233f6d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	mulx edx, r9d, r11d
+c46233f61b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	MULXL 0(BX), R9, R11
+c46233f61b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	mulxl (%rbx),%r9d,%r11d
+c46233f61b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	mulx r11d, r9d, dword ptr [rbx]
+c44233f61b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	MULXL 0(R11), R9, R11
+c44233f61b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	mulxl (%r11),%r9d,%r11d
+c44233f61b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	mulx r11d, r9d, dword ptr [r11]
+c46233f6da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	MULXL DX, R9, R11
+c46233f6da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	mulxl %edx,%r9d,%r11d
+c46233f6da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	mulx r11d, r9d, edx
+c44233f6db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	MULXL R11, R9, R11
+c44233f6db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	mulxl %r11d,%r9d,%r11d
+c44233f6db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	mulx r11d, r9d, r11d
+c4e28bf613|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	MULXQ 0(BX), R14, DX
+c4e28bf613|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	mulxq (%rbx),%r14,%rdx
+c4e28bf613|5f5f5f5f5f5f5f5f5f5f5f	64	intel	mulx rdx, r14, qword ptr [rbx]
+c4c28bf613|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	MULXQ 0(R11), R14, DX
+c4c28bf613|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	mulxq (%r11),%r14,%rdx
+c4c28bf613|5f5f5f5f5f5f5f5f5f5f5f	64	intel	mulx rdx, r14, qword ptr [r11]
+c4e28bf6d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	MULXQ DX, R14, DX
+c4e28bf6d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	mulxq %rdx,%r14,%rdx
+c4e28bf6d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	mulx rdx, r14, rdx
+c4c28bf6d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	MULXQ R11, R14, DX
+c4c28bf6d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	mulxq %r11,%r14,%rdx
+c4c28bf6d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	mulx rdx, r14, r11
+c4628bf61b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	MULXQ 0(BX), R14, R11
+c4628bf61b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	mulxq (%rbx),%r14,%r11
+c4628bf61b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	mulx r11, r14, qword ptr [rbx]
+c4428bf61b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	MULXQ 0(R11), R14, R11
+c4428bf61b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	mulxq (%r11),%r14,%r11
+c4428bf61b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	mulx r11, r14, qword ptr [r11]
+c4628bf6da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	MULXQ DX, R14, R11
+c4628bf6da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	mulxq %rdx,%r14,%r11
+c4628bf6da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	mulx r11, r14, rdx
+c4428bf6db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	MULXQ R11, R14, R11
+c4428bf6db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	mulxq %r11,%r14,%r11
+c4428bf6db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	mulx r11, r14, r11
+c4e233f513|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PDEPL 0(BX), R9, DX
+c4e233f513|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pdepl (%rbx),%r9d,%edx
+c4e233f513|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pdep edx, r9d, dword ptr [rbx]
+c4c233f513|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PDEPL 0(R11), R9, DX
+c4c233f513|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pdepl (%r11),%r9d,%edx
+c4c233f513|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pdep edx, r9d, dword ptr [r11]
+c4e233f5d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PDEPL DX, R9, DX
+c4e233f5d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pdepl %edx,%r9d,%edx
+c4e233f5d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pdep edx, r9d, edx
+c4c233f5d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PDEPL R11, R9, DX
+c4c233f5d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pdepl %r11d,%r9d,%edx
+c4c233f5d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pdep edx, r9d, r11d
+c46233f51b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PDEPL 0(BX), R9, R11
+c46233f51b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pdepl (%rbx),%r9d,%r11d
+c46233f51b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pdep r11d, r9d, dword ptr [rbx]
+c44233f51b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PDEPL 0(R11), R9, R11
+c44233f51b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pdepl (%r11),%r9d,%r11d
+c44233f51b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pdep r11d, r9d, dword ptr [r11]
+c46233f5da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PDEPL DX, R9, R11
+c46233f5da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pdepl %edx,%r9d,%r11d
+c46233f5da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pdep r11d, r9d, edx
+c44233f5db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PDEPL R11, R9, R11
+c44233f5db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pdepl %r11d,%r9d,%r11d
+c44233f5db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pdep r11d, r9d, r11d
+c4e28bf513|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PDEPQ 0(BX), R14, DX
+c4e28bf513|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pdepq (%rbx),%r14,%rdx
+c4e28bf513|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pdep rdx, r14, qword ptr [rbx]
+c4c28bf513|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PDEPQ 0(R11), R14, DX
+c4c28bf513|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pdepq (%r11),%r14,%rdx
+c4c28bf513|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pdep rdx, r14, qword ptr [r11]
+c4e28bf5d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PDEPQ DX, R14, DX
+c4e28bf5d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pdepq %rdx,%r14,%rdx
+c4e28bf5d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pdep rdx, r14, rdx
+c4c28bf5d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PDEPQ R11, R14, DX
+c4c28bf5d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pdepq %r11,%r14,%rdx
+c4c28bf5d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pdep rdx, r14, r11
+c4628bf51b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PDEPQ 0(BX), R14, R11
+c4628bf51b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pdepq (%rbx),%r14,%r11
+c4628bf51b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pdep r11, r14, qword ptr [rbx]
+c4428bf51b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PDEPQ 0(R11), R14, R11
+c4428bf51b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pdepq (%r11),%r14,%r11
+c4428bf51b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pdep r11, r14, qword ptr [r11]
+c4628bf5da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PDEPQ DX, R14, R11
+c4628bf5da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pdepq %rdx,%r14,%r11
+c4628bf5da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pdep r11, r14, rdx
+c4428bf5db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PDEPQ R11, R14, R11
+c4428bf5db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pdepq %r11,%r14,%r11
+c4428bf5db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pdep r11, r14, r11
+c4e232f513|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PEXTL 0(BX), R9, DX
+c4e232f513|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pextl (%rbx),%r9d,%edx
+c4e232f513|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pext edx, r9d, dword ptr [rbx]
+c4c232f513|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PEXTL 0(R11), R9, DX
+c4c232f513|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pextl (%r11),%r9d,%edx
+c4c232f513|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pext edx, r9d, dword ptr [r11]
+c4e232f5d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PEXTL DX, R9, DX
+c4e232f5d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pextl %edx,%r9d,%edx
+c4e232f5d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pext edx, r9d, edx
+c4c232f5d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PEXTL R11, R9, DX
+c4c232f5d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pextl %r11d,%r9d,%edx
+c4c232f5d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pext edx, r9d, r11d
+c46232f51b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PEXTL 0(BX), R9, R11
+c46232f51b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pextl (%rbx),%r9d,%r11d
+c46232f51b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pext r11d, r9d, dword ptr [rbx]
+c44232f51b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PEXTL 0(R11), R9, R11
+c44232f51b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pextl (%r11),%r9d,%r11d
+c44232f51b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pext r11d, r9d, dword ptr [r11]
+c46232f5da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PEXTL DX, R9, R11
+c46232f5da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pextl %edx,%r9d,%r11d
+c46232f5da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pext r11d, r9d, edx
+c44232f5db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PEXTL R11, R9, R11
+c44232f5db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pextl %r11d,%r9d,%r11d
+c44232f5db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pext r11d, r9d, r11d
+c4e28af513|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PEXTQ 0(BX), R14, DX
+c4e28af513|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pextq (%rbx),%r14,%rdx
+c4e28af513|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pext rdx, r14, qword ptr [rbx]
+c4c28af513|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PEXTQ 0(R11), R14, DX
+c4c28af513|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pextq (%r11),%r14,%rdx
+c4c28af513|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pext rdx, r14, qword ptr [r11]
+c4e28af5d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PEXTQ DX, R14, DX
+c4e28af5d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pextq %rdx,%r14,%rdx
+c4e28af5d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pext rdx, r14, rdx
+c4c28af5d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PEXTQ R11, R14, DX
+c4c28af5d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pextq %r11,%r14,%rdx
+c4c28af5d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pext rdx, r14, r11
+c4628af51b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PEXTQ 0(BX), R14, R11
+c4628af51b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pextq (%rbx),%r14,%r11
+c4628af51b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pext r11, r14, qword ptr [rbx]
+c4428af51b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PEXTQ 0(R11), R14, R11
+c4428af51b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pextq (%r11),%r14,%r11
+c4428af51b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pext r11, r14, qword ptr [r11]
+c4628af5da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PEXTQ DX, R14, R11
+c4628af5da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pextq %rdx,%r14,%r11
+c4628af5da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pext r11, r14, rdx
+c4428af5db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	PEXTQ R11, R14, R11
+c4428af5db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	pextq %r11,%r14,%r11
+c4428af5db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	pext r11, r14, r11
+c4e37bf01307|5f5f5f5f5f5f5f5f5f5f	64	plan9	RORXL $0x7, 0(BX), DX
+c4e37bf01307|5f5f5f5f5f5f5f5f5f5f	64	gnu	rorxl $0x7,(%rbx),%edx
+c4e37bf01307|5f5f5f5f5f5f5f5f5f5f	64	intel	rorx edx, dword ptr [rbx], 0x7
+c4c37bf01307|5f5f5f5f5f5f5f5f5f5f	64	plan9	RORXL $0x7, 0(R11), DX
+c4c37bf01307|5f5f5f5f5f5f5f5f5f5f	64	gnu	rorxl $0x7,(%r11),%edx
+c4c37bf01307|5f5f5f5f5f5f5f5f5f5f	64	intel	rorx edx, dword ptr [r11], 0x7
+c4e37bf0d207|5f5f5f5f5f5f5f5f5f5f	64	plan9	RORXL $0x7, DX, DX
+c4e37bf0d207|5f5f5f5f5f5f5f5f5f5f	64	gnu	rorxl $0x7,%edx,%edx
+c4e37bf0d207|5f5f5f5f5f5f5f5f5f5f	64	intel	rorx edx, edx, 0x7
+c4c37bf0d307|5f5f5f5f5f5f5f5f5f5f	64	plan9	RORXL $0x7, R11, DX
+c4c37bf0d307|5f5f5f5f5f5f5f5f5f5f	64	gnu	rorxl $0x7,%r11d,%edx
+c4c37bf0d307|5f5f5f5f5f5f5f5f5f5f	64	intel	rorx edx, r11d, 0x7
+c4637bf01b07|5f5f5f5f5f5f5f5f5f5f	64	plan9	RORXL $0x7, 0(BX), R11
+c4637bf01b07|5f5f5f5f5f5f5f5f5f5f	64	gnu	rorxl $0x7,(%rbx),%r11d
+c4637bf01b07|5f5f5f5f5f5f5f5f5f5f	64	intel	rorx r11d, dword ptr [rbx], 0x7
+c4437bf01b07|5f5f5f5f5f5f5f5f5f5f	64	plan9	RORXL $0x7, 0(R11), R11
+c4437bf01b07|5f5f5f5f5f5f5f5f5f5f	64	gnu	rorxl $0x7,(%r11),%r11d
+c4437bf01b07|5f5f5f5f5f5f5f5f5f5f	64	intel	rorx r11d, dword ptr [r11], 0x7
+c4637bf0da07|5f5f5f5f5f5f5f5f5f5f	64	plan9	RORXL $0x7, DX, R11
+c4637bf0da07|5f5f5f5f5f5f5f5f5f5f	64	gnu	rorxl $0x7,%edx,%r11d
+c4637bf0da07|5f5f5f5f5f5f5f5f5f5f	64	intel	rorx r11d, edx, 0x7
+c4437bf0db07|5f5f5f5f5f5f5f5f5f5f	64	plan9	RORXL $0x7, R11, R11
+c4437bf0db07|5f5f5f5f5f5f5f5f5f5f	64	gnu	rorxl $0x7,%r11d,%r11d
+c4437bf0db07|5f5f5f5f5f5f5f5f5f5f	64	intel	rorx r11d, r11d, 0x7
+c4e3fbf01307|5f5f5f5f5f5f5f5f5f5f	64	plan9	RORXQ $0x7, 0(BX), DX
+c4e3fbf01307|5f5f5f5f5f5f5f5f5f5f	64	gnu	rorxq $0x7,(%rbx),%rdx
+c4e3fbf01307|5f5f5f5f5f5f5f5f5f5f	64	intel	rorx rdx, qword ptr [rbx], 0x7
+c4c3fbf01307|5f5f5f5f5f5f5f5f5f5f	64	plan9	RORXQ $0x7, 0(R11), DX
+c4c3fbf01307|5f5f5f5f5f5f5f5f5f5f	64	gnu	rorxq $0x7,(%r11),%rdx
+c4c3fbf01307|5f5f5f5f5f5f5f5f5f5f	64	intel	rorx rdx, qword ptr [r11], 0x7
+c4e3fbf0d207|5f5f5f5f5f5f5f5f5f5f	64	plan9	RORXQ $0x7, DX, DX
+c4e3fbf0d207|5f5f5f5f5f5f5f5f5f5f	64	gnu	rorxq $0x7,%rdx,%rdx
+c4e3fbf0d207|5f5f5f5f5f5f5f5f5f5f	64	intel	rorx rdx, rdx, 0x7
+c4c3fbf0d307|5f5f5f5f5f5f5f5f5f5f	64	plan9	RORXQ $0x7, R11, DX
+c4c3fbf0d307|5f5f5f5f5f5f5f5f5f5f	64	gnu	rorxq $0x7,%r11,%rdx
+c4c3fbf0d307|5f5f5f5f5f5f5f5f5f5f	64	intel	rorx rdx, r11, 0x7
+c463fbf01b07|5f5f5f5f5f5f5f5f5f5f	64	plan9	RORXQ $0x7, 0(BX), R11
+c463fbf01b07|5f5f5f5f5f5f5f5f5f5f	64	gnu	rorxq $0x7,(%rbx),%r11
+c463fbf01b07|5f5f5f5f5f5f5f5f5f5f	64	intel	rorx r11, qword ptr [rbx], 0x7
+c443fbf01b07|5f5f5f5f5f5f5f5f5f5f	64	plan9	RORXQ $0x7, 0(R11), R11
+c443fbf01b07|5f5f5f5f5f5f5f5f5f5f	64	gnu	rorxq $0x7,(%r11),%r11
+c443fbf01b07|5f5f5f5f5f5f5f5f5f5f	64	intel	rorx r11, qword ptr [r11], 0x7
+c463fbf0da07|5f5f5f5f5f5f5f5f5f5f	64	plan9	RORXQ $0x7, DX, R11
+c463fbf0da07|5f5f5f5f5f5f5f5f5f5f	64	gnu	rorxq $0x7,%rdx,%r11
+c463fbf0da07|5f5f5f5f5f5f5f5f5f5f	64	intel	rorx r11, rdx, 0x7
+c443fbf0db07|5f5f5f5f5f5f5f5f5f5f	64	plan9	RORXQ $0x7, R11, R11
+c443fbf0db07|5f5f5f5f5f5f5f5f5f5f	64	gnu	rorxq $0x7,%r11,%r11
+c443fbf0db07|5f5f5f5f5f5f5f5f5f5f	64	intel	rorx r11, r11, 0x7
+c4e232f713|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SARXL R9, 0(BX), DX
+c4e232f713|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	sarxl %r9d,(%rbx),%edx
+c4e232f713|5f5f5f5f5f5f5f5f5f5f5f	64	intel	sarx edx, dword ptr [rbx], r9d
+c4c232f713|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SARXL R9, 0(R11), DX
+c4c232f713|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	sarxl %r9d,(%r11),%edx
+c4c232f713|5f5f5f5f5f5f5f5f5f5f5f	64	intel	sarx edx, dword ptr [r11], r9d
+c4e232f7d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SARXL R9, DX, DX
+c4e232f7d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	sarxl %r9d,%edx,%edx
+c4e232f7d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	sarx edx, edx, r9d
+c4c232f7d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SARXL R9, R11, DX
+c4c232f7d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	sarxl %r9d,%r11d,%edx
+c4c232f7d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	sarx edx, r11d, r9d
+c46232f71b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SARXL R9, 0(BX), R11
+c46232f71b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	sarxl %r9d,(%rbx),%r11d
+c46232f71b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	sarx r11d, dword ptr [rbx], r9d
+c44232f71b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SARXL R9, 0(R11), R11
+c44232f71b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	sarxl %r9d,(%r11),%r11d
+c44232f71b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	sarx r11d, dword ptr [r11], r9d
+c46232f7da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SARXL R9, DX, R11
+c46232f7da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	sarxl %r9d,%edx,%r11d
+c46232f7da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	sarx r11d, edx, r9d
+c44232f7db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SARXL R9, R11, R11
+c44232f7db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	sarxl %r9d,%r11d,%r11d
+c44232f7db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	sarx r11d, r11d, r9d
+c4e28af713|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SARXQ R14, 0(BX), DX
+c4e28af713|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	sarxq %r14,(%rbx),%rdx
+c4e28af713|5f5f5f5f5f5f5f5f5f5f5f	64	intel	sarx rdx, qword ptr [rbx], r14
+c4c28af713|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SARXQ R14, 0(R11), DX
+c4c28af713|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	sarxq %r14,(%r11),%rdx
+c4c28af713|5f5f5f5f5f5f5f5f5f5f5f	64	intel	sarx rdx, qword ptr [r11], r14
+c4e28af7d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SARXQ R14, DX, DX
+c4e28af7d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	sarxq %r14,%rdx,%rdx
+c4e28af7d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	sarx rdx, rdx, r14
+c4c28af7d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SARXQ R14, R11, DX
+c4c28af7d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	sarxq %r14,%r11,%rdx
+c4c28af7d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	sarx rdx, r11, r14
+c4628af71b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SARXQ R14, 0(BX), R11
+c4628af71b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	sarxq %r14,(%rbx),%r11
+c4628af71b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	sarx r11, qword ptr [rbx], r14
+c4428af71b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SARXQ R14, 0(R11), R11
+c4428af71b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	sarxq %r14,(%r11),%r11
+c4428af71b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	sarx r11, qword ptr [r11], r14
+c4628af7da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SARXQ R14, DX, R11
+c4628af7da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	sarxq %r14,%rdx,%r11
+c4628af7da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	sarx r11, rdx, r14
+c4428af7db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SARXQ R14, R11, R11
+c4428af7db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	sarxq %r14,%r11,%r11
+c4428af7db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	sarx r11, r11, r14
+c4e231f713|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHLXL R9, 0(BX), DX
+c4e231f713|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shlxl %r9d,(%rbx),%edx
+c4e231f713|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shlx edx, dword ptr [rbx], r9d
+c4c231f713|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHLXL R9, 0(R11), DX
+c4c231f713|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shlxl %r9d,(%r11),%edx
+c4c231f713|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shlx edx, dword ptr [r11], r9d
+c4e231f7d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHLXL R9, DX, DX
+c4e231f7d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shlxl %r9d,%edx,%edx
+c4e231f7d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shlx edx, edx, r9d
+c4c231f7d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHLXL R9, R11, DX
+c4c231f7d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shlxl %r9d,%r11d,%edx
+c4c231f7d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shlx edx, r11d, r9d
+c46231f71b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHLXL R9, 0(BX), R11
+c46231f71b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shlxl %r9d,(%rbx),%r11d
+c46231f71b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shlx r11d, dword ptr [rbx], r9d
+c44231f71b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHLXL R9, 0(R11), R11
+c44231f71b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shlxl %r9d,(%r11),%r11d
+c44231f71b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shlx r11d, dword ptr [r11], r9d
+c46231f7da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHLXL R9, DX, R11
+c46231f7da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shlxl %r9d,%edx,%r11d
+c46231f7da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shlx r11d, edx, r9d
+c44231f7db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHLXL R9, R11, R11
+c44231f7db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shlxl %r9d,%r11d,%r11d
+c44231f7db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shlx r11d, r11d, r9d
+c4e289f713|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHLXQ R14, 0(BX), DX
+c4e289f713|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shlxq %r14,(%rbx),%rdx
+c4e289f713|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shlx rdx, qword ptr [rbx], r14
+c4c289f713|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHLXQ R14, 0(R11), DX
+c4c289f713|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shlxq %r14,(%r11),%rdx
+c4c289f713|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shlx rdx, qword ptr [r11], r14
+c4e289f7d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHLXQ R14, DX, DX
+c4e289f7d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shlxq %r14,%rdx,%rdx
+c4e289f7d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shlx rdx, rdx, r14
+c4c289f7d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHLXQ R14, R11, DX
+c4c289f7d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shlxq %r14,%r11,%rdx
+c4c289f7d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shlx rdx, r11, r14
+c46289f71b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHLXQ R14, 0(BX), R11
+c46289f71b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shlxq %r14,(%rbx),%r11
+c46289f71b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shlx r11, qword ptr [rbx], r14
+c44289f71b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHLXQ R14, 0(R11), R11
+c44289f71b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shlxq %r14,(%r11),%r11
+c44289f71b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shlx r11, qword ptr [r11], r14
+c46289f7da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHLXQ R14, DX, R11
+c46289f7da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shlxq %r14,%rdx,%r11
+c46289f7da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shlx r11, rdx, r14
+c44289f7db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHLXQ R14, R11, R11
+c44289f7db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shlxq %r14,%r11,%r11
+c44289f7db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shlx r11, r11, r14
+c4e233f713|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHRXL R9, 0(BX), DX
+c4e233f713|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shrxl %r9d,(%rbx),%edx
+c4e233f713|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shrx edx, dword ptr [rbx], r9d
+c4c233f713|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHRXL R9, 0(R11), DX
+c4c233f713|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shrxl %r9d,(%r11),%edx
+c4c233f713|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shrx edx, dword ptr [r11], r9d
+c4e233f7d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHRXL R9, DX, DX
+c4e233f7d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shrxl %r9d,%edx,%edx
+c4e233f7d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shrx edx, edx, r9d
+c4c233f7d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHRXL R9, R11, DX
+c4c233f7d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shrxl %r9d,%r11d,%edx
+c4c233f7d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shrx edx, r11d, r9d
+c46233f71b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHRXL R9, 0(BX), R11
+c46233f71b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shrxl %r9d,(%rbx),%r11d
+c46233f71b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shrx r11d, dword ptr [rbx], r9d
+c44233f71b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHRXL R9, 0(R11), R11
+c44233f71b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shrxl %r9d,(%r11),%r11d
+c44233f71b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shrx r11d, dword ptr [r11], r9d
+c46233f7da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHRXL R9, DX, R11
+c46233f7da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shrxl %r9d,%edx,%r11d
+c46233f7da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shrx r11d, edx, r9d
+c44233f7db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHRXL R9, R11, R11
+c44233f7db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shrxl %r9d,%r11d,%r11d
+c44233f7db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shrx r11d, r11d, r9d
+c4e28bf713|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHRXQ R14, 0(BX), DX
+c4e28bf713|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shrxq %r14,(%rbx),%rdx
+c4e28bf713|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shrx rdx, qword ptr [rbx], r14
+c4c28bf713|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHRXQ R14, 0(R11), DX
+c4c28bf713|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shrxq %r14,(%r11),%rdx
+c4c28bf713|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shrx rdx, qword ptr [r11], r14
+c4e28bf7d2|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHRXQ R14, DX, DX
+c4e28bf7d2|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shrxq %r14,%rdx,%rdx
+c4e28bf7d2|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shrx rdx, rdx, r14
+c4c28bf7d3|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHRXQ R14, R11, DX
+c4c28bf7d3|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shrxq %r14,%r11,%rdx
+c4c28bf7d3|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shrx rdx, r11, r14
+c4628bf71b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHRXQ R14, 0(BX), R11
+c4628bf71b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shrxq %r14,(%rbx),%r11
+c4628bf71b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shrx r11, qword ptr [rbx], r14
+c4428bf71b|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHRXQ R14, 0(R11), R11
+c4428bf71b|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shrxq %r14,(%r11),%r11
+c4428bf71b|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shrx r11, qword ptr [r11], r14
+c4628bf7da|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHRXQ R14, DX, R11
+c4628bf7da|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shrxq %r14,%rdx,%r11
+c4628bf7da|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shrx r11, rdx, r14
+c4428bf7db|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	SHRXQ R14, R11, R11
+c4428bf7db|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	shrxq %r14,%r11,%r11
+c4428bf7db|5f5f5f5f5f5f5f5f5f5f5f	64	intel	shrx r11, r11, r14
 c4c1315813|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	VADDPD 0(R11), X9, X2
 c4c1315813|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	vaddpd (%r11),%xmm9,%xmm2
 c4c1315813|5f5f5f5f5f5f5f5f5f5f5f	64	intel	vaddpd xmm2, xmm9, xmmword ptr [r11]
@@ -8200,30 +8752,6 @@ c4630540da07|5f5f5f5f5f5f5f5f5f5f	64	intel	vdpps ymm11, ymm15, ymm2, 0x7
 c4430540db07|5f5f5f5f5f5f5f5f5f5f	64	plan9	VDPPS $0x7, Y11, Y15, Y11
 c4430540db07|5f5f5f5f5f5f5f5f5f5f	64	gnu	vdpps $0x7,%ymm11,%ymm15,%ymm11
 c4430540db07|5f5f5f5f5f5f5f5f5f5f	64	intel	vdpps ymm11, ymm15, ymm11, 0x7
-0f0023|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	plan9	VERR 0(BX)
-0f0023|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	gnu	verr (%rbx)
-0f0023|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	intel	verr word ptr [rbx]
-410f0023|5f5f5f5f5f5f5f5f5f5f5f5f	64	plan9	VERR 0(R11)
-410f0023|5f5f5f5f5f5f5f5f5f5f5f5f	64	gnu	verr (%r11)
-410f0023|5f5f5f5f5f5f5f5f5f5f5f5f	64	intel	verr word ptr [r11]
-0f00e2|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	plan9	VERR DX
-0f00e2|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	gnu	verr %dx
-0f00e2|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	intel	verr dx
-410f00e3|5f5f5f5f5f5f5f5f5f5f5f5f	64	plan9	VERR R11
-410f00e3|5f5f5f5f5f5f5f5f5f5f5f5f	64	gnu	verr %r11w
-410f00e3|5f5f5f5f5f5f5f5f5f5f5f5f	64	intel	verr r11w
-0f002b|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	plan9	VERW 0(BX)
-0f002b|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	gnu	verw (%rbx)
-0f002b|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	intel	verw word ptr [rbx]
-410f002b|5f5f5f5f5f5f5f5f5f5f5f5f	64	plan9	VERW 0(R11)
-410f002b|5f5f5f5f5f5f5f5f5f5f5f5f	64	gnu	verw (%r11)
-410f002b|5f5f5f5f5f5f5f5f5f5f5f5f	64	intel	verw word ptr [r11]
-0f00ea|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	plan9	VERW DX
-0f00ea|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	gnu	verw %dx
-0f00ea|5f5f5f5f5f5f5f5f5f5f5f5f5f	64	intel	verw dx
-410f00eb|5f5f5f5f5f5f5f5f5f5f5f5f	64	plan9	VERW R11
-410f00eb|5f5f5f5f5f5f5f5f5f5f5f5f	64	gnu	verw %r11w
-410f00eb|5f5f5f5f5f5f5f5f5f5f5f5f	64	intel	verw r11w
 c4e37d191307|5f5f5f5f5f5f5f5f5f5f	64	plan9	VEXTRACTF128 $0x7, Y2, 0(BX)
 c4e37d191307|5f5f5f5f5f5f5f5f5f5f	64	gnu	vextractf128 $0x7,%ymm2,(%rbx)
 c4e37d191307|5f5f5f5f5f5f5f5f5f5f	64	intel	vextractf128 xmmword ptr [rbx], ymm2, 0x7
@@ -17659,6 +18187,12 @@ c4e3fd01ffd8|5f5f5f5f5f5f5f5f5f5f	64	intel	vpermpd ymm7, ymm7, 0xd8
 c5f970ffb1|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	VPSHUFD $0xb1, X7, X7
 c5f970ffb1|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	vpshufd $0xb1,%xmm7,%xmm7
 c5f970ffb1|5f5f5f5f5f5f5f5f5f5f5f	64	intel	vpshufd xmm7, xmm7, 0xb1
+c4e37bf010ff|5f5f5f5f5f5f5f5f5f5f	64	plan9	RORXL $0xff, 0(AX), DX
+c4e37bf010ff|5f5f5f5f5f5f5f5f5f5f	64	gnu	rorxl $0xff,(%rax),%edx
+c4e37bf010ff|5f5f5f5f5f5f5f5f5f5f	64	intel	rorx edx, dword ptr [rax], 0xff
+c4e3fbf010ff|5f5f5f5f5f5f5f5f5f5f	64	plan9	RORXQ $0xff, 0(AX), DX
+c4e3fbf010ff|5f5f5f5f5f5f5f5f5f5f	64	gnu	rorxq $0xff,(%rax),%rdx
+c4e3fbf010ff|5f5f5f5f5f5f5f5f5f5f	64	intel	rorx rdx, qword ptr [rax], 0xff
 c5f970d1ff|5f5f5f5f5f5f5f5f5f5f5f	64	plan9	VPSHUFD $0xff, X1, X2
 c5f970d1ff|5f5f5f5f5f5f5f5f5f5f5f	64	gnu	vpshufd $0xff,%xmm1,%xmm2
 c5f970d1ff|5f5f5f5f5f5f5f5f5f5f5f	64	intel	vpshufd xmm2, xmm1, 0xff

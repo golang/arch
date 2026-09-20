@@ -120,8 +120,10 @@ func generate() {
 		if !pset.Is("VEX") && !pset.Is("EVEX") {
 			return
 		}
-		if !strings.HasPrefix(inst.Iclass, "V") && !strings.HasPrefix(inst.Iclass, "K") {
-			// Handle only AVX instructions for now.
+		avx := strings.HasPrefix(inst.Iclass, "V") || strings.HasPrefix(inst.Iclass, "K")
+		bmi := pset.Is("VEX") && (inst.Extension == "BMI1" || inst.Extension == "BMI2")
+		if !avx && !bmi {
+			// Handle only AVX and BMI1/BMI2 instructions for now.
 			return
 		}
 		if inst.RealOpcode == "N" {
