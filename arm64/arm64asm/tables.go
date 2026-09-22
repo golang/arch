@@ -77,6 +77,9 @@ const (
 	CSINC
 	CSINV
 	CSNEG
+	CPYE
+	CPYM
+	CPYP
 	DC
 	DCPS1
 	DCPS2
@@ -275,6 +278,9 @@ const (
 	SDIV
 	SEV
 	SEVL
+	SETE
+	SETM
+	SETP
 	SHA1C
 	SHA1H
 	SHA1M
@@ -546,6 +552,9 @@ var opstr = [...]string{
 	CSINC:     "CSINC",
 	CSINV:     "CSINV",
 	CSNEG:     "CSNEG",
+	CPYE:      "CPYE",
+	CPYM:      "CPYM",
+	CPYP:      "CPYP",
 	DC:        "DC",
 	DCPS1:     "DCPS1",
 	DCPS2:     "DCPS2",
@@ -744,6 +753,9 @@ var opstr = [...]string{
 	SDIV:      "SDIV",
 	SEV:       "SEV",
 	SEVL:      "SEVL",
+	SETE:      "SETE",
+	SETM:      "SETM",
+	SETP:      "SETP",
 	SHA1C:     "SHA1C",
 	SHA1H:     "SHA1H",
 	SHA1M:     "SHA1M",
@@ -1059,6 +1071,18 @@ var instFormats = [...]instFormat{
 	{0xffe0fc00, 0x9ac02800, ASRV, instArgs{arg_Xd, arg_Xn, arg_Xm}, nil},
 	// AT <at>, <Xt>
 	{0xfff8ff00, 0xd5087800, AT, instArgs{arg_sysop_AT_SYS_CR_system}, at_sys_cr_system_cond},
+	// CPYP [<Xd>]!, [<Xs>]!, <Xn>!
+	{0xffe0fc00, 0x1d000400, CPYP, instArgs{arg_Xd_mops_mem, arg_Xs_mops_wb, arg_Xn_mops_wb}, nil},
+	// CPYM [<Xd>]!, [<Xs>]!, <Xn>!
+	{0xffe0fc00, 0x1d400400, CPYM, instArgs{arg_Xd_mops_mem, arg_Xs_mops_wb, arg_Xn_mops_wb}, nil},
+	// CPYE [<Xd>]!, [<Xs>]!, <Xn>!
+	{0xffe0fc00, 0x1d800400, CPYE, instArgs{arg_Xd_mops_mem, arg_Xs_mops_wb, arg_Xn_mops_wb}, nil},
+	// SETP [<Xd>]!, <Xn>!, <Xs>
+	{0xffe0fc00, 0x1d000c00, SETP, instArgs{arg_Xd_mops_mem, arg_Xn_mops_wb, arg_Xs}, nil},
+	// SETM [<Xd>]!, <Xn>!, <Xs>
+	{0xffe0fc00, 0x1d400c00, SETM, instArgs{arg_Xd_mops_mem, arg_Xn_mops_wb, arg_Xs}, nil},
+	// SETE [<Xd>]!, <Xn>!, <Xs>
+	{0xffe0fc00, 0x1d800c00, SETE, instArgs{arg_Xd_mops_mem, arg_Xn_mops_wb, arg_Xs}, nil},
 	// DC <dc>, <Xt>
 	{0xfff8f000, 0xd5087000, DC, instArgs{arg_sysop_DC_SYS_CR_system}, dc_sys_cr_system_cond},
 	// IC <ic>, {<Xt>}

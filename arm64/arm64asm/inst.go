@@ -377,6 +377,26 @@ func (r RegSP) String() string {
 	}
 }
 
+// A RegWriteBack is a register that is written back by the instruction (e.g. MOPS Xn!).
+type RegWriteBack Reg
+
+func (RegWriteBack) isArg() {}
+
+func (r RegWriteBack) String() string {
+	return Reg(r).String() + "!"
+}
+
+// A MemMOPS is a memory operand of the form [Xd]! used by MOPS instructions.
+type MemMOPS struct {
+	Base Reg
+}
+
+func (MemMOPS) isArg() {}
+
+func (m MemMOPS) String() string {
+	return fmt.Sprintf("[%s]!", m.Base.String())
+}
+
 type ImmShift struct {
 	imm   uint16
 	shift uint8
