@@ -397,6 +397,9 @@ b18c|	xor x9,x9,x12
 558c|	or x8,x8,x13
 f98c|	and x9,x9,x14
 01a8|	j 16
+d5bf|	j -12
+c5bf|	j -16
+31a0|	j 12
 99c5|	beqz x11,14
 85e3|	bnez x15,32
 c248|	lw x17,16(x2)
