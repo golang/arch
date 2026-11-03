@@ -19844,3 +19844,10 @@ c4e3f933e9c4|5f5f5f5f5f5f5f5f5f5f	64	intel	kshiftlq k5, k1, 0xc4
 62d1d54058d1|5f5f5f5f5f5f5f5f5f5f	64	gnu	vaddpd %zmm9,%zmm21,%zmm2
 62d1d54058d1|5f5f5f5f5f5f5f5f5f5f	64	intel	vaddpd zmm2, zmm21, zmm9
 
+4d8dae00ffffff|11223344556677885f5f5f5f5f	64	gnu	lea -0x100(%r14),%r13
+4d8dae00ffffff|11223344556677885f5f5f5f5f	64	intel	lea r13, ptr [r14-0x100]
+4d8dae00ffffff|11223344556677885f5f5f5f5f	64	plan9	LEAQ -0x100(R14), R13
+488d842400ffffff|11223344556677885f5f5f5f	64	gnu	lea -0x100(%rsp),%rax
+488d842400ffffff|11223344556677885f5f5f5f	64	intel	lea rax, ptr [rsp-0x100]
+488d842400ffffff|11223344556677885f5f5f5f	64	plan9	LEAQ -0x100(SP), AX
+678d8600ffffff|11223344556677885f5f5f5f5f	64	plan9	LEAL -0x100(SI), AX
