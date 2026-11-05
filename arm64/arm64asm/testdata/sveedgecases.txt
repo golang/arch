@@ -1,0 +1,38 @@
+# SVE edge cases for sve_oracle_test.go: encodings that no pin in cmd/asm's
+# arm64sveenc.s has, such as R18 as a base register, which the Go assembler calls
+# R18_PLATFORM. Each line is the four bytes of the instruction in memory order, a
+# bar, a tab, the Go assembler line, a tab and the GNU syntax. cmd/asm (with
+# GOEXPERIMENT=simd) assembles the Go line to those bytes, and the GNU text is
+# GNU objdump 2.45's up to spaces; llvm-mc 22 decodes the bytes to the same
+# instruction.
+cd5112a4|	ZLD1B (R18_PLATFORM)(R14), P4.Z, [Z13.B]	ld1b { z13.b }, p4/z, [x14, x18]
+cd511ca4|	ZLD1B (g)(R14), P4.Z, [Z13.B]	ld1b { z13.b }, p4/z, [x14, x28]
+4d5206a4|	ZLD1B (R6)(R18_PLATFORM), P4.Z, [Z13.B]	ld1b { z13.b }, p4/z, [x18, x6]
+8d5306a4|	ZLD1B (R6)(g), P4.Z, [Z13.B]	ld1b { z13.b }, p4/z, [x28, x6]
+ed5306a4|	ZLD1B (R6)(RSP), P4.Z, [Z13.B]	ld1b { z13.b }, p4/z, [sp, x6]
+e75072e4|	ZST1B [Z7.D], P4, (R18_PLATFORM)(R7)	st1b { z7.d }, p4, [x7, x18]
+e7507ce4|	ZST1B [Z7.D], P4, (g)(R7)	st1b { z7.d }, p4, [x7, x28]
+875375e4|	ZST1B [Z7.D], P4, (R21)(g)	st1b { z7.d }, p4, [x28, x21]
+e84ffce5|	ZST1D [Z8.D], P3, (g<<3)(RSP)	st1d { z8.d }, p3, [sp, x28, lsl #3]
+e84ff2e5|	ZST1D [Z8.D], P3, (R18_PLATFORM<<3)(RSP)	st1d { z8.d }, p3, [sp, x18, lsl #3]
+4022fc25|	CTERMEQ g, R18_PLATFORM	ctermeq x18, x28
+8023f225|	CTERMEQ R18_PLATFORM, g	ctermeq x28, x18
+e023ff25|	CTERMEQ ZR, ZR	ctermeq xzr, xzr
+494efc04|	ZINDEX g, R18_PLATFORM, Z9.D	index z9.d, x18, x28
+894eff04|	ZINDEX ZR, R20, Z9.D	index z9.d, x20, xzr
+8a3be005|	ZDUP g, Z10.D	dup z10.d, x28
+4a3ae005|	ZDUP R18_PLATFORM, Z10.D	dup z10.d, x18
+ea3be005|	ZDUP RSP, Z10.D	dup z10.d, sp
+5cb82025|	PCNTP P2.B, P14, g	cntp x28, p14, p2.b
+52b82025|	PCNTP P2.B, P14, R18_PLATFORM	cntp x18, p14, p2.b
+8d934684|	ZLD1RB 6(g), P4.Z, [Z13.B]	ld1rb { z13.b }, p4/z, [x28, #6]
+4d924684|	ZLD1RB 6(R18_PLATFORM), P4.Z, [Z13.B]	ld1rb { z13.b }, p4/z, [x18, #6]
+ed934684|	ZLD1RB 6(RSP), P4.Z, [Z13.B]	ld1rb { z13.b }, p4/z, [sp, #6]
+851bbf85|	PLDR (-VL*2)(g), P5	ldr p5, [x28, #-2, mul vl]
+451abf85|	PLDR (-VL*2)(R18_PLATFORM), P5	ldr p5, [x18, #-2, mul vl]
+4a167c25|	PWHILELT g, R18_PLATFORM, P10.H	whilelt p10.h, x18, x28
+4a157f25|	PWHILELT ZR, R10, P10.H	whilelt p10.h, x10, xzr
+800f8005|	ZAND $170, Z0.B, Z0.B	and z0.b, z0.b, #0xaa
+410f0005|	ZORR $187, Z1.B, Z1.B	orr z1.b, z1.b, #0xbb
+220f4005|	ZEOR $153, Z2.B, Z2.B	eor z2.b, z2.b, #0x99
+8307c005|	ZDUPM $85, Z3.B	dupm z3.b, #0x55

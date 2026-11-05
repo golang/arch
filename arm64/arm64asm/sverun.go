@@ -7,7 +7,7 @@
 // An SVE instruction is decoded by walking sveForms, a table of encodings, and
 // turning each operand of the first form that matches into an Arg with the
 // operand's descriptor. Everything that is specific to one instruction is data
-// in the tables declared in sve_tables.go; this file has one case per descriptor
+// in the tables declared in sve_gen.go; this file has one case per descriptor
 // knob and one case per operand kind, so it does not grow with the number of
 // instructions.
 //

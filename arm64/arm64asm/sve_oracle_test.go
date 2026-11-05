@@ -35,6 +35,12 @@ import (
 //	                   disassemblers that share no code with each other or with
 //	                   this package. The text is llvm-mc's.
 //
+//	sveedgecases.txt  encodings that no pin has, such as R18 (which the Go
+//	                   assembler calls R18_PLATFORM) or a logical immediate
+//	                   with a 2-bit element, with both syntaxes on each line.
+//	                   The bytes are what cmd/asm assembles the Go line to. It
+//	                   is edited by hand.
+//
 // The forms missing from svegnucases.txt are the ones on which the two tools
 // disagree with each other (the spelling of a zero offset, an immediate that
 // llvm-mc repeats across the register width, a lane index it adds) and four
@@ -53,8 +59,8 @@ import (
 // encoding. While it is false the test reports how many are undecodable and
 // passes; it still fails on a wrong decoding, and it fails if every encoding
 // decodes, so that nobody forgets to set this. When it is true any undecodable
-// encoding is an error.
-const sveDecoderComplete = false
+// encoding is an error. The generated tables decode all of them.
+const sveDecoderComplete = true
 
 const sveGNUHeader = `# SVE round-trip testdata, GNU syntax. The pinned encodings of sveplan9cases.txt
 # on which GNU objdump 2.45 and llvm-mc 22 (both with no aliases) print the same
@@ -71,8 +77,9 @@ type sveCase struct {
 	line int
 }
 
-// loadSVEFile reads a testdata file of "bytes|<tab>text" lines.
-func loadSVEFile(t *testing.T, name string) (cases []sveCase) {
+// loadSVEFile reads a testdata file of "bytes|<tab>text" lines. A line may have
+// more tab-separated columns after the first, which are returned as cols.
+func loadSVEFile(t *testing.T, name string) (cases []sveCase, cols [][]string) {
 	t.Helper()
 	name = filepath.Join("testdata", name)
 	f, err := os.Open(name)
@@ -94,7 +101,9 @@ func loadSVEFile(t *testing.T, name string) (cases []sveCase) {
 		if err != nil {
 			t.Fatalf("%s:%d: %v", name, n, err)
 		}
-		cases = append(cases, sveCase{enc, strings.TrimSpace(line[bar+2:]), n})
+		c := strings.Split(line[bar+2:], "\t")
+		cases = append(cases, sveCase{enc, strings.TrimSpace(c[0]), n})
+		cols = append(cols, c)
 	}
 	if err := sc.Err(); err != nil {
 		t.Fatal(err)
@@ -102,12 +111,29 @@ func loadSVEFile(t *testing.T, name string) (cases []sveCase) {
 	if len(cases) == 0 {
 		t.Fatalf("%s has no cases", name)
 	}
-	return cases
+	return cases, cols
 }
 
 // loadSVEPins reads the pinned forms in one syntax, "plan9" or "gnu".
 func loadSVEPins(t *testing.T, syntax string) []sveCase {
-	return loadSVEFile(t, "sve"+syntax+"cases.txt")
+	cases, _ := loadSVEFile(t, "sve"+syntax+"cases.txt")
+	return cases
+}
+
+// loadSVECases reads the pins in one syntax and then the edge cases, which
+// carry both syntaxes.
+func loadSVECases(t *testing.T, syntax string) []sveCase {
+	t.Helper()
+	cases := loadSVEPins(t, syntax)
+	edges, cols := loadSVEFile(t, "sveedgecases.txt")
+	for i, e := range edges {
+		if len(cols[i]) != 2 {
+			t.Fatalf("sveedgecases.txt:%d: want a Go line and a GNU line", e.line)
+		}
+		e.text = strings.TrimSpace(cols[i][map[string]int{"plan9": 0, "gnu": 1}[syntax]])
+		cases = append(cases, e)
+	}
+	return cases
 }
 
 // sveSpaceless is how the text is compared. Like decode_test.go it ignores
@@ -140,7 +166,7 @@ func sveRoundTrip(t *testing.T, syntax string, cases []sveCase) (wrong []string,
 }
 
 func testSVEPins(t *testing.T, syntax string) {
-	cases := loadSVEPins(t, syntax)
+	cases := loadSVECases(t, syntax)
 	wrong, undecodable := sveRoundTrip(t, syntax, cases)
 	for i, w := range wrong {
 		if i == 20 {
@@ -172,7 +198,7 @@ func TestSVEPinsGNUSyntax(t *testing.T) { testSVEPins(t, "gnu") }
 // matched an SVE word would shadow the SVE decoder. It must hold with and
 // without a decoder, so it looks at the words and not at the text.
 func TestSVEPinsDecodeAsSVE(t *testing.T) {
-	for _, c := range loadSVEPins(t, "plan9") {
+	for _, c := range loadSVECases(t, "plan9") {
 		inst, err := Decode(c.enc)
 		if err != nil {
 			continue

@@ -1272,6 +1272,7 @@ var widthDescInterpreters = map[string]func(enc EncodingParsed, nonSVEIndices []
 			newEnc := enc
 			// Hard code the width into the fixed binary.
 			newEnc.Binary |= uint32(i) << 22
+			newEnc.splitLo, newEnc.splitHi, newEnc.splitValues = 22, 24, []uint32{uint32(i)}
 			newEnc.GoOp = enc.GoOp + suffix
 			// Nullify the width specifier element.
 			for _, idx := range nonSVEIndices {
@@ -1296,6 +1297,13 @@ var widthDescInterpreters = map[string]func(enc EncodingParsed, nonSVEIndices []
 			newEnc := enc
 			// It looks like GNU assembler prefers 00 for W.
 			newEnc.Binary |= uint32(i*3) << 22
+			newEnc.splitLo, newEnc.splitHi = 22, 24
+			if i == 0 {
+				// W covers size 00, 01 and 10; the encoder only ever emits 00.
+				newEnc.splitValues = []uint32{0, 1, 2}
+			} else {
+				newEnc.splitValues = []uint32{3}
+			}
 			newEnc.GoOp = enc.GoOp + suffix
 			for _, idx := range nonSVEIndices {
 				newEnc.Operands[idx].Elems[0].TextExpWithRanges = noOpCheck
@@ -1315,6 +1323,7 @@ var widthDescInterpreters = map[string]func(enc EncodingParsed, nonSVEIndices []
 		for i, suffix := range []string{"W", ""} {
 			newEnc := enc
 			newEnc.Binary |= uint32(i) << 22
+			newEnc.splitLo, newEnc.splitHi, newEnc.splitValues = 22, 23, []uint32{uint32(i)}
 			newEnc.GoOp = enc.GoOp + suffix
 			for _, idx := range nonSVEIndices {
 				newEnc.Operands[idx].Elems[0].TextExpWithRanges = noOpCheck
@@ -1336,6 +1345,7 @@ var widthDescInterpreters = map[string]func(enc EncodingParsed, nonSVEIndices []
 		for i, suffix := range []string{"H", "S", "D"} {
 			newEnc := enc
 			newEnc.Binary |= uint32(i+1) << 22
+			newEnc.splitLo, newEnc.splitHi, newEnc.splitValues = 22, 24, []uint32{uint32(i + 1)}
 			newEnc.GoOp = enc.GoOp + suffix
 			for _, idx := range nonSVEIndices {
 				newEnc.Operands[idx].Elems[0].TextExpWithRanges = noOpCheck
@@ -1362,6 +1372,7 @@ var widthDescInterpreters = map[string]func(enc EncodingParsed, nonSVEIndices []
 		for i, suffix := range []string{"W", ""} {
 			newEnc := enc
 			newEnc.Binary |= uint32(i) << 12
+			newEnc.splitLo, newEnc.splitHi, newEnc.splitValues = 12, 13, []uint32{uint32(i)}
 			newEnc.GoOp = enc.GoOp + suffix
 			for _, idx := range nonSVEIndices {
 				newEnc.Operands[idx].Elems[0].TextExpWithRanges = noOpCheck

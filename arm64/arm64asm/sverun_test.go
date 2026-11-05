@@ -7,6 +7,7 @@ package arm64asm
 import (
 	"encoding/binary"
 	"fmt"
+	"math/bits"
 	"strings"
 	"testing"
 )
@@ -324,6 +325,47 @@ func TestSVEDecodeWords(t *testing.T) {
 	}
 }
 
+// TestSVESampleTables decodes with the tables in sve_sample_gen_test.go, which
+// instgen's TestSampleDecoderTables generates from its own test data, the
+// unpredicated SVE ADD. Together the two tests take one instruction from the
+// ARM XML to its disassembly.
+func TestSVESampleTables(t *testing.T) {
+	useSVETables(t, sveTables{sveSampleOpARM, sveSampleOpGo, sveSampleSyms, sveSampleDescs,
+		sveSampleArgs, sveSampleArgLists, sveSampleForms})
+	for _, tt := range []struct {
+		word  uint32
+		gnu   string
+		plan9 string
+	}{
+		{0x04e702ed, "add z13.d, z23.d, z7.d", "ZADD Z7.D, Z23.D, Z13.D"},
+		{0x04220020, "add z0.b, z1.b, z2.b", "ZADD Z2.B, Z1.B, Z0.B"},
+	} {
+		var b [4]byte
+		binary.LittleEndian.PutUint32(b[:], tt.word)
+		inst, err := Decode(b[:])
+		if err != nil {
+			t.Errorf("Decode(%#08x): %v", tt.word, err)
+			continue
+		}
+		if got := GNUSyntax(inst); got != tt.gnu {
+			t.Errorf("Decode(%#08x) in GNU syntax = %q, want %q", tt.word, got, tt.gnu)
+		}
+		if got := GoSyntax(inst, 0, nil, nil); got != tt.plan9 {
+			t.Errorf("Decode(%#08x) in Go syntax = %q, want %q", tt.word, got, tt.plan9)
+		}
+	}
+	// The sample has only the unpredicated ADD, so neither the predicated ADD
+	// nor the unpredicated SUB, which differ from it in bit 21 and bit 10,
+	// decodes.
+	for _, w := range []uint32{0x04000000, 0x04200400} {
+		var b [4]byte
+		binary.LittleEndian.PutUint32(b[:], w)
+		if inst, err := Decode(b[:]); err == nil {
+			t.Errorf("Decode(%#08x) = %v, want an error: the sample has only the unpredicated ADD", w, inst)
+		}
+	}
+}
+
 // TestSVEDecodeEdges covers spellings that the pinned words do not reach: the
 // registers that the Go assembler renames, register 31 as a stack pointer and as
 // the zero register, a register list that wraps, and the extremes of an offset.
@@ -389,11 +431,10 @@ func TestSVEDecodeDeclines(t *testing.T) {
 }
 
 // TestSVEDecodeWithoutTables checks that the runtime is inert when no tables are
-// installed, which is how the package ships until a generated set is added.
+// installed, so a stripped-down build of the package behaves as the stock
+// decoder does.
 func TestSVEDecodeWithoutTables(t *testing.T) {
-	if len(sveForms) != 0 {
-		t.Skip("generated SVE tables are installed")
-	}
+	useSVETables(t, sveTables{})
 	for _, tt := range sveTestWords {
 		if inst, err := decodeWord(tt.word); err != errUnknown {
 			t.Errorf("Decode(%#08x) = %v, %v, want errUnknown", tt.word, inst, err)
@@ -989,6 +1030,48 @@ func TestSVESymbolSpellings(t *testing.T) {
 	}{{"B", 8}, {"16B", 8}, {"H", 16}, {"4H", 16}, {"S", 32}, {"D", 64}, {"1D", 64}, {"Q", 128}, {"M", 0}, {"", 0}} {
 		if got := arngESize(tt.s); got != tt.want {
 			t.Errorf("arngESize(%q) = %d, want %d", tt.s, got, tt.want)
+		}
+	}
+}
+
+// sveOrderClash returns a pair of forms, i before j, that both match some word
+// although i is not more specific than j: its mask has no more bits set.
+func sveOrderClash(forms []sveForm) (i, j int, found bool) {
+	for i := range forms {
+		for j := i + 1; j < len(forms); j++ {
+			fi, fj := &forms[i], &forms[j]
+			if (fi.value^fj.value)&fi.mask&fj.mask == 0 && bits.OnesCount32(fi.mask) <= bits.OnesCount32(fj.mask) {
+				return i, j, true
+			}
+		}
+	}
+	return 0, 0, false
+}
+
+// TestSVEFormOrder checks that sveDecode tries the more specific of any two forms
+// that match the same word first. The generator sorts the forms by the number of
+// mask bits and leaves a tie in the order of the XML, so two such forms with as
+// many bits would decode by an accident of that order.
+func TestSVEFormOrder(t *testing.T) {
+	if len(sveForms) < 1000 {
+		t.Skip("generated SVE tables are not installed")
+	}
+	if i, j, ok := sveOrderClash(sveForms); ok {
+		fi, fj := sveForms[i], sveForms[j]
+		t.Errorf("forms %d (%s, %#08x/%#08x) and %d (%s, %#08x/%#08x) match a common word, and the first is not more specific",
+			i, sveOpARM[fi.op], fi.value, fi.mask, j, sveOpARM[fj.op], fj.value, fj.mask)
+	}
+	for k, tc := range []struct {
+		forms []sveForm
+		clash bool
+	}{
+		{[]sveForm{{mask: 0xffff0000, value: 0x05200000}, {mask: 0xff00ff00, value: 0x05000000}}, true},  // a tie
+		{[]sveForm{{mask: 0xff000000, value: 0x05000000}, {mask: 0xffff0000, value: 0x05200000}}, true},  // out of order
+		{[]sveForm{{mask: 0xffff0000, value: 0x05200000}, {mask: 0xffff0000, value: 0x05210000}}, false}, // no common word
+		{[]sveForm{{mask: 0xffff0000, value: 0x05200000}, {mask: 0xff000000, value: 0x05000000}}, false},
+	} {
+		if _, _, got := sveOrderClash(tc.forms); got != tc.clash {
+			t.Errorf("case %d: sveOrderClash found a clash = %v, want %v", k, got, tc.clash)
 		}
 	}
 }

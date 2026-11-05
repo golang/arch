@@ -135,6 +135,14 @@ type EncodingParsed struct {
 	class    class  // instruction class
 	invalid  bool   // indicate if this is a valid encoding that need to print
 	prefix   string // prefix to GoOp
+
+	// SplitInstByRegWidth pins one field of Binary to turn a single XML
+	// encoding into several Go ops. These record which field it pinned and
+	// which values the resulting Go op covers, since the split otherwise
+	// leaves no trace of either. splitHi == 0 means the encoding is not the
+	// product of a split.
+	splitLo, splitHi int      // bit range pinned, hi exclusive
+	splitValues      []uint32 // field values this Go op accepts
 }
 
 // RegDiagramParsed is the parsed RegDiagram.

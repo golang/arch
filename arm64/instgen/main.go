@@ -5,7 +5,7 @@
 // instgen is used to generate the ARM64 instruction table for encoding and decoding.
 // Usage:
 //
-//	instgen [-i=inputDir] [-o=outputDir] [-pins=file] [-url=url] [-version=version]
+//	instgen [-i=inputDir] [-o=outputDir] [-pins=file] [-decoder=file] [-url=url] [-version=version]
 //
 // Users can download the ARM64 XML instruction manual from
 // https://developer.arm.com/downloads/-/exploration-tools,
@@ -32,6 +32,9 @@
 // the bytes of the instruction in memory order, a bar, a tab and the assembler
 // line. It is the form in which arm64asm's testdata holds them.
 //
+// The -decoder option writes the SVE decoder tables for arm64asm to the file it
+// names.
+//
 // Since the format of the ARM64 instruction specification document may update,
 // this parser may not work for some versions of the XML document.
 // Due to differences in documents between different versions, the generated instruction
@@ -57,6 +60,7 @@ var input = flag.String("i", "", "the input directory of the xml files, this is 
 var output = flag.String("o", "", "the output directory of the generated files, this is an optional argument")
 var pinsOut = flag.String("pins", "", "write the encodings that the e2e pass pins to this file, in the form arm64asm's testdata uses, this is an optional argument that needs -o")
 var genE2E = flag.Bool("e2e", false, "generate end-to-end test data")
+var decoderOut = flag.String("decoder", "", "the file to write the SVE decoder tables to for arm64asm, this is an optional argument")
 
 var url = flag.String("url", xmlspec.ExpectedURL, "the url of the xml files")
 var version = flag.String("version", xmlspec.ExpectedVersion, "the version of the xml files")
@@ -86,6 +90,9 @@ func main() {
 	// Parse each xml file to insts.
 	insts := xmlspec.ParseXMLFiles(xmlDir)
 	xmlspec.ProcessXMLFiles(insts)
+	if *decoderOut != "" {
+		GenerateDecoder(insts, *decoderOut)
+	}
 	if *output != "" {
 		Generate(insts, *output, *genE2E)
 	}

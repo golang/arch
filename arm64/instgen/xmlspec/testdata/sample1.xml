@@ -33,7 +33,7 @@
       </docvars>
       <iclassintro count="1"/>
       <arch_variants>
-        <arch_variant feature="sample1" name="sample1"/>
+        <arch_variant feature="FEAT_SVE" name="sample1"/>
       </arch_variants>
       <regdiagram form="32" psname="sample1" tworows="1">
         <box hibit="31" width="3" settings="3">
@@ -78,9 +78,9 @@
       </regdiagram>
       <encoding name="add" oneofinclass="1" oneof="1" label="">
         <docvars>
-          <docvar key="sample1" value="sample1"/>
+          <docvar key="instr-class" value="sve"/>
         </docvars>
-        <asmtemplate><text>add  </text><a hover="Is the name of the destination scalable vector register, encoded in the &quot;Zd&quot; field." link="Zd">&lt;Zd&gt;</a><text>.</text><a hover="Is the size specifier, " link="T__5">&lt;T&gt;</a><text>, </text><a hover="Is the name of the first source scalable vector register, encoded in the &quot;Zn&quot; field." link="Zn__2">&lt;Zn&gt;</a><text>.</text><a hover="Is the size specifier, " link="T__5">&lt;T&gt;</a><text>, </text><a hover="Is the name of the second source scalable vector register, encoded in the &quot;Zm&quot; field." link="Zm">&lt;Zm&gt;</a><text>.</text><a hover="Is the size specifier, " link="T__5">&lt;T&gt;</a></asmtemplate>
+        <asmtemplate><text>ADD  </text><a hover="Is the name of the destination scalable vector register, encoded in the &quot;Zd&quot; field." link="Zd">&lt;Zd&gt;</a><text>.</text><a hover="Is the size specifier, " link="T__5">&lt;T&gt;</a><text>, </text><a hover="Is the name of the first source scalable vector register, encoded in the &quot;Zn&quot; field." link="Zn__2">&lt;Zn&gt;</a><text>.</text><a hover="Is the size specifier, " link="T__5">&lt;T&gt;</a><text>, </text><a hover="Is the name of the second source scalable vector register, encoded in the &quot;Zm&quot; field." link="Zm">&lt;Zm&gt;</a><text>.</text><a hover="Is the size specifier, " link="T__5">&lt;T&gt;</a></asmtemplate>
       </encoding>
       <ps_section howmany="1">
         <ps name="sample1" sections="1" secttype="noheading">
