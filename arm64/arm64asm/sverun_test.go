@@ -30,6 +30,7 @@ func useSVETables(t *testing.T, tab sveTables) {
 	t.Helper()
 	old := sveTables{sveOpARM, sveOpGo, sveSyms, sveDescs, sveArgs, sveArgLists, sveForms}
 	oldLo, oldHi := sveGateLo, sveGateHi
+	oldReject := sveReject
 	set := func(x sveTables) {
 		sveOpARM, sveOpGo, sveSyms, sveDescs, sveArgs, sveArgLists, sveForms =
 			x.opARM, x.opGo, x.syms, x.descs, x.args, x.argLists, x.forms
@@ -38,7 +39,10 @@ func useSVETables(t *testing.T, tab sveTables) {
 	// The gate belongs to the forms it was generated from, so a table set made by
 	// hand gets the gate its own forms need.
 	sveGateLo, sveGateHi = sveGateOf(tab.forms)
-	t.Cleanup(func() { set(old); sveGateLo, sveGateHi = oldLo, oldHi })
+	// A table set made by hand has no reject classes of its own, so the generated
+	// constraints must not be applied to it.
+	sveReject = nil
+	t.Cleanup(func() { set(old); sveGateLo, sveGateHi = oldLo, oldHi; sveReject = oldReject })
 }
 
 // sveGateOf computes the bitmap of values of bits 31:25 that any of forms can
@@ -502,6 +506,10 @@ func TestSVEReject(t *testing.T) {
 	for i := range tables.forms {
 		if tables.forms[i].op == 0 { // ADD
 			tables.forms[i].reject = 7
+			// A later form that also matches must not decode a rejected word.
+			later := tables.forms[i]
+			later.reject = 0
+			tables.forms = append(tables.forms, later)
 		}
 	}
 	useSVETables(t, tables)

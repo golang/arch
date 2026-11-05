@@ -4,6 +4,11 @@
 
 package xmlspec
 
+import (
+	"encoding/xml"
+	"strings"
+)
+
 // The parsed intermediate form keeps several facts that an output target needs
 // in unexported fields. IREncoding is a flat, read-only view of one encoding
 // that exposes them, so that a generator in package main can read them without
@@ -74,4 +79,60 @@ func IRFor(enc EncodingParsed) IREncoding {
 		e.Operands = append(e.Operands, o)
 	}
 	return e
+}
+
+// IRField is a named field of a register diagram: bits [Lo, Hi) of the
+// instruction word.
+type IRField struct{ Lo, Hi int }
+
+// IRIclass is the part of an Iclass that a decode generator reads: the names the
+// register diagram gives to the variable bits, and the decode pseudocode, which
+// refers to those bits by name.
+type IRIclass struct {
+	// Name is the iclass name, which only identifies it in messages.
+	Name string
+	// Fields maps the name of each variable box in the register diagram to its
+	// bits.
+	Fields map[string]IRField
+	// Decode is the decode pseudocode as plain text, or "" if the iclass has
+	// none. It is the first pseudocode section of the iclass, the one the ARM
+	// manual headed "Decode".
+	Decode string
+}
+
+// IRForIclass returns the view of ic.
+func IRForIclass(ic Iclass) IRIclass {
+	v := IRIclass{Name: ic.Name, Fields: map[string]IRField{}}
+	for name, r := range ic.RegDiagram.varBin {
+		v.Fields[name] = IRField{r.lo, r.hi}
+	}
+	if len(ic.PsSection) > 0 {
+		v.Decode = ic.PsSection[0].Text()
+	}
+	return v
+}
+
+// Text returns the pseudocode of the section as plain text. The pseudocode is
+// markup: its function and type names are links, and its operators are escaped.
+// Text keeps the characters and drops the elements, so that
+//
+//	EndOfDecode(<a link="..">Decode_UNDEF</a>) &amp;&amp;
+//
+// reads EndOfDecode(Decode_UNDEF) &&.
+func (s PsSection) Text() string {
+	var out strings.Builder
+	for _, ps := range s.Ps {
+		d := xml.NewDecoder(strings.NewReader("<ps>" + ps.Raw + "</ps>"))
+		for {
+			tok, err := d.Token()
+			if err != nil {
+				break
+			}
+			if c, ok := tok.(xml.CharData); ok {
+				out.Write(c)
+			}
+		}
+		out.WriteByte('\n')
+	}
+	return out.String()
 }

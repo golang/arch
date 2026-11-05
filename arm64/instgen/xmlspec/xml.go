@@ -169,7 +169,11 @@ type PsSection struct {
 
 // Ps represents a <ps> element, containing pseudocode text.
 type Ps struct {
-	PSText []string `xml:"pstext"` // pseudocode text
+	PSText []string `xml:"pstext"` // pseudocode text, without the text of nested links
+	// Raw is everything inside the element. The links in the pseudocode are
+	// elements of their own, which PSText drops, so a reader that needs the
+	// whole text takes it from here (see PsSection.Text).
+	Raw string `xml:",innerxml"`
 }
 
 // Instruction represents the root <instructionsection> element of an instruction XML specification.

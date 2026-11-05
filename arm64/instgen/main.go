@@ -33,7 +33,8 @@
 // line. It is the form in which arm64asm's testdata holds them.
 //
 // The -decoder option writes the SVE decoder tables for arm64asm to the file it
-// names.
+// names, with the constraints that reject the words the tables would otherwise
+// accept.
 //
 // Since the format of the ARM64 instruction specification document may update,
 // this parser may not work for some versions of the XML document.

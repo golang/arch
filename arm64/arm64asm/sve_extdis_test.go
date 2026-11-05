@@ -388,13 +388,12 @@ type sveLimits struct {
 // and register lists that wrap from the last register to the first, such as TBL
 // with Zn = 31 and PEXT with Pd = 15.
 //
-// The over-acceptance is words the tool calls undefined (reserved register
-// numbers, nonzero should-be-zero fields) that the descriptors' own range checks
-// do not reject. Rejecting them is the job of the ASL-derived table, which is
-// a separate change; it brings these to zero.
+// Decode declines every mutant that llvm-mc calls undefined. The words that only
+// objdump 2.45 calls undefined are instructions newer than binutils 2.45, such as
+// ADDQP and LUTI6, which llvm-mc 22 and objdump 2.46 decode.
 var (
-	sveObjdumpMutantLimits = sveLimits{version: "2.45", gap: 126, overAcc: 104}
-	sveLLVMMutantLimits    = sveLimits{version: "22.1.8", gap: 126, overAcc: 56}
+	sveObjdumpMutantLimits = sveLimits{version: "2.45", gap: 126, overAcc: 48}
+	sveLLVMMutantLimits    = sveLimits{version: "22.1.8", gap: 126, overAcc: 0}
 )
 
 func testSVEExt(t *testing.T, extdis func(*ExtDis) error, version string, words [][]byte, lim sveLimits) {

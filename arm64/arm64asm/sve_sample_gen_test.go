@@ -71,3 +71,15 @@ var (
 	sveSampleGateLo uint64 = 0x0000000000000004
 	sveSampleGateHi uint64 = 0x0000000000000000
 )
+
+// sveSampleRejected reports whether the architecture declares w to be an invalid
+// instance of a form whose reject field is class. The classes are the
+// constraints that the decode pseudocode of the ARM XML states, 0 of them over
+// 0 of the 1 forms, each with the pseudocode it comes from. Every feature is
+// taken to be implemented and the maximum vector length to be 2048 bits, so the
+// conditions on those never reject: see instgen's asl.go.
+func sveSampleRejected(class int, w uint32) bool {
+	switch class {
+	}
+	return false
+}

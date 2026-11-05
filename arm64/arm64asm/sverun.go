@@ -125,8 +125,9 @@ const sveOpBase Op = 512
 // sveReject, if non-nil, reports that the architecture declares w an invalid
 // instance of a form even though the form's mask, value and descriptors accept
 // it. It is called for the forms whose reject field is not zero, with that
-// field, which names the constraint. It is a hook so that a set of such
-// constraints can be added without changing the runtime.
+// field, which names the constraint. Decode then declines w, without trying the
+// later forms. It is a hook so that a set of such constraints can be added
+// without changing the runtime.
 var sveReject func(class int, w uint32) bool
 
 // operand kinds. One rendering case each; nothing per instruction.
@@ -839,8 +840,10 @@ func sveScan(w uint32) (Inst, bool) {
 		if w&f.mask != f.value {
 			continue
 		}
+		// A word that the decode pseudocode of its encoding declares invalid is
+		// UNDEFINED, so no later form may decode it.
 		if f.reject != 0 && sveReject != nil && sveReject(int(f.reject), w) {
-			continue
+			return Inst{}, false
 		}
 		esize := sveESize(f, w)
 		var args Args

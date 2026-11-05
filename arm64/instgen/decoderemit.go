@@ -51,6 +51,7 @@ type dForm struct {
 	ArgList     int // index into the deduped arg-list table
 	GPR         int // 32 or 64 when the form pins its <R> width, else 0
 	Asm         string
+	Guards      []aslGuard // the constraints that reject a word the row matches
 }
 
 // ---------------------------------------------------------------------------
@@ -126,6 +127,11 @@ type gen struct {
 	// that they can sit beside the real ones in an arm64asm test.
 	sample bool
 
+	// cur is the iclass whose encodings are being walked, which is where the
+	// reject constraints of their forms come from. It is nil outside a walk.
+	cur *iclassState
+	asl aslStats
+
 	skippedForms int
 	reasons      map[string]int
 	noRow        int // encodings left out because an operand has a class that the encoder does not handle either
@@ -133,6 +139,32 @@ type gen struct {
 }
 
 type opRec struct{ arm, goName string }
+
+// iclassState is an iclass and, once a form of it needs them, its reject
+// constraints. An iclass has many encodings, and they all share one.
+type iclassState struct {
+	ir     xmlspec.IRIclass
+	guards []aslGuard
+	done   bool
+}
+
+// guards returns the reject constraints of the current iclass.
+func (g *gen) guards() []aslGuard {
+	if g.cur == nil {
+		return nil
+	}
+	if !g.cur.done {
+		gs, st, err := iclassGuards(g.cur.ir)
+		if err != nil {
+			log.Fatalf("decoder: %v", err)
+		}
+		g.cur.guards, g.cur.done = gs, true
+		g.asl.Conditions += st.Conditions
+		g.asl.Emitted += st.Emitted
+		g.asl.Satisfied += st.Satisfied
+	}
+	return g.cur.guards
+}
 
 func (g *gen) descIdx(d dDesc) int {
 	k := fmt.Sprintf("%v", d)
@@ -236,6 +268,7 @@ func generateDecoder(insts []*xmlspec.InstructionParsed, out string, sample bool
 			if !iclass.RegDiagram.Parsed {
 				continue
 			}
+			g.cur = &iclassState{ir: xmlspec.IRForIclass(iclass)}
 			for _, encodingRaw := range iclass.Encodings {
 				if !encodingRaw.Parsed || encodingRaw.Alias {
 					continue
@@ -260,6 +293,8 @@ func generateDecoder(insts []*xmlspec.InstructionParsed, out string, sample bool
 		}
 	}
 
+	g.cur = nil
+
 	log.Printf("decoder: walked %d encodings, emitted %d forms (%d skipped), %d operand elements; %d encodings have no row",
 		kept, len(g.forms), g.skippedForms, g.elems, g.noRow)
 	if len(g.reasons) > 0 {
@@ -277,6 +312,8 @@ func generateDecoder(insts []*xmlspec.InstructionParsed, out string, sample bool
 			log.Printf("  %5d forms: %s", g.reasons[k], k)
 		}
 	}
+	log.Printf("decoder: %d reject conditions in the decode pseudocode: %d constrain the word, %d are feature or vector-length checks that the assumptions satisfy",
+		g.asl.Conditions, g.asl.Emitted, g.asl.Satisfied)
 	log.Printf("decoder: %d descriptors, %d operands, %d arg lists, %d ops, %d symbols",
 		len(g.descs), len(g.args), len(g.lists), len(g.ops), len(g.syms.all))
 
@@ -412,7 +449,7 @@ func (g *gen) form(ir xmlspec.IREncoding) {
 	for _, r := range splitRows(ir) {
 		g.forms = append(g.forms, dForm{
 			Mask: r.mask, Value: r.value, Op: op, ArgList: al,
-			GPR: gpr, Asm: ir.Asm,
+			GPR: gpr, Asm: ir.Asm, Guards: g.guards(),
 		})
 	}
 }
@@ -619,17 +656,34 @@ func (g *gen) render() ([]byte, error) {
 	p("// [%sOpGo], [sveForm.args] indexes [%sArgLists], and [sveForm.gpr] is\n", pre, pre)
 	p("// 32 or 64 when the form fixes the width of its <R> register.\n")
 	p("var %sForms = []sveForm{\n", pre)
-	for _, f := range g.forms {
+	// Forms that the decode pseudocode constrains in the same way share a class,
+	// which the form carries in its reject field.
+	perForm := make([][]aslGuard, len(g.forms))
+	for i, f := range g.forms {
+		perForm[i] = f.Guards
+	}
+	cases := groupGuards(perForm)
+	rejectClass := make([]int, len(g.forms))
+	for k, c := range cases {
+		for _, i := range c.Forms {
+			rejectClass[i] = k + 1
+		}
+	}
+	for i, f := range g.forms {
 		gpr := ""
 		if f.GPR != 0 {
 			gpr = fmt.Sprintf(", gpr: %d", f.GPR)
+		}
+		rej := ""
+		if c := rejectClass[i]; c != 0 {
+			rej = fmt.Sprintf(", reject: %d", c)
 		}
 		// The template goes on a line of its own: as a trailing comment, gofmt
 		// would align it across the block, so a field added to some rows would
 		// move the comment on every row.
 		p("\t// %s\n", f.Asm)
-		p("\t{mask: %#08x, value: %#08x, op: %d, args: %d%s},\n",
-			f.Mask, f.Value, f.Op, f.ArgList, gpr)
+		p("\t{mask: %#08x, value: %#08x, op: %d, args: %d%s%s},\n",
+			f.Mask, f.Value, f.Op, f.ArgList, gpr, rej)
 	}
 	p("}\n\n")
 
@@ -639,6 +693,25 @@ func (g *gen) render() ([]byte, error) {
 	p("// n there. The forms use %d of the 128 values. sveDecode skips the scan for a\n", used)
 	p("// word whose value is not in the set, which no form could have matched.\n")
 	p("var (\n\t%sGateLo uint64 = %#016x\n\t%sGateHi uint64 = %#016x\n)\n", pre, lo, pre, hi)
+
+	if !g.sample {
+		p("\nfunc init() { sveReject = sveRejected }\n\n")
+	}
+	p("// %sRejected reports whether the architecture declares w to be an invalid\n", pre)
+	p("// instance of a form whose reject field is class. The classes are the\n")
+	p("// constraints that the decode pseudocode of the ARM XML states, %d of them over\n", len(cases))
+	p("// %d of the %d forms, each with the pseudocode it comes from. Every feature is\n", len(g.forms)-countZero(rejectClass), len(g.forms))
+	p("// taken to be implemented and the maximum vector length to be %d bits, so the\n", aslMaxVL)
+	p("// conditions on those never reject: see instgen's asl.go.\n")
+	p("func %sRejected(class int, w uint32) bool {\n\tswitch class {\n", pre)
+	for k, c := range cases {
+		p("\tcase %d:\n", k+1)
+		for _, gd := range c.Guards {
+			p("\t\t// %s\n", gd.ASL)
+		}
+		p("\t\treturn %s\n", guardExpr(c.Guards))
+	}
+	p("\t}\n\treturn false\n}\n")
 
 	return format.Source([]byte(b.String()))
 }
@@ -679,6 +752,16 @@ func (g *gen) pinnedSuffixCount() int {
 	n := 0
 	for _, o := range g.ops {
 		if o.goName[1:] != o.arm {
+			n++
+		}
+	}
+	return n
+}
+
+func countZero(xs []int) int {
+	n := 0
+	for _, x := range xs {
+		if x == 0 {
 			n++
 		}
 	}

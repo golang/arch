@@ -2449,31 +2449,31 @@ var sveForms = []sveForm{
 	// DECP  <Xdn>, <Pm>.<T>
 	{mask: 0xff3ffe00, value: 0x252d8800, op: 116, args: 63},
 	// DECP  <Zdn>.<T>, <Pm>.<T>
-	{mask: 0xff3ffe00, value: 0x252d8000, op: 117, args: 64},
+	{mask: 0xff3ffe00, value: 0x252d8000, op: 117, args: 64, reject: 1},
 	// FADD  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <const>
-	{mask: 0xff3fe3c0, value: 0x65188000, op: 144, args: 78},
+	{mask: 0xff3fe3c0, value: 0x65188000, op: 144, args: 78, reject: 1},
 	// FCVTZSN  <Zd>.<T>, { <Zn1>.<Tb>-<Zn2>.<Tb> }
-	{mask: 0xff3ffc20, value: 0x650d3000, op: 174, args: 104},
+	{mask: 0xff3ffc20, value: 0x650d3000, op: 174, args: 104, reject: 1},
 	// FCVTZUN  <Zd>.<T>, { <Zn1>.<Tb>-<Zn2>.<Tb> }
-	{mask: 0xff3ffc20, value: 0x650d3400, op: 176, args: 104},
+	{mask: 0xff3ffc20, value: 0x650d3400, op: 176, args: 104, reject: 1},
 	// FMAX  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <const>
-	{mask: 0xff3fe3c0, value: 0x651e8000, op: 185, args: 114},
+	{mask: 0xff3fe3c0, value: 0x651e8000, op: 185, args: 114, reject: 1},
 	// FMAXNM  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <const>
-	{mask: 0xff3fe3c0, value: 0x651c8000, op: 186, args: 114},
+	{mask: 0xff3fe3c0, value: 0x651c8000, op: 186, args: 114, reject: 1},
 	// FMIN  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <const>
-	{mask: 0xff3fe3c0, value: 0x651f8000, op: 197, args: 114},
+	{mask: 0xff3fe3c0, value: 0x651f8000, op: 197, args: 114, reject: 1},
 	// FMINNM  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <const>
-	{mask: 0xff3fe3c0, value: 0x651d8000, op: 198, args: 114},
+	{mask: 0xff3fe3c0, value: 0x651d8000, op: 198, args: 114, reject: 1},
 	// FMUL  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <const>
-	{mask: 0xff3fe3c0, value: 0x651a8000, op: 221, args: 120},
+	{mask: 0xff3fe3c0, value: 0x651a8000, op: 221, args: 120, reject: 1},
 	// FSUB  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <const>
-	{mask: 0xff3fe3c0, value: 0x65198000, op: 246, args: 78},
+	{mask: 0xff3fe3c0, value: 0x65198000, op: 246, args: 78, reject: 1},
 	// FSUBR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <const>
-	{mask: 0xff3fe3c0, value: 0x651b8000, op: 247, args: 78},
+	{mask: 0xff3fe3c0, value: 0x651b8000, op: 247, args: 78, reject: 1},
 	// INCP  <Xdn>, <Pm>.<T>
 	{mask: 0xff3ffe00, value: 0x252c8800, op: 253, args: 63},
 	// INCP  <Zdn>.<T>, <Pm>.<T>
-	{mask: 0xff3ffe00, value: 0x252c8000, op: 254, args: 64},
+	{mask: 0xff3ffe00, value: 0x252c8000, op: 254, args: 64, reject: 1},
 	// PEXT  <Pd>.<T>, <PNn>[<imm>]
 	{mask: 0xff3ffc10, value: 0x25207010, op: 371, args: 254},
 	// PMOV  <Pd>.S, <Zn>{[<imm>]}
@@ -2487,25 +2487,25 @@ var sveForms = []sveForm{
 	// SQDECP  <Xdn>, <Pm>.<T>
 	{mask: 0xff3ffe00, value: 0x252a8c00, op: 472, args: 63},
 	// SQDECP  <Zdn>.<T>, <Pm>.<T>
-	{mask: 0xff3ffe00, value: 0x252a8000, op: 473, args: 64},
+	{mask: 0xff3ffe00, value: 0x252a8000, op: 473, args: 64, reject: 1},
 	// SQINCP  <Xdn>, <Pm>.<T>, <Wdn>
 	{mask: 0xff3ffe00, value: 0x25288800, op: 483, args: 322},
 	// SQINCP  <Xdn>, <Pm>.<T>
 	{mask: 0xff3ffe00, value: 0x25288c00, op: 484, args: 63},
 	// SQINCP  <Zdn>.<T>, <Pm>.<T>
-	{mask: 0xff3ffe00, value: 0x25288000, op: 485, args: 64},
+	{mask: 0xff3ffe00, value: 0x25288000, op: 485, args: 64, reject: 1},
 	// UQDECP  <Wdn>, <Pm>.<T>
 	{mask: 0xff3ffe00, value: 0x252b8800, op: 622, args: 418},
 	// UQDECP  <Xdn>, <Pm>.<T>
 	{mask: 0xff3ffe00, value: 0x252b8c00, op: 623, args: 63},
 	// UQDECP  <Zdn>.<T>, <Pm>.<T>
-	{mask: 0xff3ffe00, value: 0x252b8000, op: 624, args: 64},
+	{mask: 0xff3ffe00, value: 0x252b8000, op: 624, args: 64, reject: 1},
 	// UQINCP  <Wdn>, <Pm>.<T>
 	{mask: 0xff3ffe00, value: 0x25298800, op: 625, args: 418},
 	// UQINCP  <Xdn>, <Pm>.<T>
 	{mask: 0xff3ffe00, value: 0x25298c00, op: 626, args: 63},
 	// UQINCP  <Zdn>.<T>, <Pm>.<T>
-	{mask: 0xff3ffe00, value: 0x25298000, op: 627, args: 64},
+	{mask: 0xff3ffe00, value: 0x25298000, op: 627, args: 64, reject: 1},
 	// BRKAS  <Pd>.B, <Pg>/Z, <Pn>.B
 	{mask: 0xffffc210, value: 0x25504000, op: 63, args: 38},
 	// BRKBS  <Pd>.B, <Pg>/Z, <Pn>.B
@@ -2517,11 +2517,11 @@ var sveForms = []sveForm{
 	// CNTP  <Xd>, <PNn>.<T>, <vl>
 	{mask: 0xff3ffa00, value: 0x25208200, op: 104, args: 54},
 	// FEXPA  <Zd>.<T>, <Zn>.<T>
-	{mask: 0xff3ffc00, value: 0x0420b800, op: 181, args: 110},
+	{mask: 0xff3ffc00, value: 0x0420b800, op: 181, args: 110, reject: 1},
 	// FRECPE  <Zd>.<T>, <Zn>.<T>
-	{mask: 0xff3ffc00, value: 0x650e3000, op: 228, args: 110},
+	{mask: 0xff3ffc00, value: 0x650e3000, op: 228, args: 110, reject: 1},
 	// FRSQRTE  <Zd>.<T>, <Zn>.<T>
-	{mask: 0xff3ffc00, value: 0x650f3000, op: 242, args: 110},
+	{mask: 0xff3ffc00, value: 0x650f3000, op: 242, args: 110, reject: 1},
 	// PMOV  <Pd>.D, <Zn>{[<imm>]}
 	{mask: 0xffb9fc10, value: 0x05a83800, op: 375, args: 259},
 	// PMOV  <Zd>{[<imm>]}, <Pn>.D
@@ -2529,27 +2529,27 @@ var sveForms = []sveForm{
 	// REV  <Zd>.<T>, <Zn>.<T>
 	{mask: 0xff3ffc00, value: 0x05383800, op: 401, args: 300},
 	// SCVTF  <Zd>.<T>, <Zn>.<Tb>
-	{mask: 0xff3ffc00, value: 0x650c3000, op: 427, args: 310},
+	{mask: 0xff3ffc00, value: 0x650c3000, op: 427, args: 310, reject: 1},
 	// SCVTFLT  <Zd>.<T>, <Zn>.<Tb>
-	{mask: 0xff3ffc00, value: 0x650c3800, op: 428, args: 310},
+	{mask: 0xff3ffc00, value: 0x650c3800, op: 428, args: 310, reject: 1},
 	// SQRSHRN  <Zd>.B, { <Zn1>.H-<Zn2>.H }, #<const>
 	{mask: 0xfff8fc20, value: 0x45a82800, op: 493, args: 323},
 	// SQRSHRUN  <Zd>.B, { <Zn1>.H-<Zn2>.H }, #<const>
 	{mask: 0xfff8fc20, value: 0x45a80800, op: 496, args: 323},
 	// SUNPKHI  <Zd>.<T>, <Zn>.<Tb>
-	{mask: 0xff3ffc00, value: 0x05313800, op: 562, args: 310},
+	{mask: 0xff3ffc00, value: 0x05313800, op: 562, args: 310, reject: 1},
 	// SUNPKLO  <Zd>.<T>, <Zn>.<Tb>
-	{mask: 0xff3ffc00, value: 0x05303800, op: 563, args: 310},
+	{mask: 0xff3ffc00, value: 0x05303800, op: 563, args: 310, reject: 1},
 	// UCVTF  <Zd>.<T>, <Zn>.<Tb>
-	{mask: 0xff3ffc00, value: 0x650c3400, op: 590, args: 310},
+	{mask: 0xff3ffc00, value: 0x650c3400, op: 590, args: 310, reject: 1},
 	// UCVTFLT  <Zd>.<T>, <Zn>.<Tb>
-	{mask: 0xff3ffc00, value: 0x650c3c00, op: 591, args: 310},
+	{mask: 0xff3ffc00, value: 0x650c3c00, op: 591, args: 310, reject: 1},
 	// UQRSHRN  <Zd>.B, { <Zn1>.H-<Zn2>.H }, #<const>
 	{mask: 0xfff8fc20, value: 0x45a83800, op: 630, args: 323},
 	// UUNPKHI  <Zd>.<T>, <Zn>.<Tb>
-	{mask: 0xff3ffc00, value: 0x05333800, op: 659, args: 310},
+	{mask: 0xff3ffc00, value: 0x05333800, op: 659, args: 310, reject: 1},
 	// UUNPKLO  <Zd>.<T>, <Zn>.<Tb>
-	{mask: 0xff3ffc00, value: 0x05323800, op: 660, args: 310},
+	{mask: 0xff3ffc00, value: 0x05323800, op: 660, args: 310, reject: 1},
 	// ADDPT  <Zdn>.D, <Pg>/M, <Zdn>.D, <Zm>.D
 	{mask: 0xffffe000, value: 0x04c40000, op: 8, args: 8},
 	// ANDV  <V><d>, <Pg>, <Zn>.<T>
@@ -2647,17 +2647,17 @@ var sveForms = []sveForm{
 	// EORV  <V><d>, <Pg>, <Zn>.<T>
 	{mask: 0xffffe000, value: 0x04d92000, op: 132, args: 20},
 	// FADDA  <V><dn>, <Pg>, <V><dn>, <Zm>.<T>
-	{mask: 0xffffe000, value: 0x65582000, op: 145, args: 80},
+	{mask: 0xffffe000, value: 0x65582000, op: 145, args: 80, reject: 1},
 	// FADDA  <V><dn>, <Pg>, <V><dn>, <Zm>.<T>
-	{mask: 0xffffe000, value: 0x65982000, op: 146, args: 80},
+	{mask: 0xffffe000, value: 0x65982000, op: 146, args: 80, reject: 1},
 	// FADDA  <V><dn>, <Pg>, <V><dn>, <Zm>.<T>
-	{mask: 0xffffe000, value: 0x65d82000, op: 147, args: 80},
+	{mask: 0xffffe000, value: 0x65d82000, op: 147, args: 80, reject: 1},
 	// FADDV  <V><d>, <Pg>, <Zn>.<T>
-	{mask: 0xffffe000, value: 0x65402000, op: 150, args: 82},
+	{mask: 0xffffe000, value: 0x65402000, op: 150, args: 82, reject: 1},
 	// FADDV  <V><d>, <Pg>, <Zn>.<T>
-	{mask: 0xffffe000, value: 0x65802000, op: 151, args: 82},
+	{mask: 0xffffe000, value: 0x65802000, op: 151, args: 82, reject: 1},
 	// FADDV  <V><d>, <Pg>, <Zn>.<T>
-	{mask: 0xffffe000, value: 0x65c02000, op: 152, args: 82},
+	{mask: 0xffffe000, value: 0x65c02000, op: 152, args: 82, reject: 1},
 	// FCVT  <Zd>.S, <Pg>/M, <Zn>.H
 	{mask: 0xffffe000, value: 0x6589a000, op: 166, args: 87},
 	// FCVT  <Zd>.S, <Pg>/Z, <Zn>.H
@@ -2763,29 +2763,29 @@ var sveForms = []sveForm{
 	// FCVTZU  <Zd>.D, <Pg>/Z, <Zn>.D
 	{mask: 0xffffe000, value: 0x64dfe000, op: 175, args: 103},
 	// FMAXNMV  <V><d>, <Pg>, <Zn>.<T>
-	{mask: 0xffffe000, value: 0x65442000, op: 189, args: 82},
+	{mask: 0xffffe000, value: 0x65442000, op: 189, args: 82, reject: 1},
 	// FMAXNMV  <V><d>, <Pg>, <Zn>.<T>
-	{mask: 0xffffe000, value: 0x65842000, op: 190, args: 82},
+	{mask: 0xffffe000, value: 0x65842000, op: 190, args: 82, reject: 1},
 	// FMAXNMV  <V><d>, <Pg>, <Zn>.<T>
-	{mask: 0xffffe000, value: 0x65c42000, op: 191, args: 82},
+	{mask: 0xffffe000, value: 0x65c42000, op: 191, args: 82, reject: 1},
 	// FMAXV  <V><d>, <Pg>, <Zn>.<T>
-	{mask: 0xffffe000, value: 0x65462000, op: 194, args: 82},
+	{mask: 0xffffe000, value: 0x65462000, op: 194, args: 82, reject: 1},
 	// FMAXV  <V><d>, <Pg>, <Zn>.<T>
-	{mask: 0xffffe000, value: 0x65862000, op: 195, args: 82},
+	{mask: 0xffffe000, value: 0x65862000, op: 195, args: 82, reject: 1},
 	// FMAXV  <V><d>, <Pg>, <Zn>.<T>
-	{mask: 0xffffe000, value: 0x65c62000, op: 196, args: 82},
+	{mask: 0xffffe000, value: 0x65c62000, op: 196, args: 82, reject: 1},
 	// FMINNMV  <V><d>, <Pg>, <Zn>.<T>
-	{mask: 0xffffe000, value: 0x65452000, op: 201, args: 82},
+	{mask: 0xffffe000, value: 0x65452000, op: 201, args: 82, reject: 1},
 	// FMINNMV  <V><d>, <Pg>, <Zn>.<T>
-	{mask: 0xffffe000, value: 0x65852000, op: 202, args: 82},
+	{mask: 0xffffe000, value: 0x65852000, op: 202, args: 82, reject: 1},
 	// FMINNMV  <V><d>, <Pg>, <Zn>.<T>
-	{mask: 0xffffe000, value: 0x65c52000, op: 203, args: 82},
+	{mask: 0xffffe000, value: 0x65c52000, op: 203, args: 82, reject: 1},
 	// FMINV  <V><d>, <Pg>, <Zn>.<T>
-	{mask: 0xffffe000, value: 0x65472000, op: 206, args: 82},
+	{mask: 0xffffe000, value: 0x65472000, op: 206, args: 82, reject: 1},
 	// FMINV  <V><d>, <Pg>, <Zn>.<T>
-	{mask: 0xffffe000, value: 0x65872000, op: 207, args: 82},
+	{mask: 0xffffe000, value: 0x65872000, op: 207, args: 82, reject: 1},
 	// FMINV  <V><d>, <Pg>, <Zn>.<T>
-	{mask: 0xffffe000, value: 0x65c72000, op: 208, args: 82},
+	{mask: 0xffffe000, value: 0x65c72000, op: 208, args: 82, reject: 1},
 	// LASTA  <V><d>, <Pg>, <Zn>.<T>
 	{mask: 0xffffe000, value: 0x05228000, op: 263, args: 20},
 	// LASTA  <V><d>, <Pg>, <Zn>.<T>
@@ -2827,9 +2827,9 @@ var sveForms = []sveForm{
 	// ORV  <V><d>, <Pg>, <Zn>.<T>
 	{mask: 0xffffe000, value: 0x04d82000, op: 370, args: 20},
 	// REVW  <Zd>.D, <Pg>/M, <Zn>.D
-	{mask: 0xffffe000, value: 0x05e68000, op: 404, args: 102},
+	{mask: 0xffffe000, value: 0x05e68000, op: 404, args: 102, reject: 2},
 	// REVW  <Zd>.D, <Pg>/Z, <Zn>.D
-	{mask: 0xffffe000, value: 0x05e6a000, op: 404, args: 103},
+	{mask: 0xffffe000, value: 0x05e6a000, op: 404, args: 103, reject: 2},
 	// REVD  <Zd>.Q, <Pg>/M, <Zn>.Q
 	{mask: 0xffffe000, value: 0x052e8000, op: 405, args: 303},
 	// REVD  <Zd>.Q, <Pg>/Z, <Zn>.Q
@@ -2885,19 +2885,19 @@ var sveForms = []sveForm{
 	// SQRSHRUN  <Zd>.H, { <Zn1>.S-<Zn2>.S }, #<const>
 	{mask: 0xfff0fc20, value: 0x45b00800, op: 496, args: 324},
 	// SQXTNB  <Zd>.<T>, <Zn>.<Tb>
-	{mask: 0xffa7fc00, value: 0x45204000, op: 510, args: 326},
+	{mask: 0xffa7fc00, value: 0x45204000, op: 510, args: 326, reject: 3},
 	// SQXTNT  <Zd>.<T>, <Zn>.<Tb>
-	{mask: 0xffa7fc00, value: 0x45204400, op: 511, args: 326},
+	{mask: 0xffa7fc00, value: 0x45204400, op: 511, args: 326, reject: 3},
 	// SQXTUNB  <Zd>.<T>, <Zn>.<Tb>
-	{mask: 0xffa7fc00, value: 0x45205000, op: 512, args: 326},
+	{mask: 0xffa7fc00, value: 0x45205000, op: 512, args: 326, reject: 3},
 	// SQXTUNT  <Zd>.<T>, <Zn>.<Tb>
-	{mask: 0xffa7fc00, value: 0x45205400, op: 513, args: 326},
+	{mask: 0xffa7fc00, value: 0x45205400, op: 513, args: 326, reject: 3},
 	// SUBPT  <Zdn>.D, <Pg>/M, <Zdn>.D, <Zm>.D
 	{mask: 0xffffe000, value: 0x04c50000, op: 559, args: 8},
 	// SXTW  <Zd>.D, <Pg>/M, <Zn>.D
-	{mask: 0xffffe000, value: 0x04d4a000, op: 567, args: 102},
+	{mask: 0xffffe000, value: 0x04d4a000, op: 567, args: 102, reject: 2},
 	// SXTW  <Zd>.D, <Pg>/Z, <Zn>.D
-	{mask: 0xffffe000, value: 0x04c4a000, op: 567, args: 103},
+	{mask: 0xffffe000, value: 0x04c4a000, op: 567, args: 103, reject: 2},
 	// UCVTF  <Zd>.H, <Pg>/M, <Zn>.H
 	{mask: 0xffffe000, value: 0x6553a000, op: 590, args: 98},
 	// UCVTF  <Zd>.H, <Pg>/Z, <Zn>.H
@@ -2945,21 +2945,21 @@ var sveForms = []sveForm{
 	// UQRSHRN  <Zd>.H, { <Zn1>.S-<Zn2>.S }, #<const>
 	{mask: 0xfff0fc20, value: 0x45b03800, op: 630, args: 324},
 	// UQXTNB  <Zd>.<T>, <Zn>.<Tb>
-	{mask: 0xffa7fc00, value: 0x45204800, op: 640, args: 326},
+	{mask: 0xffa7fc00, value: 0x45204800, op: 640, args: 326, reject: 3},
 	// UQXTNT  <Zd>.<T>, <Zn>.<Tb>
-	{mask: 0xffa7fc00, value: 0x45204c00, op: 641, args: 326},
+	{mask: 0xffa7fc00, value: 0x45204c00, op: 641, args: 326, reject: 3},
 	// URECPE  <Zd>.S, <Pg>/M, <Zn>.S
-	{mask: 0xffffe000, value: 0x4480a000, op: 642, args: 100},
+	{mask: 0xffffe000, value: 0x4480a000, op: 642, args: 100, reject: 4},
 	// URECPE  <Zd>.S, <Pg>/Z, <Zn>.S
-	{mask: 0xffffe000, value: 0x4482a000, op: 642, args: 101},
+	{mask: 0xffffe000, value: 0x4482a000, op: 642, args: 101, reject: 4},
 	// URSQRTE  <Zd>.S, <Pg>/M, <Zn>.S
-	{mask: 0xffffe000, value: 0x4481a000, op: 647, args: 100},
+	{mask: 0xffffe000, value: 0x4481a000, op: 647, args: 100, reject: 4},
 	// URSQRTE  <Zd>.S, <Pg>/Z, <Zn>.S
-	{mask: 0xffffe000, value: 0x4483a000, op: 647, args: 101},
+	{mask: 0xffffe000, value: 0x4483a000, op: 647, args: 101, reject: 4},
 	// UXTW  <Zd>.D, <Pg>/M, <Zn>.D
-	{mask: 0xffffe000, value: 0x04d5a000, op: 663, args: 102},
+	{mask: 0xffffe000, value: 0x04d5a000, op: 663, args: 102, reject: 2},
 	// UXTW  <Zd>.D, <Pg>/Z, <Zn>.D
-	{mask: 0xffffe000, value: 0x04c5a000, op: 663, args: 103},
+	{mask: 0xffffe000, value: 0x04c5a000, op: 663, args: 103, reject: 2},
 	// COMPACT  <Zd>.<T>, <Pg>, <Zn>.<T>
 	{mask: 0xffbfe000, value: 0x05218000, op: 105, args: 56},
 	// COMPACT  <Zd>.<T>, <Pg>, <Zn>.<T>
@@ -2967,17 +2967,17 @@ var sveForms = []sveForm{
 	// EXTQ  <Zdn>.B, <Zdn>.B, <Zm>.B, #<imm>
 	{mask: 0xfff0fc00, value: 0x05602400, op: 135, args: 73},
 	// FCMEQ  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, #0.0
-	{mask: 0xff3fe010, value: 0x65122000, op: 157, args: 84},
+	{mask: 0xff3fe010, value: 0x65122000, op: 157, args: 84, reject: 1},
 	// FCMGT  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, #0.0
-	{mask: 0xff3fe010, value: 0x65102010, op: 158, args: 84},
+	{mask: 0xff3fe010, value: 0x65102010, op: 158, args: 84, reject: 1},
 	// FCMGE  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, #0.0
-	{mask: 0xff3fe010, value: 0x65102000, op: 159, args: 84},
+	{mask: 0xff3fe010, value: 0x65102000, op: 159, args: 84, reject: 1},
 	// FCMLT  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, #0.0
-	{mask: 0xff3fe010, value: 0x65112000, op: 162, args: 84},
+	{mask: 0xff3fe010, value: 0x65112000, op: 162, args: 84, reject: 1},
 	// FCMLE  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, #0.0
-	{mask: 0xff3fe010, value: 0x65112010, op: 163, args: 84},
+	{mask: 0xff3fe010, value: 0x65112010, op: 163, args: 84, reject: 1},
 	// FCMNE  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, #0.0
-	{mask: 0xff3fe010, value: 0x65132000, op: 160, args: 84},
+	{mask: 0xff3fe010, value: 0x65132000, op: 160, args: 84, reject: 1},
 	// FRINT32X  <Zd>.<T>, <Pg>/M, <Zn>.<T>
 	{mask: 0xfffde000, value: 0x6511a000, op: 231, args: 121},
 	// FRINT32X  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
@@ -2999,35 +2999,35 @@ var sveForms = []sveForm{
 	// PMULL  { <Zd1>.Q-<Zd2>.Q }, <Zn>.D, <Zm>.D
 	{mask: 0xffe0fc01, value: 0x4520f800, op: 377, args: 257},
 	// REVH  <Zd>.<T>, <Pg>/M, <Zn>.<T>
-	{mask: 0xffbfe000, value: 0x05a58000, op: 403, args: 301},
+	{mask: 0xffbfe000, value: 0x05a58000, op: 403, args: 301, reject: 5},
 	// REVH  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
-	{mask: 0xffbfe000, value: 0x05a5a000, op: 403, args: 302},
+	{mask: 0xffbfe000, value: 0x05a5a000, op: 403, args: 302, reject: 5},
 	// SDIV  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
-	{mask: 0xffbfe000, value: 0x04940000, op: 429, args: 311},
+	{mask: 0xffbfe000, value: 0x04940000, op: 429, args: 311, reject: 5},
 	// SDIVR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
-	{mask: 0xffbfe000, value: 0x04960000, op: 430, args: 311},
+	{mask: 0xffbfe000, value: 0x04960000, op: 430, args: 311, reject: 5},
 	// SQSHRN  <Zd>.<T>, { <Zn1>.<Tb>-<Zn2>.<Tb> }, #<const>
-	{mask: 0xffe0fc20, value: 0x45a00000, op: 502, args: 325},
+	{mask: 0xffe0fc20, value: 0x45a00000, op: 502, args: 325, reject: 6},
 	// SQSHRUN  <Zd>.<T>, { <Zn1>.<Tb>-<Zn2>.<Tb> }, #<const>
-	{mask: 0xffe0fc20, value: 0x45a02000, op: 505, args: 325},
+	{mask: 0xffe0fc20, value: 0x45a02000, op: 505, args: 325, reject: 6},
 	// SXTH  <Zd>.<T>, <Pg>/M, <Zn>.<T>
-	{mask: 0xffbfe000, value: 0x0492a000, op: 566, args: 301},
+	{mask: 0xffbfe000, value: 0x0492a000, op: 566, args: 301, reject: 5},
 	// SXTH  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
-	{mask: 0xffbfe000, value: 0x0482a000, op: 566, args: 302},
+	{mask: 0xffbfe000, value: 0x0482a000, op: 566, args: 302, reject: 5},
 	// TRN1  <Pd>.<T>, <Pn>.<T>, <Pm>.<T>
 	{mask: 0xff30fe10, value: 0x05205000, op: 572, args: 414},
 	// TRN2  <Pd>.<T>, <Pn>.<T>, <Pm>.<T>
 	{mask: 0xff30fe10, value: 0x05205400, op: 573, args: 414},
 	// UDIV  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
-	{mask: 0xffbfe000, value: 0x04950000, op: 592, args: 311},
+	{mask: 0xffbfe000, value: 0x04950000, op: 592, args: 311, reject: 5},
 	// UDIVR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
-	{mask: 0xffbfe000, value: 0x04970000, op: 593, args: 311},
+	{mask: 0xffbfe000, value: 0x04970000, op: 593, args: 311, reject: 5},
 	// UQSHRN  <Zd>.<T>, { <Zn1>.<Tb>-<Zn2>.<Tb> }, #<const>
-	{mask: 0xffe0fc20, value: 0x45a01000, op: 635, args: 325},
+	{mask: 0xffe0fc20, value: 0x45a01000, op: 635, args: 325, reject: 6},
 	// UXTH  <Zd>.<T>, <Pg>/M, <Zn>.<T>
-	{mask: 0xffbfe000, value: 0x0493a000, op: 662, args: 301},
+	{mask: 0xffbfe000, value: 0x0493a000, op: 662, args: 301, reject: 5},
 	// UXTH  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
-	{mask: 0xffbfe000, value: 0x0483a000, op: 662, args: 302},
+	{mask: 0xffbfe000, value: 0x0483a000, op: 662, args: 302, reject: 5},
 	// UZP1  <Pd>.<T>, <Pn>.<T>, <Pm>.<T>
 	{mask: 0xff30fe10, value: 0x05204800, op: 664, args: 414},
 	// UZP2  <Pd>.<T>, <Pn>.<T>, <Pm>.<T>
@@ -3055,13 +3055,13 @@ var sveForms = []sveForm{
 	// ANDQV  <Vd>.<T>, <Pg>, <Zn>.<Tb>
 	{mask: 0xff3fe000, value: 0x041e2000, op: 22, args: 10},
 	// ASR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, #<const>
-	{mask: 0xff3fe000, value: 0x04008000, op: 28, args: 21},
+	{mask: 0xff3fe000, value: 0x04008000, op: 28, args: 21, reject: 7},
 	// ASR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x04108000, op: 28, args: 4},
 	// ASR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.D
-	{mask: 0xff3fe000, value: 0x04188000, op: 28, args: 23},
+	{mask: 0xff3fe000, value: 0x04188000, op: 28, args: 23, reject: 8},
 	// ASRD  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, #<const>
-	{mask: 0xff3fe000, value: 0x04048000, op: 29, args: 21},
+	{mask: 0xff3fe000, value: 0x04048000, op: 29, args: 21, reject: 7},
 	// ASRR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x04148000, op: 30, args: 4},
 	// BCAX  <Zdn>.D, <Zdn>.D, <Zm>.D, <Zk>.D
@@ -3123,7 +3123,7 @@ var sveForms = []sveForm{
 	// CNTP  <Xd>, <Pg>, <Pn>.<T>
 	{mask: 0xff3fc200, value: 0x25208000, op: 104, args: 55},
 	// DUPQ  <Zd>.<T>, <Zn>.<T>[<imm>]
-	{mask: 0xffe0fc00, value: 0x05202400, op: 121, args: 69},
+	{mask: 0xffe0fc00, value: 0x05202400, op: 121, args: 69, reject: 9},
 	// EOR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x04190000, op: 122, args: 4},
 	// EOR  <Zd>.D, <Zn>.D, <Zm>.D
@@ -3135,25 +3135,25 @@ var sveForms = []sveForm{
 	// EXPAND  <Zd>.<T>, <Pg>, <Zn>.<T>
 	{mask: 0xff3fe000, value: 0x05318000, op: 133, args: 70},
 	// FABD  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
-	{mask: 0xff3fe000, value: 0x65088000, op: 140, args: 74},
+	{mask: 0xff3fe000, value: 0x65088000, op: 140, args: 74, reject: 1},
 	// FABS  <Zd>.<T>, <Pg>/M, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x041ca000, op: 141, args: 75},
+	{mask: 0xff3fe000, value: 0x041ca000, op: 141, args: 75, reject: 1},
 	// FABS  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x040ca000, op: 141, args: 76},
+	{mask: 0xff3fe000, value: 0x040ca000, op: 141, args: 76, reject: 1},
 	// FADD  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x65008000, op: 144, args: 74},
 	// FADDP  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
-	{mask: 0xff3fe000, value: 0x64108000, op: 148, args: 74},
+	{mask: 0xff3fe000, value: 0x64108000, op: 148, args: 74, reject: 1},
 	// FADDQV  <Vd>.<T>, <Pg>, <Zn>.<Tb>
-	{mask: 0xff3fe000, value: 0x6410a000, op: 149, args: 81},
+	{mask: 0xff3fe000, value: 0x6410a000, op: 149, args: 81, reject: 1},
 	// FAMAX  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
-	{mask: 0xff3fe000, value: 0x650e8000, op: 153, args: 74},
+	{mask: 0xff3fe000, value: 0x650e8000, op: 153, args: 74, reject: 1},
 	// FAMIN  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
-	{mask: 0xff3fe000, value: 0x650f8000, op: 154, args: 74},
+	{mask: 0xff3fe000, value: 0x650f8000, op: 154, args: 74, reject: 1},
 	// FDIV  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
-	{mask: 0xff3fe000, value: 0x650d8000, op: 177, args: 74},
+	{mask: 0xff3fe000, value: 0x650d8000, op: 177, args: 74, reject: 1},
 	// FDIVR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
-	{mask: 0xff3fe000, value: 0x650c8000, op: 178, args: 74},
+	{mask: 0xff3fe000, value: 0x650c8000, op: 178, args: 74, reject: 1},
 	// FDOT  <Zda>.S, <Zn>.H, <Zm>.H[<imm>]
 	{mask: 0xffe0fc00, value: 0x64204000, op: 179, args: 32},
 	// FDOT  <Zda>.S, <Zn>.H, <Zm>.H
@@ -3165,37 +3165,37 @@ var sveForms = []sveForm{
 	// FDOT  <Zda>.S, <Zn>.B, <Zm>.B
 	{mask: 0xffe0fc00, value: 0x64608400, op: 179, args: 108},
 	// FDUP  <Zd>.<T>, #<const>
-	{mask: 0xff3fe000, value: 0x2539c000, op: 180, args: 109},
+	{mask: 0xff3fe000, value: 0x2539c000, op: 180, args: 109, reject: 1},
 	// FIRSTP  <Xd>, <Pg>, <Pn>.<T>
 	{mask: 0xff3fc200, value: 0x25218000, op: 182, args: 55},
 	// FLOGB  <Zd>.<T>, <Pg>/M, <Zn>.<T>
-	{mask: 0xfff9e000, value: 0x6518a000, op: 183, args: 111},
+	{mask: 0xfff9e000, value: 0x6518a000, op: 183, args: 111, reject: 10},
 	// FLOGB  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
-	{mask: 0xffff8000, value: 0x641e8000, op: 183, args: 112},
+	{mask: 0xffff8000, value: 0x641e8000, op: 183, args: 112, reject: 11},
 	// FMAX  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x65068000, op: 185, args: 74},
 	// FMAXNM  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x65048000, op: 186, args: 74},
 	// FMAXNMP  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
-	{mask: 0xff3fe000, value: 0x64148000, op: 187, args: 74},
+	{mask: 0xff3fe000, value: 0x64148000, op: 187, args: 74, reject: 1},
 	// FMAXNMQV  <Vd>.<T>, <Pg>, <Zn>.<Tb>
-	{mask: 0xff3fe000, value: 0x6414a000, op: 188, args: 81},
+	{mask: 0xff3fe000, value: 0x6414a000, op: 188, args: 81, reject: 1},
 	// FMAXP  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
-	{mask: 0xff3fe000, value: 0x64168000, op: 192, args: 74},
+	{mask: 0xff3fe000, value: 0x64168000, op: 192, args: 74, reject: 1},
 	// FMAXQV  <Vd>.<T>, <Pg>, <Zn>.<Tb>
-	{mask: 0xff3fe000, value: 0x6416a000, op: 193, args: 81},
+	{mask: 0xff3fe000, value: 0x6416a000, op: 193, args: 81, reject: 1},
 	// FMIN  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x65078000, op: 197, args: 74},
 	// FMINNM  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x65058000, op: 198, args: 74},
 	// FMINNMP  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
-	{mask: 0xff3fe000, value: 0x64158000, op: 199, args: 74},
+	{mask: 0xff3fe000, value: 0x64158000, op: 199, args: 74, reject: 1},
 	// FMINNMQV  <Vd>.<T>, <Pg>, <Zn>.<Tb>
-	{mask: 0xff3fe000, value: 0x6415a000, op: 200, args: 81},
+	{mask: 0xff3fe000, value: 0x6415a000, op: 200, args: 81, reject: 1},
 	// FMINP  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
-	{mask: 0xff3fe000, value: 0x64178000, op: 204, args: 74},
+	{mask: 0xff3fe000, value: 0x64178000, op: 204, args: 74, reject: 1},
 	// FMINQV  <Vd>.<T>, <Pg>, <Zn>.<Tb>
-	{mask: 0xff3fe000, value: 0x6417a000, op: 205, args: 81},
+	{mask: 0xff3fe000, value: 0x6417a000, op: 205, args: 81, reject: 1},
 	// FMLA  <Zda>.S, <Zn>.S, <Zm>.S[<imm>]
 	{mask: 0xffe0fc00, value: 0x64a00000, op: 209, args: 115},
 	// FMLA  <Zda>.D, <Zn>.D, <Zm>.D[<imm>]
@@ -3243,55 +3243,55 @@ var sveForms = []sveForm{
 	// FMUL  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x65028000, op: 221, args: 74},
 	// FMULX  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
-	{mask: 0xff3fe000, value: 0x650a8000, op: 222, args: 74},
+	{mask: 0xff3fe000, value: 0x650a8000, op: 222, args: 74, reject: 1},
 	// FNEG  <Zd>.<T>, <Pg>/M, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x041da000, op: 223, args: 75},
+	{mask: 0xff3fe000, value: 0x041da000, op: 223, args: 75, reject: 1},
 	// FNEG  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x040da000, op: 223, args: 76},
+	{mask: 0xff3fe000, value: 0x040da000, op: 223, args: 76, reject: 1},
 	// FRECPX  <Zd>.<T>, <Pg>/M, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x650ca000, op: 230, args: 75},
+	{mask: 0xff3fe000, value: 0x650ca000, op: 230, args: 75, reject: 1},
 	// FRECPX  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x641b8000, op: 230, args: 76},
+	{mask: 0xff3fe000, value: 0x641b8000, op: 230, args: 76, reject: 1},
 	// FRINTX  <Zd>.<T>, <Pg>/M, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x6506a000, op: 235, args: 75},
+	{mask: 0xff3fe000, value: 0x6506a000, op: 235, args: 75, reject: 1},
 	// FRINTX  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x6419c000, op: 235, args: 76},
+	{mask: 0xff3fe000, value: 0x6419c000, op: 235, args: 76, reject: 1},
 	// FRINTI  <Zd>.<T>, <Pg>/M, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x6507a000, op: 236, args: 75},
+	{mask: 0xff3fe000, value: 0x6507a000, op: 236, args: 75, reject: 1},
 	// FRINTI  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x6419e000, op: 236, args: 76},
+	{mask: 0xff3fe000, value: 0x6419e000, op: 236, args: 76, reject: 1},
 	// FRINTA  <Zd>.<T>, <Pg>/M, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x6504a000, op: 237, args: 75},
+	{mask: 0xff3fe000, value: 0x6504a000, op: 237, args: 75, reject: 1},
 	// FRINTA  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x64198000, op: 237, args: 76},
+	{mask: 0xff3fe000, value: 0x64198000, op: 237, args: 76, reject: 1},
 	// FRINTN  <Zd>.<T>, <Pg>/M, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x6500a000, op: 238, args: 75},
+	{mask: 0xff3fe000, value: 0x6500a000, op: 238, args: 75, reject: 1},
 	// FRINTN  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x64188000, op: 238, args: 76},
+	{mask: 0xff3fe000, value: 0x64188000, op: 238, args: 76, reject: 1},
 	// FRINTZ  <Zd>.<T>, <Pg>/M, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x6503a000, op: 239, args: 75},
+	{mask: 0xff3fe000, value: 0x6503a000, op: 239, args: 75, reject: 1},
 	// FRINTZ  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x6418e000, op: 239, args: 76},
+	{mask: 0xff3fe000, value: 0x6418e000, op: 239, args: 76, reject: 1},
 	// FRINTM  <Zd>.<T>, <Pg>/M, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x6502a000, op: 240, args: 75},
+	{mask: 0xff3fe000, value: 0x6502a000, op: 240, args: 75, reject: 1},
 	// FRINTM  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x6418c000, op: 240, args: 76},
+	{mask: 0xff3fe000, value: 0x6418c000, op: 240, args: 76, reject: 1},
 	// FRINTP  <Zd>.<T>, <Pg>/M, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x6501a000, op: 241, args: 75},
+	{mask: 0xff3fe000, value: 0x6501a000, op: 241, args: 75, reject: 1},
 	// FRINTP  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x6418a000, op: 241, args: 76},
+	{mask: 0xff3fe000, value: 0x6418a000, op: 241, args: 76, reject: 1},
 	// FSCALE  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x65098000, op: 244, args: 74},
 	// FSQRT  <Zd>.<T>, <Pg>/M, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x650da000, op: 245, args: 75},
+	{mask: 0xff3fe000, value: 0x650da000, op: 245, args: 75, reject: 1},
 	// FSQRT  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x641ba000, op: 245, args: 76},
+	{mask: 0xff3fe000, value: 0x641ba000, op: 245, args: 76, reject: 1},
 	// FSUB  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x65018000, op: 246, args: 74},
 	// FSUBR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
-	{mask: 0xff3fe000, value: 0x65038000, op: 247, args: 74},
+	{mask: 0xff3fe000, value: 0x65038000, op: 247, args: 74, reject: 1},
 	// FTMAD  <Zdn>.<T>, <Zdn>.<T>, <Zm>.<T>, #<imm>
-	{mask: 0xff38fc00, value: 0x65108000, op: 248, args: 123},
+	{mask: 0xff38fc00, value: 0x65108000, op: 248, args: 123, reject: 1},
 	// INDEX  <Zd>.<T>, #<imm>, <R><m>
 	{mask: 0xffe0fc00, value: 0x04204800, op: 255, args: 126},
 	// INDEX  <Zd>.<T>, #<imm>, <R><m>
@@ -3335,19 +3335,19 @@ var sveForms = []sveForm{
 	// LDNT1W  { <Zt1>.S-<Zt4>.S }, <PNg>/Z, [<Xn|SP>{, #<imm>, MUL VL}]
 	{mask: 0xfff0e003, value: 0xa040c001, op: 334, args: 197},
 	// LSL  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, #<const>
-	{mask: 0xff3fe000, value: 0x04038000, op: 337, args: 237},
+	{mask: 0xff3fe000, value: 0x04038000, op: 337, args: 237, reject: 7},
 	// LSL  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x04138000, op: 337, args: 4},
 	// LSL  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.D
-	{mask: 0xff3fe000, value: 0x041b8000, op: 337, args: 23},
+	{mask: 0xff3fe000, value: 0x041b8000, op: 337, args: 23, reject: 8},
 	// LSLR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x04178000, op: 338, args: 4},
 	// LSR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, #<const>
-	{mask: 0xff3fe000, value: 0x04018000, op: 339, args: 21},
+	{mask: 0xff3fe000, value: 0x04018000, op: 339, args: 21, reject: 7},
 	// LSR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x04118000, op: 339, args: 4},
 	// LSR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.D
-	{mask: 0xff3fe000, value: 0x04198000, op: 339, args: 23},
+	{mask: 0xff3fe000, value: 0x04198000, op: 339, args: 23, reject: 8},
 	// LSRR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x04158000, op: 340, args: 4},
 	// LUTI6  <Zd>.B, { <Zn1>.B, <Zn2>.B }, <Zm>
@@ -3401,15 +3401,15 @@ var sveForms = []sveForm{
 	// RBIT  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
 	{mask: 0xff3fe000, value: 0x0527a000, op: 396, args: 1},
 	// REVB  <Zd>.<T>, <Pg>/M, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x05248000, op: 402, args: 75},
+	{mask: 0xff3fe000, value: 0x05248000, op: 402, args: 75, reject: 1},
 	// REVB  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x0524a000, op: 402, args: 76},
+	{mask: 0xff3fe000, value: 0x0524a000, op: 402, args: 76, reject: 1},
 	// SABD  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x040c0000, op: 414, args: 4},
 	// SADALP  <Zda>.<T>, <Pg>/M, <Zn>.<Tb>
-	{mask: 0xff3fe000, value: 0x4404a000, op: 417, args: 307},
+	{mask: 0xff3fe000, value: 0x4404a000, op: 417, args: 307, reject: 1},
 	// SADDV  <Dd>, <Pg>, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x04002000, op: 421, args: 308},
+	{mask: 0xff3fe000, value: 0x04002000, op: 421, args: 308, reject: 8},
 	// SDOT  <Zda>.S, <Zn>.H, <Zm>.H[<imm>]
 	{mask: 0xffe0fc00, value: 0x4480c800, op: 431, args: 32},
 	// SDOT  <Zda>.H, <Zn>.B, <Zm>.B
@@ -3483,13 +3483,13 @@ var sveForms = []sveForm{
 	// SQRSHLR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x440e8000, op: 492, args: 4},
 	// SQSHL  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, #<const>
-	{mask: 0xff3fe000, value: 0x04068000, op: 499, args: 237},
+	{mask: 0xff3fe000, value: 0x04068000, op: 499, args: 237, reject: 7},
 	// SQSHL  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x44088000, op: 499, args: 4},
 	// SQSHLR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x440c8000, op: 500, args: 4},
 	// SQSHLU  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, #<const>
-	{mask: 0xff3fe000, value: 0x040f8000, op: 501, args: 237},
+	{mask: 0xff3fe000, value: 0x040f8000, op: 501, args: 237, reject: 7},
 	// SQSUB  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x441a8000, op: 508, args: 4},
 	// SQSUBR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
@@ -3501,7 +3501,7 @@ var sveForms = []sveForm{
 	// SRSHLR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x44068000, op: 517, args: 4},
 	// SRSHR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, #<const>
-	{mask: 0xff3fe000, value: 0x040c8000, op: 518, args: 21},
+	{mask: 0xff3fe000, value: 0x040c8000, op: 518, args: 21, reject: 7},
 	// ST1B  { <Zt1>.B-<Zt4>.B }, <PNg>, [<Xn|SP>{, #<imm>, MUL VL}]
 	{mask: 0xfff0e003, value: 0xa0608000, op: 529, args: 329},
 	// ST1D  { <Zt1>.D-<Zt4>.D }, <PNg>, [<Xn|SP>{, #<imm>, MUL VL}]
@@ -3531,9 +3531,9 @@ var sveForms = []sveForm{
 	// SUQADD  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x441c8000, op: 564, args: 4},
 	// SXTB  <Zd>.<T>, <Pg>/M, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x0410a000, op: 565, args: 75},
+	{mask: 0xff3fe000, value: 0x0410a000, op: 565, args: 75, reject: 1},
 	// SXTB  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x0400a000, op: 565, args: 76},
+	{mask: 0xff3fe000, value: 0x0400a000, op: 565, args: 76, reject: 1},
 	// TRN1  <Zd>.Q, <Zn>.Q, <Zm>.Q
 	{mask: 0xffe0fc00, value: 0x05a01800, op: 574, args: 415},
 	// TRN2  <Zd>.Q, <Zn>.Q, <Zm>.Q
@@ -3541,7 +3541,7 @@ var sveForms = []sveForm{
 	// UABD  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x040d0000, op: 580, args: 4},
 	// UADALP  <Zda>.<T>, <Pg>/M, <Zn>.<Tb>
-	{mask: 0xff3fe000, value: 0x4405a000, op: 583, args: 307},
+	{mask: 0xff3fe000, value: 0x4405a000, op: 583, args: 307, reject: 1},
 	// UADDV  <Dd>, <Pg>, <Zn>.<T>
 	{mask: 0xff3fe000, value: 0x04012000, op: 586, args: 416},
 	// UDOT  <Zda>.S, <Zn>.H, <Zm>.H[<imm>]
@@ -3587,7 +3587,7 @@ var sveForms = []sveForm{
 	// UQRSHLR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x440f8000, op: 629, args: 4},
 	// UQSHL  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, #<const>
-	{mask: 0xff3fe000, value: 0x04078000, op: 633, args: 237},
+	{mask: 0xff3fe000, value: 0x04078000, op: 633, args: 237, reject: 7},
 	// UQSHL  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x44098000, op: 633, args: 4},
 	// UQSHLR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
@@ -3603,7 +3603,7 @@ var sveForms = []sveForm{
 	// URSHLR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x44078000, op: 645, args: 4},
 	// URSHR  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, #<const>
-	{mask: 0xff3fe000, value: 0x040d8000, op: 646, args: 21},
+	{mask: 0xff3fe000, value: 0x040d8000, op: 646, args: 21, reject: 7},
 	// USDOT  <Zda>.S, <Zn>.B, <Zm>.B[<imm>]
 	{mask: 0xffe0fc00, value: 0x44a01800, op: 649, args: 107},
 	// USDOT  <Zda>.S, <Zn>.B, <Zm>.B
@@ -3613,9 +3613,9 @@ var sveForms = []sveForm{
 	// USQADD  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>
 	{mask: 0xff3fe000, value: 0x441d8000, op: 653, args: 4},
 	// UXTB  <Zd>.<T>, <Pg>/M, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x0411a000, op: 661, args: 75},
+	{mask: 0xff3fe000, value: 0x0411a000, op: 661, args: 75, reject: 1},
 	// UXTB  <Zd>.<T>, <Pg>/Z, <Zn>.<T>
-	{mask: 0xff3fe000, value: 0x0401a000, op: 661, args: 76},
+	{mask: 0xff3fe000, value: 0x0401a000, op: 661, args: 76, reject: 1},
 	// UZP1  <Zd>.Q, <Zn>.Q, <Zm>.Q
 	{mask: 0xffe0fc00, value: 0x05a00800, op: 666, args: 415},
 	// UZP2  <Zd>.Q, <Zn>.Q, <Zm>.Q
@@ -3645,7 +3645,7 @@ var sveForms = []sveForm{
 	// ADCLT  <Zda>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xffa0fc00, value: 0x4500d400, op: 2, args: 2},
 	// ADD  <Zdn>.<T>, <Zdn>.<T>, #<imm>{, <shift>}
-	{mask: 0xff3fc000, value: 0x2520c000, op: 3, args: 3},
+	{mask: 0xff3fc000, value: 0x2520c000, op: 3, args: 3, reject: 12},
 	// ADDPL  <Xd|SP>, <Xn|SP>, #<imm>
 	{mask: 0xffe0f800, value: 0x04605000, op: 7, args: 7},
 	// ADDVL  <Xd|SP>, <Xn|SP>, #<imm>
@@ -3681,13 +3681,13 @@ var sveForms = []sveForm{
 	// BRKPBS  <Pd>.B, <Pg>/Z, <Pn>.B, <Pm>.B
 	{mask: 0xfff0c210, value: 0x2540c010, op: 71, args: 19},
 	// DUP  <Zd>.<T>, #<imm>{, <shift>}
-	{mask: 0xff3fc000, value: 0x2538c000, op: 118, args: 65},
+	{mask: 0xff3fc000, value: 0x2538c000, op: 118, args: 65, reject: 12},
 	// EOR  <Pd>.B, <Pg>/Z, <Pn>.B, <Pm>.B
 	{mask: 0xfff0c210, value: 0x25004200, op: 123, args: 19},
 	// EORS  <Pd>.B, <Pg>/Z, <Pn>.B, <Pm>.B
 	{mask: 0xfff0c210, value: 0x25404200, op: 127, args: 19},
 	// FCADD  <Zdn>.<T>, <Pg>/M, <Zdn>.<T>, <Zm>.<T>, <const>
-	{mask: 0xff3ee000, value: 0x64008000, op: 155, args: 83},
+	{mask: 0xff3ee000, value: 0x64008000, op: 155, args: 83, reject: 1},
 	// FDOT  <Zda>.H, <Zn>.B, <Zm>.B[<imm>]
 	{mask: 0xffe0f400, value: 0x64204400, op: 179, args: 105},
 	// FMLA  <Zda>.H, <Zn>.H, <Zm>.H[<imm>]
@@ -3765,9 +3765,9 @@ var sveForms = []sveForm{
 	// ORRS  <Pd>.B, <Pg>/Z, <Pn>.B, <Pm>.B
 	{mask: 0xfff0c210, value: 0x25c04000, op: 366, args: 19},
 	// RSHRNB  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x45201800, op: 406, args: 305},
+	{mask: 0xffa0fc00, value: 0x45201800, op: 406, args: 305, reject: 13},
 	// RSHRNT  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x45201c00, op: 407, args: 305},
+	{mask: 0xffa0fc00, value: 0x45201c00, op: 407, args: 305, reject: 13},
 	// SBCLB  <Zda>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xffa0fc00, value: 0x4580d000, op: 424, args: 2},
 	// SBCLT  <Zda>.<T>, <Zn>.<T>, <Zm>.<T>
@@ -3779,9 +3779,9 @@ var sveForms = []sveForm{
 	// SEL  <Pd>.B, <Pg>, <Pn>.B, <Pm>.B
 	{mask: 0xfff0c210, value: 0x25004210, op: 432, args: 315},
 	// SHRNB  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x45201000, op: 436, args: 305},
+	{mask: 0xffa0fc00, value: 0x45201000, op: 436, args: 305, reject: 13},
 	// SHRNT  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x45201400, op: 437, args: 305},
+	{mask: 0xffa0fc00, value: 0x45201400, op: 437, args: 305, reject: 13},
 	// SMLALB  <Zda>.S, <Zn>.H, <Zm>.H[<imm>]
 	{mask: 0xffe0f400, value: 0x44a08000, op: 457, args: 36},
 	// SMLALB  <Zda>.D, <Zn>.S, <Zm>.S[<imm>]
@@ -3807,7 +3807,7 @@ var sveForms = []sveForm{
 	// SMULLT  <Zd>.D, <Zn>.S, <Zm>.S[<imm>]
 	{mask: 0xffe0f400, value: 0x44e0c400, op: 464, args: 319},
 	// SQADD  <Zdn>.<T>, <Zdn>.<T>, #<imm>{, <shift>}
-	{mask: 0xff3fc000, value: 0x2524c000, op: 467, args: 3},
+	{mask: 0xff3fc000, value: 0x2524c000, op: 467, args: 3, reject: 12},
 	// SQDMLALB  <Zda>.S, <Zn>.H, <Zm>.H[<imm>]
 	{mask: 0xffe0f400, value: 0x44a02000, op: 474, args: 36},
 	// SQDMLALB  <Zda>.D, <Zn>.S, <Zm>.S[<imm>]
@@ -3841,27 +3841,27 @@ var sveForms = []sveForm{
 	// SQRDMULH  <Zd>.H, <Zn>.H, <Zm>.H[<imm>]
 	{mask: 0xffa0fc00, value: 0x4420f400, op: 490, args: 34},
 	// SQRSHRNB  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x45202800, op: 494, args: 305},
+	{mask: 0xffa0fc00, value: 0x45202800, op: 494, args: 305, reject: 13},
 	// SQRSHRNT  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x45202c00, op: 495, args: 305},
+	{mask: 0xffa0fc00, value: 0x45202c00, op: 495, args: 305, reject: 13},
 	// SQRSHRUNB  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x45200800, op: 497, args: 305},
+	{mask: 0xffa0fc00, value: 0x45200800, op: 497, args: 305, reject: 13},
 	// SQRSHRUNT  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x45200c00, op: 498, args: 305},
+	{mask: 0xffa0fc00, value: 0x45200c00, op: 498, args: 305, reject: 13},
 	// SQSHRNB  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x45202000, op: 503, args: 305},
+	{mask: 0xffa0fc00, value: 0x45202000, op: 503, args: 305, reject: 13},
 	// SQSHRNT  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x45202400, op: 504, args: 305},
+	{mask: 0xffa0fc00, value: 0x45202400, op: 504, args: 305, reject: 13},
 	// SQSHRUNB  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x45200000, op: 506, args: 305},
+	{mask: 0xffa0fc00, value: 0x45200000, op: 506, args: 305, reject: 13},
 	// SQSHRUNT  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x45200400, op: 507, args: 305},
+	{mask: 0xffa0fc00, value: 0x45200400, op: 507, args: 305, reject: 13},
 	// SQSUB  <Zdn>.<T>, <Zdn>.<T>, #<imm>{, <shift>}
-	{mask: 0xff3fc000, value: 0x2526c000, op: 508, args: 3},
+	{mask: 0xff3fc000, value: 0x2526c000, op: 508, args: 3, reject: 12},
 	// SSHLLB  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x4500a000, op: 520, args: 327},
+	{mask: 0xffa0fc00, value: 0x4500a000, op: 520, args: 327, reject: 13},
 	// SSHLLT  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x4500a400, op: 521, args: 327},
+	{mask: 0xffa0fc00, value: 0x4500a400, op: 521, args: 327, reject: 13},
 	// ST1B  { <Zt1>.B-<Zt2>.B }, <PNg>, [<Xn|SP>{, #<imm>, MUL VL}]
 	{mask: 0xfff0e001, value: 0xa0600000, op: 529, args: 328},
 	// ST1B  { <Zt1>.B-<Zt4>.B }, <PNg>, [<Xn|SP>, <Xm>]
@@ -3895,9 +3895,9 @@ var sveForms = []sveForm{
 	// STNT1W  { <Zt1>.S-<Zt4>.S }, <PNg>, [<Xn|SP>, <Xm>, LSL #2]
 	{mask: 0xffe0e003, value: 0xa020c001, op: 552, args: 366},
 	// SUB  <Zdn>.<T>, <Zdn>.<T>, #<imm>{, <shift>}
-	{mask: 0xff3fc000, value: 0x2521c000, op: 555, args: 3},
+	{mask: 0xff3fc000, value: 0x2521c000, op: 555, args: 3, reject: 12},
 	// SUBR  <Zdn>.<T>, <Zdn>.<T>, #<imm>{, <shift>}
-	{mask: 0xff3fc000, value: 0x2523c000, op: 560, args: 3},
+	{mask: 0xff3fc000, value: 0x2523c000, op: 560, args: 3, reject: 12},
 	// UDOT  <Zda>.H, <Zn>.B, <Zm>.B[<imm>]
 	{mask: 0xffa0fc00, value: 0x44200400, op: 594, args: 312},
 	// UDOT  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
@@ -3927,21 +3927,21 @@ var sveForms = []sveForm{
 	// UMULLT  <Zd>.D, <Zn>.S, <Zm>.S[<imm>]
 	{mask: 0xffe0f400, value: 0x44e0d400, op: 619, args: 319},
 	// UQADD  <Zdn>.<T>, <Zdn>.<T>, #<imm>{, <shift>}
-	{mask: 0xff3fc000, value: 0x2525c000, op: 620, args: 3},
+	{mask: 0xff3fc000, value: 0x2525c000, op: 620, args: 3, reject: 12},
 	// UQRSHRNB  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x45203800, op: 631, args: 305},
+	{mask: 0xffa0fc00, value: 0x45203800, op: 631, args: 305, reject: 13},
 	// UQRSHRNT  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x45203c00, op: 632, args: 305},
+	{mask: 0xffa0fc00, value: 0x45203c00, op: 632, args: 305, reject: 13},
 	// UQSHRNB  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x45203000, op: 636, args: 305},
+	{mask: 0xffa0fc00, value: 0x45203000, op: 636, args: 305, reject: 13},
 	// UQSHRNT  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x45203400, op: 637, args: 305},
+	{mask: 0xffa0fc00, value: 0x45203400, op: 637, args: 305, reject: 13},
 	// UQSUB  <Zdn>.<T>, <Zdn>.<T>, #<imm>{, <shift>}
-	{mask: 0xff3fc000, value: 0x2527c000, op: 638, args: 3},
+	{mask: 0xff3fc000, value: 0x2527c000, op: 638, args: 3, reject: 12},
 	// USHLLB  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x4500a800, op: 650, args: 327},
+	{mask: 0xffa0fc00, value: 0x4500a800, op: 650, args: 327, reject: 13},
 	// USHLLT  <Zd>.<T>, <Zn>.<Tb>, #<const>
-	{mask: 0xffa0fc00, value: 0x4500ac00, op: 651, args: 327},
+	{mask: 0xffa0fc00, value: 0x4500ac00, op: 651, args: 327, reject: 13},
 	// WHILEGE  <PNd>.<T>, <Xn>, <Xm>, <vl>
 	{mask: 0xff20dc18, value: 0x25204010, op: 670, args: 419},
 	// WHILEGE  <Pd>.<T>, <R><n>, <R><m>
@@ -3997,9 +3997,9 @@ var sveForms = []sveForm{
 	// ADD  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x04200000, op: 3, args: 5},
 	// ADDHNB  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45206000, op: 4, args: 6},
+	{mask: 0xff20fc00, value: 0x45206000, op: 4, args: 6, reject: 1},
 	// ADDHNT  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45206400, op: 5, args: 6},
+	{mask: 0xff20fc00, value: 0x45206400, op: 5, args: 6, reject: 1},
 	// ADDQP  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x04207800, op: 9, args: 5},
 	// ADDSUBP  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
@@ -4009,9 +4009,9 @@ var sveForms = []sveForm{
 	// ADR  <Zd>.D, [<Zn>.D, <Zm>.D, UXTW{<amount>}]
 	{mask: 0xffe0f000, value: 0x0460a000, op: 13, args: 13},
 	// ASR  <Zd>.<T>, <Zn>.<T>, #<const>
-	{mask: 0xff20fc00, value: 0x04209000, op: 28, args: 22},
+	{mask: 0xff20fc00, value: 0x04209000, op: 28, args: 22, reject: 14},
 	// ASR  <Zd>.<T>, <Zn>.<T>, <Zm>.D
-	{mask: 0xff20fc00, value: 0x04208000, op: 28, args: 24},
+	{mask: 0xff20fc00, value: 0x04208000, op: 28, args: 24, reject: 8},
 	// BDEP  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x4500b400, op: 32, args: 5},
 	// BEXT  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
@@ -4027,7 +4027,7 @@ var sveForms = []sveForm{
 	// CMLA  <Zda>.S, <Zn>.S, <Zm>.S[<imm>], <const>
 	{mask: 0xffe0f000, value: 0x44e06000, op: 91, args: 48},
 	// DUP  <Zd>.<T>, <Zn>.<T>[<imm>]
-	{mask: 0xff20fc00, value: 0x05202000, op: 118, args: 66},
+	{mask: 0xff20fc00, value: 0x05202000, op: 118, args: 66, reject: 15},
 	// EORBT  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x45009000, op: 125, args: 5},
 	// EORTB  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
@@ -4055,17 +4055,17 @@ var sveForms = []sveForm{
 	// FMUL  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x65000800, op: 221, args: 79},
 	// FRECPS  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
-	{mask: 0xff20fc00, value: 0x65001800, op: 229, args: 79},
+	{mask: 0xff20fc00, value: 0x65001800, op: 229, args: 79, reject: 1},
 	// FRSQRTS  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
-	{mask: 0xff20fc00, value: 0x65001c00, op: 243, args: 79},
+	{mask: 0xff20fc00, value: 0x65001c00, op: 243, args: 79, reject: 1},
 	// FSUB  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x65000400, op: 246, args: 79},
 	// FTSMUL  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
-	{mask: 0xff20fc00, value: 0x65000c00, op: 249, args: 79},
+	{mask: 0xff20fc00, value: 0x65000c00, op: 249, args: 79, reject: 1},
 	// FTSSEL  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
-	{mask: 0xff20fc00, value: 0x0420b000, op: 250, args: 79},
+	{mask: 0xff20fc00, value: 0x0420b000, op: 250, args: 79, reject: 1},
 	// HISTSEG  <Zd>.B, <Zn>.B, <Zm>.B
-	{mask: 0xff20fc00, value: 0x4520a000, op: 252, args: 125},
+	{mask: 0xff20fc00, value: 0x4520a000, op: 252, args: 125, reject: 16},
 	// INDEX  <Zd>.<T>, #<imm1>, #<imm2>
 	{mask: 0xff20fc00, value: 0x04204000, op: 256, args: 127},
 	// LD1B  { <Zt>.B }, <Pg>/Z, [<Xn|SP>{, #<imm>, MUL VL}]
@@ -4207,13 +4207,13 @@ var sveForms = []sveForm{
 	// LDNT1W  { <Zt1>.S-<Zt2>.S }, <PNg>/Z, [<Xn|SP>, <Xm>, LSL #2]
 	{mask: 0xffe0e001, value: 0xa0004001, op: 334, args: 198},
 	// LSL  <Zd>.<T>, <Zn>.<T>, #<const>
-	{mask: 0xff20fc00, value: 0x04209c00, op: 337, args: 238},
+	{mask: 0xff20fc00, value: 0x04209c00, op: 337, args: 238, reject: 14},
 	// LSL  <Zd>.<T>, <Zn>.<T>, <Zm>.D
-	{mask: 0xff20fc00, value: 0x04208c00, op: 337, args: 24},
+	{mask: 0xff20fc00, value: 0x04208c00, op: 337, args: 24, reject: 8},
 	// LSR  <Zd>.<T>, <Zn>.<T>, #<const>
-	{mask: 0xff20fc00, value: 0x04209400, op: 339, args: 22},
+	{mask: 0xff20fc00, value: 0x04209400, op: 339, args: 22, reject: 14},
 	// LSR  <Zd>.<T>, <Zn>.<T>, <Zm>.D
-	{mask: 0xff20fc00, value: 0x04208400, op: 339, args: 24},
+	{mask: 0xff20fc00, value: 0x04208400, op: 339, args: 24, reject: 8},
 	// LUTI2  <Zd>.B, { <Zn>.B }, <Zm>[<index>]
 	{mask: 0xff20fc00, value: 0x4520b000, op: 341, args: 239},
 	// LUTI4  <Zd>.H, { <Zn1>.H, <Zn2>.H }, <Zm>[<index>]
@@ -4223,11 +4223,11 @@ var sveForms = []sveForm{
 	// MUL  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x04206000, op: 352, args: 5},
 	// PMULLB  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45006800, op: 378, args: 266},
+	{mask: 0xff20fc00, value: 0x45006800, op: 378, args: 266, reject: 17},
 	// PMULLT  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45006c00, op: 379, args: 266},
+	{mask: 0xff20fc00, value: 0x45006c00, op: 379, args: 266, reject: 17},
 	// PRFB  <prfop>, <Pg>, [<Xn|SP>, <Xm>]
-	{mask: 0xffe0e010, value: 0x8400c000, op: 381, args: 270},
+	{mask: 0xffe0e010, value: 0x8400c000, op: 381, args: 270, reject: 18},
 	// PRFB  <prfop>, <Pg>, [<Xn|SP>, <Zm>.D]
 	{mask: 0xffe0e010, value: 0xc4608000, op: 382, args: 273},
 	// PRFB  <prfop>, <Pg>, [<Zn>.S{, #<imm>}]
@@ -4235,7 +4235,7 @@ var sveForms = []sveForm{
 	// PRFB  <prfop>, <Pg>, [<Zn>.D{, #<imm>}]
 	{mask: 0xffe0e010, value: 0xc400e000, op: 382, args: 275},
 	// PRFD  <prfop>, <Pg>, [<Xn|SP>, <Xm>, LSL #3]
-	{mask: 0xffe0e010, value: 0x8580c000, op: 383, args: 276},
+	{mask: 0xffe0e010, value: 0x8580c000, op: 383, args: 276, reject: 18},
 	// PRFD  <prfop>, <Pg>, [<Xn|SP>, <Zm>.D, LSL #3]
 	{mask: 0xffe0e010, value: 0xc460e000, op: 384, args: 279},
 	// PRFD  <prfop>, <Pg>, [<Zn>.S{, #<imm>}]
@@ -4243,7 +4243,7 @@ var sveForms = []sveForm{
 	// PRFD  <prfop>, <Pg>, [<Zn>.D{, #<imm>}]
 	{mask: 0xffe0e010, value: 0xc580e000, op: 384, args: 281},
 	// PRFH  <prfop>, <Pg>, [<Xn|SP>, <Xm>, LSL #1]
-	{mask: 0xffe0e010, value: 0x8480c000, op: 385, args: 282},
+	{mask: 0xffe0e010, value: 0x8480c000, op: 385, args: 282, reject: 18},
 	// PRFH  <prfop>, <Pg>, [<Xn|SP>, <Zm>.D, LSL #1]
 	{mask: 0xffe0e010, value: 0xc460a000, op: 386, args: 285},
 	// PRFH  <prfop>, <Pg>, [<Zn>.S{, #<imm>}]
@@ -4251,7 +4251,7 @@ var sveForms = []sveForm{
 	// PRFH  <prfop>, <Pg>, [<Zn>.D{, #<imm>}]
 	{mask: 0xffe0e010, value: 0xc480e000, op: 386, args: 287},
 	// PRFW  <prfop>, <Pg>, [<Xn|SP>, <Xm>, LSL #2]
-	{mask: 0xffe0e010, value: 0x8500c000, op: 387, args: 288},
+	{mask: 0xffe0e010, value: 0x8500c000, op: 387, args: 288, reject: 18},
 	// PRFW  <prfop>, <Pg>, [<Xn|SP>, <Zm>.D, LSL #2]
 	{mask: 0xffe0e010, value: 0xc460c000, op: 388, args: 291},
 	// PRFW  <prfop>, <Pg>, [<Zn>.S{, #<imm>}]
@@ -4259,73 +4259,73 @@ var sveForms = []sveForm{
 	// PRFW  <prfop>, <Pg>, [<Zn>.D{, #<imm>}]
 	{mask: 0xffe0e010, value: 0xc500e000, op: 388, args: 293},
 	// RADDHNB  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45206800, op: 393, args: 6},
+	{mask: 0xff20fc00, value: 0x45206800, op: 393, args: 6, reject: 1},
 	// RADDHNT  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45206c00, op: 394, args: 6},
+	{mask: 0xff20fc00, value: 0x45206c00, op: 394, args: 6, reject: 1},
 	// RSUBHNB  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45207800, op: 408, args: 6},
+	{mask: 0xff20fc00, value: 0x45207800, op: 408, args: 6, reject: 1},
 	// RSUBHNT  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45207c00, op: 409, args: 6},
+	{mask: 0xff20fc00, value: 0x45207c00, op: 409, args: 6, reject: 1},
 	// SABA  <Zda>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x4500f800, op: 410, args: 5},
 	// SABAL  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x4400d400, op: 411, args: 306},
+	{mask: 0xff20fc00, value: 0x4400d400, op: 411, args: 306, reject: 1},
 	// SABALB  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x4500c000, op: 412, args: 306},
+	{mask: 0xff20fc00, value: 0x4500c000, op: 412, args: 306, reject: 1},
 	// SABALT  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x4500c400, op: 413, args: 306},
+	{mask: 0xff20fc00, value: 0x4500c400, op: 413, args: 306, reject: 1},
 	// SABDLB  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45003000, op: 415, args: 306},
+	{mask: 0xff20fc00, value: 0x45003000, op: 415, args: 306, reject: 1},
 	// SABDLT  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45003400, op: 416, args: 306},
+	{mask: 0xff20fc00, value: 0x45003400, op: 416, args: 306, reject: 1},
 	// SADDLB  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45000000, op: 418, args: 306},
+	{mask: 0xff20fc00, value: 0x45000000, op: 418, args: 306, reject: 1},
 	// SADDLBT  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45008000, op: 419, args: 306},
+	{mask: 0xff20fc00, value: 0x45008000, op: 419, args: 306, reject: 1},
 	// SADDLT  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45000400, op: 420, args: 306},
+	{mask: 0xff20fc00, value: 0x45000400, op: 420, args: 306, reject: 1},
 	// SADDWB  <Zd>.<T>, <Zn>.<T>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45004000, op: 422, args: 309},
+	{mask: 0xff20fc00, value: 0x45004000, op: 422, args: 309, reject: 1},
 	// SADDWT  <Zd>.<T>, <Zn>.<T>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45004400, op: 423, args: 309},
+	{mask: 0xff20fc00, value: 0x45004400, op: 423, args: 309, reject: 1},
 	// SCLAMP  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x4400c000, op: 426, args: 5},
 	// SLI  <Zd>.<T>, <Zn>.<T>, #<const>
-	{mask: 0xff20fc00, value: 0x4500f400, op: 440, args: 238},
+	{mask: 0xff20fc00, value: 0x4500f400, op: 440, args: 238, reject: 14},
 	// SMLALB  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x44004000, op: 457, args: 306},
+	{mask: 0xff20fc00, value: 0x44004000, op: 457, args: 306, reject: 1},
 	// SMLALT  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x44004400, op: 458, args: 306},
+	{mask: 0xff20fc00, value: 0x44004400, op: 458, args: 306, reject: 1},
 	// SMLSLB  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x44005000, op: 459, args: 306},
+	{mask: 0xff20fc00, value: 0x44005000, op: 459, args: 306, reject: 1},
 	// SMLSLT  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x44005400, op: 460, args: 306},
+	{mask: 0xff20fc00, value: 0x44005400, op: 460, args: 306, reject: 1},
 	// SMULH  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x04206800, op: 462, args: 5},
 	// SMULLB  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45007000, op: 463, args: 306},
+	{mask: 0xff20fc00, value: 0x45007000, op: 463, args: 306, reject: 1},
 	// SMULLT  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45007400, op: 464, args: 306},
+	{mask: 0xff20fc00, value: 0x45007400, op: 464, args: 306, reject: 1},
 	// SQADD  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x04201000, op: 467, args: 5},
 	// SQDMLALB  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x44006000, op: 474, args: 306},
+	{mask: 0xff20fc00, value: 0x44006000, op: 474, args: 306, reject: 1},
 	// SQDMLALBT  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x44000800, op: 475, args: 306},
+	{mask: 0xff20fc00, value: 0x44000800, op: 475, args: 306, reject: 1},
 	// SQDMLALT  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x44006400, op: 476, args: 306},
+	{mask: 0xff20fc00, value: 0x44006400, op: 476, args: 306, reject: 1},
 	// SQDMLSLB  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x44006800, op: 477, args: 306},
+	{mask: 0xff20fc00, value: 0x44006800, op: 477, args: 306, reject: 1},
 	// SQDMLSLBT  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x44000c00, op: 478, args: 306},
+	{mask: 0xff20fc00, value: 0x44000c00, op: 478, args: 306, reject: 1},
 	// SQDMLSLT  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x44006c00, op: 479, args: 306},
+	{mask: 0xff20fc00, value: 0x44006c00, op: 479, args: 306, reject: 1},
 	// SQDMULH  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x04207000, op: 480, args: 5},
 	// SQDMULLB  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45006000, op: 481, args: 306},
+	{mask: 0xff20fc00, value: 0x45006000, op: 481, args: 306, reject: 1},
 	// SQDMULLT  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45006400, op: 482, args: 306},
+	{mask: 0xff20fc00, value: 0x45006400, op: 482, args: 306, reject: 1},
 	// SQRDCMLAH  <Zda>.H, <Zn>.H, <Zm>.H[<imm>], <const>
 	{mask: 0xffe0f000, value: 0x44a07000, op: 487, args: 47},
 	// SQRDCMLAH  <Zda>.S, <Zn>.S, <Zm>.S[<imm>], <const>
@@ -4339,23 +4339,23 @@ var sveForms = []sveForm{
 	// SQSUB  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x04201800, op: 508, args: 5},
 	// SRI  <Zd>.<T>, <Zn>.<T>, #<const>
-	{mask: 0xff20fc00, value: 0x4500f000, op: 515, args: 22},
+	{mask: 0xff20fc00, value: 0x4500f000, op: 515, args: 22, reject: 14},
 	// SRSRA  <Zda>.<T>, <Zn>.<T>, #<const>
-	{mask: 0xff20fc00, value: 0x4500e800, op: 519, args: 22},
+	{mask: 0xff20fc00, value: 0x4500e800, op: 519, args: 22, reject: 14},
 	// SSRA  <Zda>.<T>, <Zn>.<T>, #<const>
-	{mask: 0xff20fc00, value: 0x4500e000, op: 522, args: 22},
+	{mask: 0xff20fc00, value: 0x4500e000, op: 522, args: 22, reject: 14},
 	// SSUBLB  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45001000, op: 523, args: 306},
+	{mask: 0xff20fc00, value: 0x45001000, op: 523, args: 306, reject: 1},
 	// SSUBLBT  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45008800, op: 524, args: 306},
+	{mask: 0xff20fc00, value: 0x45008800, op: 524, args: 306, reject: 1},
 	// SSUBLT  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45001400, op: 525, args: 306},
+	{mask: 0xff20fc00, value: 0x45001400, op: 525, args: 306, reject: 1},
 	// SSUBLTB  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45008c00, op: 526, args: 306},
+	{mask: 0xff20fc00, value: 0x45008c00, op: 526, args: 306, reject: 1},
 	// SSUBWB  <Zd>.<T>, <Zn>.<T>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45005000, op: 527, args: 309},
+	{mask: 0xff20fc00, value: 0x45005000, op: 527, args: 309, reject: 1},
 	// SSUBWT  <Zd>.<T>, <Zn>.<T>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45005400, op: 528, args: 309},
+	{mask: 0xff20fc00, value: 0x45005400, op: 528, args: 309, reject: 1},
 	// ST1B  { <Zt1>.B-<Zt2>.B }, <PNg>, [<Xn|SP>, <Xm>]
 	{mask: 0xffe0e001, value: 0xa0200000, op: 529, args: 331},
 	// ST1D  { <Zt>.D }, <Pg>, [<Xn|SP>{, #<imm>, MUL VL}]
@@ -4419,9 +4419,9 @@ var sveForms = []sveForm{
 	// SUB  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x04200400, op: 555, args: 5},
 	// SUBHNB  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45207000, op: 556, args: 6},
+	{mask: 0xff20fc00, value: 0x45207000, op: 556, args: 6, reject: 1},
 	// SUBHNT  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45207400, op: 557, args: 6},
+	{mask: 0xff20fc00, value: 0x45207400, op: 557, args: 6, reject: 1},
 	// TBL  <Zd>.<T>, { <Zn>.<T> }, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x05203000, op: 568, args: 412},
 	// TBL  <Zd>.<T>, { <Zn1>.<T>, <Zn2>.<T> }, <Zm>.<T>
@@ -4439,55 +4439,55 @@ var sveForms = []sveForm{
 	// UABA  <Zda>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x4500fc00, op: 576, args: 5},
 	// UABAL  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x4400dc00, op: 577, args: 306},
+	{mask: 0xff20fc00, value: 0x4400dc00, op: 577, args: 306, reject: 1},
 	// UABALB  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x4500c800, op: 578, args: 306},
+	{mask: 0xff20fc00, value: 0x4500c800, op: 578, args: 306, reject: 1},
 	// UABALT  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x4500cc00, op: 579, args: 306},
+	{mask: 0xff20fc00, value: 0x4500cc00, op: 579, args: 306, reject: 1},
 	// UABDLB  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45003800, op: 581, args: 306},
+	{mask: 0xff20fc00, value: 0x45003800, op: 581, args: 306, reject: 1},
 	// UABDLT  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45003c00, op: 582, args: 306},
+	{mask: 0xff20fc00, value: 0x45003c00, op: 582, args: 306, reject: 1},
 	// UADDLB  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45000800, op: 584, args: 306},
+	{mask: 0xff20fc00, value: 0x45000800, op: 584, args: 306, reject: 1},
 	// UADDLT  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45000c00, op: 585, args: 306},
+	{mask: 0xff20fc00, value: 0x45000c00, op: 585, args: 306, reject: 1},
 	// UADDWB  <Zd>.<T>, <Zn>.<T>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45004800, op: 587, args: 309},
+	{mask: 0xff20fc00, value: 0x45004800, op: 587, args: 309, reject: 1},
 	// UADDWT  <Zd>.<T>, <Zn>.<T>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45004c00, op: 588, args: 309},
+	{mask: 0xff20fc00, value: 0x45004c00, op: 588, args: 309, reject: 1},
 	// UCLAMP  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x4400c400, op: 589, args: 5},
 	// UMLALB  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x44004800, op: 612, args: 306},
+	{mask: 0xff20fc00, value: 0x44004800, op: 612, args: 306, reject: 1},
 	// UMLALT  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x44004c00, op: 613, args: 306},
+	{mask: 0xff20fc00, value: 0x44004c00, op: 613, args: 306, reject: 1},
 	// UMLSLB  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x44005800, op: 614, args: 306},
+	{mask: 0xff20fc00, value: 0x44005800, op: 614, args: 306, reject: 1},
 	// UMLSLT  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x44005c00, op: 615, args: 306},
+	{mask: 0xff20fc00, value: 0x44005c00, op: 615, args: 306, reject: 1},
 	// UMULH  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x04206c00, op: 617, args: 5},
 	// UMULLB  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45007800, op: 618, args: 306},
+	{mask: 0xff20fc00, value: 0x45007800, op: 618, args: 306, reject: 1},
 	// UMULLT  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45007c00, op: 619, args: 306},
+	{mask: 0xff20fc00, value: 0x45007c00, op: 619, args: 306, reject: 1},
 	// UQADD  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x04201400, op: 620, args: 5},
 	// UQSUB  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x04201c00, op: 638, args: 5},
 	// URSRA  <Zda>.<T>, <Zn>.<T>, #<const>
-	{mask: 0xff20fc00, value: 0x4500ec00, op: 648, args: 22},
+	{mask: 0xff20fc00, value: 0x4500ec00, op: 648, args: 22, reject: 14},
 	// USRA  <Zda>.<T>, <Zn>.<T>, #<const>
-	{mask: 0xff20fc00, value: 0x4500e400, op: 654, args: 22},
+	{mask: 0xff20fc00, value: 0x4500e400, op: 654, args: 22, reject: 14},
 	// USUBLB  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45001800, op: 655, args: 306},
+	{mask: 0xff20fc00, value: 0x45001800, op: 655, args: 306, reject: 1},
 	// USUBLT  <Zd>.<T>, <Zn>.<Tb>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45001c00, op: 656, args: 306},
+	{mask: 0xff20fc00, value: 0x45001c00, op: 656, args: 306, reject: 1},
 	// USUBWB  <Zd>.<T>, <Zn>.<T>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45005800, op: 657, args: 309},
+	{mask: 0xff20fc00, value: 0x45005800, op: 657, args: 309, reject: 1},
 	// USUBWT  <Zd>.<T>, <Zn>.<T>, <Zm>.<Tb>
-	{mask: 0xff20fc00, value: 0x45005c00, op: 658, args: 309},
+	{mask: 0xff20fc00, value: 0x45005c00, op: 658, args: 309, reject: 1},
 	// UZP1  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x05206800, op: 666, args: 5},
 	// UZP2  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
@@ -4497,7 +4497,7 @@ var sveForms = []sveForm{
 	// UZPQ2  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x4400ec00, op: 669, args: 5},
 	// XAR  <Zdn>.<T>, <Zdn>.<T>, <Zm>.<T>, #<const>
-	{mask: 0xff20fc00, value: 0x04203400, op: 689, args: 424},
+	{mask: 0xff20fc00, value: 0x04203400, op: 689, args: 424, reject: 14},
 	// ZIP2  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x05206400, op: 692, args: 5},
 	// ZIP1  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
@@ -4515,7 +4515,7 @@ var sveForms = []sveForm{
 	// BFMLS  <Zda>.H, <Pg>/M, <Zn>.H, <Zm>.H
 	{mask: 0xffe0e000, value: 0x65202000, op: 51, args: 35},
 	// CDOT  <Zda>.<T>, <Zn>.<Tb>, <Zm>.<Tb>, <const>
-	{mask: 0xffa0f000, value: 0x44801000, op: 76, args: 43},
+	{mask: 0xffa0f000, value: 0x44801000, op: 76, args: 43, reject: 5},
 	// DUPM  <Zd>.<T>, #<const>
 	{mask: 0xfffc0000, value: 0x05c00000, op: 120, args: 68},
 	// EOR  <Zdn>.<T>, <Zdn>.<T>, #<const>
@@ -4525,13 +4525,13 @@ var sveForms = []sveForm{
 	// EXT  <Zdn>.B, <Zdn>.B, <Zm>.B, #<imm>
 	{mask: 0xffe0e000, value: 0x05200000, op: 134, args: 72},
 	// LD1B  { <Zt>.B }, <Pg>/Z, [<Xn|SP>, <Xm>]
-	{mask: 0xffe0e000, value: 0xa4004000, op: 276, args: 141},
+	{mask: 0xffe0e000, value: 0xa4004000, op: 276, args: 141, reject: 18},
 	// LD1B  { <Zt>.H }, <Pg>/Z, [<Xn|SP>, <Xm>]
-	{mask: 0xffe0e000, value: 0xa4204000, op: 276, args: 142},
+	{mask: 0xffe0e000, value: 0xa4204000, op: 276, args: 142, reject: 18},
 	// LD1B  { <Zt>.S }, <Pg>/Z, [<Xn|SP>, <Xm>]
-	{mask: 0xffe0e000, value: 0xa4404000, op: 276, args: 143},
+	{mask: 0xffe0e000, value: 0xa4404000, op: 276, args: 143, reject: 18},
 	// LD1B  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Xm>]
-	{mask: 0xffe0e000, value: 0xa4604000, op: 276, args: 144},
+	{mask: 0xffe0e000, value: 0xa4604000, op: 276, args: 144, reject: 18},
 	// LD1B  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Zm>.D]
 	{mask: 0xffe0e000, value: 0xc440c000, op: 276, args: 147},
 	// LD1B  { <Zt>.S }, <Pg>/Z, [<Zn>.S{, #<imm>}]
@@ -4539,9 +4539,9 @@ var sveForms = []sveForm{
 	// LD1B  { <Zt>.D }, <Pg>/Z, [<Zn>.D{, #<imm>}]
 	{mask: 0xffe0e000, value: 0xc420c000, op: 276, args: 149},
 	// LD1D  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #3]
-	{mask: 0xffe0e000, value: 0xa5e04000, op: 277, args: 155},
+	{mask: 0xffe0e000, value: 0xa5e04000, op: 277, args: 155, reject: 18},
 	// LD1D  { <Zt>.Q }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #3]
-	{mask: 0xffe0e000, value: 0xa5808000, op: 277, args: 156},
+	{mask: 0xffe0e000, value: 0xa5808000, op: 277, args: 156, reject: 18},
 	// LD1D  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Zm>.D, LSL #3]
 	{mask: 0xffe0e000, value: 0xc5e0c000, op: 277, args: 158},
 	// LD1D  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Zm>.D]
@@ -4549,11 +4549,11 @@ var sveForms = []sveForm{
 	// LD1D  { <Zt>.D }, <Pg>/Z, [<Zn>.D{, #<imm>}]
 	{mask: 0xffe0e000, value: 0xc5a0c000, op: 277, args: 159},
 	// LD1H  { <Zt>.H }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #1]
-	{mask: 0xffe0e000, value: 0xa4a04000, op: 278, args: 164},
+	{mask: 0xffe0e000, value: 0xa4a04000, op: 278, args: 164, reject: 18},
 	// LD1H  { <Zt>.S }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #1]
-	{mask: 0xffe0e000, value: 0xa4c04000, op: 278, args: 165},
+	{mask: 0xffe0e000, value: 0xa4c04000, op: 278, args: 165, reject: 18},
 	// LD1H  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #1]
-	{mask: 0xffe0e000, value: 0xa4e04000, op: 278, args: 166},
+	{mask: 0xffe0e000, value: 0xa4e04000, op: 278, args: 166, reject: 18},
 	// LD1H  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Zm>.D, LSL #1]
 	{mask: 0xffe0e000, value: 0xc4e0c000, op: 278, args: 169},
 	// LD1H  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Zm>.D]
@@ -4565,27 +4565,27 @@ var sveForms = []sveForm{
 	// LD1Q  { <Zt>.Q }, <Pg>/Z, [<Zn>.D{, <Xm>}]
 	{mask: 0xffe0e000, value: 0xc400a000, op: 279, args: 172},
 	// LD1ROB  { <Zt>.B }, <Pg>/Z, [<Xn|SP>, <Xm>]
-	{mask: 0xffe0e000, value: 0xa4200000, op: 283, args: 141},
+	{mask: 0xffe0e000, value: 0xa4200000, op: 283, args: 141, reject: 18},
 	// LD1ROD  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #3]
-	{mask: 0xffe0e000, value: 0xa5a00000, op: 284, args: 155},
+	{mask: 0xffe0e000, value: 0xa5a00000, op: 284, args: 155, reject: 18},
 	// LD1ROH  { <Zt>.H }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #1]
-	{mask: 0xffe0e000, value: 0xa4a00000, op: 285, args: 164},
+	{mask: 0xffe0e000, value: 0xa4a00000, op: 285, args: 164, reject: 18},
 	// LD1ROW  { <Zt>.S }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #2]
-	{mask: 0xffe0e000, value: 0xa5200000, op: 286, args: 185},
+	{mask: 0xffe0e000, value: 0xa5200000, op: 286, args: 185, reject: 18},
 	// LD1RQB  { <Zt>.B }, <Pg>/Z, [<Xn|SP>, <Xm>]
-	{mask: 0xffe0e000, value: 0xa4000000, op: 287, args: 141},
+	{mask: 0xffe0e000, value: 0xa4000000, op: 287, args: 141, reject: 18},
 	// LD1RQD  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #3]
-	{mask: 0xffe0e000, value: 0xa5800000, op: 288, args: 155},
+	{mask: 0xffe0e000, value: 0xa5800000, op: 288, args: 155, reject: 18},
 	// LD1RQH  { <Zt>.H }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #1]
-	{mask: 0xffe0e000, value: 0xa4800000, op: 289, args: 164},
+	{mask: 0xffe0e000, value: 0xa4800000, op: 289, args: 164, reject: 18},
 	// LD1RQW  { <Zt>.S }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #2]
-	{mask: 0xffe0e000, value: 0xa5000000, op: 290, args: 185},
+	{mask: 0xffe0e000, value: 0xa5000000, op: 290, args: 185, reject: 18},
 	// LD1SB  { <Zt>.H }, <Pg>/Z, [<Xn|SP>, <Xm>]
-	{mask: 0xffe0e000, value: 0xa5c04000, op: 295, args: 142},
+	{mask: 0xffe0e000, value: 0xa5c04000, op: 295, args: 142, reject: 18},
 	// LD1SB  { <Zt>.S }, <Pg>/Z, [<Xn|SP>, <Xm>]
-	{mask: 0xffe0e000, value: 0xa5a04000, op: 295, args: 143},
+	{mask: 0xffe0e000, value: 0xa5a04000, op: 295, args: 143, reject: 18},
 	// LD1SB  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Xm>]
-	{mask: 0xffe0e000, value: 0xa5804000, op: 295, args: 144},
+	{mask: 0xffe0e000, value: 0xa5804000, op: 295, args: 144, reject: 18},
 	// LD1SB  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Zm>.D]
 	{mask: 0xffe0e000, value: 0xc4408000, op: 295, args: 147},
 	// LD1SB  { <Zt>.S }, <Pg>/Z, [<Zn>.S{, #<imm>}]
@@ -4593,9 +4593,9 @@ var sveForms = []sveForm{
 	// LD1SB  { <Zt>.D }, <Pg>/Z, [<Zn>.D{, #<imm>}]
 	{mask: 0xffe0e000, value: 0xc4208000, op: 295, args: 149},
 	// LD1SH  { <Zt>.S }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #1]
-	{mask: 0xffe0e000, value: 0xa5204000, op: 296, args: 165},
+	{mask: 0xffe0e000, value: 0xa5204000, op: 296, args: 165, reject: 18},
 	// LD1SH  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #1]
-	{mask: 0xffe0e000, value: 0xa5004000, op: 296, args: 166},
+	{mask: 0xffe0e000, value: 0xa5004000, op: 296, args: 166, reject: 18},
 	// LD1SH  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Zm>.D, LSL #1]
 	{mask: 0xffe0e000, value: 0xc4e08000, op: 296, args: 169},
 	// LD1SH  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Zm>.D]
@@ -4605,7 +4605,7 @@ var sveForms = []sveForm{
 	// LD1SH  { <Zt>.D }, <Pg>/Z, [<Zn>.D{, #<imm>}]
 	{mask: 0xffe0e000, value: 0xc4a08000, op: 296, args: 171},
 	// LD1SW  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #2]
-	{mask: 0xffe0e000, value: 0xa4804000, op: 297, args: 192},
+	{mask: 0xffe0e000, value: 0xa4804000, op: 297, args: 192, reject: 18},
 	// LD1SW  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Zm>.D, LSL #2]
 	{mask: 0xffe0e000, value: 0xc5608000, op: 297, args: 194},
 	// LD1SW  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Zm>.D]
@@ -4613,11 +4613,11 @@ var sveForms = []sveForm{
 	// LD1SW  { <Zt>.D }, <Pg>/Z, [<Zn>.D{, #<imm>}]
 	{mask: 0xffe0e000, value: 0xc5208000, op: 297, args: 195},
 	// LD1W  { <Zt>.S }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #2]
-	{mask: 0xffe0e000, value: 0xa5404000, op: 298, args: 185},
+	{mask: 0xffe0e000, value: 0xa5404000, op: 298, args: 185, reject: 18},
 	// LD1W  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #2]
-	{mask: 0xffe0e000, value: 0xa5604000, op: 298, args: 192},
+	{mask: 0xffe0e000, value: 0xa5604000, op: 298, args: 192, reject: 18},
 	// LD1W  { <Zt>.Q }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #2]
-	{mask: 0xffe0e000, value: 0xa5008000, op: 298, args: 200},
+	{mask: 0xffe0e000, value: 0xa5008000, op: 298, args: 200, reject: 18},
 	// LD1W  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Zm>.D, LSL #2]
 	{mask: 0xffe0e000, value: 0xc560c000, op: 298, args: 194},
 	// LD1W  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Zm>.D]
@@ -4627,35 +4627,35 @@ var sveForms = []sveForm{
 	// LD1W  { <Zt>.D }, <Pg>/Z, [<Zn>.D{, #<imm>}]
 	{mask: 0xffe0e000, value: 0xc520c000, op: 298, args: 195},
 	// LD2B  { <Zt1>.B, <Zt2>.B }, <Pg>/Z, [<Xn|SP>, <Xm>]
-	{mask: 0xffe0e000, value: 0xa420c000, op: 299, args: 204},
+	{mask: 0xffe0e000, value: 0xa420c000, op: 299, args: 204, reject: 18},
 	// LD2D  { <Zt1>.D, <Zt2>.D }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #3]
-	{mask: 0xffe0e000, value: 0xa5a0c000, op: 300, args: 206},
+	{mask: 0xffe0e000, value: 0xa5a0c000, op: 300, args: 206, reject: 18},
 	// LD2H  { <Zt1>.H, <Zt2>.H }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #1]
-	{mask: 0xffe0e000, value: 0xa4a0c000, op: 301, args: 208},
+	{mask: 0xffe0e000, value: 0xa4a0c000, op: 301, args: 208, reject: 18},
 	// LD2Q  { <Zt1>.Q, <Zt2>.Q }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #4]
-	{mask: 0xffe0e000, value: 0xa4a08000, op: 302, args: 210},
+	{mask: 0xffe0e000, value: 0xa4a08000, op: 302, args: 210, reject: 18},
 	// LD2W  { <Zt1>.S, <Zt2>.S }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #2]
-	{mask: 0xffe0e000, value: 0xa520c000, op: 303, args: 212},
+	{mask: 0xffe0e000, value: 0xa520c000, op: 303, args: 212, reject: 18},
 	// LD3B  { <Zt1>.B, <Zt2>.B, <Zt3>.B }, <Pg>/Z, [<Xn|SP>, <Xm>]
-	{mask: 0xffe0e000, value: 0xa440c000, op: 304, args: 214},
+	{mask: 0xffe0e000, value: 0xa440c000, op: 304, args: 214, reject: 18},
 	// LD3D  { <Zt1>.D, <Zt2>.D, <Zt3>.D }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #3]
-	{mask: 0xffe0e000, value: 0xa5c0c000, op: 305, args: 216},
+	{mask: 0xffe0e000, value: 0xa5c0c000, op: 305, args: 216, reject: 18},
 	// LD3H  { <Zt1>.H, <Zt2>.H, <Zt3>.H }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #1]
-	{mask: 0xffe0e000, value: 0xa4c0c000, op: 306, args: 218},
+	{mask: 0xffe0e000, value: 0xa4c0c000, op: 306, args: 218, reject: 18},
 	// LD3Q  { <Zt1>.Q, <Zt2>.Q, <Zt3>.Q }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #4]
-	{mask: 0xffe0e000, value: 0xa5208000, op: 307, args: 220},
+	{mask: 0xffe0e000, value: 0xa5208000, op: 307, args: 220, reject: 18},
 	// LD3W  { <Zt1>.S, <Zt2>.S, <Zt3>.S }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #2]
-	{mask: 0xffe0e000, value: 0xa540c000, op: 308, args: 222},
+	{mask: 0xffe0e000, value: 0xa540c000, op: 308, args: 222, reject: 18},
 	// LD4B  { <Zt1>.B, <Zt2>.B, <Zt3>.B, <Zt4>.B }, <Pg>/Z, [<Xn|SP>, <Xm>]
-	{mask: 0xffe0e000, value: 0xa460c000, op: 309, args: 224},
+	{mask: 0xffe0e000, value: 0xa460c000, op: 309, args: 224, reject: 18},
 	// LD4D  { <Zt1>.D, <Zt2>.D, <Zt3>.D, <Zt4>.D }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #3]
-	{mask: 0xffe0e000, value: 0xa5e0c000, op: 310, args: 226},
+	{mask: 0xffe0e000, value: 0xa5e0c000, op: 310, args: 226, reject: 18},
 	// LD4H  { <Zt1>.H, <Zt2>.H, <Zt3>.H, <Zt4>.H }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #1]
-	{mask: 0xffe0e000, value: 0xa4e0c000, op: 311, args: 228},
+	{mask: 0xffe0e000, value: 0xa4e0c000, op: 311, args: 228, reject: 18},
 	// LD4Q  { <Zt1>.Q, <Zt2>.Q, <Zt3>.Q, <Zt4>.Q }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #4]
-	{mask: 0xffe0e000, value: 0xa5a08000, op: 312, args: 230},
+	{mask: 0xffe0e000, value: 0xa5a08000, op: 312, args: 230, reject: 18},
 	// LD4W  { <Zt1>.S, <Zt2>.S, <Zt3>.S, <Zt4>.S }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #2]
-	{mask: 0xffe0e000, value: 0xa560c000, op: 313, args: 232},
+	{mask: 0xffe0e000, value: 0xa560c000, op: 313, args: 232, reject: 18},
 	// LDFF1B  { <Zt>.B }, <Pg>/Z, [<Xn|SP>{, <Xm>}]
 	{mask: 0xffe0e000, value: 0xa4006000, op: 314, args: 141},
 	// LDFF1B  { <Zt>.H }, <Pg>/Z, [<Xn|SP>{, <Xm>}]
@@ -4737,17 +4737,17 @@ var sveForms = []sveForm{
 	// LDFF1W  { <Zt>.D }, <Pg>/Z, [<Zn>.D{, #<imm>}]
 	{mask: 0xffe0e000, value: 0xc520e000, op: 320, args: 195},
 	// LDNT1B  { <Zt>.B }, <Pg>/Z, [<Xn|SP>, <Xm>]
-	{mask: 0xffe0e000, value: 0xa400c000, op: 328, args: 141},
+	{mask: 0xffe0e000, value: 0xa400c000, op: 328, args: 141, reject: 18},
 	// LDNT1B  { <Zt>.S }, <Pg>/Z, [<Zn>.S{, <Xm>}]
 	{mask: 0xffe0e000, value: 0x8400a000, op: 328, args: 233},
 	// LDNT1B  { <Zt>.D }, <Pg>/Z, [<Zn>.D{, <Xm>}]
 	{mask: 0xffe0e000, value: 0xc400c000, op: 328, args: 234},
 	// LDNT1D  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #3]
-	{mask: 0xffe0e000, value: 0xa580c000, op: 329, args: 155},
+	{mask: 0xffe0e000, value: 0xa580c000, op: 329, args: 155, reject: 18},
 	// LDNT1D  { <Zt>.D }, <Pg>/Z, [<Zn>.D{, <Xm>}]
 	{mask: 0xffe0e000, value: 0xc580c000, op: 329, args: 234},
 	// LDNT1H  { <Zt>.H }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #1]
-	{mask: 0xffe0e000, value: 0xa480c000, op: 330, args: 164},
+	{mask: 0xffe0e000, value: 0xa480c000, op: 330, args: 164, reject: 18},
 	// LDNT1H  { <Zt>.S }, <Pg>/Z, [<Zn>.S{, <Xm>}]
 	{mask: 0xffe0e000, value: 0x8480a000, op: 330, args: 233},
 	// LDNT1H  { <Zt>.D }, <Pg>/Z, [<Zn>.D{, <Xm>}]
@@ -4763,7 +4763,7 @@ var sveForms = []sveForm{
 	// LDNT1SW  { <Zt>.D }, <Pg>/Z, [<Zn>.D{, <Xm>}]
 	{mask: 0xffe0e000, value: 0xc5008000, op: 333, args: 234},
 	// LDNT1W  { <Zt>.S }, <Pg>/Z, [<Xn|SP>, <Xm>, LSL #2]
-	{mask: 0xffe0e000, value: 0xa500c000, op: 334, args: 185},
+	{mask: 0xffe0e000, value: 0xa500c000, op: 334, args: 185, reject: 18},
 	// LDNT1W  { <Zt>.S }, <Pg>/Z, [<Zn>.S{, <Xm>}]
 	{mask: 0xffe0e000, value: 0x8500a000, op: 334, args: 233},
 	// LDNT1W  { <Zt>.D }, <Pg>/Z, [<Zn>.D{, <Xm>}]
@@ -4805,9 +4805,9 @@ var sveForms = []sveForm{
 	// ST1B  { <Zt>.D }, <Pg>, [<Zn>.D{, #<imm>}]
 	{mask: 0xffe0e000, value: 0xe440a000, op: 529, args: 338},
 	// ST1D  { <Zt>.D }, <Pg>, [<Xn|SP>, <Xm>, LSL #3]
-	{mask: 0xffe0e000, value: 0xe5e04000, op: 530, args: 345},
+	{mask: 0xffe0e000, value: 0xe5e04000, op: 530, args: 345, reject: 18},
 	// ST1D  { <Zt>.Q }, <Pg>, [<Xn|SP>, <Xm>, LSL #3]
-	{mask: 0xffe0e000, value: 0xe5c04000, op: 530, args: 346},
+	{mask: 0xffe0e000, value: 0xe5c04000, op: 530, args: 346, reject: 18},
 	// ST1D  { <Zt>.D }, <Pg>, [<Xn|SP>, <Zm>.D, LSL #3]
 	{mask: 0xffe0e000, value: 0xe5a0a000, op: 530, args: 348},
 	// ST1D  { <Zt>.D }, <Pg>, [<Xn|SP>, <Zm>.D]
@@ -4827,7 +4827,7 @@ var sveForms = []sveForm{
 	// ST1W  { <Zt>.<T> }, <Pg>, [<Xn|SP>{, #<imm>, MUL VL}]
 	{mask: 0xffd0e000, value: 0xe540e000, op: 533, args: 364},
 	// ST1W  { <Zt>.Q }, <Pg>, [<Xn|SP>, <Xm>, LSL #2]
-	{mask: 0xffe0e000, value: 0xe5004000, op: 533, args: 368},
+	{mask: 0xffe0e000, value: 0xe5004000, op: 533, args: 368, reject: 18},
 	// ST1W  { <Zt>.D }, <Pg>, [<Xn|SP>, <Zm>.D, LSL #2]
 	{mask: 0xffe0e000, value: 0xe520a000, op: 533, args: 371},
 	// ST1W  { <Zt>.D }, <Pg>, [<Xn|SP>, <Zm>.D]
@@ -4837,53 +4837,53 @@ var sveForms = []sveForm{
 	// ST1W  { <Zt>.D }, <Pg>, [<Zn>.D{, #<imm>}]
 	{mask: 0xffe0e000, value: 0xe540a000, op: 533, args: 373},
 	// ST2B  { <Zt1>.B, <Zt2>.B }, <Pg>, [<Xn|SP>, <Xm>]
-	{mask: 0xffe0e000, value: 0xe4206000, op: 534, args: 375},
+	{mask: 0xffe0e000, value: 0xe4206000, op: 534, args: 375, reject: 18},
 	// ST2D  { <Zt1>.D, <Zt2>.D }, <Pg>, [<Xn|SP>, <Xm>, LSL #3]
-	{mask: 0xffe0e000, value: 0xe5a06000, op: 535, args: 377},
+	{mask: 0xffe0e000, value: 0xe5a06000, op: 535, args: 377, reject: 18},
 	// ST2H  { <Zt1>.H, <Zt2>.H }, <Pg>, [<Xn|SP>, <Xm>, LSL #1]
-	{mask: 0xffe0e000, value: 0xe4a06000, op: 536, args: 379},
+	{mask: 0xffe0e000, value: 0xe4a06000, op: 536, args: 379, reject: 18},
 	// ST2Q  { <Zt1>.Q, <Zt2>.Q }, <Pg>, [<Xn|SP>, <Xm>, LSL #4]
-	{mask: 0xffe0e000, value: 0xe4600000, op: 537, args: 381},
+	{mask: 0xffe0e000, value: 0xe4600000, op: 537, args: 381, reject: 18},
 	// ST2W  { <Zt1>.S, <Zt2>.S }, <Pg>, [<Xn|SP>, <Xm>, LSL #2]
-	{mask: 0xffe0e000, value: 0xe5206000, op: 538, args: 383},
+	{mask: 0xffe0e000, value: 0xe5206000, op: 538, args: 383, reject: 18},
 	// ST3B  { <Zt1>.B, <Zt2>.B, <Zt3>.B }, <Pg>, [<Xn|SP>, <Xm>]
-	{mask: 0xffe0e000, value: 0xe4406000, op: 539, args: 385},
+	{mask: 0xffe0e000, value: 0xe4406000, op: 539, args: 385, reject: 18},
 	// ST3D  { <Zt1>.D, <Zt2>.D, <Zt3>.D }, <Pg>, [<Xn|SP>, <Xm>, LSL #3]
-	{mask: 0xffe0e000, value: 0xe5c06000, op: 540, args: 387},
+	{mask: 0xffe0e000, value: 0xe5c06000, op: 540, args: 387, reject: 18},
 	// ST3H  { <Zt1>.H, <Zt2>.H, <Zt3>.H }, <Pg>, [<Xn|SP>, <Xm>, LSL #1]
-	{mask: 0xffe0e000, value: 0xe4c06000, op: 541, args: 389},
+	{mask: 0xffe0e000, value: 0xe4c06000, op: 541, args: 389, reject: 18},
 	// ST3Q  { <Zt1>.Q, <Zt2>.Q, <Zt3>.Q }, <Pg>, [<Xn|SP>, <Xm>, LSL #4]
-	{mask: 0xffe0e000, value: 0xe4a00000, op: 542, args: 391},
+	{mask: 0xffe0e000, value: 0xe4a00000, op: 542, args: 391, reject: 18},
 	// ST3W  { <Zt1>.S, <Zt2>.S, <Zt3>.S }, <Pg>, [<Xn|SP>, <Xm>, LSL #2]
-	{mask: 0xffe0e000, value: 0xe5406000, op: 543, args: 393},
+	{mask: 0xffe0e000, value: 0xe5406000, op: 543, args: 393, reject: 18},
 	// ST4B  { <Zt1>.B, <Zt2>.B, <Zt3>.B, <Zt4>.B }, <Pg>, [<Xn|SP>, <Xm>]
-	{mask: 0xffe0e000, value: 0xe4606000, op: 544, args: 395},
+	{mask: 0xffe0e000, value: 0xe4606000, op: 544, args: 395, reject: 18},
 	// ST4D  { <Zt1>.D, <Zt2>.D, <Zt3>.D, <Zt4>.D }, <Pg>, [<Xn|SP>, <Xm>, LSL #3]
-	{mask: 0xffe0e000, value: 0xe5e06000, op: 545, args: 397},
+	{mask: 0xffe0e000, value: 0xe5e06000, op: 545, args: 397, reject: 18},
 	// ST4H  { <Zt1>.H, <Zt2>.H, <Zt3>.H, <Zt4>.H }, <Pg>, [<Xn|SP>, <Xm>, LSL #1]
-	{mask: 0xffe0e000, value: 0xe4e06000, op: 546, args: 399},
+	{mask: 0xffe0e000, value: 0xe4e06000, op: 546, args: 399, reject: 18},
 	// ST4Q  { <Zt1>.Q, <Zt2>.Q, <Zt3>.Q, <Zt4>.Q }, <Pg>, [<Xn|SP>, <Xm>, LSL #4]
-	{mask: 0xffe0e000, value: 0xe4e00000, op: 547, args: 401},
+	{mask: 0xffe0e000, value: 0xe4e00000, op: 547, args: 401, reject: 18},
 	// ST4W  { <Zt1>.S, <Zt2>.S, <Zt3>.S, <Zt4>.S }, <Pg>, [<Xn|SP>, <Xm>, LSL #2]
-	{mask: 0xffe0e000, value: 0xe5606000, op: 548, args: 403},
+	{mask: 0xffe0e000, value: 0xe5606000, op: 548, args: 403, reject: 18},
 	// STNT1B  { <Zt>.B }, <Pg>, [<Xn|SP>, <Xm>]
-	{mask: 0xffe0e000, value: 0xe4006000, op: 549, args: 405},
+	{mask: 0xffe0e000, value: 0xe4006000, op: 549, args: 405, reject: 18},
 	// STNT1B  { <Zt>.S }, <Pg>, [<Zn>.S{, <Xm>}]
 	{mask: 0xffe0e000, value: 0xe4402000, op: 549, args: 406},
 	// STNT1B  { <Zt>.D }, <Pg>, [<Zn>.D{, <Xm>}]
 	{mask: 0xffe0e000, value: 0xe4002000, op: 549, args: 407},
 	// STNT1D  { <Zt>.D }, <Pg>, [<Xn|SP>, <Xm>, LSL #3]
-	{mask: 0xffe0e000, value: 0xe5806000, op: 550, args: 345},
+	{mask: 0xffe0e000, value: 0xe5806000, op: 550, args: 345, reject: 18},
 	// STNT1D  { <Zt>.D }, <Pg>, [<Zn>.D{, <Xm>}]
 	{mask: 0xffe0e000, value: 0xe5802000, op: 550, args: 407},
 	// STNT1H  { <Zt>.H }, <Pg>, [<Xn|SP>, <Xm>, LSL #1]
-	{mask: 0xffe0e000, value: 0xe4806000, op: 551, args: 409},
+	{mask: 0xffe0e000, value: 0xe4806000, op: 551, args: 409, reject: 18},
 	// STNT1H  { <Zt>.S }, <Pg>, [<Zn>.S{, <Xm>}]
 	{mask: 0xffe0e000, value: 0xe4c02000, op: 551, args: 406},
 	// STNT1H  { <Zt>.D }, <Pg>, [<Zn>.D{, <Xm>}]
 	{mask: 0xffe0e000, value: 0xe4802000, op: 551, args: 407},
 	// STNT1W  { <Zt>.S }, <Pg>, [<Xn|SP>, <Xm>, LSL #2]
-	{mask: 0xffe0e000, value: 0xe5006000, op: 552, args: 411},
+	{mask: 0xffe0e000, value: 0xe5006000, op: 552, args: 411, reject: 18},
 	// STNT1W  { <Zt>.S }, <Pg>, [<Zn>.S{, <Xm>}]
 	{mask: 0xffe0e000, value: 0xe5402000, op: 552, args: 406},
 	// STNT1W  { <Zt>.D }, <Pg>, [<Zn>.D{, <Xm>}]
@@ -4917,43 +4917,43 @@ var sveForms = []sveForm{
 	// CMPNE  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20e010, value: 0x2400a010, op: 101, args: 52},
 	// CMPEQ  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.D
-	{mask: 0xff20e010, value: 0x24002000, op: 92, args: 53},
+	{mask: 0xff20e010, value: 0x24002000, op: 92, args: 53, reject: 8},
 	// CMPGT  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.D
-	{mask: 0xff20e010, value: 0x24004010, op: 93, args: 53},
+	{mask: 0xff20e010, value: 0x24004010, op: 93, args: 53, reject: 8},
 	// CMPGE  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.D
-	{mask: 0xff20e010, value: 0x24004000, op: 94, args: 53},
+	{mask: 0xff20e010, value: 0x24004000, op: 94, args: 53, reject: 8},
 	// CMPHI  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.D
-	{mask: 0xff20e010, value: 0x2400c010, op: 95, args: 53},
+	{mask: 0xff20e010, value: 0x2400c010, op: 95, args: 53, reject: 8},
 	// CMPHS  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.D
-	{mask: 0xff20e010, value: 0x2400c000, op: 96, args: 53},
+	{mask: 0xff20e010, value: 0x2400c000, op: 96, args: 53, reject: 8},
 	// CMPLT  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.D
-	{mask: 0xff20e010, value: 0x24006000, op: 97, args: 53},
+	{mask: 0xff20e010, value: 0x24006000, op: 97, args: 53, reject: 8},
 	// CMPLE  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.D
-	{mask: 0xff20e010, value: 0x24006010, op: 98, args: 53},
+	{mask: 0xff20e010, value: 0x24006010, op: 98, args: 53, reject: 8},
 	// CMPLO  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.D
-	{mask: 0xff20e010, value: 0x2400e000, op: 99, args: 53},
+	{mask: 0xff20e010, value: 0x2400e000, op: 99, args: 53, reject: 8},
 	// CMPLS  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.D
-	{mask: 0xff20e010, value: 0x2400e010, op: 100, args: 53},
+	{mask: 0xff20e010, value: 0x2400e010, op: 100, args: 53, reject: 8},
 	// CMPNE  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.D
-	{mask: 0xff20e010, value: 0x24002010, op: 101, args: 53},
+	{mask: 0xff20e010, value: 0x24002010, op: 101, args: 53, reject: 8},
 	// FACGT  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.<T>
-	{mask: 0xff20e010, value: 0x6500e010, op: 142, args: 77},
+	{mask: 0xff20e010, value: 0x6500e010, op: 142, args: 77, reject: 1},
 	// FACGE  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.<T>
-	{mask: 0xff20e010, value: 0x6500c010, op: 143, args: 77},
+	{mask: 0xff20e010, value: 0x6500c010, op: 143, args: 77, reject: 1},
 	// FCMEQ  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.<T>
-	{mask: 0xff20e010, value: 0x65006000, op: 157, args: 77},
+	{mask: 0xff20e010, value: 0x65006000, op: 157, args: 77, reject: 1},
 	// FCMGT  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.<T>
-	{mask: 0xff20e010, value: 0x65004010, op: 158, args: 77},
+	{mask: 0xff20e010, value: 0x65004010, op: 158, args: 77, reject: 1},
 	// FCMGE  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.<T>
-	{mask: 0xff20e010, value: 0x65004000, op: 159, args: 77},
+	{mask: 0xff20e010, value: 0x65004000, op: 159, args: 77, reject: 1},
 	// FCMNE  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.<T>
-	{mask: 0xff20e010, value: 0x65006010, op: 160, args: 77},
+	{mask: 0xff20e010, value: 0x65006010, op: 160, args: 77, reject: 1},
 	// FCMUO  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.<T>
-	{mask: 0xff20e010, value: 0x6500c000, op: 161, args: 77},
+	{mask: 0xff20e010, value: 0x6500c000, op: 161, args: 77, reject: 1},
 	// FCPY  <Zd>.<T>, <Pg>/M, #<const>
-	{mask: 0xff30e000, value: 0x0510c000, op: 165, args: 86},
+	{mask: 0xff30e000, value: 0x0510c000, op: 165, args: 86, reject: 1},
 	// HISTCNT  <Zd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.<T>
-	{mask: 0xffa0e000, value: 0x45a0c000, op: 251, args: 124},
+	{mask: 0xffa0e000, value: 0x45a0c000, op: 251, args: 124, reject: 5},
 	// LD1B  { <Zt>.D }, <Pg>/Z, [<Xn|SP>, <Zm>.D, <mod>]
 	{mask: 0xffa0e000, value: 0xc4004000, op: 276, args: 145},
 	// LD1B  { <Zt>.S }, <Pg>/Z, [<Xn|SP>, <Zm>.S, <mod>]
@@ -5069,9 +5069,9 @@ var sveForms = []sveForm{
 	// LDR  <Zt>, [<Xn|SP>{, #<imm>, MUL VL}]
 	{mask: 0xffc0e000, value: 0x85804000, op: 336, args: 236},
 	// MATCH  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.<T>
-	{mask: 0xff20e010, value: 0x45208000, op: 346, args: 248},
+	{mask: 0xff20e010, value: 0x45208000, op: 346, args: 248, reject: 19},
 	// NMATCH  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, <Zm>.<T>
-	{mask: 0xff20e010, value: 0x45208010, op: 357, args: 248},
+	{mask: 0xff20e010, value: 0x45208010, op: 357, args: 248, reject: 19},
 	// SQRDCMLAH  <Zda>.<T>, <Zn>.<T>, <Zm>.<T>, <const>
 	{mask: 0xff20f000, value: 0x44003000, op: 487, args: 49},
 	// ST1B  { <Zt>.<T> }, <Pg>, [<Xn|SP>{, #<imm>, MUL VL}]
@@ -5085,7 +5085,7 @@ var sveForms = []sveForm{
 	// ST1D  { <Zt>.D }, <Pg>, [<Xn|SP>, <Zm>.D, <mod>]
 	{mask: 0xffe0a000, value: 0xe5808000, op: 530, args: 334},
 	// ST1H  { <Zt>.<T> }, <Pg>, [<Xn|SP>{, #<imm>, MUL VL}]
-	{mask: 0xff90e000, value: 0xe480e000, op: 531, args: 352},
+	{mask: 0xff90e000, value: 0xe480e000, op: 531, args: 352, reject: 20},
 	// ST1H  { <Zt>.S }, <Pg>, [<Xn|SP>, <Zm>.S, <mod> #1]
 	{mask: 0xffe0a000, value: 0xe4e08000, op: 531, args: 356},
 	// ST1H  { <Zt>.D }, <Pg>, [<Xn|SP>, <Zm>.D, <mod> #1]
@@ -5095,7 +5095,7 @@ var sveForms = []sveForm{
 	// ST1H  { <Zt>.S }, <Pg>, [<Xn|SP>, <Zm>.S, <mod>]
 	{mask: 0xffe0a000, value: 0xe4c08000, op: 531, args: 335},
 	// ST1W  { <Zt>.<T> }, <Pg>, [<Xn|SP>, <Xm>, LSL #2]
-	{mask: 0xffc0e000, value: 0xe5404000, op: 533, args: 367},
+	{mask: 0xffc0e000, value: 0xe5404000, op: 533, args: 367, reject: 18},
 	// ST1W  { <Zt>.S }, <Pg>, [<Xn|SP>, <Zm>.S, <mod> #2]
 	{mask: 0xffe0a000, value: 0xe5608000, op: 533, args: 369},
 	// ST1W  { <Zt>.D }, <Pg>, [<Xn|SP>, <Zm>.D, <mod> #2]
@@ -5107,25 +5107,25 @@ var sveForms = []sveForm{
 	// STR  <Zt>, [<Xn|SP>{, #<imm>, MUL VL}]
 	{mask: 0xffc0e000, value: 0xe5804000, op: 554, args: 236},
 	// CPY  <Zd>.<T>, <Pg>/M, #<imm>{, <shift>}
-	{mask: 0xff30c000, value: 0x05104000, op: 110, args: 59},
+	{mask: 0xff30c000, value: 0x05104000, op: 110, args: 59, reject: 12},
 	// CPY  <Zd>.<T>, <Pg>/Z, #<imm>{, <shift>}
-	{mask: 0xff30c000, value: 0x05100000, op: 110, args: 60},
+	{mask: 0xff30c000, value: 0x05100000, op: 110, args: 60, reject: 12},
 	// FMAD  <Zdn>.<T>, <Pg>/M, <Zm>.<T>, <Za>.<T>
-	{mask: 0xff20e000, value: 0x65208000, op: 184, args: 113},
+	{mask: 0xff20e000, value: 0x65208000, op: 184, args: 113, reject: 1},
 	// FMLA  <Zda>.<T>, <Pg>/M, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20e000, value: 0x65200000, op: 209, args: 113},
 	// FMLS  <Zda>.<T>, <Pg>/M, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20e000, value: 0x65202000, op: 216, args: 113},
 	// FMSB  <Zdn>.<T>, <Pg>/M, <Zm>.<T>, <Za>.<T>
-	{mask: 0xff20e000, value: 0x6520a000, op: 220, args: 113},
+	{mask: 0xff20e000, value: 0x6520a000, op: 220, args: 113, reject: 1},
 	// FNMAD  <Zdn>.<T>, <Pg>/M, <Zm>.<T>, <Za>.<T>
-	{mask: 0xff20e000, value: 0x6520c000, op: 224, args: 113},
+	{mask: 0xff20e000, value: 0x6520c000, op: 224, args: 113, reject: 1},
 	// FNMLA  <Zda>.<T>, <Pg>/M, <Zn>.<T>, <Zm>.<T>
-	{mask: 0xff20e000, value: 0x65204000, op: 225, args: 113},
+	{mask: 0xff20e000, value: 0x65204000, op: 225, args: 113, reject: 1},
 	// FNMLS  <Zda>.<T>, <Pg>/M, <Zn>.<T>, <Zm>.<T>
-	{mask: 0xff20e000, value: 0x65206000, op: 226, args: 113},
+	{mask: 0xff20e000, value: 0x65206000, op: 226, args: 113, reject: 1},
 	// FNMSB  <Zdn>.<T>, <Pg>/M, <Zm>.<T>, <Za>.<T>
-	{mask: 0xff20e000, value: 0x6520e000, op: 227, args: 113},
+	{mask: 0xff20e000, value: 0x6520e000, op: 227, args: 113, reject: 1},
 	// MAD  <Zdn>.<T>, <Pg>/M, <Zm>.<T>, <Za>.<T>
 	{mask: 0xff20e000, value: 0x0400c000, op: 344, args: 246},
 	// MLA  <Zda>.<T>, <Pg>/M, <Zn>.<T>, <Zm>.<T>
@@ -5135,9 +5135,9 @@ var sveForms = []sveForm{
 	// MSB  <Zdn>.<T>, <Pg>/M, <Zm>.<T>, <Za>.<T>
 	{mask: 0xff20e000, value: 0x0400e000, op: 351, args: 246},
 	// ST1B  { <Zt>.<T> }, <Pg>, [<Xn|SP>, <Xm>]
-	{mask: 0xff80e000, value: 0xe4004000, op: 529, args: 333},
+	{mask: 0xff80e000, value: 0xe4004000, op: 529, args: 333, reject: 18},
 	// ST1H  { <Zt>.<T> }, <Pg>, [<Xn|SP>, <Xm>, LSL #1]
-	{mask: 0xff80e000, value: 0xe4804000, op: 531, args: 355},
+	{mask: 0xff80e000, value: 0xe4804000, op: 531, args: 355, reject: 21},
 	// CMPHI  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, #<imm>
 	{mask: 0xff202010, value: 0x24200010, op: 95, args: 51},
 	// CMPHS  <Pd>.<T>, <Pg>/Z, <Zn>.<T>, #<imm>
@@ -5149,7 +5149,7 @@ var sveForms = []sveForm{
 	// SEL  <Zd>.<T>, <Pv>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20c000, value: 0x0520c000, op: 433, args: 316},
 	// FCMLA  <Zda>.<T>, <Pg>/M, <Zn>.<T>, <Zm>.<T>, <const>
-	{mask: 0xff208000, value: 0x64000000, op: 164, args: 85},
+	{mask: 0xff208000, value: 0x64000000, op: 164, args: 85, reject: 1},
 }
 
 // sveGateLo and sveGateHi are a bitmap of the values of bits 31:25 that any
@@ -5160,3 +5160,81 @@ var (
 	sveGateLo uint64 = 0x0004000400040004
 	sveGateHi uint64 = 0x0004000400050004
 )
+
+func init() { sveReject = sveRejected }
+
+// sveRejected reports whether the architecture declares w to be an invalid
+// instance of a form whose reject field is class. The classes are the
+// constraints that the decode pseudocode of the ARM XML states, 21 of them over
+// 358 of the 1415 forms, each with the pseudocode it comes from. Every feature is
+// taken to be implemented and the maximum vector length to be 2048 bits, so the
+// conditions on those never reject: see instgen's asl.go.
+func sveRejected(class int, w uint32) bool {
+	switch class {
+	case 1:
+		// size == '00'
+		return w&0xc00000 == 0
+	case 2:
+		// size != '11'
+		return w&0xc00000 != 0xc00000
+	case 3:
+		// !(tsize IN {'001', '010', '100'})
+		return !(w&0x580000 == 0x80000 || w&0x580000 == 0x100000 || w&0x580000 == 0x400000)
+	case 4:
+		// size != '10'
+		return w&0xc00000 != 0x800000
+	case 5:
+		// size IN {'0x'}
+		return w&0x800000 == 0
+	case 6:
+		// tsize == '00'
+		return w&0x180000 == 0
+	case 7:
+		// tsize == '0000'
+		return w&0xc00300 == 0
+	case 8:
+		// size == '11'
+		return w&0xc00000 == 0xc00000
+	case 9:
+		// tsz == '0000'
+		return w&0xf0000 == 0
+	case 10:
+		// size == '00'
+		return w&0x60000 == 0
+	case 11:
+		// size == '00'
+		return w&0x6000 == 0
+	case 12:
+		// size::sh == '001'
+		return w&0xc02000 == 0x2000
+	case 13:
+		// tsize == '000'
+		return w&0x580000 == 0
+	case 14:
+		// tsize == '0000'
+		return w&0xd80000 == 0
+	case 15:
+		// tsz == '00000'
+		return w&0x1f0000 == 0
+	case 16:
+		// size != '00'
+		return w&0xc00000 != 0
+	case 17:
+		// size[0] == '0'
+		return w&0x400000 == 0
+	case 18:
+		// Rm == '11111'
+		return w&0x1f0000 == 0x1f0000
+	case 19:
+		// size IN {'1x'}
+		return w&0x800000 == 0x800000
+	case 20:
+		// size == '00'
+		return w&0x600000 == 0
+	case 21:
+		// size == '00'
+		// Rm == '11111'
+		return w&0x600000 == 0 || w&0x1f0000 == 0x1f0000
+	}
+	return false
+}
