@@ -34,6 +34,7 @@ type tmplData struct {
 	// They are unique with regard to the list of [Args].
 	UniqueOpCombs []opCombData
 	Constants     []constantData
+	Runtime       string // the interpretation of the descriptors
 }
 
 type instsByName struct {
@@ -50,6 +51,10 @@ type funcData struct {
 	Comments []string
 	Body     string
 	Name     string
+	// DescName and Desc are the name and the literal of the descriptor that
+	// Body encodes with, if it is not hand-written.
+	DescName string
+	Desc     string
 }
 
 type instData struct {
@@ -164,6 +169,8 @@ func checkIsR(v uint32) (bool) {
 	return true
 }
 
+{{.Runtime}}
+
 const (
   enc_NIL component = iota
 {{- range .Constants}}
@@ -178,6 +185,10 @@ const (
 func {{.Name}}(v uint32) (uint32, bool) {
 	{{.Body}}
 }
+{{- if .DescName}}
+
+var {{.DescName}} = {{.Desc}}
+{{- end}}
 {{- end}}
 `
 
@@ -349,6 +360,10 @@ func Generate(insts []*xmlspec.InstructionParsed, outputDir string, genE2E bool)
 
 	e2eTestData := make([]e2eData, 0)
 	e2eErrorData := make([]e2eData, 0)
+
+	// The encoders that are generated from descriptors.
+	descSyms := newSymtab()
+	descs := make(map[string]dDesc)
 	for _, inst := range insts {
 		if inst == nil {
 			continue
@@ -401,6 +416,9 @@ func Generate(insts []*xmlspec.InstructionParsed, outputDir string, genE2E bool)
 
 					if !keep {
 						continue
+					}
+					if err := descsOf(xmlspec.IRFor(encoding), descSyms, descs); err != nil {
+						log.Fatalf("encoder descriptor: %v", err)
 					}
 
 					if !existingGoOps[encoding.GoOp] {
@@ -517,10 +535,22 @@ func Generate(insts []*xmlspec.InstructionParsed, outputDir string, genE2E bool)
 		} else {
 			sym = "enc_NIL"
 		}
-		var body string
+		var body, descName, desc string
 		kUniformed := strings.Join(strings.Fields(k), " ")
 		var name string
-		if b, ok := encodingImpls[kUniformed]; ok {
+		if b, ok := encodingImpls[kUniformed]; ok && b.body == "" {
+			d, ok := descs[kUniformed]
+			if !ok {
+				log.Fatalf("no descriptor for %s", b.name)
+			}
+			var err error
+			if desc, err = encoderLiteral(d, descSyms); err != nil {
+				log.Fatalf("%s: %v", b.name, err)
+			}
+			name = b.name
+			descName = "field" + strings.TrimPrefix(name, "encode")
+			body = fmt.Sprintf("return encodeField(&%s, v)", descName)
+		} else if ok {
 			body = b.body
 			name = b.name
 		} else {
@@ -532,9 +562,12 @@ func Generate(insts []*xmlspec.InstructionParsed, outputDir string, genE2E bool)
 			Comments: encodingFuncComments[k],
 			Body:     body,
 			Name:     name,
+			DescName: descName,
+			Desc:     desc,
 		})
 	}
 	data.Constants = constants
+	data.Runtime = encoderRuntime
 
 	// Now aggregate all arg patterns to unique globals.
 	argMap := make(map[string]bool)
