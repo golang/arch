@@ -5,7 +5,7 @@
 // instgen is used to generate the ARM64 instruction table for encoding and decoding.
 // Usage:
 //
-//	instgen [-i=inputDir] [-o=outputDir] [-url=url] [-version=version]
+//	instgen [-i=inputDir] [-o=outputDir] [-pins=file] [-url=url] [-version=version]
 //
 // Users can download the ARM64 XML instruction manual from
 // https://developer.arm.com/downloads/-/exploration-tools,
@@ -26,6 +26,11 @@
 // <outputDir>/src/cmd/internal/obj/arm64/.
 //
 // If -o option is not specified, no output files will be generated.
+//
+// The -pins option writes the encodings that the end-to-end pass pins, the same
+// ones that "-e2e" writes to arm64sveenc.s, to the file it names, one per line as
+// the bytes of the instruction in memory order, a bar, a tab and the assembler
+// line. It is the form in which arm64asm's testdata holds them.
 //
 // Since the format of the ARM64 instruction specification document may update,
 // this parser may not work for some versions of the XML document.
@@ -50,6 +55,7 @@ import (
 
 var input = flag.String("i", "", "the input directory of the xml files, this is an optional argument")
 var output = flag.String("o", "", "the output directory of the generated files, this is an optional argument")
+var pinsOut = flag.String("pins", "", "write the encodings that the e2e pass pins to this file, in the form arm64asm's testdata uses, this is an optional argument that needs -o")
 var genE2E = flag.Bool("e2e", false, "generate end-to-end test data")
 
 var url = flag.String("url", xmlspec.ExpectedURL, "the url of the xml files")

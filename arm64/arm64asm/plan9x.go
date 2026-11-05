@@ -26,6 +26,10 @@ func GoSyntax(inst Inst, pc uint64, symname func(uint64) (string, uint64), text 
 		symname = func(uint64) (string, uint64) { return "", 0 }
 	}
 
+	if sveIsOp(inst.Op) {
+		return sveGoSyntax(inst)
+	}
+
 	var args []string
 	for _, a := range inst.Args {
 		if a == nil {

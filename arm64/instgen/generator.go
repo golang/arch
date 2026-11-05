@@ -763,13 +763,16 @@ func Generate(insts []*xmlspec.InstructionParsed, outputDir string, genE2E bool)
 	}
 	formatAndFlush(outputDir, "src/cmd/internal/obj/arm64/anames_gen.go", sortedNewGoOps, anamesTmpl)
 
+	slices.SortStableFunc(e2eTestData, func(i, j e2eData) int {
+		if i.highFeat != j.highFeat {
+			return i.highFeat - j.highFeat
+		}
+		return strings.Compare(i.GoOp, j.GoOp)
+	})
+	if *pinsOut != "" {
+		writePins(*pinsOut, e2eTestData)
+	}
 	if genE2E {
-		slices.SortStableFunc(e2eTestData, func(i, j e2eData) int {
-			if i.highFeat != j.highFeat {
-				return i.highFeat - j.highFeat
-			}
-			return strings.Compare(i.GoOp, j.GoOp)
-		})
 		slices.SortStableFunc(e2eErrorData, func(i, j e2eData) int {
 			if i.highFeat != j.highFeat {
 				return i.highFeat - j.highFeat
@@ -780,6 +783,31 @@ func Generate(insts []*xmlspec.InstructionParsed, outputDir string, genE2E bool)
 		formatAndFlush(outputDir, "src/cmd/asm/internal/asm/testdata/arm64sveenc.s", e2eTestData, e2edataTmpl)
 		// Generate arm64sveerror.s
 		formatAndFlush(outputDir, "src/cmd/asm/internal/asm/testdata/arm64sveerror.s", e2eErrorData, e2edataTmpl)
+	}
+}
+
+// pinsHeader heads the file that writePins writes.
+const pinsHeader = `# SVE round-trip testdata, Go assembler syntax. One line per pinned encoding of
+# cmd/asm's arm64sveenc.s: the four bytes of the instruction in memory order, a
+# bar, a tab and the assembler line. Written by instgen -pins.
+`
+
+// writePins writes the encodings that the e2e pass pinned, one per line, in
+// the form that arm64asm's testdata files use: the instruction's bytes in
+// memory order, a bar, a tab and the Go assembler line. It is the same data
+// as arm64sveenc.s, so a decoder test can read it without a Go tree.
+func writePins(path string, data []e2eData) {
+	var b strings.Builder
+	b.WriteString(pinsHeader)
+	for _, d := range data {
+		hex, ok := strings.CutPrefix(d.Binary, "// ")
+		if !ok || strings.HasPrefix(d.Asm, "//") {
+			continue // a form the e2e pass could not pin
+		}
+		fmt.Fprintf(&b, "%s|\t%s\n", hex, strings.Join(strings.Fields(d.Asm), " "))
+	}
+	if err := os.WriteFile(path, []byte(b.String()), 0o644); err != nil {
+		log.Fatal(err)
 	}
 }
 

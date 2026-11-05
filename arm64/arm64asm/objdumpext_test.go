@@ -23,6 +23,9 @@ import (
 
 var objdumpPath = "/usr/bin/objdump"
 
+// objdumpFlags are extra arguments for objdump, for tests that need them.
+var objdumpFlags []string
+
 func init() {
 	if runtime.GOOS == "openbsd" {
 		objdumpPath = "/usr/bin/llvm-objdump"
@@ -59,7 +62,7 @@ func objdump(ext *ExtDis) error {
 		panic("unknown arch")
 	}
 
-	b, err := ext.Run(objdumpPath, "-d", "-z", ext.File.Name())
+	b, err := ext.Run(append(append([]string{objdumpPath, "-d", "-z"}, objdumpFlags...), ext.File.Name())...)
 	if err != nil {
 		return err
 	}

@@ -1,0 +1,1346 @@
+# SVE round-trip testdata, GNU syntax. The pinned encodings of sveplan9cases.txt
+# on which GNU objdump 2.45 and llvm-mc 22 (both with no aliases) print the same
+# text, ignoring spaces and the spelling of a register pair. The text is
+# llvm-mc's. Read by sve_oracle_test.go, which also says how to regenerate it.
+4e440425|	and p14.b, p1/z, p2.b, p4.b
+4e444425|	ands p14.b, p1/z, p2.b, p4.b
+5e440425|	bic p14.b, p1/z, p2.b, p4.b
+5e444425|	bics p14.b, p1/z, p2.b, p4.b
+a2641025|	brka p2.b, p9/z, p5.b
+a4645025|	brkas p4.b, p9/z, p5.b
+a2649025|	brkb p2.b, p9/z, p5.b
+a464d025|	brkbs p4.b, p9/z, p5.b
+44441825|	brkn p4.b, p1/z, p2.b, p4.b
+44445825|	brkns p4.b, p1/z, p2.b, p4.b
+4ec40425|	brkpa p14.b, p1/z, p2.b, p4.b
+4ec44425|	brkpas p14.b, p1/z, p2.b, p4.b
+5ec40425|	brkpb p14.b, p1/z, p2.b, p4.b
+5ec44425|	brkpbs p14.b, p1/z, p2.b, p4.b
+4e460425|	eor p14.b, p1/z, p2.b, p4.b
+4e464425|	eors p14.b, p1/z, p2.b, p4.b
+5e468425|	nand p14.b, p1/z, p2.b, p4.b
+5e46c425|	nands p14.b, p1/z, p2.b, p4.b
+4e468425|	nor p14.b, p1/z, p2.b, p4.b
+4e46c425|	nors p14.b, p1/z, p2.b, p4.b
+5e448425|	orn p14.b, p1/z, p2.b, p4.b
+5e44c425|	orns p14.b, p1/z, p2.b, p4.b
+4e448425|	orr p14.b, p1/z, p2.b, p4.b
+4e44c425|	orrs p14.b, p1/z, p2.b, p4.b
+0de41825|	pfalse p13.b
+25c15825|	pfirst p5.b, p9, p5.b
+85c4d925|	pnext p5.d, p4, p5.d
+c0c15025|	ptest p0, p14.b
+1678a025|	ptrue pn14.s
+c0413105|	punpkhi p0.h, p14.b
+c0413005|	punpklo p0.h, p14.b
+c0f11825|	rdffr p0.b, p14/z
+0df01925|	rdffr p13.b
+c0f15825|	rdffrs p0.b, p14/z
+cd41b405|	rev p13.s, p14.s
+5e460425|	sel p14.b, p1, p2.b, p4.b
+8250e505|	trn1 p2.d, p4.d, p5.d
+8254e505|	trn2 p2.d, p4.d, p5.d
+8248e505|	uzp1 p2.d, p4.d, p5.d
+824ce505|	uzp2 p2.d, p4.d, p5.d
+a0912825|	wrffr p13.b
+8240e505|	zip1 p2.d, p4.d, p5.d
+8244e505|	zip2 p2.d, p4.d, p5.d
+00902c25|	setffr
+edb0d604|	abs z13.d, p4/m, z7.d
+edb0c604|	abs z13.d, p4/z, z7.d
+edd24745|	adclb z13.d, z23.d, z7.d
+edd64745|	adclt z13.d, z23.d, z7.d
+e00d0004|	add z0.b, p3/m, z0.b, z15.b
+ed02e704|	add z13.d, z23.d, z7.d
+4861b645|	addhnb z8.h, z10.s, z22.s
+4865b645|	addhnt z8.h, z10.s, z22.s
+e0ad1144|	addp z0.b, p3/m, z0.b, z15.b
+ed06c404|	addpt z13.d, p1/m, z13.d, z23.d
+d708e704|	addpt z23.d, z6.d, z7.d
+252f8504|	addqv v5.4s, p3, z25.s
+e6e42245|	aesd z6.b, z6.b, z7.b
+e6e02245|	aese z6.b, z6.b, z7.b
+0be42045|	aesimc z11.b, z11.b
+0be02045|	aesmc z11.b, z11.b
+e00d1a04|	and z0.b, p3/m, z0.b, z15.b
+d7302704|	and z23.d, z6.d, z7.d
+252f9e04|	andqv v5.4s, p3, z25.s
+e08d1004|	asr z0.b, p3/m, z0.b, z15.b
+4a8cd004|	asr z10.d, p3/m, z10.d, z2.d
+cd806704|	asr z13.h, z6.h, z7.d
+e08d1404|	asrr z0.b, p3/m, z0.b, z15.b
+f53a6d04|	bcax z21.d, z21.d, z13.d, z23.d
+edb6c745|	bdep z13.d, z23.d, z7.d
+edb2c745|	bext z13.d, z23.d, z7.d
+66390865|	bf1cvt z6.h, z11.b
+66390965|	bf1cvtlt z6.h, z11.b
+663d0865|	bf2cvt z6.h, z11.b
+663d0965|	bf2cvtlt z6.h, z11.b
+ed860065|	bfadd z13.h, p1/m, z13.h, z23.h
+d7000765|	bfadd z23.h, z6.h, z7.h
+d7242764|	bfclamp z23.h, z6.h, z7.h
+b6a58a65|	bfcvt z22.h, p1/m, z13.s
+b6c59a64|	bfcvt z22.h, p1/z, z13.s
+b6a58a64|	bfcvtnt z22.h, p1/m, z13.s
+b6a58264|	bfcvtnt z22.h, p1/z, z13.s
+d7806764|	bfdot z23.s, z6.h, z7.h
+ed860665|	bfmax z13.h, p1/m, z13.h, z23.h
+ed860465|	bfmaxnm z13.h, p1/m, z13.h, z23.h
+ed860765|	bfmin z13.h, p1/m, z13.h, z23.h
+ed860565|	bfminnm z13.h, p1/m, z13.h, z23.h
+b6053765|	bfmla z22.h, p1/m, z13.h, z23.h
+d780e764|	bfmlalb z23.s, z6.h, z7.h
+d784e764|	bfmlalt z23.s, z6.h, z7.h
+b6253765|	bfmls z22.h, p1/m, z13.h, z23.h
+d7a0e764|	bfmlslb z23.s, z6.h, z7.h
+d7a4e764|	bfmlslt z23.s, z6.h, z7.h
+d7e46764|	bfmmla z23.s, z6.h, z7.h
+ed860265|	bfmul z13.h, p1/m, z13.h, z23.h
+d7080765|	bfmul z23.h, z6.h, z7.h
+ed860965|	bfscale z13.h, p1/m, z13.h, z23.h
+ed860165|	bfsub z13.h, p1/m, z13.h, z23.h
+d7040765|	bfsub z23.h, z6.h, z7.h
+edbac745|	bgrp z13.d, z23.d, z7.d
+e00d1b04|	bic z0.b, p3/m, z0.b, z15.b
+d730e704|	bic z23.d, z6.d, z7.d
+f53e2d04|	bsl z21.d, z21.d, z13.d, z23.d
+f53e6d04|	bsl1n z21.d, z21.d, z13.d, z23.d
+f53ead04|	bsl2n z21.d, z21.d, z13.d, z23.d
+e08d2805|	clasta z0.b, p3, z0.b, z15.b
+e08d2905|	clastb z0.b, p3, z0.b, z15.b
+edb0d804|	cls z13.d, p4/m, z7.d
+edb0c804|	cls z13.d, p4/z, z7.d
+edb0d904|	clz z13.d, p4/m, z7.d
+edb0c904|	clz z13.d, p4/z, z7.d
+4ea04024|	cmpeq p14.h, p0/z, z2.h, z0.h
+8e218024|	cmpeq p14.s, p0/z, z12.s, z0.d
+4e804024|	cmpge p14.h, p0/z, z2.h, z0.h
+8e418024|	cmpge p14.s, p0/z, z12.s, z0.d
+5e804024|	cmpgt p14.h, p0/z, z2.h, z0.h
+9e418024|	cmpgt p14.s, p0/z, z12.s, z0.d
+5e004024|	cmphi p14.h, p0/z, z2.h, z0.h
+9ec18024|	cmphi p14.s, p0/z, z12.s, z0.d
+4e004024|	cmphs p14.h, p0/z, z2.h, z0.h
+8ec18024|	cmphs p14.s, p0/z, z12.s, z0.d
+5ea04024|	cmpne p14.h, p0/z, z2.h, z0.h
+9e218024|	cmpne p14.s, p0/z, z12.s, z0.d
+edb0db04|	cnot z13.d, p4/m, z7.d
+edb0cb04|	cnot z13.d, p4/z, z7.d
+edb0da04|	cnt z13.d, p4/m, z7.d
+edb0ca04|	cnt z13.d, p4/z, z7.d
+ed90e105|	compact z13.d, p4, z7.d
+ed90e105|	compact z13.d, p4, z7.d
+da81ad25|	decp z26.s, p14.s
+e00d1904|	eor z0.b, p3/m, z0.b, z15.b
+d730a704|	eor z23.d, z6.d, z7.d
+f53a2d04|	eor3 z21.d, z21.d, z13.d, z23.d
+ed92c745|	eorbt z13.d, z23.d, z7.d
+252f9d04|	eorqv v5.4s, p3, z25.s
+ed96c745|	eortb z13.d, z23.d, z7.d
+ed90f105|	expand z13.d, p4, z7.d
+66310865|	f1cvt z6.h, z11.b
+66310965|	f1cvtlt z6.h, z11.b
+66350865|	f2cvt z6.h, z11.b
+66350965|	f2cvtlt z6.h, z11.b
+22878865|	fabd z2.s, p1/m, z2.s, z25.s
+edb0dc04|	fabs z13.d, p4/m, z7.d
+edb0cc04|	fabs z13.d, p4/z, z7.d
+5ec04065|	facge p14.h, p0/z, z2.h, z0.h
+5ee04065|	facgt p14.h, p0/z, z2.h, z0.h
+22878065|	fadd z2.s, p1/m, z2.s, z25.s
+ed02c765|	fadd z13.d, z23.d, z7.d
+22879064|	faddp z2.s, p1/m, z2.s, z25.s
+25af9064|	faddqv v5.4s, p3, z25.s
+22878e65|	famax z2.s, p1/m, z2.s, z25.s
+22878f65|	famin z2.s, p1/m, z2.s, z25.s
+ed26e764|	fclamp z13.d, z23.d, z7.d
+4e604065|	fcmeq p14.h, p0/z, z2.h, z0.h
+4e404065|	fcmge p14.h, p0/z, z2.h, z0.h
+5e404065|	fcmgt p14.h, p0/z, z2.h, z0.h
+5e604065|	fcmne p14.h, p0/z, z2.h, z0.h
+4ec04065|	fcmuo p14.h, p0/z, z2.h, z0.h
+b6a58965|	fcvt z22.s, p1/m, z13.h
+b6a59a64|	fcvt z22.s, p1/z, z13.h
+b6a5c965|	fcvt z22.d, p1/m, z13.h
+b6a5da64|	fcvt z22.d, p1/z, z13.h
+b6a58865|	fcvt z22.h, p1/m, z13.s
+b6859a64|	fcvt z22.h, p1/z, z13.s
+b6a5cb65|	fcvt z22.d, p1/m, z13.s
+b6e5da64|	fcvt z22.d, p1/z, z13.s
+b6a5c865|	fcvt z22.h, p1/m, z13.d
+b685da64|	fcvt z22.h, p1/z, z13.d
+b6a5ca65|	fcvt z22.s, p1/m, z13.d
+b6c5da64|	fcvt z22.s, p1/z, z13.d
+b6a58964|	fcvtlt z22.s, p1/m, z13.h
+b6a58164|	fcvtlt z22.s, p1/z, z13.h
+b6a5cb64|	fcvtlt z22.d, p1/m, z13.s
+b6a5c364|	fcvtlt z22.d, p1/z, z13.s
+b6a58864|	fcvtnt z22.h, p1/m, z13.s
+b6a58064|	fcvtnt z22.h, p1/z, z13.s
+b6a5ca64|	fcvtnt z22.s, p1/m, z13.d
+b6a5c264|	fcvtnt z22.s, p1/z, z13.d
+b6a50a65|	fcvtx z22.s, p1/m, z13.d
+b6c51a64|	fcvtx z22.s, p1/z, z13.d
+b6a50a64|	fcvtxnt z22.s, p1/m, z13.d
+b6a50264|	fcvtxnt z22.s, p1/z, z13.d
+b6a55a65|	fcvtzs z22.h, p1/m, z13.h
+b6c55e64|	fcvtzs z22.h, p1/z, z13.h
+b6a55c65|	fcvtzs z22.s, p1/m, z13.h
+b6855f64|	fcvtzs z22.s, p1/z, z13.h
+b6a55e65|	fcvtzs z22.d, p1/m, z13.h
+b6c55f64|	fcvtzs z22.d, p1/z, z13.h
+b6a59c65|	fcvtzs z22.s, p1/m, z13.s
+b6859f64|	fcvtzs z22.s, p1/z, z13.s
+b6a5dc65|	fcvtzs z22.d, p1/m, z13.s
+b685df64|	fcvtzs z22.d, p1/z, z13.s
+b6a5d865|	fcvtzs z22.s, p1/m, z13.d
+b685de64|	fcvtzs z22.s, p1/z, z13.d
+b6a5de65|	fcvtzs z22.d, p1/m, z13.d
+b6c5df64|	fcvtzs z22.d, p1/z, z13.d
+b6a55b65|	fcvtzu z22.h, p1/m, z13.h
+b6e55e64|	fcvtzu z22.h, p1/z, z13.h
+b6a55d65|	fcvtzu z22.s, p1/m, z13.h
+b6a55f64|	fcvtzu z22.s, p1/z, z13.h
+b6a55f65|	fcvtzu z22.d, p1/m, z13.h
+b6e55f64|	fcvtzu z22.d, p1/z, z13.h
+b6a59d65|	fcvtzu z22.s, p1/m, z13.s
+b6a59f64|	fcvtzu z22.s, p1/z, z13.s
+b6a5dd65|	fcvtzu z22.d, p1/m, z13.s
+b6a5df64|	fcvtzu z22.d, p1/z, z13.s
+b6a5d965|	fcvtzu z22.s, p1/m, z13.d
+b6a5de64|	fcvtzu z22.s, p1/z, z13.d
+b6a5df65|	fcvtzu z22.d, p1/m, z13.d
+b6e5df64|	fcvtzu z22.d, p1/z, z13.d
+22878d65|	fdiv z2.s, p1/m, z2.s, z25.s
+22878c65|	fdivr z2.s, p1/m, z2.s, z25.s
+d7802764|	fdot z23.s, z6.h, z7.h
+d7842764|	fdot z23.h, z6.b, z7.b
+d7846764|	fdot z23.s, z6.b, z7.b
+3ab8a004|	fexpa z26.s, z1.s
+edb01e65|	flogb z13.d, p4/m, z7.d
+edf01e64|	flogb z13.d, p4/z, z7.d
+4e806065|	fmad z14.h, p0/m, z2.h, z0.h
+22878665|	fmax z2.s, p1/m, z2.s, z25.s
+22878465|	fmaxnm z2.s, p1/m, z2.s, z25.s
+22879464|	fmaxnmp z2.s, p1/m, z2.s, z25.s
+25af9464|	fmaxnmqv v5.4s, p3, z25.s
+22879664|	fmaxp z2.s, p1/m, z2.s, z25.s
+25af9664|	fmaxqv v5.4s, p3, z25.s
+22878765|	fmin z2.s, p1/m, z2.s, z25.s
+22878565|	fminnm z2.s, p1/m, z2.s, z25.s
+22879564|	fminnmp z2.s, p1/m, z2.s, z25.s
+25af9564|	fminnmqv v5.4s, p3, z25.s
+22879764|	fminp z2.s, p1/m, z2.s, z25.s
+25af9764|	fminqv v5.4s, p3, z25.s
+4e006065|	fmla z14.h, p0/m, z2.h, z0.h
+d780a764|	fmlalb z23.s, z6.h, z7.h
+d788a764|	fmlalb z23.h, z6.b, z7.b
+d7882764|	fmlallbb z23.s, z6.b, z7.b
+d7982764|	fmlallbt z23.s, z6.b, z7.b
+d7a82764|	fmlalltb z23.s, z6.b, z7.b
+d7b82764|	fmlalltt z23.s, z6.b, z7.b
+d784a764|	fmlalt z23.s, z6.h, z7.h
+d798a764|	fmlalt z23.h, z6.b, z7.b
+4e206065|	fmls z14.h, p0/m, z2.h, z0.h
+d7a0a764|	fmlslb z23.s, z6.h, z7.h
+d7a4a764|	fmlslt z23.s, z6.h, z7.h
+d7e4a764|	fmmla z23.s, z6.s, z7.s
+d7e4e764|	fmmla z23.d, z6.d, z7.d
+d7e42764|	fmmla z23.s, z6.h, z7.h
+d7e06764|	fmmla z23.h, z6.b, z7.b
+d7e02764|	fmmla z23.s, z6.b, z7.b
+4ea06065|	fmsb z14.h, p0/m, z2.h, z0.h
+22878265|	fmul z2.s, p1/m, z2.s, z25.s
+ed0ac765|	fmul z13.d, z23.d, z7.d
+22878a65|	fmulx z2.s, p1/m, z2.s, z25.s
+edb0dd04|	fneg z13.d, p4/m, z7.d
+edb0cd04|	fneg z13.d, p4/z, z7.d
+4ec06065|	fnmad z14.h, p0/m, z2.h, z0.h
+4e406065|	fnmla z14.h, p0/m, z2.h, z0.h
+4e606065|	fnmls z14.h, p0/m, z2.h, z0.h
+4ee06065|	fnmsb z14.h, p0/m, z2.h, z0.h
+3a308e65|	frecpe z26.s, z1.s
+ed1ac765|	frecps z13.d, z23.d, z7.d
+edb0cc65|	frecpx z13.d, p4/m, z7.d
+ed90db64|	frecpx z13.d, p4/z, z7.d
+edb01365|	frint32x z13.d, p4/m, z7.d
+edf01c64|	frint32x z13.d, p4/z, z7.d
+edb01265|	frint32z z13.d, p4/m, z7.d
+edd01c64|	frint32z z13.d, p4/z, z7.d
+edb01765|	frint64x z13.d, p4/m, z7.d
+edf01d64|	frint64x z13.d, p4/z, z7.d
+edb01665|	frint64z z13.d, p4/m, z7.d
+edd01d64|	frint64z z13.d, p4/z, z7.d
+edb0c465|	frinta z13.d, p4/m, z7.d
+ed90d964|	frinta z13.d, p4/z, z7.d
+edb0c765|	frinti z13.d, p4/m, z7.d
+edf0d964|	frinti z13.d, p4/z, z7.d
+edb0c265|	frintm z13.d, p4/m, z7.d
+edd0d864|	frintm z13.d, p4/z, z7.d
+edb0c065|	frintn z13.d, p4/m, z7.d
+ed90d864|	frintn z13.d, p4/z, z7.d
+edb0c165|	frintp z13.d, p4/m, z7.d
+edb0d864|	frintp z13.d, p4/z, z7.d
+edb0c665|	frintx z13.d, p4/m, z7.d
+edd0d964|	frintx z13.d, p4/z, z7.d
+edb0c365|	frintz z13.d, p4/m, z7.d
+edf0d864|	frintz z13.d, p4/z, z7.d
+3a308f65|	frsqrte z26.s, z1.s
+ed1ec765|	frsqrts z13.d, z23.d, z7.d
+22878965|	fscale z2.s, p1/m, z2.s, z25.s
+edb0cd65|	fsqrt z13.d, p4/m, z7.d
+edb0db64|	fsqrt z13.d, p4/z, z7.d
+22878165|	fsub z2.s, p1/m, z2.s, z25.s
+ed06c765|	fsub z13.d, z23.d, z7.d
+22878365|	fsubr z2.s, p1/m, z2.s, z25.s
+ed0ec765|	ftsmul z13.d, z23.d, z7.d
+edb2e704|	ftssel z13.d, z23.d, z7.d
+82c6b345|	histcnt z2.s, p1/z, z20.s, z19.s
+d7a02745|	histseg z23.b, z6.b, z7.b
+da81ac25|	incp z26.s, p14.s
+e08d1304|	lsl z0.b, p3/m, z0.b, z15.b
+4a8cd304|	lsl z10.d, p3/m, z10.d, z2.d
+cd8c6704|	lsl z13.h, z6.h, z7.d
+e08d1704|	lslr z0.b, p3/m, z0.b, z15.b
+e08d1104|	lsr z0.b, p3/m, z0.b, z15.b
+4a8cd104|	lsr z10.d, p3/m, z10.d, z2.d
+cd846704|	lsr z13.h, z6.h, z7.d
+e08d1504|	lsrr z0.b, p3/m, z0.b, z15.b
+0ec04204|	mad z14.h, p0/m, z2.h, z0.h
+f7d8c644|	madpt z23.d, z6.d, z7.d
+4e806045|	match p14.h, p0/z, z2.h, z0.h
+4e404004|	mla z14.h, p0/m, z2.h, z0.h
+d7d0c744|	mlapt z23.d, z6.d, z7.d
+4e604004|	mls z14.h, p0/m, z2.h, z0.h
+f530d004|	movprfx z21.d, p4/z, z7.d
+66bd2004|	movprfx z6, z11
+0ee04204|	msb z14.h, p0/m, z2.h, z0.h
+e00d1004|	mul z0.b, p3/m, z0.b, z15.b
+ed62e704|	mul z13.d, z23.d, z7.d
+f53eed04|	nbsl z21.d, z21.d, z13.d, z23.d
+edb0d704|	neg z13.d, p4/m, z7.d
+edb0c704|	neg z13.d, p4/z, z7.d
+5e806045|	nmatch p14.h, p0/z, z2.h, z0.h
+edb0de04|	not z13.d, p4/m, z7.d
+edb0ce04|	not z13.d, p4/z, z7.d
+252f9c04|	orqv v5.4s, p3, z25.s
+e00d1804|	orr z0.b, p3/m, z0.b, z15.b
+d7306704|	orr z23.d, z6.d, z7.d
+d7642704|	pmul z23.b, z6.b, z7.b
+9e684845|	pmullb z30.h, z4.b, z8.b
+d7680745|	pmullb z23.q, z6.d, z7.d
+9e6c4845|	pmullt z30.h, z4.b, z8.b
+d76c0745|	pmullt z23.q, z6.d, z7.d
+4869b645|	raddhnb z8.h, z10.s, z22.s
+486db645|	raddhnt z8.h, z10.s, z22.s
+d7f42745|	rax1 z23.d, z6.d, z7.d
+ed90e705|	rbit z13.d, p4/m, z7.d
+edb0e705|	rbit z13.d, p4/z, z7.d
+3a38b805|	rev z26.s, z1.s
+ed90e405|	revb z13.d, p4/m, z7.d
+edb0e405|	revb z13.d, p4/z, z7.d
+b6852e05|	revd z22.q, p1/m, z13.q
+b6a52e05|	revd z22.q, p1/z, z13.q
+ed90e505|	revh z13.d, p4/m, z7.d
+edb0e505|	revh z13.d, p4/z, z7.d
+b685e605|	revw z22.d, p1/m, z13.d
+b6a5e605|	revw z22.d, p1/z, z13.d
+4879b645|	rsubhnb z8.h, z10.s, z22.s
+487db645|	rsubhnt z8.h, z10.s, z22.s
+edfac745|	saba z13.d, z23.d, z7.d
+9ec04845|	sabalb z30.h, z4.b, z8.b
+9ec44845|	sabalt z30.h, z4.b, z8.b
+e00d0c04|	sabd z0.b, p3/m, z0.b, z15.b
+9e304845|	sabdlb z30.h, z4.b, z8.b
+9e344845|	sabdlt z30.h, z4.b, z8.b
+c1a5c444|	sadalp z1.d, p1/m, z14.s
+9e004845|	saddlb z30.h, z4.b, z8.b
+9e804845|	saddlbt z30.h, z4.b, z8.b
+9e044845|	saddlt z30.h, z4.b, z8.b
+4541d645|	saddwb z5.d, z10.d, z22.s
+4545d645|	saddwt z5.d, z10.d, z22.s
+edd2c745|	sbclb z13.d, z23.d, z7.d
+edd6c745|	sbclt z13.d, z23.d, z7.d
+edc2c744|	sclamp z13.d, z23.d, z7.d
+b6a55265|	scvtf z22.h, p1/m, z13.h
+b6c55c64|	scvtf z22.h, p1/z, z13.h
+b6a55465|	scvtf z22.h, p1/m, z13.s
+b6855d64|	scvtf z22.h, p1/z, z13.s
+b6a59465|	scvtf z22.s, p1/m, z13.s
+b6859d64|	scvtf z22.s, p1/z, z13.s
+b6a5d065|	scvtf z22.d, p1/m, z13.s
+b685dc64|	scvtf z22.d, p1/z, z13.s
+b6a55665|	scvtf z22.h, p1/m, z13.d
+b6c55d64|	scvtf z22.h, p1/z, z13.d
+b6a5d465|	scvtf z22.s, p1/m, z13.d
+b685dd64|	scvtf z22.s, p1/z, z13.d
+b6a5d665|	scvtf z22.d, p1/m, z13.d
+b6c5dd64|	scvtf z22.d, p1/z, z13.d
+22079404|	sdiv z2.s, p1/m, z2.s, z25.s
+22079604|	sdivr z2.s, p1/m, z2.s, z25.s
+d7c80744|	sdot z23.s, z6.h, z7.h
+0c008f44|	sdot z12.s, z0.b, z15.b
+a2fa3705|	sel z2.b, p14, z21.b, z23.b
+e08d1044|	shadd z0.b, p3/m, z0.b, z15.b
+e08d1244|	shsub z0.b, p3/m, z0.b, z15.b
+e08d1644|	shsubr z0.b, p3/m, z0.b, z15.b
+e6e02345|	sm4e z6.s, z6.s, z7.s
+d7f02745|	sm4ekey z23.s, z6.s, z7.s
+e00d0804|	smax z0.b, p3/m, z0.b, z15.b
+e0ad1444|	smaxp z0.b, p3/m, z0.b, z15.b
+252f8c04|	smaxqv v5.4s, p3, z25.s
+e00d0a04|	smin z0.b, p3/m, z0.b, z15.b
+e0ad1644|	sminp z0.b, p3/m, z0.b, z15.b
+252f8e04|	sminqv v5.4s, p3, z25.s
+9e404844|	smlalb z30.h, z4.b, z8.b
+9e444844|	smlalt z30.h, z4.b, z8.b
+9e504844|	smlslb z30.h, z4.b, z8.b
+9e544844|	smlslt z30.h, z4.b, z8.b
+d7980745|	smmla z23.s, z6.b, z7.b
+e00d1204|	smulh z0.b, p3/m, z0.b, z15.b
+ed6ae704|	smulh z13.d, z23.d, z7.d
+9e704845|	smullb z30.h, z4.b, z8.b
+9e744845|	smullt z30.h, z4.b, z8.b
+e08d2c05|	splice z0.b, p3, z0.b, z15.b
+edb0c844|	sqabs z13.d, p4/m, z7.d
+edb0ca44|	sqabs z13.d, p4/z, z7.d
+e08d1844|	sqadd z0.b, p3/m, z0.b, z15.b
+ed12e704|	sqadd z13.d, z23.d, z7.d
+da81aa25|	sqdecp z26.s, p14.s
+9e604844|	sqdmlalb z30.h, z4.b, z8.b
+9e084844|	sqdmlalbt z30.h, z4.b, z8.b
+9e644844|	sqdmlalt z30.h, z4.b, z8.b
+9e684844|	sqdmlslb z30.h, z4.b, z8.b
+9e0c4844|	sqdmlslbt z30.h, z4.b, z8.b
+9e6c4844|	sqdmlslt z30.h, z4.b, z8.b
+ed72e704|	sqdmulh z13.d, z23.d, z7.d
+9e604845|	sqdmullb z30.h, z4.b, z8.b
+9e644845|	sqdmullt z30.h, z4.b, z8.b
+da81a825|	sqincp z26.s, p14.s
+edb0c944|	sqneg z13.d, p4/m, z7.d
+edb0cb44|	sqneg z13.d, p4/z, z7.d
+ed72c744|	sqrdmlah z13.d, z23.d, z7.d
+ed76c744|	sqrdmlsh z13.d, z23.d, z7.d
+ed76e704|	sqrdmulh z13.d, z23.d, z7.d
+e08d0a44|	sqrshl z0.b, p3/m, z0.b, z15.b
+e08d0e44|	sqrshlr z0.b, p3/m, z0.b, z15.b
+e08d0844|	sqshl z0.b, p3/m, z0.b, z15.b
+e08d0c44|	sqshlr z0.b, p3/m, z0.b, z15.b
+e08d1a44|	sqsub z0.b, p3/m, z0.b, z15.b
+ed1ae704|	sqsub z13.d, z23.d, z7.d
+e08d1e44|	sqsubr z0.b, p3/m, z0.b, z15.b
+dd436045|	sqxtnb z29.s, z30.d
+dd476045|	sqxtnt z29.s, z30.d
+dd536045|	sqxtunb z29.s, z30.d
+dd576045|	sqxtunt z29.s, z30.d
+e08d1444|	srhadd z0.b, p3/m, z0.b, z15.b
+e08d0244|	srshl z0.b, p3/m, z0.b, z15.b
+e08d0644|	srshlr z0.b, p3/m, z0.b, z15.b
+9e104845|	ssublb z30.h, z4.b, z8.b
+9e884845|	ssublbt z30.h, z4.b, z8.b
+9e144845|	ssublt z30.h, z4.b, z8.b
+9e8c4845|	ssubltb z30.h, z4.b, z8.b
+4551d645|	ssubwb z5.d, z10.d, z22.s
+4555d645|	ssubwt z5.d, z10.d, z22.s
+e00d0104|	sub z0.b, p3/m, z0.b, z15.b
+ed06e704|	sub z13.d, z23.d, z7.d
+4871b645|	subhnb z8.h, z10.s, z22.s
+4875b645|	subhnt z8.h, z10.s, z22.s
+ed06c504|	subpt z13.d, p1/m, z13.d, z23.d
+d70ce704|	subpt z23.d, z6.d, z7.d
+e00d0304|	subr z0.b, p3/m, z0.b, z15.b
+e0397105|	sunpkhi z0.h, z15.b
+e0397005|	sunpklo z0.h, z15.b
+e08d1c44|	suqadd z0.b, p3/m, z0.b, z15.b
+edb0d004|	sxtb z13.d, p4/m, z7.d
+edb0c004|	sxtb z13.d, p4/z, z7.d
+edb0d204|	sxth z13.d, p4/m, z7.d
+edb0c204|	sxth z13.d, p4/z, z7.d
+b6a5d404|	sxtw z22.d, p1/m, z13.d
+b6a5c404|	sxtw z22.d, p1/z, z13.d
+ed2ee705|	tbx z13.d, z23.d, z7.d
+ed36e705|	tbxq z13.d, z23.d, z7.d
+ed72e705|	trn1 z13.d, z23.d, z7.d
+d718a705|	trn1 z23.q, z6.q, z7.q
+ed76e705|	trn2 z13.d, z23.d, z7.d
+d71ca705|	trn2 z23.q, z6.q, z7.q
+edfec745|	uaba z13.d, z23.d, z7.d
+9ec84845|	uabalb z30.h, z4.b, z8.b
+9ecc4845|	uabalt z30.h, z4.b, z8.b
+e00d0d04|	uabd z0.b, p3/m, z0.b, z15.b
+9e384845|	uabdlb z30.h, z4.b, z8.b
+9e3c4845|	uabdlt z30.h, z4.b, z8.b
+c1a5c544|	uadalp z1.d, p1/m, z14.s
+9e084845|	uaddlb z30.h, z4.b, z8.b
+9e0c4845|	uaddlt z30.h, z4.b, z8.b
+4549d645|	uaddwb z5.d, z10.d, z22.s
+454dd645|	uaddwt z5.d, z10.d, z22.s
+edc6c744|	uclamp z13.d, z23.d, z7.d
+b6a55365|	ucvtf z22.h, p1/m, z13.h
+b6e55c64|	ucvtf z22.h, p1/z, z13.h
+b6a55565|	ucvtf z22.h, p1/m, z13.s
+b6a55d64|	ucvtf z22.h, p1/z, z13.s
+b6a59565|	ucvtf z22.s, p1/m, z13.s
+b6a59d64|	ucvtf z22.s, p1/z, z13.s
+b6a5d165|	ucvtf z22.d, p1/m, z13.s
+b6a5dc64|	ucvtf z22.d, p1/z, z13.s
+b6a55765|	ucvtf z22.h, p1/m, z13.d
+b6e55d64|	ucvtf z22.h, p1/z, z13.d
+b6a5d565|	ucvtf z22.s, p1/m, z13.d
+b6a5dd64|	ucvtf z22.s, p1/z, z13.d
+b6a5d765|	ucvtf z22.d, p1/m, z13.d
+b6e5dd64|	ucvtf z22.d, p1/z, z13.d
+22079504|	udiv z2.s, p1/m, z2.s, z25.s
+22079704|	udivr z2.s, p1/m, z2.s, z25.s
+d7cc0744|	udot z23.s, z6.h, z7.h
+0c048f44|	udot z12.s, z0.b, z15.b
+e08d1144|	uhadd z0.b, p3/m, z0.b, z15.b
+e08d1344|	uhsub z0.b, p3/m, z0.b, z15.b
+e08d1744|	uhsubr z0.b, p3/m, z0.b, z15.b
+e00d0904|	umax z0.b, p3/m, z0.b, z15.b
+e0ad1544|	umaxp z0.b, p3/m, z0.b, z15.b
+252f8d04|	umaxqv v5.4s, p3, z25.s
+e00d0b04|	umin z0.b, p3/m, z0.b, z15.b
+e0ad1744|	uminp z0.b, p3/m, z0.b, z15.b
+252f8f04|	uminqv v5.4s, p3, z25.s
+9e484844|	umlalb z30.h, z4.b, z8.b
+9e4c4844|	umlalt z30.h, z4.b, z8.b
+9e584844|	umlslb z30.h, z4.b, z8.b
+9e5c4844|	umlslt z30.h, z4.b, z8.b
+d798c745|	ummla z23.s, z6.b, z7.b
+e00d1304|	umulh z0.b, p3/m, z0.b, z15.b
+ed6ee704|	umulh z13.d, z23.d, z7.d
+9e784845|	umullb z30.h, z4.b, z8.b
+9e7c4845|	umullt z30.h, z4.b, z8.b
+e08d1944|	uqadd z0.b, p3/m, z0.b, z15.b
+ed16e704|	uqadd z13.d, z23.d, z7.d
+da81ab25|	uqdecp z26.s, p14.s
+da81a925|	uqincp z26.s, p14.s
+e08d0b44|	uqrshl z0.b, p3/m, z0.b, z15.b
+e08d0f44|	uqrshlr z0.b, p3/m, z0.b, z15.b
+e08d0944|	uqshl z0.b, p3/m, z0.b, z15.b
+e08d0d44|	uqshlr z0.b, p3/m, z0.b, z15.b
+e08d1b44|	uqsub z0.b, p3/m, z0.b, z15.b
+ed1ee704|	uqsub z13.d, z23.d, z7.d
+e08d1f44|	uqsubr z0.b, p3/m, z0.b, z15.b
+dd4b6045|	uqxtnb z29.s, z30.d
+dd4f6045|	uqxtnt z29.s, z30.d
+b6a58044|	urecpe z22.s, p1/m, z13.s
+b6a58244|	urecpe z22.s, p1/z, z13.s
+e08d1544|	urhadd z0.b, p3/m, z0.b, z15.b
+e08d0344|	urshl z0.b, p3/m, z0.b, z15.b
+e08d0744|	urshlr z0.b, p3/m, z0.b, z15.b
+b6a58144|	ursqrte z22.s, p1/m, z13.s
+b6a58344|	ursqrte z22.s, p1/z, z13.s
+d7788744|	usdot z23.s, z6.b, z7.b
+d7988745|	usmmla z23.s, z6.b, z7.b
+e08d1d44|	usqadd z0.b, p3/m, z0.b, z15.b
+9e184845|	usublb z30.h, z4.b, z8.b
+9e1c4845|	usublt z30.h, z4.b, z8.b
+4559d645|	usubwb z5.d, z10.d, z22.s
+455dd645|	usubwt z5.d, z10.d, z22.s
+e0397305|	uunpkhi z0.h, z15.b
+e0397205|	uunpklo z0.h, z15.b
+edb0d104|	uxtb z13.d, p4/m, z7.d
+edb0c104|	uxtb z13.d, p4/z, z7.d
+edb0d304|	uxth z13.d, p4/m, z7.d
+edb0c304|	uxth z13.d, p4/z, z7.d
+b6a5d504|	uxtw z22.d, p1/m, z13.d
+b6a5c504|	uxtw z22.d, p1/z, z13.d
+ed6ae705|	uzp1 z13.d, z23.d, z7.d
+d708a705|	uzp1 z23.q, z6.q, z7.q
+ed6ee705|	uzp2 z13.d, z23.d, z7.d
+d70ca705|	uzp2 z23.q, z6.q, z7.q
+edeac744|	uzpq1 z13.d, z23.d, z7.d
+edeec744|	uzpq2 z13.d, z23.d, z7.d
+ed62e705|	zip1 z13.d, z23.d, z7.d
+d700a705|	zip1 z23.q, z6.q, z7.q
+ed66e705|	zip2 z13.d, z23.d, z7.d
+d704a705|	zip2 z23.q, z6.q, z7.q
+ede2c744|	zipq1 z13.d, z23.d, z7.d
+ede6c744|	zipq2 z13.d, z23.d, z7.d
+2023ff25|	ctermeq x25, xzr
+2023bf25|	ctermeq w25, wzr
+3023ff25|	ctermne x25, xzr
+3023bf25|	ctermne w25, wzr
+42b82025|	cntp x2, p14, p2.b
+df89ad25|	decp xzr, p14.s
+42b82125|	firstp x2, p14, p2.b
+df89ac25|	incp xzr, p14.s
+42b82225|	lastp x2, p14, p2.b
+df8daa25|	sqdecp xzr, p14.s
+4889ea25|	sqdecp x8, p10.d, w8
+df8da825|	sqincp xzr, p14.s
+4889e825|	sqincp x8, p10.d, w8
+df8dab25|	uqdecp xzr, p14.s
+df89ab25|	uqdecp wzr, p14.s
+df8da925|	uqincp xzr, p14.s
+df89a925|	uqincp wzr, p14.s
+4a116225|	whilege p10.h, x10, x2
+4a016225|	whilege p10.h, w10, w2
+5a116225|	whilegt p10.h, x10, x2
+5a016225|	whilegt p10.h, w10, w2
+5a196225|	whilehi p10.h, x10, x2
+5a096225|	whilehi p10.h, w10, w2
+4a196225|	whilehs p10.h, x10, x2
+4a096225|	whilehs p10.h, w10, w2
+5a156225|	whilele p10.h, x10, x2
+5a056225|	whilele p10.h, w10, w2
+4a1d6225|	whilelo p10.h, x10, x2
+4a0d6225|	whilelo p10.h, w10, w2
+5a1d6225|	whilels p10.h, x10, x2
+5a0d6225|	whilels p10.h, w10, w2
+4a156225|	whilelt p10.h, x10, x2
+4a056225|	whilelt p10.h, w10, w2
+5a316225|	whilerw p10.h, x10, x2
+4a316225|	whilewr p10.h, x10, x2
+c22c1a04|	andv b2, p3, z6.b
+4f2dda04|	andv d15, p3, z10.d
+7d245a04|	andv h29, p1, z3.h
+3b269a04|	andv s27, p1, z17.s
+2aa9f005|	clasta x10, p2, x10, z9.d
+5d842a05|	clasta b29, p1, b29, z2.b
+2a89ea05|	clasta d10, p2, d10, z9.d
+0f896a05|	clasta h15, p2, h15, z8.h
+5e9faa05|	clasta s30, p7, s30, z26.s
+0fa97005|	clasta w15, p2, w15, z8.h
+2aa9f105|	clastb x10, p2, x10, z9.d
+5d842b05|	clastb b29, p1, b29, z2.b
+2a89eb05|	clastb d10, p2, d10, z9.d
+0f896b05|	clastb h15, p2, h15, z8.h
+5e9fab05|	clastb s30, p7, s30, z26.s
+0fa97105|	clastb w15, p2, w15, z8.h
+82a6e805|	cpy z2.d, p1/m, x20
+90842005|	cpy z16.b, p1/m, b4
+8286e005|	cpy z2.d, p1/m, d20
+f7986005|	cpy z23.h, p6/m, h7
+b685a005|	cpy z22.s, p1/m, s13
+e6b76805|	cpy z6.h, p5/m, wsp
+4a38e005|	dup z10.d, x2
+2b3b2005|	dup z11.b, w25
+c22c1904|	eorv b2, p3, z6.b
+4f2dd904|	eorv d15, p3, z10.d
+7d245904|	eorv h29, p1, z3.h
+3b269904|	eorv s27, p1, z17.s
+2a29d865|	fadda d10, p2, d10, z9.d
+0f295865|	fadda h15, p2, h15, z8.h
+5e3f9865|	fadda s30, p7, s30, z26.s
+4f2dc065|	faddv d15, p3, z10.d
+7d244065|	faddv h29, p1, z3.h
+3b268065|	faddv s27, p1, z17.s
+4f2dc465|	fmaxnmv d15, p3, z10.d
+7d244465|	fmaxnmv h29, p1, z3.h
+3b268465|	fmaxnmv s27, p1, z17.s
+4f2dc665|	fmaxv d15, p3, z10.d
+7d244665|	fmaxv h29, p1, z3.h
+3b268665|	fmaxv s27, p1, z17.s
+4f2dc565|	fminnmv d15, p3, z10.d
+7d244565|	fminnmv h29, p1, z3.h
+3b268565|	fminnmv s27, p1, z17.s
+4f2dc765|	fminv d15, p3, z10.d
+7d244765|	fminv h29, p1, z3.h
+3b268765|	fminv s27, p1, z17.s
+894eed04|	index z9.d, x20, x13
+484d6204|	index z8.h, w10, w2
+4a38e405|	insr z10.d, x2
+2b3b3405|	insr z11.b, b25
+4a38f405|	insr z10.d, d2
+e6387405|	insr z6.h, h7
+c839b405|	insr z8.s, s14
+2b3b2405|	insr z11.b, w25
+4fade005|	lasta x15, p3, z10.d
+c28c2205|	lasta b2, p3, z6.b
+4f8de205|	lasta d15, p3, z10.d
+7d846205|	lasta h29, p1, z3.h
+3b86a205|	lasta s27, p1, z17.s
+c2ac2005|	lasta w2, p3, z6.b
+4fade105|	lastb x15, p3, z10.d
+c28c2305|	lastb b2, p3, z6.b
+4f8de305|	lastb d15, p3, z10.d
+7d846305|	lastb h29, p1, z3.h
+3b86a305|	lastb s27, p1, z17.s
+c2ac2105|	lastb w2, p3, z6.b
+c22c1804|	orv b2, p3, z6.b
+4f2dd804|	orv d15, p3, z10.d
+7d245804|	orv h29, p1, z3.h
+3b269804|	orv s27, p1, z17.s
+c22c0004|	saddv d2, p3, z6.b
+c22c0804|	smaxv b2, p3, z6.b
+4f2dc804|	smaxv d15, p3, z10.d
+7d244804|	smaxv h29, p1, z3.h
+3b268804|	smaxv s27, p1, z17.s
+c22c0a04|	sminv b2, p3, z6.b
+4f2dca04|	sminv d15, p3, z10.d
+7d244a04|	sminv h29, p1, z3.h
+3b268a04|	sminv s27, p1, z17.s
+4f2dc104|	uaddv d15, p3, z10.d
+c22c0904|	umaxv b2, p3, z6.b
+4f2dc904|	umaxv d15, p3, z10.d
+7d244904|	umaxv h29, p1, z3.h
+3b268904|	umaxv s27, p1, z17.s
+c22c0b04|	uminv b2, p3, z6.b
+4f2dcb04|	uminv d15, p3, z10.d
+7d244b04|	uminv h29, p1, z3.h
+3b268b04|	uminv s27, p1, z17.s
+7d71a025|	pext p13.s, pn11[1]
+ed427e64|	bfdot z13.s, z23.h, z6.h[3]
+ed0a3e64|	bfmla z13.h, z23.h, z6.h[3]
+ed4aee64|	bfmlalb z13.s, z23.h, z6.h[3]
+ed4eee64|	bfmlalt z13.s, z23.h, z6.h[3]
+ed0e3e64|	bfmls z13.h, z23.h, z6.h[3]
+ed6aee64|	bfmlslb z13.s, z23.h, z6.h[3]
+ed6eee64|	bfmlslt z13.s, z23.h, z6.h[3]
+ed2a3e64|	bfmul z13.h, z23.h, z6.h[3]
+79237005|	dup z25.q, z27.q[1]
+0f252a05|	dupq z15.h, z8.h[2]
+ed423e64|	fdot z13.s, z23.h, z6.h[3]
+ed4e2e64|	fdot z13.h, z23.b, z6.b[3]
+ed467e64|	fdot z13.s, z23.b, z6.b[3]
+ed023e64|	fmla z13.h, z23.h, z6.h[3]
+ed02be64|	fmla z13.s, z23.s, z6.s[3]
+e601e564|	fmla z6.d, z15.d, z5.d[0]
+ed4aae64|	fmlalb z13.s, z23.h, z6.h[3]
+ed5e2664|	fmlalb z13.h, z23.b, z6.b[3]
+edce2664|	fmlallbb z13.s, z23.b, z6.b[3]
+edce6664|	fmlallbt z13.s, z23.b, z6.b[3]
+edcea664|	fmlalltb z13.s, z23.b, z6.b[3]
+edcee664|	fmlalltt z13.s, z23.b, z6.b[3]
+ed4eae64|	fmlalt z13.s, z23.h, z6.h[3]
+ed5ea664|	fmlalt z13.h, z23.b, z6.b[3]
+ed063e64|	fmls z13.h, z23.h, z6.h[3]
+ed06be64|	fmls z13.s, z23.s, z6.s[3]
+e605e564|	fmls z6.d, z15.d, z5.d[0]
+ed6aae64|	fmlslb z13.s, z23.h, z6.h[3]
+ed6eae64|	fmlslt z13.s, z23.h, z6.h[3]
+ed223e64|	fmul z13.h, z23.h, z6.h[3]
+ed22be64|	fmul z13.s, z23.s, z6.s[3]
+e621e564|	fmul z6.d, z15.d, z5.d[0]
+ed0a3e44|	mla z13.h, z23.h, z6.h[3]
+ed0abe44|	mla z13.s, z23.s, z6.s[3]
+e609e544|	mla z6.d, z15.d, z5.d[0]
+ed0e3e44|	mls z13.h, z23.h, z6.h[3]
+ed0ebe44|	mls z13.s, z23.s, z6.s[3]
+e60de544|	mls z6.d, z15.d, z5.d[0]
+edfa3e44|	mul z13.h, z23.h, z6.h[3]
+edfabe44|	mul z13.s, z23.s, z6.s[3]
+e6f9e544|	mul z6.d, z15.d, z5.d[0]
+6d3b6a05|	pmov p13.s, z27[1]
+6d3b6a05|	pmov p13.s, z27[1]
+6d3b6a05|	pmov p13.s, z27[1]
+d9396d05|	pmov z25[2], p14.s
+d9396d05|	pmov z25[2], p14.s
+d9396d05|	pmov z25[2], p14.s
+edca9e44|	sdot z13.s, z23.h, z6.h[3]
+ed02be44|	sdot z13.s, z23.b, z6.b[3]
+e601e544|	sdot z6.d, z15.h, z5.h[0]
+ed8aae44|	smlalb z13.s, z23.h, z6.h[3]
+ed8af644|	smlalb z13.d, z23.s, z6.s[3]
+ed8eae44|	smlalt z13.s, z23.h, z6.h[3]
+ed8ef644|	smlalt z13.d, z23.s, z6.s[3]
+edaaae44|	smlslb z13.s, z23.h, z6.h[3]
+edaaf644|	smlslb z13.d, z23.s, z6.s[3]
+edaeae44|	smlslt z13.s, z23.h, z6.h[3]
+edaef644|	smlslt z13.d, z23.s, z6.s[3]
+edcaae44|	smullb z13.s, z23.h, z6.h[3]
+edcaf644|	smullb z13.d, z23.s, z6.s[3]
+edceae44|	smullt z13.s, z23.h, z6.h[3]
+edcef644|	smullt z13.d, z23.s, z6.s[3]
+ed2aae44|	sqdmlalb z13.s, z23.h, z6.h[3]
+ed2af644|	sqdmlalb z13.d, z23.s, z6.s[3]
+ed2eae44|	sqdmlalt z13.s, z23.h, z6.h[3]
+ed2ef644|	sqdmlalt z13.d, z23.s, z6.s[3]
+ed3aae44|	sqdmlslb z13.s, z23.h, z6.h[3]
+ed3af644|	sqdmlslb z13.d, z23.s, z6.s[3]
+ed3eae44|	sqdmlslt z13.s, z23.h, z6.h[3]
+ed3ef644|	sqdmlslt z13.d, z23.s, z6.s[3]
+edf23e44|	sqdmulh z13.h, z23.h, z6.h[3]
+edf2be44|	sqdmulh z13.s, z23.s, z6.s[3]
+e6f1e544|	sqdmulh z6.d, z15.d, z5.d[0]
+edeaae44|	sqdmullb z13.s, z23.h, z6.h[3]
+edeaf644|	sqdmullb z13.d, z23.s, z6.s[3]
+edeeae44|	sqdmullt z13.s, z23.h, z6.h[3]
+edeef644|	sqdmullt z13.d, z23.s, z6.s[3]
+ed123e44|	sqrdmlah z13.h, z23.h, z6.h[3]
+ed12be44|	sqrdmlah z13.s, z23.s, z6.s[3]
+e611e544|	sqrdmlah z6.d, z15.d, z5.d[0]
+ed163e44|	sqrdmlsh z13.h, z23.h, z6.h[3]
+ed16be44|	sqrdmlsh z13.s, z23.s, z6.s[3]
+e615e544|	sqrdmlsh z6.d, z15.d, z5.d[0]
+edf63e44|	sqrdmulh z13.h, z23.h, z6.h[3]
+edf6be44|	sqrdmulh z13.s, z23.s, z6.s[3]
+e6f5e544|	sqrdmulh z6.d, z15.d, z5.d[0]
+ed1ebe44|	sudot z13.s, z23.b, z6.b[3]
+edce9e44|	udot z13.s, z23.h, z6.h[3]
+ed06be44|	udot z13.s, z23.b, z6.b[3]
+e605e544|	udot z6.d, z15.h, z5.h[0]
+ed9aae44|	umlalb z13.s, z23.h, z6.h[3]
+ed9af644|	umlalb z13.d, z23.s, z6.s[3]
+ed9eae44|	umlalt z13.s, z23.h, z6.h[3]
+ed9ef644|	umlalt z13.d, z23.s, z6.s[3]
+edbaae44|	umlslb z13.s, z23.h, z6.h[3]
+edbaf644|	umlslb z13.d, z23.s, z6.s[3]
+edbeae44|	umlslt z13.s, z23.h, z6.h[3]
+edbef644|	umlslt z13.d, z23.s, z6.s[3]
+eddaae44|	umullb z13.s, z23.h, z6.h[3]
+eddaf644|	umullb z13.d, z23.s, z6.s[3]
+eddeae44|	umullt z13.s, z23.h, z6.h[3]
+eddef644|	umullt z13.d, z23.s, z6.s[3]
+ed1abe44|	usdot z13.s, z23.b, z6.b[3]
+3f516b04|	addpl sp, x11, #9
+3f512b04|	addvl sp, x11, #9
+3b50bf04|	rdvl x27, #1
+c7c0e025|	add z7.d, z7.d, #6
+27f88305|	and z7.d, z7.d, #0x6
+57850004|	asr z23.b, p1/m, z23.b, #6
+f790fa04|	asr z23.d, z7.d, #6
+57850404|	asrd z23.b, p1/m, z23.b, #6
+36df8045|	cadd z22.s, z22.s, z25.s, #270
+1a42bd44|	cdot z26.s, z16.b, z5.b[3], #0
+574ce344|	cdot z23.d, z2.h, z3.h[0], #270
+291c9c44|	cdot z9.s, z1.b, z28.b, #270
+1a62bd44|	cmla z26.h, z16.h, z5.h[3], #0
+576ce344|	cmla z23.s, z2.s, z3.s[0], #270
+892a9344|	cmla z9.s, z20.s, z19.s, #180
+ee860625|	cmpeq p14.b, p1/z, z23.b, #6
+ee060625|	cmpge p14.b, p1/z, z23.b, #6
+fe060625|	cmpgt p14.b, p1/z, z23.b, #6
+fe862124|	cmphi p14.b, p1/z, z23.b, #6
+ee862124|	cmphs p14.b, p1/z, z23.b, #6
+fe860625|	cmpne p14.b, p1/z, z23.b, #6
+c6405505|	cpy z6.h, p5/m, #6
+c6005505|	cpy z6.h, p5/z, #6
+2bc13825|	dup z11.b, #9
+27f84305|	eor z7.d, z7.d, #0x6
+ed1a2005|	ext z13.b, z13.b, z23.b, #6
+ed266605|	extq z13.b, z13.b, z23.b, #6
+a4918064|	fcadd z4.s, p4/m, z4.s, z13.s, #90
+e230d265|	fcmeq p2.d, p4/z, z7.d, #0.0
+e230d065|	fcmge p2.d, p4/z, z7.d, #0.0
+f230d065|	fcmgt p2.d, p4/z, z7.d, #0.0
+1a12bd64|	fcmla z26.h, z16.h, z5.h[3], #0
+571ce364|	fcmla z23.s, z2.s, z3.s[0], #270
+b95fde64|	fcmla z25.d, p7/m, z29.d, z30.d, #180
+f230d165|	fcmle p2.d, p4/z, z7.d, #0.0
+e230d165|	fcmlt p2.d, p4/z, z7.d, #0.0
+e230d365|	fcmne p2.d, p4/z, z7.d, #0.0
+0384de65|	fmax z3.d, p1/m, z3.d, #0.0
+0384dc65|	fmaxnm z3.d, p1/m, z3.d, #0.0
+0384df65|	fmin z3.d, p1/m, z3.d, #0.0
+0384dd65|	fminnm z3.d, p1/m, z3.d, #0.0
+a9819365|	ftmad z9.s, z9.s, z13.s, #3
+c748eb04|	index z7.d, #6, x11
+7a41a104|	index z26.s, #11, #1
+0e47e804|	index z14.d, x24, #8
+48496204|	index z8.h, #10, w2
+7a47a104|	index z26.s, w27, #1
+d7850304|	lsl z23.b, p1/m, z23.b, #6
+f79ca604|	lsl z23.d, z7.d, #6
+57850104|	lsr z23.b, p1/m, z23.b, #6
+f794fa04|	lsr z23.d, z7.d, #6
+c7c0f025|	mul z7.d, z7.d, #6
+27f80305|	orr z7.d, z7.d, #0x6
+f7183745|	rshrnb z23.h, z7.s, #9
+f71c3745|	rshrnt z23.h, z7.s, #9
+f7103745|	shrnb z23.h, z7.s, #9
+f7143745|	shrnt z23.h, z7.s, #9
+f7f48645|	sli z23.d, z7.d, #6
+c7c0e825|	smax z7.d, z7.d, #6
+c7c0ea25|	smin z7.d, z7.d, #6
+c7c0e425|	sqadd z7.d, z7.d, #6
+36df8145|	sqcadd z22.s, z22.s, z25.s, #270
+1a72bd44|	sqrdcmlah z26.h, z16.h, z5.h[3], #0
+577ce344|	sqrdcmlah z23.s, z2.s, z3.s[0], #270
+893a9344|	sqrdcmlah z9.s, z20.s, z19.s, #180
+f7283745|	sqrshrnb z23.h, z7.s, #9
+f72c3745|	sqrshrnt z23.h, z7.s, #9
+f7083745|	sqrshrunb z23.h, z7.s, #9
+f70c3745|	sqrshrunt z23.h, z7.s, #9
+d7850604|	sqshl z23.b, p1/m, z23.b, #6
+d7850f04|	sqshlu z23.b, p1/m, z23.b, #6
+f7203745|	sqshrnb z23.h, z7.s, #9
+f7243745|	sqshrnt z23.h, z7.s, #9
+f7003745|	sqshrunb z23.h, z7.s, #9
+f7043745|	sqshrunt z23.h, z7.s, #9
+c7c0e625|	sqsub z7.d, z7.d, #6
+f7f0da45|	sri z23.d, z7.d, #6
+57850c04|	srshr z23.b, p1/m, z23.b, #6
+f7e8da45|	srsra z23.d, z7.d, #6
+caa24545|	sshllb z10.d, z22.s, #5
+caa64545|	sshllt z10.d, z22.s, #5
+f7e0da45|	ssra z23.d, z7.d, #6
+c7c0e125|	sub z7.d, z7.d, #6
+c7c0e325|	subr z7.d, z7.d, #6
+c7c0e925|	umax z7.d, z7.d, #6
+c7c0eb25|	umin z7.d, z7.d, #6
+c7c0e525|	uqadd z7.d, z7.d, #6
+f7383745|	uqrshrnb z23.h, z7.s, #9
+f73c3745|	uqrshrnt z23.h, z7.s, #9
+d7850704|	uqshl z23.b, p1/m, z23.b, #6
+f7303745|	uqshrnb z23.h, z7.s, #9
+f7343745|	uqshrnt z23.h, z7.s, #9
+c7c0e725|	uqsub z7.d, z7.d, #6
+57850d04|	urshr z23.b, p1/m, z23.b, #6
+f7ecda45|	ursra z23.d, z7.d, #6
+caaa4545|	ushllb z10.d, z22.s, #5
+caae4545|	ushllt z10.d, z22.s, #5
+f7e4da45|	usra z23.d, z7.d, #6
+f5362a04|	xar z21.b, z21.b, z23.b, #6
+7d75a025|	pext { p13.s, p14.s }, pn11[1]
+5a516225|	whilege { p10.h, p11.h }, x10, x2
+5b516225|	whilegt { p10.h, p11.h }, x10, x2
+5b596225|	whilehi { p10.h, p11.h }, x10, x2
+5a596225|	whilehs { p10.h, p11.h }, x10, x2
+5b556225|	whilele { p10.h, p11.h }, x10, x2
+5a5d6225|	whilelo { p10.h, p11.h }, x10, x2
+5b5d6225|	whilels { p10.h, p11.h }, x10, x2
+5a556225|	whilelt { p10.h, p11.h }, x10, x2
+e6186005|	ext z6.b, { z7.b, z8.b }, #6
+edb2e645|	luti2 z13.b, { z23.b }, z6[3]
+edba6645|	luti2 z13.h, { z23.h }, z6[3]
+4aa4f645|	luti4 z10.b, { z2.b }, z22[1]
+edb6e645|	luti4 z13.h, { z23.h, z24.h }, z6[3]
+edbee645|	luti4 z13.h, { z23.h }, z6[3]
+ed90ed05|	splice z13.d, p4, { z7.d, z8.d }
+ed32e705|	tbl z13.d, { z23.d }, z7.d
+ed2ae705|	tbl z13.d, { z23.d, z24.d }, z7.d
+edfac744|	tblq z13.d, { z23.d }, z7.d
+8da1b004|	adr z13.s, [z12.s, z16.s]
+d7a82704|	adr z23.d, [z6.d, z7.d, sxtw #2]
+d7a86704|	adr z23.d, [z6.d, z7.d, uxtw #2]
+cd5106a4|	ld1b { z13.b }, p4/z, [x14, x6]
+cd5126a4|	ld1b { z13.h }, p4/z, [x14, x6]
+cd5146a4|	ld1b { z13.s }, p4/z, [x14, x6]
+cd5166a4|	ld1b { z13.d }, p4/z, [x14, x6]
+6fce4ac4|	ld1b { z15.d }, p3/z, [x19, z10.d]
+644c0484|	ld1b { z4.s }, p3/z, [x3, z4.s, uxtw]
+cdd146c4|	ld1b { z13.d }, p4/z, [x14, z6.d]
+cd51e6a5|	ld1d { z13.d }, p4/z, [x14, x6, lsl #3]
+cd9186a5|	ld1d { z13.q }, p4/z, [x14, x6, lsl #3]
+16c7f7c5|	ld1d { z22.d }, p1/z, [x24, z23.d, lsl #3]
+6fcecac5|	ld1d { z15.d }, p3/z, [x19, z10.d]
+cdd1e6c5|	ld1d { z13.d }, p4/z, [x14, z6.d, lsl #3]
+cdd1c6c5|	ld1d { z13.d }, p4/z, [x14, z6.d]
+cd51a6a4|	ld1h { z13.h }, p4/z, [x14, x6, lsl #1]
+cd51c6a4|	ld1h { z13.s }, p4/z, [x14, x6, lsl #1]
+cd51e6a4|	ld1h { z13.d }, p4/z, [x14, x6, lsl #1]
+644ca484|	ld1h { z4.s }, p3/z, [x3, z4.s, uxtw #1]
+16c7f7c4|	ld1h { z22.d }, p1/z, [x24, z23.d, lsl #1]
+6fcecac4|	ld1h { z15.d }, p3/z, [x19, z10.d]
+644c8484|	ld1h { z4.s }, p3/z, [x3, z4.s, uxtw]
+cdd1e6c4|	ld1h { z13.d }, p4/z, [x14, z6.d, lsl #1]
+cdd1c6c4|	ld1h { z13.d }, p4/z, [x14, z6.d]
+edb006c4|	ld1q { z13.q }, p4/z, [z7.d, x6]
+cd1126a4|	ld1rob { z13.b }, p4/z, [x14, x6]
+cd11a6a5|	ld1rod { z13.d }, p4/z, [x14, x6, lsl #3]
+cd11a6a4|	ld1roh { z13.h }, p4/z, [x14, x6, lsl #1]
+cd1126a5|	ld1row { z13.s }, p4/z, [x14, x6, lsl #2]
+cd1106a4|	ld1rqb { z13.b }, p4/z, [x14, x6]
+cd1186a5|	ld1rqd { z13.d }, p4/z, [x14, x6, lsl #3]
+cd1186a4|	ld1rqh { z13.h }, p4/z, [x14, x6, lsl #1]
+cd1106a5|	ld1rqw { z13.s }, p4/z, [x14, x6, lsl #2]
+cd51c6a5|	ld1sb { z13.h }, p4/z, [x14, x6]
+cd51a6a5|	ld1sb { z13.s }, p4/z, [x14, x6]
+cd5186a5|	ld1sb { z13.d }, p4/z, [x14, x6]
+6f8e4ac4|	ld1sb { z15.d }, p3/z, [x19, z10.d]
+640c0484|	ld1sb { z4.s }, p3/z, [x3, z4.s, uxtw]
+cd9146c4|	ld1sb { z13.d }, p4/z, [x14, z6.d]
+cd5126a5|	ld1sh { z13.s }, p4/z, [x14, x6, lsl #1]
+cd5106a5|	ld1sh { z13.d }, p4/z, [x14, x6, lsl #1]
+640ca484|	ld1sh { z4.s }, p3/z, [x3, z4.s, uxtw #1]
+1687f7c4|	ld1sh { z22.d }, p1/z, [x24, z23.d, lsl #1]
+6f8ecac4|	ld1sh { z15.d }, p3/z, [x19, z10.d]
+640c8484|	ld1sh { z4.s }, p3/z, [x3, z4.s, uxtw]
+cd91e6c4|	ld1sh { z13.d }, p4/z, [x14, z6.d, lsl #1]
+cd91c6c4|	ld1sh { z13.d }, p4/z, [x14, z6.d]
+cd5186a4|	ld1sw { z13.d }, p4/z, [x14, x6, lsl #2]
+168777c5|	ld1sw { z22.d }, p1/z, [x24, z23.d, lsl #2]
+6f8e4ac5|	ld1sw { z15.d }, p3/z, [x19, z10.d]
+cd9166c5|	ld1sw { z13.d }, p4/z, [x14, z6.d, lsl #2]
+cd9146c5|	ld1sw { z13.d }, p4/z, [x14, z6.d]
+cd5146a5|	ld1w { z13.s }, p4/z, [x14, x6, lsl #2]
+cd5166a5|	ld1w { z13.d }, p4/z, [x14, x6, lsl #2]
+cd9106a5|	ld1w { z13.q }, p4/z, [x14, x6, lsl #2]
+644c2485|	ld1w { z4.s }, p3/z, [x3, z4.s, uxtw #2]
+16c777c5|	ld1w { z22.d }, p1/z, [x24, z23.d, lsl #2]
+6fce4ac5|	ld1w { z15.d }, p3/z, [x19, z10.d]
+644c0485|	ld1w { z4.s }, p3/z, [x3, z4.s, uxtw]
+cdd166c5|	ld1w { z13.d }, p4/z, [x14, z6.d, lsl #2]
+cdd146c5|	ld1w { z13.d }, p4/z, [x14, z6.d]
+cdd126a4|	ld2b { z13.b, z14.b }, p4/z, [x14, x6]
+cdd1a6a5|	ld2d { z13.d, z14.d }, p4/z, [x14, x6, lsl #3]
+cdd1a6a4|	ld2h { z13.h, z14.h }, p4/z, [x14, x6, lsl #1]
+cd91a6a4|	ld2q { z13.q, z14.q }, p4/z, [x14, x6, lsl #4]
+cdd126a5|	ld2w { z13.s, z14.s }, p4/z, [x14, x6, lsl #2]
+cdd146a4|	ld3b { z13.b - z15.b }, p4/z, [x14, x6]
+cdd1c6a5|	ld3d { z13.d - z15.d }, p4/z, [x14, x6, lsl #3]
+cdd1c6a4|	ld3h { z13.h - z15.h }, p4/z, [x14, x6, lsl #1]
+cd9126a5|	ld3q { z13.q - z15.q }, p4/z, [x14, x6, lsl #4]
+cdd146a5|	ld3w { z13.s - z15.s }, p4/z, [x14, x6, lsl #2]
+cdd166a4|	ld4b { z13.b - z16.b }, p4/z, [x14, x6]
+cdd1e6a5|	ld4d { z13.d - z16.d }, p4/z, [x14, x6, lsl #3]
+cdd1e6a4|	ld4h { z13.h - z16.h }, p4/z, [x14, x6, lsl #1]
+cd91a6a5|	ld4q { z13.q - z16.q }, p4/z, [x14, x6, lsl #4]
+cdd166a5|	ld4w { z13.s - z16.s }, p4/z, [x14, x6, lsl #2]
+cd7106a4|	ldff1b { z13.b }, p4/z, [x14, x6]
+cd7126a4|	ldff1b { z13.h }, p4/z, [x14, x6]
+cd7146a4|	ldff1b { z13.s }, p4/z, [x14, x6]
+cd7166a4|	ldff1b { z13.d }, p4/z, [x14, x6]
+6fee4ac4|	ldff1b { z15.d }, p3/z, [x19, z10.d]
+646c0484|	ldff1b { z4.s }, p3/z, [x3, z4.s, uxtw]
+cdf146c4|	ldff1b { z13.d }, p4/z, [x14, z6.d]
+cd71e6a5|	ldff1d { z13.d }, p4/z, [x14, x6, lsl #3]
+16e7f7c5|	ldff1d { z22.d }, p1/z, [x24, z23.d, lsl #3]
+6feecac5|	ldff1d { z15.d }, p3/z, [x19, z10.d]
+cdf1e6c5|	ldff1d { z13.d }, p4/z, [x14, z6.d, lsl #3]
+cdf1c6c5|	ldff1d { z13.d }, p4/z, [x14, z6.d]
+cd71a6a4|	ldff1h { z13.h }, p4/z, [x14, x6, lsl #1]
+cd71c6a4|	ldff1h { z13.s }, p4/z, [x14, x6, lsl #1]
+cd71e6a4|	ldff1h { z13.d }, p4/z, [x14, x6, lsl #1]
+646ca484|	ldff1h { z4.s }, p3/z, [x3, z4.s, uxtw #1]
+16e7f7c4|	ldff1h { z22.d }, p1/z, [x24, z23.d, lsl #1]
+6feecac4|	ldff1h { z15.d }, p3/z, [x19, z10.d]
+646c8484|	ldff1h { z4.s }, p3/z, [x3, z4.s, uxtw]
+cdf1e6c4|	ldff1h { z13.d }, p4/z, [x14, z6.d, lsl #1]
+cdf1c6c4|	ldff1h { z13.d }, p4/z, [x14, z6.d]
+cd71c6a5|	ldff1sb { z13.h }, p4/z, [x14, x6]
+cd71a6a5|	ldff1sb { z13.s }, p4/z, [x14, x6]
+cd7186a5|	ldff1sb { z13.d }, p4/z, [x14, x6]
+6fae4ac4|	ldff1sb { z15.d }, p3/z, [x19, z10.d]
+642c0484|	ldff1sb { z4.s }, p3/z, [x3, z4.s, uxtw]
+cdb146c4|	ldff1sb { z13.d }, p4/z, [x14, z6.d]
+cd7126a5|	ldff1sh { z13.s }, p4/z, [x14, x6, lsl #1]
+cd7106a5|	ldff1sh { z13.d }, p4/z, [x14, x6, lsl #1]
+642ca484|	ldff1sh { z4.s }, p3/z, [x3, z4.s, uxtw #1]
+16a7f7c4|	ldff1sh { z22.d }, p1/z, [x24, z23.d, lsl #1]
+6faecac4|	ldff1sh { z15.d }, p3/z, [x19, z10.d]
+642c8484|	ldff1sh { z4.s }, p3/z, [x3, z4.s, uxtw]
+cdb1e6c4|	ldff1sh { z13.d }, p4/z, [x14, z6.d, lsl #1]
+cdb1c6c4|	ldff1sh { z13.d }, p4/z, [x14, z6.d]
+cd7186a4|	ldff1sw { z13.d }, p4/z, [x14, x6, lsl #2]
+16a777c5|	ldff1sw { z22.d }, p1/z, [x24, z23.d, lsl #2]
+6fae4ac5|	ldff1sw { z15.d }, p3/z, [x19, z10.d]
+cdb166c5|	ldff1sw { z13.d }, p4/z, [x14, z6.d, lsl #2]
+cdb146c5|	ldff1sw { z13.d }, p4/z, [x14, z6.d]
+cd7146a5|	ldff1w { z13.s }, p4/z, [x14, x6, lsl #2]
+cd7166a5|	ldff1w { z13.d }, p4/z, [x14, x6, lsl #2]
+646c2485|	ldff1w { z4.s }, p3/z, [x3, z4.s, uxtw #2]
+16e777c5|	ldff1w { z22.d }, p1/z, [x24, z23.d, lsl #2]
+6fee4ac5|	ldff1w { z15.d }, p3/z, [x19, z10.d]
+646c0485|	ldff1w { z4.s }, p3/z, [x3, z4.s, uxtw]
+cdf166c5|	ldff1w { z13.d }, p4/z, [x14, z6.d, lsl #2]
+cdf146c5|	ldff1w { z13.d }, p4/z, [x14, z6.d]
+cdd106a4|	ldnt1b { z13.b }, p4/z, [x14, x6]
+edb00684|	ldnt1b { z13.s }, p4/z, [z7.s, x6]
+edd006c4|	ldnt1b { z13.d }, p4/z, [z7.d, x6]
+cdd186a5|	ldnt1d { z13.d }, p4/z, [x14, x6, lsl #3]
+edd086c5|	ldnt1d { z13.d }, p4/z, [z7.d, x6]
+cdd186a4|	ldnt1h { z13.h }, p4/z, [x14, x6, lsl #1]
+edb08684|	ldnt1h { z13.s }, p4/z, [z7.s, x6]
+edd086c4|	ldnt1h { z13.d }, p4/z, [z7.d, x6]
+ed900684|	ldnt1sb { z13.s }, p4/z, [z7.s, x6]
+ed9006c4|	ldnt1sb { z13.d }, p4/z, [z7.d, x6]
+ed908684|	ldnt1sh { z13.s }, p4/z, [z7.s, x6]
+ed9086c4|	ldnt1sh { z13.d }, p4/z, [z7.d, x6]
+ed9006c5|	ldnt1sw { z13.d }, p4/z, [z7.d, x6]
+cdd106a5|	ldnt1w { z13.s }, p4/z, [x14, x6, lsl #2]
+edb00685|	ldnt1w { z13.s }, p4/z, [z7.s, x6]
+edd006c5|	ldnt1w { z13.d }, p4/z, [z7.d, x6]
+e75075e4|	st1b { z7.d }, p4, [x7, x21]
+e69015e4|	st1b { z6.d }, p4, [x7, z21.d, uxtw]
+e69055e4|	st1b { z6.s }, p4, [x7, z21.s, uxtw]
+e8af06e4|	st1b { z8.d }, p3, [sp, z6.d]
+e84fe6e5|	st1d { z8.d }, p3, [sp, x6, lsl #3]
+e84fc6e5|	st1d { z8.q }, p3, [sp, x6, lsl #3]
+e690b5e5|	st1d { z6.d }, p4, [x7, z21.d, uxtw #3]
+e69095e5|	st1d { z6.d }, p4, [x7, z21.d, uxtw]
+e8afa6e5|	st1d { z8.d }, p3, [sp, z6.d, lsl #3]
+e8af86e5|	st1d { z8.d }, p3, [sp, z6.d]
+e750f5e4|	st1h { z7.d }, p4, [x7, x21, lsl #1]
+e690f5e4|	st1h { z6.s }, p4, [x7, z21.s, uxtw #1]
+e690b5e4|	st1h { z6.d }, p4, [x7, z21.d, uxtw #1]
+e69095e4|	st1h { z6.d }, p4, [x7, z21.d, uxtw]
+e690d5e4|	st1h { z6.s }, p4, [x7, z21.s, uxtw]
+e8afa6e4|	st1h { z8.d }, p3, [sp, z6.d, lsl #1]
+e8af86e4|	st1h { z8.d }, p3, [sp, z6.d]
+e82d26e4|	st1q { z8.q }, p3, [z15.d, x6]
+e75075e5|	st1w { z7.d }, p4, [x7, x21, lsl #2]
+e84f06e5|	st1w { z8.q }, p3, [sp, x6, lsl #2]
+e69075e5|	st1w { z6.s }, p4, [x7, z21.s, uxtw #2]
+e69035e5|	st1w { z6.d }, p4, [x7, z21.d, uxtw #2]
+e69015e5|	st1w { z6.d }, p4, [x7, z21.d, uxtw]
+e69055e5|	st1w { z6.s }, p4, [x7, z21.s, uxtw]
+e8af26e5|	st1w { z8.d }, p3, [sp, z6.d, lsl #2]
+e8af06e5|	st1w { z8.d }, p3, [sp, z6.d]
+e86f26e4|	st2b { z8.b, z9.b }, p3, [sp, x6]
+e86fa6e5|	st2d { z8.d, z9.d }, p3, [sp, x6, lsl #3]
+e86fa6e4|	st2h { z8.h, z9.h }, p3, [sp, x6, lsl #1]
+e80f66e4|	st2q { z8.q, z9.q }, p3, [sp, x6, lsl #4]
+e86f26e5|	st2w { z8.s, z9.s }, p3, [sp, x6, lsl #2]
+e86f46e4|	st3b { z8.b - z10.b }, p3, [sp, x6]
+e86fc6e5|	st3d { z8.d - z10.d }, p3, [sp, x6, lsl #3]
+e86fc6e4|	st3h { z8.h - z10.h }, p3, [sp, x6, lsl #1]
+e80fa6e4|	st3q { z8.q - z10.q }, p3, [sp, x6, lsl #4]
+e86f46e5|	st3w { z8.s - z10.s }, p3, [sp, x6, lsl #2]
+e86f66e4|	st4b { z8.b - z11.b }, p3, [sp, x6]
+e86fe6e5|	st4d { z8.d - z11.d }, p3, [sp, x6, lsl #3]
+e86fe6e4|	st4h { z8.h - z11.h }, p3, [sp, x6, lsl #1]
+e80fe6e4|	st4q { z8.q - z11.q }, p3, [sp, x6, lsl #4]
+e86f66e5|	st4w { z8.s - z11.s }, p3, [sp, x6, lsl #2]
+e86f06e4|	stnt1b { z8.b }, p3, [sp, x6]
+e82d46e4|	stnt1b { z8.s }, p3, [z15.s, x6]
+e82d06e4|	stnt1b { z8.d }, p3, [z15.d, x6]
+e86f86e5|	stnt1d { z8.d }, p3, [sp, x6, lsl #3]
+e82d86e5|	stnt1d { z8.d }, p3, [z15.d, x6]
+e86f86e4|	stnt1h { z8.h }, p3, [sp, x6, lsl #1]
+e82dc6e4|	stnt1h { z8.s }, p3, [z15.s, x6]
+e82d86e4|	stnt1h { z8.d }, p3, [z15.d, x6]
+e86f06e5|	stnt1w { z8.s }, p3, [sp, x6, lsl #2]
+e82d46e5|	stnt1w { z8.s }, p3, [z15.s, x6]
+e82d06e5|	stnt1w { z8.d }, p3, [z15.d, x6]
+a583e025|	cntp x5, pn13.d, vlx2
+eccf0884|	prfb pstl3keep, p3, [sp, x8]
+eccf8885|	prfd pstl3keep, p3, [sp, x8, lsl #3]
+eccf8884|	prfh pstl3keep, p3, [sp, x8, lsl #1]
+eccf0885|	prfw pstl3keep, p3, [sp, x8, lsl #2]
+34617525|	whilege pn12.h, x9, x21, vlx4
+3c617525|	whilegt pn12.h, x9, x21, vlx4
+3c697525|	whilehi pn12.h, x9, x21, vlx4
+34697525|	whilehs pn12.h, x9, x21, vlx4
+3c657525|	whilele pn12.h, x9, x21, vlx4
+346d7525|	whilelo pn12.h, x9, x21, vlx4
+3c6d7525|	whilels pn12.h, x9, x21, vlx4
+34657525|	whilelt pn12.h, x9, x21, vlx4
+c1096684|	prfb pldl1strm, p2, [x14, z6.s, sxtw]
+c10966c4|	prfb pldl1strm, p2, [x14, z6.d, sxtw]
+ec8f68c4|	prfb pstl3keep, p3, [sp, z8.d]
+c1696684|	prfd pldl1strm, p2, [x14, z6.s, sxtw #3]
+c16966c4|	prfd pldl1strm, p2, [x14, z6.d, sxtw #3]
+ecef68c4|	prfd pstl3keep, p3, [sp, z8.d, lsl #3]
+c1296684|	prfh pldl1strm, p2, [x14, z6.s, sxtw #1]
+c12966c4|	prfh pldl1strm, p2, [x14, z6.d, sxtw #1]
+ecaf68c4|	prfh pstl3keep, p3, [sp, z8.d, lsl #1]
+c1496684|	prfw pldl1strm, p2, [x14, z6.s, sxtw #2]
+c14966c4|	prfw pldl1strm, p2, [x14, z6.d, sxtw #2]
+eccf68c4|	prfw pstl3keep, p3, [sp, z8.d, lsl #2]
+edd02684|	ld1b { z13.s }, p4/z, [z7.s, #6]
+edd026c4|	ld1b { z13.d }, p4/z, [z7.d, #6]
+c6d9a1c5|	ld1d { z6.d }, p6/z, [z14.d, #8]
+edd0a384|	ld1h { z13.s }, p4/z, [z7.s, #6]
+edd0a3c4|	ld1h { z13.d }, p4/z, [z7.d, #6]
+cd914684|	ld1rb { z13.b }, p4/z, [x14, #6]
+cdb14684|	ld1rb { z13.h }, p4/z, [x14, #6]
+cdd14684|	ld1rb { z13.s }, p4/z, [x14, #6]
+cdf14684|	ld1rb { z13.d }, p4/z, [x14, #6]
+a6fbc185|	ld1rd { z6.d }, p6/z, [x29, #8]
+cdb1c384|	ld1rh { z13.h }, p4/z, [x14, #6]
+cdd1c384|	ld1rh { z13.s }, p4/z, [x14, #6]
+cdf1c384|	ld1rh { z13.d }, p4/z, [x14, #6]
+cdd1c685|	ld1rsb { z13.h }, p4/z, [x14, #6]
+cdb1c685|	ld1rsb { z13.s }, p4/z, [x14, #6]
+cd91c685|	ld1rsb { z13.d }, p4/z, [x14, #6]
+cdb14385|	ld1rsh { z13.s }, p4/z, [x14, #6]
+cd914385|	ld1rsh { z13.d }, p4/z, [x14, #6]
+9998c384|	ld1rsw { z25.d }, p6/z, [x4, #12]
+99d84385|	ld1rw { z25.s }, p6/z, [x4, #12]
+99f84385|	ld1rw { z25.d }, p6/z, [x4, #12]
+ed902684|	ld1sb { z13.s }, p4/z, [z7.s, #6]
+ed9026c4|	ld1sb { z13.d }, p4/z, [z7.d, #6]
+ed90a384|	ld1sh { z13.s }, p4/z, [z7.s, #6]
+ed90a3c4|	ld1sh { z13.d }, p4/z, [z7.d, #6]
+199823c5|	ld1sw { z25.d }, p6/z, [z0.d, #12]
+19d82385|	ld1w { z25.s }, p6/z, [z0.s, #12]
+19d823c5|	ld1w { z25.d }, p6/z, [z0.d, #12]
+edf02684|	ldff1b { z13.s }, p4/z, [z7.s, #6]
+edf026c4|	ldff1b { z13.d }, p4/z, [z7.d, #6]
+c6f9a1c5|	ldff1d { z6.d }, p6/z, [z14.d, #8]
+edf0a384|	ldff1h { z13.s }, p4/z, [z7.s, #6]
+edf0a3c4|	ldff1h { z13.d }, p4/z, [z7.d, #6]
+edb02684|	ldff1sb { z13.s }, p4/z, [z7.s, #6]
+edb026c4|	ldff1sb { z13.d }, p4/z, [z7.d, #6]
+edb0a384|	ldff1sh { z13.s }, p4/z, [z7.s, #6]
+edb0a3c4|	ldff1sh { z13.d }, p4/z, [z7.d, #6]
+19b823c5|	ldff1sw { z25.d }, p6/z, [z0.d, #12]
+19f82385|	ldff1w { z25.s }, p6/z, [z0.s, #12]
+19f823c5|	ldff1w { z25.d }, p6/z, [z0.d, #12]
+4ced0884|	prfb pstl3keep, p3, [z10.s, #8]
+4ced08c4|	prfb pstl3keep, p3, [z10.d, #8]
+4ced8185|	prfd pstl3keep, p3, [z10.s, #8]
+4ced81c5|	prfd pstl3keep, p3, [z10.d, #8]
+4ced8484|	prfh pstl3keep, p3, [z10.s, #8]
+4ced84c4|	prfh pstl3keep, p3, [z10.d, #8]
+4ced0285|	prfw pstl3keep, p3, [z10.s, #8]
+4ced02c5|	prfw pstl3keep, p3, [z10.d, #8]
+e8ad66e4|	st1b { z8.s }, p3, [z15.s, #6]
+e8ad46e4|	st1b { z8.d }, p3, [z15.d, #6]
+e8ade3e4|	st1h { z8.s }, p3, [z15.s, #6]
+e8adc3e4|	st1h { z8.d }, p3, [z15.d, #6]
+e51bbf85|	ldr p5, [sp, #-2, mul vl]
+ec0fc185|	prfb pstl3keep, p3, [sp, #1, mul vl]
+ec6fc185|	prfd pstl3keep, p3, [sp, #1, mul vl]
+ec2fc185|	prfh pstl3keep, p3, [sp, #1, mul vl]
+ec4fc185|	prfw pstl3keep, p3, [sp, #1, mul vl]
+0e1cbfe5|	str p14, [x0, #-1, mul vl]
+cdb10ea4|	ld1b { z13.b }, p4/z, [x14, #-2, mul vl]
+cdb12ea4|	ld1b { z13.h }, p4/z, [x14, #-2, mul vl]
+cdb14ea4|	ld1b { z13.s }, p4/z, [x14, #-2, mul vl]
+cdb16ea4|	ld1b { z13.d }, p4/z, [x14, #-2, mul vl]
+cdb1eea5|	ld1d { z13.d }, p4/z, [x14, #-2, mul vl]
+cd319ea5|	ld1d { z13.q }, p4/z, [x14, #-2, mul vl]
+cdb1aea4|	ld1h { z13.h }, p4/z, [x14, #-2, mul vl]
+cdb1cea4|	ld1h { z13.s }, p4/z, [x14, #-2, mul vl]
+cdb1eea4|	ld1h { z13.d }, p4/z, [x14, #-2, mul vl]
+cdb1cea5|	ld1sb { z13.h }, p4/z, [x14, #-2, mul vl]
+cdb1aea5|	ld1sb { z13.s }, p4/z, [x14, #-2, mul vl]
+cdb18ea5|	ld1sb { z13.d }, p4/z, [x14, #-2, mul vl]
+cdb12ea5|	ld1sh { z13.s }, p4/z, [x14, #-2, mul vl]
+cdb10ea5|	ld1sh { z13.d }, p4/z, [x14, #-2, mul vl]
+cdb18ea4|	ld1sw { z13.d }, p4/z, [x14, #-2, mul vl]
+cdb14ea5|	ld1w { z13.s }, p4/z, [x14, #-2, mul vl]
+cdb16ea5|	ld1w { z13.d }, p4/z, [x14, #-2, mul vl]
+cd311ea5|	ld1w { z13.q }, p4/z, [x14, #-2, mul vl]
+cdf12fa4|	ld2b { z13.b, z14.b }, p4/z, [x14, #-2, mul vl]
+cdf1afa5|	ld2d { z13.d, z14.d }, p4/z, [x14, #-2, mul vl]
+cdf1afa4|	ld2h { z13.h, z14.h }, p4/z, [x14, #-2, mul vl]
+cdf19fa4|	ld2q { z13.q, z14.q }, p4/z, [x14, #-2, mul vl]
+cdf12fa5|	ld2w { z13.s, z14.s }, p4/z, [x14, #-2, mul vl]
+55f14fa4|	ld3b { z21.b - z23.b }, p4/z, [x10, #-3, mul vl]
+55f1cfa5|	ld3d { z21.d - z23.d }, p4/z, [x10, #-3, mul vl]
+55f1cfa4|	ld3h { z21.h - z23.h }, p4/z, [x10, #-3, mul vl]
+55f11fa5|	ld3q { z21.q - z23.q }, p4/z, [x10, #-3, mul vl]
+55f14fa5|	ld3w { z21.s - z23.s }, p4/z, [x10, #-3, mul vl]
+99f861a4|	ld4b { z25.b - z28.b }, p6/z, [x4, #4, mul vl]
+99f8e1a5|	ld4d { z25.d - z28.d }, p6/z, [x4, #4, mul vl]
+99f8e1a4|	ld4h { z25.h - z28.h }, p6/z, [x4, #4, mul vl]
+99f891a5|	ld4q { z25.q - z28.q }, p6/z, [x4, #4, mul vl]
+99f861a5|	ld4w { z25.s - z28.s }, p6/z, [x4, #4, mul vl]
+cdb11ea4|	ldnf1b { z13.b }, p4/z, [x14, #-2, mul vl]
+cdb13ea4|	ldnf1b { z13.h }, p4/z, [x14, #-2, mul vl]
+cdb15ea4|	ldnf1b { z13.s }, p4/z, [x14, #-2, mul vl]
+cdb17ea4|	ldnf1b { z13.d }, p4/z, [x14, #-2, mul vl]
+cdb1fea5|	ldnf1d { z13.d }, p4/z, [x14, #-2, mul vl]
+cdb1bea4|	ldnf1h { z13.h }, p4/z, [x14, #-2, mul vl]
+cdb1dea4|	ldnf1h { z13.s }, p4/z, [x14, #-2, mul vl]
+cdb1fea4|	ldnf1h { z13.d }, p4/z, [x14, #-2, mul vl]
+cdb1dea5|	ldnf1sb { z13.h }, p4/z, [x14, #-2, mul vl]
+cdb1bea5|	ldnf1sb { z13.s }, p4/z, [x14, #-2, mul vl]
+cdb19ea5|	ldnf1sb { z13.d }, p4/z, [x14, #-2, mul vl]
+cdb13ea5|	ldnf1sh { z13.s }, p4/z, [x14, #-2, mul vl]
+cdb11ea5|	ldnf1sh { z13.d }, p4/z, [x14, #-2, mul vl]
+cdb19ea4|	ldnf1sw { z13.d }, p4/z, [x14, #-2, mul vl]
+cdb15ea5|	ldnf1w { z13.s }, p4/z, [x14, #-2, mul vl]
+cdb17ea5|	ldnf1w { z13.d }, p4/z, [x14, #-2, mul vl]
+cdf10ea4|	ldnt1b { z13.b }, p4/z, [x14, #-2, mul vl]
+cdf18ea5|	ldnt1d { z13.d }, p4/z, [x14, #-2, mul vl]
+cdf18ea4|	ldnt1h { z13.h }, p4/z, [x14, #-2, mul vl]
+cdf10ea5|	ldnt1w { z13.s }, p4/z, [x14, #-2, mul vl]
+e75bbf85|	ldr z7, [sp, #-2, mul vl]
+e7f06de4|	st1b { z7.d }, p4, [x7, #-3, mul vl]
+e8efeee5|	st1d { z8.d }, p3, [sp, #-2, mul vl]
+e8efcee5|	st1d { z8.q }, p3, [sp, #-2, mul vl]
+e7f0ede4|	st1h { z7.d }, p4, [x7, #-3, mul vl]
+e7f06de5|	st1w { z7.d }, p4, [x7, #-3, mul vl]
+e8ef0ee5|	st1w { z8.q }, p3, [sp, #-2, mul vl]
+e8ef3fe4|	st2b { z8.b, z9.b }, p3, [sp, #-2, mul vl]
+e8efbfe5|	st2d { z8.d, z9.d }, p3, [sp, #-2, mul vl]
+e8efbfe4|	st2h { z8.h, z9.h }, p3, [sp, #-2, mul vl]
+e80f4fe4|	st2q { z8.q, z9.q }, p3, [sp, #-2, mul vl]
+e8ef3fe5|	st2w { z8.s, z9.s }, p3, [sp, #-2, mul vl]
+82e55fe4|	st3b { z2.b - z4.b }, p1, [x12, #-3, mul vl]
+82e5dfe5|	st3d { z2.d - z4.d }, p1, [x12, #-3, mul vl]
+82e5dfe4|	st3h { z2.h - z4.h }, p1, [x12, #-3, mul vl]
+82058fe4|	st3q { z2.q - z4.q }, p1, [x12, #-3, mul vl]
+82e55fe5|	st3w { z2.s - z4.s }, p1, [x12, #-3, mul vl]
+30e97ee4|	st4b { z16.b - z19.b }, p2, [x9, #-8, mul vl]
+30e9fee5|	st4d { z16.d - z19.d }, p2, [x9, #-8, mul vl]
+30e9fee4|	st4h { z16.h - z19.h }, p2, [x9, #-8, mul vl]
+3009cee4|	st4q { z16.q - z19.q }, p2, [x9, #-8, mul vl]
+30e97ee5|	st4w { z16.s - z19.s }, p2, [x9, #-8, mul vl]
+e8ef1ee4|	stnt1b { z8.b }, p3, [sp, #-2, mul vl]
+e8ef9ee5|	stnt1d { z8.d }, p3, [sp, #-2, mul vl]
+e8ef9ee4|	stnt1h { z8.h }, p3, [sp, #-2, mul vl]
+e8ef1ee5|	stnt1w { z8.s }, p3, [sp, #-2, mul vl]
+0b5cbfe5|	str z11, [x0, #-1, mul vl]
+b6ee2a45|	aesd { z22.b, z23.b }, { z22.b, z23.b }, z21.q[1]
+48ed3645|	aesd { z8.b - z11.b }, { z8.b - z11.b }, z10.q[2]
+b6ee2b45|	aesdimc { z22.b, z23.b }, { z22.b, z23.b }, z21.q[1]
+48ed3745|	aesdimc { z8.b - z11.b }, { z8.b - z11.b }, z10.q[2]
+b6ea2a45|	aese { z22.b, z23.b }, { z22.b, z23.b }, z21.q[1]
+48e93645|	aese { z8.b - z11.b }, { z8.b - z11.b }, z10.q[2]
+b6ea2b45|	aesemc { z22.b, z23.b }, { z22.b, z23.b }, z21.q[1]
+48e93745|	aesemc { z8.b - z11.b }, { z8.b - z11.b }, z10.q[2]
+4a380a65|	bfcvtn z10.b, { z2.h, z3.h }
+4a300a65|	fcvtn z10.b, { z2.h, z3.h }
+4a340a65|	fcvtnb z10.b, { z2.s, z3.s }
+4a3c0a65|	fcvtnt z10.b, { z2.s, z3.s }
+78084da0|	ld1b { z24.b, z25.b }, pn10/z, [x3, #-6, mul vl]
+f08b41a0|	ld1b { z16.b - z19.b }, pn10/z, [sp, #4, mul vl]
+661305a0|	ld1b { z6.b, z7.b }, pn12/z, [x27, x5]
+788802a0|	ld1b { z24.b - z27.b }, pn10/z, [x3, x2]
+78684da0|	ld1d { z24.d, z25.d }, pn10/z, [x3, #-6, mul vl]
+f0eb41a0|	ld1d { z16.d - z19.d }, pn10/z, [sp, #4, mul vl]
+667305a0|	ld1d { z6.d, z7.d }, pn12/z, [x27, x5, lsl #3]
+78e802a0|	ld1d { z24.d - z27.d }, pn10/z, [x3, x2, lsl #3]
+78284da0|	ld1h { z24.h, z25.h }, pn10/z, [x3, #-6, mul vl]
+f0ab41a0|	ld1h { z16.h - z19.h }, pn10/z, [sp, #4, mul vl]
+663305a0|	ld1h { z6.h, z7.h }, pn12/z, [x27, x5, lsl #1]
+78a802a0|	ld1h { z24.h - z27.h }, pn10/z, [x3, x2, lsl #1]
+78484da0|	ld1w { z24.s, z25.s }, pn10/z, [x3, #-6, mul vl]
+f0cb41a0|	ld1w { z16.s - z19.s }, pn10/z, [sp, #4, mul vl]
+665305a0|	ld1w { z6.s, z7.s }, pn12/z, [x27, x5, lsl #2]
+78c802a0|	ld1w { z24.s - z27.s }, pn10/z, [x3, x2, lsl #2]
+79084da0|	ldnt1b { z24.b, z25.b }, pn10/z, [x3, #-6, mul vl]
+f18b41a0|	ldnt1b { z16.b - z19.b }, pn10/z, [sp, #4, mul vl]
+671305a0|	ldnt1b { z6.b, z7.b }, pn12/z, [x27, x5]
+798802a0|	ldnt1b { z24.b - z27.b }, pn10/z, [x3, x2]
+79684da0|	ldnt1d { z24.d, z25.d }, pn10/z, [x3, #-6, mul vl]
+f1eb41a0|	ldnt1d { z16.d - z19.d }, pn10/z, [sp, #4, mul vl]
+677305a0|	ldnt1d { z6.d, z7.d }, pn12/z, [x27, x5, lsl #3]
+79e802a0|	ldnt1d { z24.d - z27.d }, pn10/z, [x3, x2, lsl #3]
+79284da0|	ldnt1h { z24.h, z25.h }, pn10/z, [x3, #-6, mul vl]
+f1ab41a0|	ldnt1h { z16.h - z19.h }, pn10/z, [sp, #4, mul vl]
+673305a0|	ldnt1h { z6.h, z7.h }, pn12/z, [x27, x5, lsl #1]
+79a802a0|	ldnt1h { z24.h - z27.h }, pn10/z, [x3, x2, lsl #1]
+79484da0|	ldnt1w { z24.s, z25.s }, pn10/z, [x3, #-6, mul vl]
+f1cb41a0|	ldnt1w { z16.s - z19.s }, pn10/z, [sp, #4, mul vl]
+675305a0|	ldnt1w { z6.s, z7.s }, pn12/z, [x27, x5, lsl #2]
+79c802a0|	ldnt1w { z24.s - z27.s }, pn10/z, [x3, x2, lsl #2]
+b6fe2d45|	pmlal { z22.q, z23.q }, z21.d, z13.d
+b6fa2d45|	pmull { z22.q, z23.q }, z21.d, z13.d
+4a403145|	sqcvtn z10.h, { z2.s, z3.s }
+4a503145|	sqcvtun z10.h, { z2.s, z3.s }
+4a28ba45|	sqrshrn z10.h, { z2.s, z3.s }, #6
+4a08ba45|	sqrshrun z10.h, { z2.s, z3.s }, #6
+2e126ea0|	st1b { z14.b, z15.b }, pn12, [x17, #-4, mul vl]
+e49361a0|	st1b { z4.b - z7.b }, pn12, [sp, #4, mul vl]
+2e1234a0|	st1b { z14.b, z15.b }, pn12, [x17, x20]
+e4932ca0|	st1b { z4.b - z7.b }, pn12, [sp, x12]
+2e726ea0|	st1d { z14.d, z15.d }, pn12, [x17, #-4, mul vl]
+e4f361a0|	st1d { z4.d - z7.d }, pn12, [sp, #4, mul vl]
+2e7234a0|	st1d { z14.d, z15.d }, pn12, [x17, x20, lsl #3]
+e4f32ca0|	st1d { z4.d - z7.d }, pn12, [sp, x12, lsl #3]
+2e326ea0|	st1h { z14.h, z15.h }, pn12, [x17, #-4, mul vl]
+e4b361a0|	st1h { z4.h - z7.h }, pn12, [sp, #4, mul vl]
+2e3234a0|	st1h { z14.h, z15.h }, pn12, [x17, x20, lsl #1]
+e4b32ca0|	st1h { z4.h - z7.h }, pn12, [sp, x12, lsl #1]
+2e526ea0|	st1w { z14.s, z15.s }, pn12, [x17, #-4, mul vl]
+e4d361a0|	st1w { z4.s - z7.s }, pn12, [sp, #4, mul vl]
+2e5234a0|	st1w { z14.s, z15.s }, pn12, [x17, x20, lsl #2]
+e4d32ca0|	st1w { z4.s - z7.s }, pn12, [sp, x12, lsl #2]
+2f126ea0|	stnt1b { z14.b, z15.b }, pn12, [x17, #-4, mul vl]
+e59361a0|	stnt1b { z4.b - z7.b }, pn12, [sp, #4, mul vl]
+2f1234a0|	stnt1b { z14.b, z15.b }, pn12, [x17, x20]
+e5932ca0|	stnt1b { z4.b - z7.b }, pn12, [sp, x12]
+2f726ea0|	stnt1d { z14.d, z15.d }, pn12, [x17, #-4, mul vl]
+e5f361a0|	stnt1d { z4.d - z7.d }, pn12, [sp, #4, mul vl]
+2f7234a0|	stnt1d { z14.d, z15.d }, pn12, [x17, x20, lsl #3]
+e5f32ca0|	stnt1d { z4.d - z7.d }, pn12, [sp, x12, lsl #3]
+2f326ea0|	stnt1h { z14.h, z15.h }, pn12, [x17, #-4, mul vl]
+e5b361a0|	stnt1h { z4.h - z7.h }, pn12, [sp, #4, mul vl]
+2f3234a0|	stnt1h { z14.h, z15.h }, pn12, [x17, x20, lsl #1]
+e5b32ca0|	stnt1h { z4.h - z7.h }, pn12, [sp, x12, lsl #1]
+2f526ea0|	stnt1w { z14.s, z15.s }, pn12, [x17, #-4, mul vl]
+e5d361a0|	stnt1w { z4.s - z7.s }, pn12, [sp, #4, mul vl]
+2f5234a0|	stnt1w { z14.s, z15.s }, pn12, [x17, x20, lsl #2]
+e5d32ca0|	stnt1w { z4.s - z7.s }, pn12, [sp, x12, lsl #2]
+4a483145|	uqcvtn z10.h, { z2.s, z3.s }
+4a38ba45|	uqrshrn z10.h, { z2.s, z3.s }, #6
