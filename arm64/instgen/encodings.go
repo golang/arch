@@ -2143,7 +2143,8 @@ imm3: [16:19)
 `: {"encodeImm31619", `if v < 1 || v > 8 {
 		return 0, false
 	}
-	return v << 16, true`, "enc_imm3"},
+	// From ARM ASL: let shift : integer = esize - UInt(imm3);
+	return (8 - v) << 16, true`, "enc_imm3"},
 	`For the "Four registers" variant: is the name of the first scalable vector register of the destination and first source multi-vector group, encoded as "Zdn" times 4.
 bit range mappings:
 Zdn: [2:5)
