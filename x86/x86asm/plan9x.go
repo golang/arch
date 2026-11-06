@@ -125,22 +125,13 @@ func GoSyntax(inst Inst, pc uint64, symname SymLookup) string {
 				s = 64
 			}
 		}
-		// Byte forms of the ALU/MOV/TEST opcodes operate on 8-bit registers
-		// regardless of the operand-size attribute; cmd/asm spells them with
-		// the B suffix (CMPB R8, $0xc, not CMPL).
-		for _, a := range inst.Args {
-			r, ok := a.(Reg)
-			if !ok || r < AL || r > R15B {
-				continue
+		// The byte forms of these opcodes do not use the operand-size
+		// attribute, so DataSize is 32 even though they operate on 8-bit
+		// registers. cmd/asm spells them with the B suffix (CMPB R8, $0xc).
+		if i, ok := plan9ByteWidthArg[inst.Op]; ok {
+			if r, ok := inst.Args[i].(Reg); ok && AL <= r && r <= R15B {
+				s = 8
 			}
-			if r == CL && isShiftOp(inst.Op) {
-				continue // shift count, not the operand size
-			}
-			if inst.Op == IN || inst.Op == OUT {
-				continue // AL/AX/EAX select the port width, spelled differently by cmd/asm
-			}
-			s = 8
-			break
 		}
 		switch s {
 		case 8:
@@ -350,6 +341,43 @@ var plan9Suffix = [maxOp + 1]bool{
 	XADD:      true,
 	XCHG:      true,
 	XOR:       true,
+}
+
+// plan9ByteWidthArg lists the instructions that have a byte form and, for
+// each, the index (in Intel operand order) of the operand whose register
+// width selects the B suffix. Other register operands never do: the CL
+// shift count of SHL/ROL/..., or the shift amount of the BMI2 SHLX/SHRX/
+// SARX, which has no byte form at all. Memory operands are sized through
+// MemBytes.
+var plan9ByteWidthArg = map[Op]int{
+	ADC:     0,
+	ADD:     0,
+	AND:     0,
+	CMP:     0,
+	CMPXCHG: 0,
+	DEC:     0,
+	DIV:     0,
+	IDIV:    0,
+	IMUL:    0, // only the one-operand form has a byte encoding
+	INC:     0,
+	MOV:     0,
+	MUL:     0,
+	NEG:     0,
+	NOT:     0,
+	OR:      0,
+	RCL:     0,
+	RCR:     0,
+	ROL:     0,
+	ROR:     0,
+	SAR:     0,
+	SBB:     0,
+	SHL:     0,
+	SHR:     0,
+	SUB:     0,
+	TEST:    0,
+	XADD:    0,
+	XCHG:    0,
+	XOR:     0,
 }
 
 var plan9Reg = [...]string{
@@ -595,13 +623,4 @@ var plan9Reg = [...]string{
 	TR5:  "TR5",
 	TR6:  "TR6",
 	TR7:  "TR7",
-}
-
-// isShiftOp reports whether op takes its shift count in CL.
-func isShiftOp(op Op) bool {
-	switch op {
-	case SHL, SHR, SAR, ROL, ROR, RCL, RCR, SHLD, SHRD:
-		return true
-	}
-	return false
 }
