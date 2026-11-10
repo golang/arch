@@ -294,6 +294,15 @@ func decodeArg(aop instArg, x uint32) Arg {
 	case arg_Xs:
 		return X0 + Reg((x>>16)&(1<<5-1))
 
+	case arg_Xd_mops_mem:
+		return MemMOPS{X0 + Reg(x&(1<<5-1))}
+
+	case arg_Xn_mops_wb:
+		return RegWriteBack(X0 + Reg((x>>5)&(1<<5-1)))
+
+	case arg_Xs_mops_wb:
+		return RegWriteBack(X0 + Reg((x>>16)&(1<<5-1)))
+
 	case arg_Xt:
 		return X0 + Reg(x&(1<<5-1))
 
