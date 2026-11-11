@@ -26,6 +26,7 @@ import (
 	"strings"
 
 	"github.com/ledongthuc/pdf"
+	"golang.org/x/arch/loong64/loong64spec/simdgen"
 )
 
 func mergeMap(m1 map[string]string, m2 map[string]string) {
@@ -82,7 +83,7 @@ func main() {
 	for pageNum := 1; pageNum <= n; pageNum++ {
 		p := r.Page(pageNum)
 		if fp == 0 {
-			if !isFirstPage(p) {
+			if !simdgen.IsFirstPage(p) {
 				continue
 			}
 			fp = pageNum
@@ -115,30 +116,6 @@ func main() {
 	fileTables.Write(op_f.Bytes())
 	fileTables.Write(opstr_f.Bytes())
 	fileTables.Write(instFormats_f.Bytes())
-}
-
-func isFirstPage(page pdf.Page) bool {
-	content := page.Content()
-	simdAppendixbPrefix := "LoongArchReferenceManualVolumeII-a:VectorInstructionExtensions"
-	simdAppendixbSuffix := "AppendixB"
-	simdAppendixbLen := len(simdAppendixbPrefix) + len(simdAppendixbSuffix) + 4
-	ct := ""
-	for _, t := range content.Text {
-		ct += t.S
-		if strings.HasSuffix(ct, simdAppendixbSuffix) {
-			return true
-		}
-		if strings.HasPrefix(simdAppendixbPrefix, ct) || strings.HasPrefix(ct, simdAppendixbPrefix) {
-			if len(ct) >= simdAppendixbLen {
-				return false
-			}
-			continue
-		} else {
-			return false
-
-		}
-	}
-	return false
 }
 
 func getArg(opName string, name string) (length int, argName string) {
@@ -414,84 +391,13 @@ func dealWithSpecialInst(op string) (comment string, instFormat string, nextI in
 	return
 }
 
-func findWords(chars []pdf.Text) (words []pdf.Text) {
-	for i := 0; i < len(chars); {
-		xRange := []float64{chars[i].X, chars[i].X}
-		j := i + 1
-
-		// Find all chars on one line.
-		for j < len(chars) && chars[j].Y == chars[i].Y {
-			xRange[1] = chars[j].X
-			j++
-		}
-
-		// Split line into words (really, phrases).
-		for k := i; k < j; {
-			ck := &chars[k]
-			s := ck.S
-			var preX float64 = ck.X
-			l := k + 1
-			for ; l < j; l++ {
-				cl := &chars[l]
-				// Based on observation, if the distance between two characters exceeds 10,
-				// they are considered not to belong to the same word.
-				if cl.X-preX < 10 {
-					s += cl.S
-					preX = cl.X
-					continue
-				}
-				if cl.X-preX >= 10 {
-					f := ck.Font
-					words = append(words, pdf.Text{
-						Font:     f,
-						FontSize: ck.FontSize,
-						X:        ck.X,
-						Y:        ck.Y,
-						W:        preX - ck.X,
-						S:        s,
-					})
-					s = cl.S
-					preX = cl.X
-					continue
-				}
-			}
-			f := ck.Font
-			words = append(words, pdf.Text{
-				Font:     f,
-				FontSize: ck.FontSize,
-				X:        ck.X,
-				Y:        ck.Y,
-				W:        preX - ck.X,
-				S:        s,
-			})
-			k = l
-		}
-		i = j
-	}
-
-	return words
-}
-
 func parsePage(num int, p pdf.Page, isFP bool) (ops []string, opstrs map[string]string, instFormatComments map[string]string, instFormats map[string]string) {
 	opstrs = make(map[string]string)
 	instFormatComments = make(map[string]string)
 	instFormats = make(map[string]string)
 
-	content := p.Content()
-
-	var text []pdf.Text
-	for _, t := range content.Text {
-		text = append(text, t)
-	}
-
-	// page header(62), page num(3), table name(30), table header(64)
-	if isFP {
-		text = text[159:len(text)] // 62+3+30+64
-	} else {
-		text = text[129:len(text)] // 62+3+64
-	}
-
-	text = findWords(text)
+	validText := simdgen.ExtrText(p, isFP)
+	text := simdgen.GetInst(validText)
 
 	for i := 0; i < len(text); {
 		var fcmpConditions map[string]map[string]string
