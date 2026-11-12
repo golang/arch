@@ -62,3 +62,12 @@ var sveSampleForms = []sveForm{
 	// ADD  <Zd>.<T>, <Zn>.<T>, <Zm>.<T>
 	{mask: 0xff20fc00, value: 0x04200000, op: 0, args: 0},
 }
+
+// sveSampleGateLo and sveSampleGateHi are a bitmap of the values of bits 31:25 that any
+// form can match: bit n of the 128 is set when some form's mask and value allow
+// n there. The forms use 1 of the 128 values. sveDecode skips the scan for a
+// word whose value is not in the set, which no form could have matched.
+var (
+	sveSampleGateLo uint64 = 0x0000000000000004
+	sveSampleGateHi uint64 = 0x0000000000000000
+)

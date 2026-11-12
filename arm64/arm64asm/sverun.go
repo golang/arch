@@ -823,6 +823,17 @@ func (sveZeroFP) String() string { return "#0.0" }
 // right one; a form whose operands do not resolve is not a match, because the
 // descriptors' range and table checks are part of the encoding's definition.
 func sveDecode(w uint32) (Inst, bool) {
+	// No form matches a word whose bits 31:25 are outside the gate, so skip the
+	// scan for it. Without this check every word that the stock tables reject
+	// is compared with every form.
+	if g := w >> 25; g < 64 && sveGateLo>>g&1 == 0 || g >= 64 && sveGateHi>>(g-64)&1 == 0 {
+		return Inst{}, false
+	}
+	return sveScan(w)
+}
+
+// sveScan tries the forms in order, most specific mask first.
+func sveScan(w uint32) (Inst, bool) {
 	for i := range sveForms {
 		f := &sveForms[i]
 		if w&f.mask != f.value {

@@ -95,6 +95,9 @@ func TestRender(t *testing.T) {
 		"{role: roleReg, fields: []sveField{{5, 5}}, regfile: rfZ, fixed: -1}",
 		"{role: roleReg, fields: []sveField{{0, 5}}, regfile: rfZ, fixed: -1}",
 		"\t// MOVPRFX  <Zd>, <Zn>\n\t{mask: 0xfffffc00, value: 0x0420bc00, op: 0, args: 0},\n",
+		// MOVPRFX has bits 31:25 = 0000010, so only value 2 is in the gate.
+		"sveGateLo uint64 = 0x0000000000000004",
+		"sveGateHi uint64 = 0x0000000000000000",
 	} {
 		if !strings.Contains(text, want) {
 			t.Errorf("generated file lacks %q:\n%s", want, text)
@@ -206,5 +209,23 @@ func TestRenderOrdersFormsByMask(t *testing.T) {
 	i, j := strings.Index(text, "mask: 0xfffffc00"), strings.Index(text, "mask: 0xfffff800")
 	if i < 0 || j < 0 || i > j {
 		t.Errorf("forms are not ordered most specific mask first (positions %d, %d):\n%s", i, j, text)
+	}
+}
+
+func TestGateBitmap(t *testing.T) {
+	forms := []dForm{
+		{Mask: 0xfe000000, Value: 0x04000000}, // bits 31:25 pinned to 2
+		{Mask: 0xfe000000, Value: 0xa0000000}, // pinned to 0x50, in the high word
+		{Mask: 0xfe000000, Value: 0xfe000000}, // pinned to 0x7f, the top bit of the high word
+		{Mask: 0xf8000000, Value: 0x08000000}, // bits 31:27 pinned to 00001, bits 26:25 free: values 4 to 7
+	}
+	lo, hi, n := gateBitmap(forms)
+	wantLo := uint64(1<<2 | 0xf<<4) // value 2, and 4 to 7
+	wantHi := uint64(1<<(0x50-64) | 1<<(0x7f-64))
+	if lo != wantLo || hi != wantHi || n != 7 {
+		t.Errorf("gateBitmap = %#x, %#x, %d; want %#x, %#x, 7", lo, hi, n, wantLo, wantHi)
+	}
+	if lo, hi, n := gateBitmap(nil); lo != 0 || hi != 0 || n != 0 {
+		t.Errorf("gateBitmap(nil) = %#x, %#x, %d; want zeros", lo, hi, n)
 	}
 }

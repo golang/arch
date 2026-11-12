@@ -8,6 +8,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"math/bits"
+	"math/rand"
 	"strings"
 	"testing"
 )
@@ -28,12 +29,34 @@ type sveTables struct {
 func useSVETables(t *testing.T, tab sveTables) {
 	t.Helper()
 	old := sveTables{sveOpARM, sveOpGo, sveSyms, sveDescs, sveArgs, sveArgLists, sveForms}
+	oldLo, oldHi := sveGateLo, sveGateHi
 	set := func(x sveTables) {
 		sveOpARM, sveOpGo, sveSyms, sveDescs, sveArgs, sveArgLists, sveForms =
 			x.opARM, x.opGo, x.syms, x.descs, x.args, x.argLists, x.forms
 	}
 	set(tab)
-	t.Cleanup(func() { set(old) })
+	// The gate belongs to the forms it was generated from, so a table set made by
+	// hand gets the gate its own forms need.
+	sveGateLo, sveGateHi = sveGateOf(tab.forms)
+	t.Cleanup(func() { set(old); sveGateLo, sveGateHi = oldLo, oldHi })
+}
+
+// sveGateOf computes the bitmap of values of bits 31:25 that any of forms can
+// match. It is the reference for the generated sveGateLo and sveGateHi.
+func sveGateOf(forms []sveForm) (lo, hi uint64) {
+	for v := uint32(0); v < 128; v++ {
+		for _, f := range forms {
+			if v&(f.mask>>25) == f.value>>25&(f.mask>>25) {
+				if v < 64 {
+					lo |= 1 << v
+				} else {
+					hi |= 1 << (v - 64)
+				}
+				break
+			}
+		}
+	}
+	return lo, hi
 }
 
 // sveTestTables is a hand-maintained table set for 34 SVE forms, chosen so that
@@ -1034,6 +1057,55 @@ func TestSVESymbolSpellings(t *testing.T) {
 	}
 }
 
+// TestSVEGate checks the generated gate against the forms it gates. For every
+// value of bits 31:25 the bit is set exactly when some form can match it, so the
+// gate removes work and never a decoding.
+func TestSVEGate(t *testing.T) {
+	if len(sveForms) < 1000 {
+		t.Skip("generated SVE tables are not installed")
+	}
+	lo, hi := sveGateOf(sveForms)
+	if lo != sveGateLo || hi != sveGateHi {
+		t.Errorf("gate = %#016x %#016x, want %#016x %#016x from the forms", sveGateLo, sveGateHi, lo, hi)
+	}
+}
+
+// TestSVEGateKeepsEveryDecoding compares sveDecode, which has the gate, with
+// sveScan, which does not, on the words that matter: the pinned and edge-case
+// words, two words for each value of bits 31:25 (every other bit set, and
+// clear), and 300,000 random words.
+func TestSVEGateKeepsEveryDecoding(t *testing.T) {
+	if len(sveForms) < 1000 {
+		t.Skip("generated SVE tables are not installed")
+	}
+	var words []uint32
+	for _, c := range loadSVECases(t, "plan9") {
+		words = append(words, binary.LittleEndian.Uint32(c.enc))
+	}
+	known := len(words)
+	for v := uint32(0); v < 128; v++ {
+		words = append(words, v<<25, v<<25|0x1ffffff)
+	}
+	r := rand.New(rand.NewSource(98))
+	for i := 0; i < 300000; i++ {
+		words = append(words, r.Uint32())
+	}
+	var decoded int
+	for _, w := range words {
+		got, ok := sveDecode(w)
+		want, wantOK := sveScan(w)
+		if ok != wantOK || ok && got.String() != want.String() {
+			t.Fatalf("%#08x: gated %v, %v; ungated %v, %v", w, got, ok, want, wantOK)
+		}
+		if ok {
+			decoded++
+		}
+	}
+	if decoded < known {
+		t.Errorf("only %d of %d words decode; the pinned and edge-case words alone are %d", decoded, len(words), known)
+	}
+}
+
 // sveOrderClash returns a pair of forms, i before j, that both match some word
 // although i is not more specific than j: its mask has no more bits set.
 func sveOrderClash(forms []sveForm) (i, j int, found bool) {
@@ -1048,7 +1120,7 @@ func sveOrderClash(forms []sveForm) (i, j int, found bool) {
 	return 0, 0, false
 }
 
-// TestSVEFormOrder checks that sveDecode tries the more specific of any two forms
+// TestSVEFormOrder checks that sveScan tries the more specific of any two forms
 // that match the same word first. The generator sorts the forms by the number of
 // mask bits and leaves a tie in the order of the XML, so two such forms with as
 // many bits would decode by an accident of that order.

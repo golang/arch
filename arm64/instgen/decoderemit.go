@@ -633,7 +633,35 @@ func (g *gen) render() ([]byte, error) {
 	}
 	p("}\n\n")
 
+	lo, hi, used := gateBitmap(g.forms)
+	p("// %sGateLo and %sGateHi are a bitmap of the values of bits 31:25 that any\n", pre, pre)
+	p("// form can match: bit n of the 128 is set when some form's mask and value allow\n")
+	p("// n there. The forms use %d of the 128 values. sveDecode skips the scan for a\n", used)
+	p("// word whose value is not in the set, which no form could have matched.\n")
+	p("var (\n\t%sGateLo uint64 = %#016x\n\t%sGateHi uint64 = %#016x\n)\n", pre, lo, pre, hi)
+
 	return format.Source([]byte(b.String()))
+}
+
+// gateBitmap returns, as two 64-bit words, the set of values of bits 31:25 that
+// at least one form can match, and how many values that is. A form that leaves
+// some of those bits free contributes every value its fixed bits allow, so the
+// set is exact whether or not the forms pin the field.
+func gateBitmap(forms []dForm) (lo, hi uint64, n int) {
+	for v := uint32(0); v < 128; v++ {
+		for _, f := range forms {
+			if v&(f.Mask>>25) == f.Value>>25&(f.Mask>>25) {
+				if v < 64 {
+					lo |= 1 << v
+				} else {
+					hi |= 1 << (v - 64)
+				}
+				n++
+				break
+			}
+		}
+	}
+	return lo, hi, n
 }
 
 func (g *gen) write(path string) {

@@ -5151,3 +5151,12 @@ var sveForms = []sveForm{
 	// FCMLA  <Zda>.<T>, <Pg>/M, <Zn>.<T>, <Zm>.<T>, <const>
 	{mask: 0xff208000, value: 0x64000000, op: 164, args: 85},
 }
+
+// sveGateLo and sveGateHi are a bitmap of the values of bits 31:25 that any
+// form can match: bit n of the 128 is set when some form's mask and value allow
+// n there. The forms use 9 of the 128 values. sveDecode skips the scan for a
+// word whose value is not in the set, which no form could have matched.
+var (
+	sveGateLo uint64 = 0x0004000400040004
+	sveGateHi uint64 = 0x0004000400050004
+)
