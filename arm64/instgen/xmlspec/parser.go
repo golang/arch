@@ -384,6 +384,7 @@ func (inst *InstructionParsed) extractBinary() {
 			// Special case, its "size" box is actually not specified in the assembler symbol section.
 			// By reading the decoding ASL we know that this "size" box should be 0b10...
 			regDiagram.fixedBin |= uint32(1 << 23)
+			regDiagram.mask |= uint32(0b11 << 22)
 		}
 		if len(inst.Classes.Iclass[i].PsSection) == 1 {
 			squashedPs := inst.Classes.Iclass[i].PsSection[0].Ps[0].PSText
@@ -399,6 +400,7 @@ func (inst *InstructionParsed) extractBinary() {
 					log.Fatalf("unexpecetd size box in %s", inst.file)
 				}
 				regDiagram.fixedBin |= uint32(1 << 23)
+				regDiagram.mask |= uint32(1 << 23)
 			}
 		}
 	}
@@ -439,11 +441,13 @@ func (inst *InstructionParsed) processEncodings() {
 				inst.Title == "SXTB, SXTH, SXTW -- A64" ||
 				inst.Title == "UXTB, UXTH, UXTW -- A64" {
 				// Special case, its "size" box is not specified in the assembler symbol
-				// section for the [B] and [W] variants, which for [B] it's 0b00 (no-op)
-				// and for [W] it's 0b11.
+				// section for the [W] variants, where it is 0b11. In the [B] variants
+				// size encodes <T>, and in the [H] variants size<0> does; extractBinary
+				// sets size<1>.
 				imnemonic := enc.Operands[0].Name
 				if imnemonic[len(imnemonic)-1] == 'W' {
 					enc.Binary |= uint32(0b11 << 22)
+					enc.mask |= uint32(0b11 << 22)
 				}
 			}
 			enc.Parsed = true

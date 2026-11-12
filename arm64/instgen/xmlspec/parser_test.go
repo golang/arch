@@ -127,3 +127,56 @@ outer:
 		}
 	}
 }
+
+// TestEncodingMaskCoversBinary checks that every bit set in an encoding's
+// Binary is in its mask, so that word&mask == Binary can hold.
+func TestEncodingMaskCoversBinary(t *testing.T) {
+	insts := getData(t)
+	ProcessXMLFiles(insts)
+	for _, inst := range insts {
+		if inst == nil {
+			continue
+		}
+		for _, iclass := range inst.Classes.Iclass {
+			for _, enc := range iclass.Encodings {
+				if !enc.Parsed {
+					continue
+				}
+				if extra := enc.Binary &^ enc.mask; extra != 0 {
+					t.Errorf("%s: %s: Binary %#08x has fixed bits %#08x outside mask %#08x", inst.file, enc.GoOp, enc.Binary, extra, enc.mask)
+				}
+			}
+		}
+	}
+}
+
+// TestSizeFromPseudocode checks the size field that extractBinary fixes, as the
+// decode pseudocode says, where the diagram leaves it variable: URECPE and
+// URSQRTE by title, the UDIV family by its pseudocode. The mask must hold every
+// bit that is fixed, 0 or 1: URECPE needs size = 0b10, so a mask of bit 23 alone
+// would also match 0b11.
+func TestSizeFromPseudocode(t *testing.T) {
+	for _, tt := range []struct {
+		title, ps   string
+		mask, value uint32 // bits 23:22
+	}{
+		{"URECPE -- A64", "if size != '10' then EndOfDecode(); end;", 0b11, 0b10},
+		{"URSQRTE -- A64", "if size != '10' then EndOfDecode(); end;", 0b11, 0b10},
+		{"UDIV -- A64", "if size IN {'0x'} then EndOfDecode(); end;", 0b10, 0b10},
+	} {
+		inst := &InstructionParsed{}
+		inst.Title = tt.title
+		inst.DocVars = []DocVar{{Key: "instr-class", Value: "sve"}}
+		inst.Classes.Iclass = []Iclass{{
+			RegDiagram: RegDiagramParsed{RegDiagram: RegDiagram{Boxes: []Box{
+				{HiBit: "23", Name: "size", Cs: []C{{ColSpan: "2"}}},
+			}}},
+			PsSection: []PsSection{{Ps: []Ps{{PSText: []string{tt.ps}}}}},
+		}}
+		inst.extractBinary()
+		rd := &inst.Classes.Iclass[0].RegDiagram
+		if mask, value := rd.mask>>22&3, rd.fixedBin>>22&3; mask != tt.mask || value != tt.value {
+			t.Errorf("%s: size has mask %#b and value %#b, want %#b and %#b", tt.title, mask, value, tt.mask, tt.value)
+		}
+	}
+}
