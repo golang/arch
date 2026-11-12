@@ -30,6 +30,36 @@ func TestParseXMLFiles(t *testing.T) {
 	t.Logf("Number of instructions: %d\n", len(insts))
 }
 
+// SplitInstByRegWidth must leave its argument alone, so that a second call on
+// the same encoding splits it the same way as the first.
+func TestSplitInstByRegWidthKeepsInput(t *testing.T) {
+	for key := range widthDescInterpreters {
+		enc := EncodingParsed{
+			GoOp: "AX",
+			Operands: []Operand{{
+				Name:  "<V>",
+				Typ:   "AC_VREG",
+				Elems: []Element{{TextExpWithRanges: key}},
+			}},
+		}
+		first := SplitInstByRegWidth(enc)
+		if got := enc.Operands[0].Elems[0].TextExpWithRanges; got != key {
+			t.Errorf("%q: the call replaced the input's width specifier with %q", key, got)
+		}
+		second := SplitInstByRegWidth(enc)
+		if len(first) != len(second) {
+			t.Errorf("%q: first call returned %d encodings, second %d", key, len(first), len(second))
+			continue
+		}
+		for i := range first {
+			if first[i].GoOp != second[i].GoOp || first[i].Binary != second[i].Binary {
+				t.Errorf("%q: result %d is %s %#x on the first call, %s %#x on the second",
+					key, i, first[i].GoOp, first[i].Binary, second[i].GoOp, second[i].Binary)
+			}
+		}
+	}
+}
+
 func TestProcessXMLFiles(t *testing.T) {
 	insts := getData(t)
 	ProcessXMLFiles(insts)

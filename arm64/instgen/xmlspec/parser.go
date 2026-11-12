@@ -1380,6 +1380,16 @@ var widthDescInterpreters = map[string]func(enc EncodingParsed, nonSVEIndices []
 	},
 }
 
+// cloneOperands returns a copy of ops with its own Elems.
+func cloneOperands(ops []Operand) []Operand {
+	out := make([]Operand, len(ops))
+	for i, op := range ops {
+		op.Elems = append([]Element(nil), op.Elems...)
+		out[i] = op
+	}
+	return out
+}
+
 // SplitInstByRegWidth splits an instruction encoding into multiple instruction
 // encodings based on the register width. This takes an instruction encoding that's
 // already validated and returns a list of instruction encodings that are split by
@@ -1423,6 +1433,9 @@ func SplitInstByRegWidth(enc EncodingParsed) []EncodingParsed {
 			}
 		}
 	}
+	// The widthDescInterpreters functions blank out the width specifier in
+	// place, so give them a copy and leave the caller's operands alone.
+	enc.Operands = cloneOperands(enc.Operands)
 	for knownWD := range widthDescInterpreters {
 		if strings.Join(strings.Fields(widthDesc[0]), " ") == strings.Join(strings.Fields(knownWD), " ") {
 			return widthDescInterpreters[knownWD](enc, nonSVEIndices)
