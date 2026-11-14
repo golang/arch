@@ -62,6 +62,12 @@ func GoSyntax(inst Inst, pc uint64, symname SymLookup) string {
 	}
 
 	op := inst.Op.String()
+	if inst.Op == MOVD {
+		// MOVD is the 32-bit move between a general register or memory and
+		// an MMX/XMM register. cmd/asm spells that form MOVL; its MOVD is a
+		// synonym for the 64-bit MOVQ.
+		op = "MOVL"
+	}
 	if inst.Op == VFPCLASSPD || inst.Op == VFPCLASSPS || inst.Op == VCVTTPD2DQ || inst.Op == VCVTTPD2UDQ || inst.Op == VCVTTPD2QQ || inst.Op == VCVTTPD2UQQ || inst.Op == VCVTPD2DQ || inst.Op == VCVTPD2UDQ || inst.Op == VCVTPD2QQ || inst.Op == VCVTPD2UQQ || inst.Op == VCVTPD2PS {
 		vexL := 0
 		isEvex := false
