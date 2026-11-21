@@ -68,7 +68,22 @@ func GoSyntax(inst Inst, pc uint64, symname SymLookup) string {
 		// synonym for the 64-bit MOVQ.
 		op = "MOVL"
 	}
-	if inst.Op == VFPCLASSPD || inst.Op == VFPCLASSPS || inst.Op == VCVTTPD2DQ || inst.Op == VCVTTPD2UDQ || inst.Op == VCVTTPD2QQ || inst.Op == VCVTTPD2UQQ || inst.Op == VCVTPD2DQ || inst.Op == VCVTPD2UDQ || inst.Op == VCVTPD2QQ || inst.Op == VCVTPD2UQQ || inst.Op == VCVTPD2PS {
+	if condition := plan9CMOV[inst.Op]; condition != "" {
+		s := inst.DataSize
+		if inst.MemBytes != 0 {
+			s = inst.MemBytes * 8
+		}
+		op = "CMOV"
+		switch s {
+		case 16:
+			op += "W"
+		case 32:
+			op += "L"
+		case 64:
+			op += "Q"
+		}
+		op += condition
+	} else if inst.Op == VFPCLASSPD || inst.Op == VFPCLASSPS || inst.Op == VCVTTPD2DQ || inst.Op == VCVTTPD2UDQ || inst.Op == VCVTTPD2QQ || inst.Op == VCVTTPD2UQQ || inst.Op == VCVTPD2DQ || inst.Op == VCVTPD2UDQ || inst.Op == VCVTPD2QQ || inst.Op == VCVTPD2UQQ || inst.Op == VCVTPD2PS {
 		vexL := 0
 		isEvex := false
 		for i, p := range inst.Prefix {
@@ -277,6 +292,25 @@ func memArgToSymbol(a Mem, pc uint64, instrLen int, symname SymLookup) (string, 
 
 	s, base := symname(disp)
 	return s, int64(disp) - int64(base)
+}
+
+var plan9CMOV = map[Op]string{
+	CMOVA:  "HI",
+	CMOVAE: "CC",
+	CMOVB:  "CS",
+	CMOVBE: "LS",
+	CMOVE:  "EQ",
+	CMOVNE: "NE",
+	CMOVG:  "GT",
+	CMOVGE: "GE",
+	CMOVL:  "LT",
+	CMOVLE: "LE",
+	CMOVO:  "OS",
+	CMOVNO: "OC",
+	CMOVS:  "MI",
+	CMOVNS: "PL",
+	CMOVP:  "PS",
+	CMOVNP: "PC",
 }
 
 var plan9Suffix = [maxOp + 1]bool{
